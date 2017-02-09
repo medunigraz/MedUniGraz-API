@@ -1,0 +1,19 @@
+
+
+.app-toolbar-filler {
+  flex: 1 1 auto;
+  height: 3em;
+}
+
+.header-toolbar {
+  position:absolute;
+  top:0em;
+  bottom:0;
+  right:0;
+  left:0;
+  background-color: #51ae32;
+  color: #ffffff;
+  height: 3em;
+  margin: 0;
+  z-index: 1;
+}

@@ -1,0 +1,30 @@
+
+
+<i class="material-icons app-input-icon">search</i>
+<md-input #searchBox  class="placeholder-white" floatingPlaceholder=true [formControl]="term">
+  <md-placeholder  class="placeholder-white">
+    Raumsuche
+  </md-placeholder>
+</md-input>
+
+
+<div [hidden]="!showsuggestions">
+  <div [hidden]="true">
+    <button md-raised-button [mdMenuTriggerFor]="menusearch" class="floormenu">
+    </button>
+  </div>
+
+  <md-menu #menusearch="mdMenu" [hidden]="!showsuggestions">
+       <button md-menu-item *ngFor="let room of rooms" (click)="selectRoom(room)">{{room.name}}</button>
+  </md-menu>
+</div>
+
+<!--
+<div class="suggestions" *ngIf="rooms.length > 0">
+    <ul>
+        <li *ngFor="let room of rooms">
+            <a (click)="selectRoom(room)">{{room.name}}</a>
+        </li>
+    </ul>
+</div>
+-->

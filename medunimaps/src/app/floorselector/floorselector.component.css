@@ -1,0 +1,12 @@
+.floorselector {
+  position:absolute;
+  top:5.0em;
+  left:0.7em;
+  z-index: 1;
+  background-color: #FFFFFF80;
+  border-radius: 0.5em;
+}
+
+.floormenu {
+  background-color: #FFFFFFFF;
+}
