@@ -8,9 +8,13 @@ export class RoomMap
 
   private roomLayerSource: any;
 
-  private highlight: any;
 
+  private highlight: any;
   private featureOverlay: any = null;
+
+  private selectedRoomOverlay: any = null;
+
+  private selectedRoom: any = null;
 
   constructor()
   {
@@ -35,27 +39,6 @@ export class RoomMap
       }]
     };
 
-    geojsonObject = {
-      'type': 'FeatureCollection',
-      'crs': {
-        'type': 'name',
-        'properties': {
-          'name': 'EPSG:3857'
-        }
-      },
-      'features': [{
-        'type': 'Feature',
-        'geometry': {
-          'type': 'Polygon',
-          'coordinates': [[
-            [1722183.8736183767, 5955368.127460353],
-            [1722202.0871290227, 5955358.871413959],
-            [1722195.2197397628, 5955345.435217581]
-          ]]
-        }
-      }]
-    };
-
     console.log('Create Room LAYER SOURCE!!!');
     this.roomLayerSource = new ol.source.Vector({
       features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
@@ -74,7 +57,6 @@ export class RoomMap
       style: styleFunction
     });
 
-
   }
 
   public getRoomLayer() : any
@@ -84,8 +66,8 @@ export class RoomMap
 
   public showRooms(rooms: Object) : void
   {
-    console.log("showRoom called");
-    console.log("Show Room!" + JSON.stringify(rooms));
+    //console.log("showRoom called");
+    //console.log("Show Room!" + JSON.stringify(rooms));
 
     this.roomLayerSource.clear();
     this.roomLayerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(rooms));
@@ -95,20 +77,7 @@ export class RoomMap
   {
     if(this.featureOverlay === null)
     {
-      console.log("Create Room Featureoverlay");
-      this.featureOverlay = new ol.layer.Vector({
-          source: new ol.source.Vector(),
-          map: map,
-          style: new ol.style.Style({
-            stroke: new ol.style.Stroke({
-              color: '#f00',
-              width: 1
-            }),
-            fill: new ol.style.Fill({
-              color: 'rgba(255,0,0,0.8)'
-            })
-          })
-        });
+      this.initFeatureOverlay(map);
     }
 
     let feature = map.forEachFeatureAtPixel(position, function(feature) {
@@ -121,9 +90,38 @@ export class RoomMap
           this.featureOverlay.getSource().removeFeature(this.highlight);
         }
         if (feature) {
+          //console.log('Highlight feature: ' + JSON.stringify(feature.getKeys()));
+          //console.log('Highlight feature: ' + JSON.stringify(feature.get('id')));
           this.featureOverlay.getSource().addFeature(feature);
         }
         this.highlight = feature;
      }
+  }
+
+  public mouseClicked(position: any, map: any)
+  {
+    if(this.highlight != null)
+    {
+      console.log('Select Room: ' + this.highlight.get('id'));
+    }
+  }
+
+
+  private initFeatureOverlay(map: any)
+  {
+    console.log("Create Room Featureoverlay");
+    this.featureOverlay = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+        map: map,
+        style: new ol.style.Style({
+          stroke: new ol.style.Stroke({
+            color: '#f00',
+            width: 1
+          }),
+          fill: new ol.style.Fill({
+            color: 'rgba(255,0,0,0.8)'
+          })
+        })
+      });
   }
 }

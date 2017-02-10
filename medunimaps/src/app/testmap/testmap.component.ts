@@ -233,6 +233,8 @@ export class TestmapComponent implements OnInit, AfterViewInit {
     //console.log("Coord: " + lonlat);
     console.log("Coord Org: " + evt.coordinate);
 
+    this.roommap.mouseClicked(evt.coordinate, this.map);
+
     var coordinate = evt.coordinate;
     //var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326'));
 
