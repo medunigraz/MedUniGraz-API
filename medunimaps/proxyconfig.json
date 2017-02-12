@@ -1,0 +1,8 @@
+{
+  "/geo/*": {
+    "target": "http://hetzner.fladi.at:8088",
+    "changeOrigin": true,
+    "secure": false,
+    "logLevel": "debug"
+  }
+}
