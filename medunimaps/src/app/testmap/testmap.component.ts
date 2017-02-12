@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Injectable } from '@angular/core';
-import { MapService } from '../mapservice/map.service';
+//import { MapService } from '../mapservice/map.service';
+import { MapHttpService } from '../mapservicehttp/mapservicehttp.service';
 
 import { RouteMap } from "./routemap"
 import { RoomMap } from "./roommap"
@@ -25,7 +26,7 @@ declare var ol: any;
 @Injectable()
 export class TestmapComponent implements OnInit, AfterViewInit {
 
-  constructor(private mapService: MapService) { }
+  constructor(private mapService: MapHttpService) { }
 
   testString = 'Hi';
   //ol: any;
@@ -96,7 +97,8 @@ export class TestmapComponent implements OnInit, AfterViewInit {
     this.map.on('click', evt => this.mapClicked(evt));
     this.map.on('pointermove', evt => this.mapMouseMoved(evt));
 
-    this.mapService.getRoomMap(0).then(rooms => this.showRooms(rooms));
+    //this.mapService.getRoomMap(0).then(rooms => this.showRooms(rooms));
+    this.mapService.getRoomMap(0).subscribe(rooms => this.showRooms(rooms));
   }
 
   ngOnInit(): void {

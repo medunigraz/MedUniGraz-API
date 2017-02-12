@@ -32,17 +32,17 @@ export class MapService {
       .then(() => Promise.resolve(FLOORS.reverse()));
   }
 
-  getRoomMap(layer: number): Promise<Object> {
-    return new Promise<Object>(resolve =>
-      setTimeout(resolve, 500)) // delay 2 seconds
-      .then(() => this.getRoomMapIntern(layer));
+  getRoomMap(layer: number): Observable<Object> {
+    return this.getRoomMapIntern(layer);
   }
 
-  getRoomMapIntern(layer: number): Promise<Object> {
+  private getRoomMapIntern(layer: number): Observable<Object> {
     if (layer == 0) {
-      return Promise.resolve(ROOMS_MAP);
+      return Observable.of(ROOMS_MAP);
+      //return Promise.resolve(ROOMS_MAP);
     }
-    return Promise.resolve(ROOMS_MAP);
+    //return Promise.resolve(ROOMS_MAP);
+    return Observable.of(ROOMS_MAP);
   }
 
 

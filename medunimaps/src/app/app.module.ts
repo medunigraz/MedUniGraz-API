@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@angular/material';
 
 import { MapService } from './mapservice/map.service';
+import { MapHttpService } from './mapservicehttp/mapservicehttp.service';
 import { MapcontrollerserviceService } from './mapcontrollerservice/mapcontrollerservice.service'
 
 import { AppComponent, DialogContent } from './app.component';
@@ -33,7 +34,7 @@ import { RoutetestComponent } from './routetest/routetest.component';
     ReactiveFormsModule,
     MaterialModule.forRoot()
   ],
-  providers: [MapService, MapcontrollerserviceService],
+  providers: [MapService, MapcontrollerserviceService, MapHttpService],
   entryComponents: [DialogContent],
   bootstrap: [AppComponent]
 })
