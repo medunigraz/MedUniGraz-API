@@ -103,6 +103,14 @@ export class RoomMap
     if(this.highlight != null)
     {
       console.log('Select Room: ' + this.highlight.get('id'));
+
+      if(this.selectedRoomOverlay == null)
+      {
+        this.initSelectedRoomOverlay(map);
+      }
+
+      this.selectedRoomOverlay.getSource().clear();
+      this.selectedRoomOverlay.getSource().addFeature(this.highlight);
     }
   }
 
@@ -120,6 +128,24 @@ export class RoomMap
           }),
           fill: new ol.style.Fill({
             color: 'rgba(255,0,0,0.8)'
+          })
+        })
+      });
+  }
+
+  private initSelectedRoomOverlay(map: any)
+  {
+    console.log("Create SelectedRoom Featureoverlay");
+    this.selectedRoomOverlay = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+        map: map,
+        style: new ol.style.Style({
+          stroke: new ol.style.Stroke({
+            color: '#f00',
+            width: 1
+          }),
+          fill: new ol.style.Fill({
+            color: 'rgba(0,128,255,0.8)'
           })
         })
       });
