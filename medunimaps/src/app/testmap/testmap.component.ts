@@ -5,6 +5,7 @@ import { MapHttpService } from '../mapservicehttp/mapservicehttp.service';
 
 import { RouteMap } from "./routemap"
 import { RoomMap } from "./roommap"
+import { NavigationMap } from "./navigationedges"
 
 declare var ol: any;
 
@@ -38,6 +39,7 @@ export class TestmapComponent implements OnInit, AfterViewInit {
 
   routemap: RouteMap;
   roommap: RoomMap;
+  navigationmap: NavigationMap;
 
   roomOverlay: any;
   roomPopup: any;
@@ -56,6 +58,9 @@ export class TestmapComponent implements OnInit, AfterViewInit {
 
     this.roommap =  new RoomMap();
     this.roommap.Initialize();
+
+    this.navigationmap = new NavigationMap();
+    this.navigationmap.Initialize();
 
     var extent = [0, 0, 51200, 25600];
     var projection = new ol.proj.Projection({
@@ -80,7 +85,8 @@ export class TestmapComponent implements OnInit, AfterViewInit {
         this.baseMapLayer,
         this.routemap.getRouteLayer(),
         this.routemap.getHiddenRouteLayer(),
-        this.roommap.getRoomLayer()
+        this.roommap.getRoomLayer(),
+        this.navigationmap.getEdgeLayer()
       ],
       overlays: [this.roomOverlay],
       target: 'map',
@@ -99,6 +105,7 @@ export class TestmapComponent implements OnInit, AfterViewInit {
 
     //this.mapService.getRoomMap(0).then(rooms => this.showRooms(rooms));
     this.mapService.getRoomMap(0).subscribe(rooms => this.showRooms(rooms));
+    this.mapService.getNavigationEdges(0).subscribe(edges => this.showNavigationEdges(edges));
   }
 
   ngOnInit(): void {
@@ -217,6 +224,12 @@ export class TestmapComponent implements OnInit, AfterViewInit {
   {
     this.roommap.showRooms(rooms);
   }
+
+  showNavigationEdges(edges: Object)
+  {
+    this.navigationmap.showEdges(edges);
+  }
+
 
   mapMouseMoved(evt): void {
     if (evt.dragging) {

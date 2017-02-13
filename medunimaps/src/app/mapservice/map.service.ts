@@ -4,6 +4,7 @@ import { FLOORS } from './mock-floors';
 import {ROOMS} from './mock-rooms';
 import {DEMOROUTE} from './mock-route';
 import {ROOMS_MAP} from './mock-roomGeoInformation'
+import {NAVIGATIONEDGES_DEMO} from './mock-navigationedges'
 
 import {Room} from '../base/room';
 import { Observable } from 'rxjs';
@@ -45,6 +46,13 @@ export class MapService {
     return Observable.of(ROOMS_MAP);
   }
 
+  getNavigationEdges(layer: number): Observable<Object> {
+    return this.getNavigationEdgesIntern(layer);
+  }
+
+  getNavigationEdgesIntern(layer: number): Observable<Object> {
+    return Observable.of(NAVIGATIONEDGES_DEMO);
+  }
 
   getRoute(): Promise<Object[]>
   {

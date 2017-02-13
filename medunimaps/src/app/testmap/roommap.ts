@@ -102,7 +102,7 @@ export class RoomMap
   {
     if(this.highlight != null)
     {
-      console.log('Select Room: ' + this.highlight.get('id'));
+      //console.log('Select Room: ' + this.highlight.get('id'));
 
       if(this.selectedRoomOverlay == null)
       {
@@ -135,7 +135,7 @@ export class RoomMap
 
   private initSelectedRoomOverlay(map: any)
   {
-    console.log("Create SelectedRoom Featureoverlay");
+    //console.log("Create SelectedRoom Featureoverlay");
     this.selectedRoomOverlay = new ol.layer.Vector({
         source: new ol.source.Vector(),
         map: map,
