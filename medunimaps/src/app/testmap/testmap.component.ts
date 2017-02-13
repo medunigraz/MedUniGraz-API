@@ -43,6 +43,10 @@ export class TestmapComponent implements OnInit, AfterViewInit {
 
   roomOverlay: any;
   roomPopup: any;
+
+  select: any;
+  modify: any;
+
   //content = document.getElementById('popup-content');
   //closer = document.getElementById('popup-closer');
   ngAfterViewInit(): void {
@@ -62,8 +66,22 @@ export class TestmapComponent implements OnInit, AfterViewInit {
     this.navigationmap = new NavigationMap();
     this.navigationmap.Initialize();
 
-    var extent = [0, 0, 51200, 25600];
-    var projection = new ol.proj.Projection({
+    this.select = new ol.interaction.Select({
+      wrapX: false,
+      /*
+      layers: function(layer) {
+          return false;
+          //return this.allowOLSelection(layer);
+        }*/
+      layers: (layer => this.allowOLSelection(layer))
+    });
+
+    this.modify = new ol.interaction.Modify({
+      features: this.select.getFeatures()
+    });
+
+    let extent = [0, 0, 51200, 25600];
+    let projection = new ol.proj.Projection({
       code: 'static-image',
       units: 'pixels',
       imageExtent: extent
@@ -76,6 +94,7 @@ export class TestmapComponent implements OnInit, AfterViewInit {
         }),
         zoom: false
       }),
+      interactions: ol.interaction.defaults().extend([this.select, this.modify]),
       //controls: [],
       layers: [
         new ol.layer.Tile({
@@ -86,7 +105,8 @@ export class TestmapComponent implements OnInit, AfterViewInit {
         this.routemap.getRouteLayer(),
         this.routemap.getHiddenRouteLayer(),
         this.roommap.getRoomLayer(),
-        this.navigationmap.getEdgeLayer()
+        this.navigationmap.getEdgeLayer(),
+        this.navigationmap.getEdgePathLayer()
       ],
       overlays: [this.roomOverlay],
       target: 'map',
@@ -110,6 +130,19 @@ export class TestmapComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
 
+  }
+
+  allowOLSelection(layer: any) : boolean
+  {
+    //layer.set('dummy', 'xxxsaef');
+    //console.log("allowOLSelection..." + JSON.stringify(layer.get('dummy')));
+    //console.log("allowOLSelection... isSelectable ..." + JSON.stringify(layer.get('isSelectable')));
+
+    if(layer.get('isSelectable'))
+    {
+      return true;
+    }
+    return false;
   }
 
   loadPOIs(): void {

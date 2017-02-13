@@ -7,6 +7,9 @@ export class NavigationMap
   private edgeLayer: any;
   private edgeLayerSource: any;
 
+  private edgePathLayer: any;
+  private edgePathLayerSource: any;
+
   private selectedRoom: any = null;
 
   constructor()
@@ -36,11 +39,25 @@ export class NavigationMap
       features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
     });
 
+    this.edgePathLayerSource = new ol.source.Vector({
+      features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
+    });
+
     let styleFunction = function(feature) {
       return new ol.style.Style({
         stroke: new ol.style.Stroke({
           color: 'green',
-          width: 2
+          width: 1
+        })
+      })
+    };
+
+    let styleFunctionPath = function(feature) {
+      return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: 'green',
+          lineDash: [5],
+          width: 3
         })
       })
     };
@@ -49,11 +66,24 @@ export class NavigationMap
       source: this.edgeLayerSource,
       style: styleFunction
     });
+
+    this.edgePathLayer = new ol.layer.Vector({
+      source: this.edgePathLayerSource,
+      style: styleFunctionPath,
+      zIndex: 10
+    });
+
+    this.edgePathLayer.set('isSelectable', true);
   }
 
   public getEdgeLayer() : any
   {
     return this.edgeLayer;
+  }
+
+  public getEdgePathLayer() : any
+  {
+    return this.edgePathLayer;
   }
 
   public showEdges(edges: Object) : void
@@ -62,5 +92,8 @@ export class NavigationMap
 
     this.edgeLayerSource.clear();
     this.edgeLayerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(edges));
+
+    this.edgePathLayerSource.clear();
+    this.edgePathLayerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(edges));
   }
 }
