@@ -79,4 +79,15 @@ export class MapService {
 
     return Observable.of(rooms);
   }
+
+
+  addEdge(source: number, destination: number, path: any): Observable<Object>
+  {
+    return null;
+  }
+
+  deleteEdge(id: number): Observable<Object>
+  {
+    return null;
+  }
 }
