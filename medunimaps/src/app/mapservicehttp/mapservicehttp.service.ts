@@ -25,8 +25,7 @@ export class MapHttpService extends MapService {
       .catch(this.handleError);
   }
 
-  addEdge(source: number, destination: number, path: any): Observable<Object>
-  {
+  addEdge(source: number, destination: number, length: number, path: any): Observable<Object> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
@@ -34,34 +33,32 @@ export class MapHttpService extends MapService {
       "source": source,
       "destination": destination,
       "path": JSON.stringify(path),
-      "length": 1
+      "length": length
     }
 
     console.log("Send Edge: " + JSON.stringify(data));
 
     return this.http.post(this.edgeUrl, data, options)
-                    .map(this.extractDataAdd)
-                    .catch(this.handleError);
+      .map(this.extractDataAdd)
+      .catch(this.handleError);
   }
 
-  deleteEdge(id: number): Observable<Object>
-  {
+  deleteEdge(id: number): Observable<Object> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
     return this.http.delete(this.edgeUrl + id + "/", options);
   }
 
-  updateEdge(edge: any): Observable<Object>
-  {
+  updateEdge(edge: any): Observable<Object> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
     console.log("Update Edge: " + JSON.stringify(edge));
 
     return this.http.put(this.edgeUrl + edge.id + "/", edge, options)
-                    .map(this.extractDataAdd)
-                    .catch(this.handleError);
+      .map(this.extractDataAdd)
+      .catch(this.handleError);
   }
 
   private extractData(res: Response) {
@@ -90,7 +87,7 @@ export class MapHttpService extends MapService {
     } else {
       errMsg = error.message ? error.message : error.toString();
     }
-    console.error("handleError: "+ errMsg);
+    console.error("handleError: " + errMsg);
     return Observable.throw(errMsg);
   }
 

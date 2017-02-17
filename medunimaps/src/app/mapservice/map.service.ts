@@ -54,8 +54,7 @@ export class MapService {
     return Observable.of(NAVIGATIONEDGES_DEMO);
   }
 
-  getRoute(): Promise<Object[]>
-  {
+  getRoute(): Promise<Object[]> {
     return new Promise<Array<string>>(resolve =>
       setTimeout(resolve, 300)) // delay 2 seconds
       .then(() => Promise.resolve(DEMOROUTE));
@@ -66,8 +65,7 @@ export class MapService {
     var rooms: Room[] = [];
     console.log('searchRoom...');
 
-    if(term.length == 0)
-    {
+    if (term.length == 0) {
       return Observable.of(rooms);
     }
 
@@ -81,13 +79,11 @@ export class MapService {
   }
 
 
-  addEdge(source: number, destination: number, path: any): Observable<Object>
-  {
+  addEdge(source: number, destination: number, length: number, path: any): Observable<Object> {
     return null;
   }
 
-  deleteEdge(id: number): Observable<Object>
-  {
+  deleteEdge(id: number): Observable<Object> {
     return null;
   }
 }

@@ -60,10 +60,10 @@ export class TestmapComponent implements OnInit, AfterViewInit {
     this.routemap = new RouteMap();
     this.routemap.Initialize();
 
-    this.roommap =  new RoomMap();
-    this.roommap.Initialize();
+    this.roommap = new RoomMap();
+    this.roommap.Initialize(this.navigationmap);
 
-    this.navigationmap = new NavigationMap();
+    this.navigationmap = new NavigationMap(this.mapService);
     this.navigationmap.Initialize();
 
     this.select = new ol.interaction.Select({
@@ -132,14 +132,12 @@ export class TestmapComponent implements OnInit, AfterViewInit {
 
   }
 
-  allowOLSelection(layer: any) : boolean
-  {
+  allowOLSelection(layer: any): boolean {
     //layer.set('dummy', 'xxxsaef');
     //console.log("allowOLSelection..." + JSON.stringify(layer.get('dummy')));
     //console.log("allowOLSelection... isSelectable ..." + JSON.stringify(layer.get('isSelectable')));
 
-    if(layer.get('isSelectable'))
-    {
+    if (layer.get('isSelectable')) {
       return true;
     }
     return false;
@@ -241,35 +239,31 @@ export class TestmapComponent implements OnInit, AfterViewInit {
     //this.roomOverlay.setPosition([0, 0]);
   }
 
-  showRoute(route: Object[])
-  {
+  showRoute(route: Object[]) {
     //console.log("showRoute called" + this.testString);
     this.routemap.showRoute(route);
   }
 
-  hideRoute()
-  {
+  hideRoute() {
     //console.log("hideRoute called");
     this.routemap.hideRoute();
   }
 
-  showRooms(rooms: Object)
-  {
+  showRooms(rooms: Object) {
     this.roommap.showRooms(rooms);
   }
 
-  showNavigationEdges(edges: Object)
-  {
+  showNavigationEdges(edges: Object) {
     this.navigationmap.showEdges(edges);
   }
 
 
   mapMouseMoved(evt): void {
     if (evt.dragging) {
-       return;
-     }
-     let pixel = this.map.getEventPixel(evt.originalEvent);
-     this.roommap.mouseMoved(pixel, this.map);
+      return;
+    }
+    let pixel = this.map.getEventPixel(evt.originalEvent);
+    this.roommap.mouseMoved(pixel, this.map);
 
 
   }
@@ -279,9 +273,19 @@ export class TestmapComponent implements OnInit, AfterViewInit {
 
     var lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
     //console.log("Coord: " + lonlat);
-    console.log("Coord Org: " + evt.coordinate);
+    console.log("Coord Org: " + evt.coordinate + " strg: " + evt.originalEvent.ctrlKey);
 
-    this.roommap.mouseClicked(evt.coordinate, this.map);
+
+    if (evt.originalEvent.ctrlKey) {
+      this.roommap.mouseClickedCtrl(evt.coordinate, this.map);
+    }
+    else if (evt.originalEvent.altKey) {
+      this.roommap.mouseClickedAlt(evt.coordinate, this.map);
+    }
+    else {
+      this.roommap.mouseClicked(evt.coordinate, this.map);
+    }
+
 
     var coordinate = evt.coordinate;
     //var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326'));

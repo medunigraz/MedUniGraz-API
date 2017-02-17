@@ -1,7 +1,8 @@
+import { MapHttpService } from '../mapservicehttp/mapservicehttp.service';
+
 declare var ol: any;
 
-export class NavigationMap
-{
+export class NavigationMap {
   private isActive: boolean = false;
 
   private edgeLayer: any;
@@ -12,12 +13,9 @@ export class NavigationMap
 
   private selectedRoom: any = null;
 
-  constructor()
-  {
-  }
+  constructor(private mapService: MapHttpService) { }
 
-  public Initialize(): void
-  {
+  public Initialize(): void {
     let geojsonObject = {
       'type': 'FeatureCollection',
       'crs': {
@@ -76,18 +74,22 @@ export class NavigationMap
     this.edgePathLayer.set('isSelectable', true);
   }
 
-  public getEdgeLayer() : any
-  {
+  public getEdgeLayer(): any {
     return this.edgeLayer;
   }
 
-  public getEdgePathLayer() : any
-  {
+  public getEdgePathLayer(): any {
     return this.edgePathLayer;
   }
 
-  public showEdges(edges: Object) : void
-  {
+  public addEdge(source: number, destination: number, length: number, path: any) {
+    this.mapService.addEdge(source, destination, length, path).
+      subscribe(
+      edge => this.updateAddEdge(edge),
+      error => console.log("ERROR: " + <any>error));
+  }
+
+  public showEdges(edges: Object): void {
     console.log("showRoute called");
 
     this.edgeLayerSource.clear();
@@ -95,5 +97,9 @@ export class NavigationMap
 
     this.edgePathLayerSource.clear();
     this.edgePathLayerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(edges));
+  }
+
+  private updateAddEdge(edge: any) {
+    this.edgeLayerSource.addFeatures(edge);
   }
 }
