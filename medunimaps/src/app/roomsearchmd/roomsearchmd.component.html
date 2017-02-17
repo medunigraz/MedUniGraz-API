@@ -1,12 +1,10 @@
 
 
 <i class="material-icons app-input-icon">search</i>
-<md-input #searchBox  class="placeholder-white" floatingPlaceholder=true [formControl]="term">
-  <md-placeholder  class="placeholder-white">
-    Raumsuche
-  </md-placeholder>
-</md-input>
 
+<md-input-container>
+  <input mdInput #searchBox  placeholder="Raumsuche" class="placeholder-white" floatingPlaceholder=true [formControl]="term">
+</md-input-container>
 
 <div [hidden]="!showsuggestions">
   <div [hidden]="true">
