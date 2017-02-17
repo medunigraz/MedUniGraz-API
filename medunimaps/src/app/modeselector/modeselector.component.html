@@ -1,0 +1,14 @@
+<div class="modeselector">
+  <md-button-toggle-group #group="mdButtonToggleGroup" (change)="modechanged()">
+    <table>
+      <tr *ngFor="let mode of modes">
+        <td>
+          <md-button-toggle (change)="modechanged(mode)">
+            {{mode.name}}
+          </md-button-toggle>
+        </td>
+      </tr>
+  </table>
+</md-button-toggle-group>
+
+</div>

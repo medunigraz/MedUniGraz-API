@@ -1,6 +1,7 @@
 import { Component, Optional, OnInit } from '@angular/core';
 import {MdDialog, MdDialogRef} from '@angular/material';
 
+import { ApplicationMode } from './base/applicationmode';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +11,8 @@ import {MdDialog, MdDialogRef} from '@angular/material';
 export class AppComponent {
 
   lastDialogResult: string;
+
+  currentAppMode: ApplicationMode = null;
 
   constructor(private _dialog: MdDialog) {
   }
@@ -36,6 +39,11 @@ export class AppComponent {
 
   sayHi(): void {
     console.info("Hi");
+  }
+
+  appModeChanged(mode: ApplicationMode): void {
+    console.log("AppComponent --- appModeChanged: " + mode.name);
+    this.currentAppMode = mode;
   }
 }
 

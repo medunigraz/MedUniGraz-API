@@ -1,6 +1,10 @@
 <app-testmap #mapComp></app-testmap>
 <app-floorselector></app-floorselector>
-<app-routetest [mapComponentRef] = mapComp></app-routetest>
+
+
+<app-routetest [mapComponentRef] = mapComp *ngIf="currentAppMode && currentAppMode.showDemoRoute"></app-routetest>
+
+<app-modeselector (currentAppModeEvt)="appModeChanged($event)"></app-modeselector>
 <!---->
 
 <md-toolbar class = "header-toolbar">

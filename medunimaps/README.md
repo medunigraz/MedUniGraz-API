@@ -3,7 +3,7 @@
 Intall:
 git clone https://github.com/medunigraz/MedUniGraz-API.git
 cd c:\safe\OpenLayers\repo\MedUniGraz-API\medunimaps
-
+npm update
 
 
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.24.

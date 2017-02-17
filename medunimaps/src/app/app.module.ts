@@ -16,6 +16,7 @@ import { RoomsearchComponent } from './roomsearch/roomsearch.component';
 import { FloorselectorComponent } from './floorselector/floorselector.component';
 import { RoomsearchmdComponent } from './roomsearchmd/roomsearchmd.component';
 import { RoutetestComponent } from './routetest/routetest.component';
+import { ModeselectorComponent } from './modeselector/modeselector.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { RoutetestComponent } from './routetest/routetest.component';
     RoomsearchComponent,
     FloorselectorComponent,
     RoomsearchmdComponent,
-    RoutetestComponent
+    RoutetestComponent,
+    ModeselectorComponent
   ],
   imports: [
     BrowserModule,
