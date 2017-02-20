@@ -6,6 +6,9 @@ import { Subject }           from 'rxjs/Subject';
 import {MdMenuTrigger} from '@angular/material';
 
 import { MapService } from '../mapservice/map.service';
+import { MapHttpService } from '../mapservicehttp/mapservicehttp.service';
+
+import { USEHTTPSERVICE } from '../base/globalconstants';
 
 import { Room } from '../base/room';
 
@@ -25,9 +28,15 @@ export class RoomsearchmdComponent implements OnInit {
   currentSearchTerm = "";
   term = new FormControl();
 
-  constructor(private mapService: MapService) { }
+  constructor(private mapServiceHttp: MapHttpService,
+    private mapService: MapService) { }
 
   ngOnInit() {
+
+    if (USEHTTPSERVICE) {
+      this.mapService = this.mapServiceHttp;
+    }
+
     this.term.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()

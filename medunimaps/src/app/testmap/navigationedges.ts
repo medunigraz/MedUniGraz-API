@@ -1,4 +1,4 @@
-import { MapHttpService } from '../mapservicehttp/mapservicehttp.service';
+import { MapService } from '../mapservice/map.service';
 
 declare var ol: any;
 
@@ -13,7 +13,7 @@ export class NavigationMap {
 
   private selectedRoom: any = null;
 
-  constructor(private mapService: MapHttpService) { }
+  constructor(private mapService: MapService) { }
 
   public Initialize(): void {
     let geojsonObject = {

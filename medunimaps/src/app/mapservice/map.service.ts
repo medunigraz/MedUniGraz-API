@@ -86,4 +86,8 @@ export class MapService {
   deleteEdge(id: number): Observable<Object> {
     return null;
   }
+
+  updateEdge(edge: any): Observable<Object> {
+    return null;
+  }
 }

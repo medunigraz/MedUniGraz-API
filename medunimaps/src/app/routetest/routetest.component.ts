@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-//import { MapService } from '../mapservice/map.service';
+import { MapService } from '../mapservice/map.service';
 import { MapHttpService } from '../mapservicehttp/mapservicehttp.service';
+
+import { USEHTTPSERVICE } from '../base/globalconstants';
 
 import { TestmapComponent} from '../testmap/testmap.component';
 
@@ -17,9 +19,13 @@ export class RoutetestComponent implements OnInit {
   routeVisible: boolean = false;
 
 
-  constructor(private mapService: MapHttpService) { }
+  constructor(private mapServiceHttp: MapHttpService,
+    private mapService: MapService) { }
 
   ngOnInit() {
+    if (USEHTTPSERVICE) {
+      this.mapService = this.mapServiceHttp;
+    }
   }
 
   toogleroute(): void {

@@ -3,8 +3,11 @@ import { Observable }        from 'rxjs/Observable';
 import { Subject }           from 'rxjs/Subject';
 
 import { MapService } from '../mapservice/map.service';
+import { MapHttpService } from '../mapservicehttp/mapservicehttp.service';
 
 import { Room } from '../base/room';
+
+import { USEHTTPSERVICE } from '../base/globalconstants';
 
 @Component({
   selector: 'app-roomsearch',
@@ -18,12 +21,17 @@ export class RoomsearchComponent implements OnInit {
 
   currentSearchTerm = "";
 
-  constructor(private mapService: MapService) { }
+  constructor(private mapServiceHttp: MapHttpService,
+    private mapService: MapService) { }
 
   ngOnInit() {
+    if (USEHTTPSERVICE) {
+      this.mapService = this.mapServiceHttp;
+    }
+
     this.rooms = this.searchTerms
       .debounceTime(300)        // wait for 300ms pause in events
-      .distinctUntilChanged()   // ignore if next search term is same as previous 
+      .distinctUntilChanged()   // ignore if next search term is same as previous
       .switchMap(term => term   // switch to new observable each time
         // return the http search observable
         ? this.mapService.searchRoom(term)

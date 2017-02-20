@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Injectable } from '@angular/core';
-//import { MapService } from '../mapservice/map.service';
+import { MapService } from '../mapservice/map.service';
 import { MapHttpService } from '../mapservicehttp/mapservicehttp.service';
+
+import { USEHTTPSERVICE } from '../base/globalconstants';
 
 import { RouteMap } from "./routemap"
 import { RoomMap } from "./roommap"
@@ -27,7 +29,8 @@ declare var ol: any;
 @Injectable()
 export class TestmapComponent implements OnInit, AfterViewInit {
 
-  constructor(private mapService: MapHttpService) { }
+  constructor(private mapServiceHttp: MapHttpService,
+    private mapService: MapService) { }
 
   testString = 'Hi';
   //ol: any;
@@ -51,6 +54,11 @@ export class TestmapComponent implements OnInit, AfterViewInit {
   //closer = document.getElementById('popup-closer');
   ngAfterViewInit(): void {
     console.log("INIT!!!");
+
+    if (USEHTTPSERVICE) {
+      this.mapService = this.mapServiceHttp;
+    }
+
     this.testString += '.................';
 
     this.loadPOIs();
