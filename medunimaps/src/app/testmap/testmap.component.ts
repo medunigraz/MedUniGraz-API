@@ -1,9 +1,11 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
 import { Injectable } from '@angular/core';
 import { MapService } from '../mapservice/map.service';
 import { MapHttpService } from '../mapservicehttp/mapservicehttp.service';
 
 import { USEHTTPSERVICE } from '../base/globalconstants';
+import { ApplicationMode } from '../base/applicationmode';
+import { ApplicationModeT } from '../base/applicationmode';
 
 import { RouteMap } from "./routemap"
 import { RoomMap } from "./roommap"
@@ -31,6 +33,8 @@ export class TestmapComponent implements OnInit, AfterViewInit {
 
   constructor(private mapServiceHttp: MapHttpService,
     private mapService: MapService) { }
+
+  private _applicationMode: ApplicationMode = ApplicationMode.CreateDefault();
 
   testString = 'Hi';
   //ol: any;
@@ -140,12 +144,23 @@ export class TestmapComponent implements OnInit, AfterViewInit {
 
   }
 
+  @Input()
+  set applicationMode(applicationMode: ApplicationMode) {
+    this._applicationMode = applicationMode;
+
+    if (this.select) {
+      let selected_collection = this.select.getFeatures();
+      selected_collection.clear();
+    }
+    console.log("TestmapComponent::Set applicationMode - New App Mode: " + this._applicationMode.name);
+  }
+
   allowOLSelection(layer: any): boolean {
     //layer.set('dummy', 'xxxsaef');
     //console.log("allowOLSelection..." + JSON.stringify(layer.get('dummy')));
     //console.log("allowOLSelection... isSelectable ..." + JSON.stringify(layer.get('isSelectable')));
 
-    if (layer.get('isSelectable')) {
+    if (layer.get('isSelectable') && this._applicationMode.mode == ApplicationModeT.EDIT_PATHS) {
       return true;
     }
     return false;

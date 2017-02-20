@@ -11,7 +11,7 @@ export class ModeselectorComponent implements OnInit {
 
   modes = ApplicationModes;
 
-  currentAppMode: ApplicationMode;
+  currentAppMode: ApplicationMode = ApplicationMode.CreateDefault();
   @Output() currentAppModeEvt = new EventEmitter<ApplicationMode>();
 
   constructor() {

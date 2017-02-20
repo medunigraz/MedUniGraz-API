@@ -14,10 +14,14 @@ export class ApplicationMode {
   )
   { }
 
+  static CreateDefault(): ApplicationMode {
+    return new ApplicationMode(ApplicationModeT.DEFAULT, "Default", true);
+  }
+
 }
 
 export const ApplicationModes = [
-  new ApplicationMode(ApplicationModeT.DEFAULT, "Default", true),
+  ApplicationMode.CreateDefault(),
   new ApplicationMode(ApplicationModeT.EDIT_EDGES, "EditEdges", false),
   new ApplicationMode(ApplicationModeT.EDIT_PATHS, "EditPaths", false)
 ]

@@ -12,7 +12,7 @@ export class AppComponent {
 
   lastDialogResult: string;
 
-  currentAppMode: ApplicationMode = null;
+  currentAppMode: ApplicationMode = ApplicationMode.CreateDefault();
 
   constructor(private _dialog: MdDialog) {
   }
