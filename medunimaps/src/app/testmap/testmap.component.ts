@@ -152,6 +152,11 @@ export class TestmapComponent implements OnInit, AfterViewInit {
       let selected_collection = this.select.getFeatures();
       selected_collection.clear();
     }
+    if (this.roommap) {
+      this.roommap.Clear();
+    }
+
+
     console.log("TestmapComponent::Set applicationMode - New App Mode: " + this._applicationMode.name);
   }
 
@@ -280,15 +285,14 @@ export class TestmapComponent implements OnInit, AfterViewInit {
     this.navigationmap.showEdges(edges);
   }
 
-
   mapMouseMoved(evt): void {
     if (evt.dragging) {
       return;
     }
     let pixel = this.map.getEventPixel(evt.originalEvent);
-    this.roommap.mouseMoved(pixel, this.map);
-
-
+    if (this._applicationMode.mode == ApplicationModeT.EDIT_EDGES) {
+      this.roommap.mouseMoved(pixel, this.map);
+    }
   }
 
   mapClicked(evt): void {
@@ -298,15 +302,13 @@ export class TestmapComponent implements OnInit, AfterViewInit {
     //console.log("Coord: " + lonlat);
     console.log("Coord Org: " + evt.coordinate + " strg: " + evt.originalEvent.ctrlKey);
 
-
-    if (evt.originalEvent.ctrlKey) {
-      this.roommap.mouseClickedCtrl(evt.coordinate, this.map);
-    }
-    else if (evt.originalEvent.altKey) {
-      this.roommap.mouseClickedAlt(evt.coordinate, this.map);
-    }
-    else {
-      this.roommap.mouseClicked(evt.coordinate, this.map);
+    if (this._applicationMode.mode == ApplicationModeT.EDIT_EDGES) {
+      if (evt.originalEvent.ctrlKey) {
+        this.roommap.mouseClickedCtrl(evt.coordinate, this.map);
+      }
+      else {
+        this.roommap.mouseClicked(evt.coordinate, this.map);
+      }
     }
 
 

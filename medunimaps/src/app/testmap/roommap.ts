@@ -118,10 +118,6 @@ export class RoomMap {
     }
   }
 
-  public mouseClickedAlt(position: any, map: any) {
-
-  }
-
   private addEdge(source: any, destination: any) {
     let sourceId = source.getId();
     let destinationId = destination.getId();
@@ -143,6 +139,17 @@ export class RoomMap {
     }
 
     //this.navigationMap.addEdge(sourceId, destinationId, 0.123, path);
+  }
+
+  public Clear(): void {
+    if (this.selectedRoomOverlay) {
+      this.selectedRoomOverlay.getSource().clear();
+    }
+    if (this.featureOverlay) {
+      this.featureOverlay.getSource().clear();
+    }
+    this.selectedRoom = null;
+    this.highlight = null;
   }
 
   private initFeatureOverlay(map: any) {
