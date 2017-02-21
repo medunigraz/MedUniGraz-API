@@ -1,4 +1,5 @@
 import { MapService } from '../mapservice/map.service';
+import { USEHTTPSERVICE } from '../base/globalconstants';
 
 declare var ol: any;
 
@@ -83,6 +84,12 @@ export class NavigationMap {
   }
 
   public addEdge(source: number, destination: number, length: number, path: any) {
+
+    if (!USEHTTPSERVICE) {
+      console.log("Offline mode, dont add edge!");
+      return;
+    }
+
     this.mapService.addEdge(source, destination, length, path).
       subscribe(
       edge => this.updateAddEdge(edge),

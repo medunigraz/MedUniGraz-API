@@ -125,10 +125,12 @@ export class RoomMap {
       return;
     }
 
-    let p1 = source.getGeometry().getInteriorPoint().v;
-    let p2 = destination.getGeometry().getInteriorPoint().v;
+    let p1 = source.getGeometry().getInteriorPoint().B;
+    let p2 = destination.getGeometry().getInteriorPoint().B;
+    let line = new ol.geom.LineString([p1, p2]);
+    let distance = line.getLength();
 
-    console.log("RoomMap::addEdge " + JSON.stringify(p1) + "/" + JSON.stringify(p2));
+    console.log("RoomMap::addEdge " + sourceId + "/" + destinationId + "#" + JSON.stringify(p1) + "/ " + JSON.stringify(p2) + "--" + distance);
 
     let path = {
       'type': 'LineString',
@@ -138,7 +140,7 @@ export class RoomMap {
       ]
     }
 
-    //this.navigationMap.addEdge(sourceId, destinationId, 0.123, path);
+    this.navigationMap.addEdge(sourceId, destinationId, distance, path);
   }
 
   public Clear(): void {
