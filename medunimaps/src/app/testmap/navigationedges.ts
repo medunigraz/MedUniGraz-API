@@ -12,11 +12,12 @@ export class NavigationMap {
   private edgePathLayer: any;
   private edgePathLayerSource: any;
 
-  private selectedRoom: any = null;
+  select: any;
 
   constructor(private mapService: MapService) { }
 
-  public Initialize(): void {
+  public Initialize(select: any): void {
+    this.select = select;
     let geojsonObject = {
       'type': 'FeatureCollection',
       'crs': {
@@ -94,6 +95,27 @@ export class NavigationMap {
       subscribe(
       edge => this.updateAddEdge(edge),
       error => console.log("ERROR: " + <any>error));
+  }
+
+  public deleteSelectedEdge() {
+    console.log("deleteSelectedEdges..." + this.select.getFeatures().getArray().length);
+    for (let feature of this.select.getFeatures().getArray()) {
+      console.log("deleteSelectedEdge: " + JSON.stringify(feature.getId()));
+
+      if (!USEHTTPSERVICE) {
+        console.log("Offline mode, dont delete edge!");
+        return;
+      }
+
+      this.mapService.deleteEdge(feature.getId()).subscribe(
+        edge => this.edgeDeleted(edge),
+        error => console.log("ERROR deleteEdge: " + <any>error));
+
+    }
+  }
+
+  private edgeDeleted(edge: any): void {
+    console.log("edgeDeleted... " + JSON.stringify(edge));
   }
 
   public showEdges(edges: Object): void {

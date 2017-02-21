@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
 import { Injectable } from '@angular/core';
+import {HostListener} from '@angular/core';
 import { MapService } from '../mapservice/map.service';
 import { MapHttpService } from '../mapservicehttp/mapservicehttp.service';
 
@@ -69,15 +70,6 @@ export class TestmapComponent implements OnInit, AfterViewInit {
     this.loadBaseMap();
     this.createOverlay();
 
-    this.routemap = new RouteMap();
-    this.routemap.Initialize();
-
-    this.roommap = new RoomMap();
-    this.roommap.Initialize(this.navigationmap);
-
-    this.navigationmap = new NavigationMap(this.mapService);
-    this.navigationmap.Initialize();
-
     this.select = new ol.interaction.Select({
       wrapX: false,
       /*
@@ -87,6 +79,15 @@ export class TestmapComponent implements OnInit, AfterViewInit {
         }*/
       layers: (layer => this.allowOLSelection(layer))
     });
+
+    this.routemap = new RouteMap();
+    this.routemap.Initialize();
+
+    this.roommap = new RoomMap();
+    this.roommap.Initialize(this.navigationmap);
+
+    this.navigationmap = new NavigationMap(this.mapService);
+    this.navigationmap.Initialize(this.select);
 
     this.modify = new ol.interaction.Modify({
       features: this.select.getFeatures()
@@ -149,6 +150,7 @@ export class TestmapComponent implements OnInit, AfterViewInit {
     this._applicationMode = applicationMode;
 
     if (this.select) {
+      console.log("Clear selection..." + this.select.getFeatures().getArray().length);
       let selected_collection = this.select.getFeatures();
       selected_collection.clear();
     }
@@ -158,6 +160,18 @@ export class TestmapComponent implements OnInit, AfterViewInit {
 
 
     console.log("TestmapComponent::Set applicationMode - New App Mode: " + this._applicationMode.name);
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  keyboardInput(event: KeyboardEvent) {
+    console.log("KEYDOWN: " + event.keyCode);
+
+    if (this._applicationMode.mode == ApplicationModeT.EDIT_PATHS && event.keyCode == 46) //Entf Key
+    {
+      console.log("KEYDOWN - Delete Edge " + event.keyCode + "#" + this.select.getFeatures().length);
+      this.navigationmap.deleteSelectedEdge();
+    }
+
   }
 
   allowOLSelection(layer: any): boolean {
@@ -301,6 +315,7 @@ export class TestmapComponent implements OnInit, AfterViewInit {
     var lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
     //console.log("Coord: " + lonlat);
     console.log("Coord Org: " + evt.coordinate + " strg: " + evt.originalEvent.ctrlKey);
+    console.log("Number of selected features: " + this.select.getFeatures().length);
 
     if (this._applicationMode.mode == ApplicationModeT.EDIT_EDGES) {
       if (evt.originalEvent.ctrlKey) {
