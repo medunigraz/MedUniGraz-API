@@ -21,7 +21,7 @@ export class ModeselectorComponent implements OnInit {
   }
 
   modechanged(mode: ApplicationMode): void {
-    //console.log("ModeselectorComponent Mode changed: " + mode.name);
+    console.log("ModeselectorComponent Mode changed: " + mode.name);
     this.currentAppMode = mode;
     this.currentAppModeEvt.emit(this.currentAppMode);
   }

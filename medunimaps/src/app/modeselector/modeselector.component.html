@@ -1,4 +1,5 @@
 <div class="modeselector">
+  <!--
   <md-button-toggle-group #group="mdButtonToggleGroup" (change)="modechanged()">
     <table>
       <tr *ngFor="let mode of modes">
@@ -10,5 +11,11 @@
       </tr>
   </table>
 </md-button-toggle-group>
-
+-->
+  <button md-raised-button [mdMenuTriggerFor]="menuApplicationmodes" class="modemenu">
+     <md-icon>more_vert</md-icon><span>{{currentAppMode.name}}</span>
+  </button>
+  <md-menu #menuApplicationmodes="mdMenu">
+       <button md-menu-item  *ngFor="let mode of modes" (click)="modechanged(mode)">{{mode.name}}</button>
+  </md-menu>
 </div>
