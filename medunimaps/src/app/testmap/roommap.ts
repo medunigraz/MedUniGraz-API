@@ -99,7 +99,7 @@ export class RoomMap {
 
   public mouseClicked(position: any, map: any) {
     if (this.highlight != null) {
-      console.log('Select Room: ' + this.highlight.getId() + "::" + this.highlight.get('floor'));
+      //console.log('Select Room: ' + this.highlight.getId() + "::" + this.highlight.get('floor'));
 
       if (this.selectedRoomOverlay == null) {
         this.initSelectedRoomOverlay(map);
@@ -155,7 +155,7 @@ export class RoomMap {
   }
 
   private initFeatureOverlay(map: any) {
-    console.log("Create Room Featureoverlay");
+    //console.log("Create Room Featureoverlay");
     this.featureOverlay = new ol.layer.Vector({
       source: new ol.source.Vector(),
       map: map,

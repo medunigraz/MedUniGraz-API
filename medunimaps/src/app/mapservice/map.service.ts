@@ -63,7 +63,7 @@ export class MapService {
   searchRoom(term: string): Observable<Room[]> {
     //https://angular.io/docs/ts/latest/tutorial/toh-pt6.html
     var rooms: Room[] = [];
-    console.log('searchRoom...');
+    //console.log('searchRoom...');
 
     if (term.length == 0) {
       return Observable.of(rooms);
@@ -87,7 +87,7 @@ export class MapService {
     return null;
   }
 
-  updateEdge(edge: any): Observable<Object> {
+  updateEdge(edge: any, id: number): Observable<Object> {
     return null;
   }
 }

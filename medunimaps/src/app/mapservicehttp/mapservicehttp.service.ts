@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Http, Response } from '@angular/http';
-import { Headers, RequestOptions } from '@angular/http';
+import { Headers, RequestOptions, RequestMethod, RequestOptionsArgs } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
@@ -25,6 +25,12 @@ export class MapHttpService extends MapService {
       .catch(this.handleError);
   }
 
+  getNavigationEdges(layer: number): Observable<Object> {
+    return this.http.get(this.edgeUrl)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
   addEdge(source: number, destination: number, length: number, path: any): Observable<Object> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
@@ -44,19 +50,25 @@ export class MapHttpService extends MapService {
   }
 
   deleteEdge(id: number): Observable<Object> {
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
 
-    return this.http.delete(this.edgeUrl + id + "/", options);
+    let headers = new Headers({});
+
+    let options = new RequestOptions({
+      headers: headers,
+    });
+
+    return this.http.delete(this.edgeUrl + id + "/", options)
+      .map(response => this.extractDataDel(response, id))
+      .catch(this.handleError);
   }
 
-  updateEdge(edge: any): Observable<Object> {
+  updateEdge(edge: any, id: number): Observable<Object> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
-    console.log("Update Edge: " + JSON.stringify(edge));
+    console.log("Update Edge: " + id + "::" + JSON.stringify(edge));
 
-    return this.http.put(this.edgeUrl + edge.id + "/", edge, options)
+    return this.http.put(this.edgeUrl + id + "/", edge, options)
       .map(this.extractDataAdd)
       .catch(this.handleError);
   }
@@ -75,6 +87,11 @@ export class MapHttpService extends MapService {
     console.log("RESPONSE DATA: " + JSON.stringify(body));
 
     return body || {};
+  }
+
+  private extractDataDel(res: Response, id: number) {
+    console.log("RESPONSE DATA org: " + JSON.stringify(res));
+    return { id: id };
   }
 
   private handleError(error: Response | any) {

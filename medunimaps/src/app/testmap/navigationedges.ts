@@ -93,14 +93,14 @@ export class NavigationMap {
 
     this.mapService.addEdge(source, destination, length, path).
       subscribe(
-      edge => this.updateAddEdge(edge),
-      error => console.log("ERROR: " + <any>error));
+      edge => this.updateAddEdge(edge)/*,
+      error => console.log("ERROR: " + <any>error)*/);
   }
 
   public deleteSelectedEdge() {
-    console.log("deleteSelectedEdges..." + this.select.getFeatures().getArray().length);
+    //console.log("deleteSelectedEdges..." + this.select.getFeatures().getArray().length);
     for (let feature of this.select.getFeatures().getArray()) {
-      console.log("deleteSelectedEdge: " + JSON.stringify(feature.getId()));
+      //console.log("deleteSelectedEdge: " + JSON.stringify(feature.getId()));
 
       if (!USEHTTPSERVICE) {
         console.log("Offline mode, dont delete edge!");
@@ -110,12 +110,41 @@ export class NavigationMap {
       this.mapService.deleteEdge(feature.getId()).subscribe(
         edge => this.edgeDeleted(edge),
         error => console.log("ERROR deleteEdge: " + <any>error));
-
     }
   }
 
   private edgeDeleted(edge: any): void {
-    console.log("edgeDeleted... " + JSON.stringify(edge));
+    console.log("edgeDeleted..." + JSON.stringify(edge));
+    let feature = this.edgeLayerSource.getFeatureById(edge.id);
+    if (feature) {
+      this.edgeLayerSource.removeFeature(feature);
+    }
+    feature = this.edgePathLayerSource.getFeatureById(edge.id);
+    if (feature) {
+      this.edgePathLayerSource.removeFeature(feature);
+    }
+  }
+
+  public updateEdges(featureArray: any[]) {
+    console.log("updateEdges... ");
+
+    if (!USEHTTPSERVICE) {
+      console.log("Offline mode, dont update edge!");
+      return;
+    }
+
+    for (let feature of featureArray) {
+      console.log("updateEdge: " + JSON.stringify(feature.getId()));
+
+      this.mapService.updateEdge((new ol.format.GeoJSON()).writeFeature(feature), feature.getId()).
+        subscribe(
+        edge => this.edgeUpdated(edge),
+        error => console.log("ERROR: " + <any>error));
+    }
+  }
+
+  private edgeUpdated(edge: any): void {
+    console.log("edgeUpdated... " + JSON.stringify(edge));
   }
 
   public showEdges(edges: Object): void {
@@ -129,6 +158,9 @@ export class NavigationMap {
   }
 
   private updateAddEdge(edge: any) {
-    this.edgeLayerSource.addFeatures(edge);
+    console.log("updateAddEdge! - " + JSON.stringify(edge));
+
+    this.edgeLayerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(edge));
+    this.edgePathLayerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(edge));
   }
 }

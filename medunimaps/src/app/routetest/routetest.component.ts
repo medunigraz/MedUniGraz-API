@@ -63,7 +63,7 @@ export class RoutetestComponent implements OnInit {
     console.log("edgeAdded... " + JSON.stringify(edge));
 
     edge.properties.destination = 19;
-    this.mapService.updateEdge(edge).
+    this.mapService.updateEdge(edge, edge.id).
       subscribe(
       edge => this.edgeUpdated(edge),
       error => console.log("ERROR: " + <any>error));

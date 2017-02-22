@@ -141,6 +141,8 @@ export class TestmapComponent implements OnInit, AfterViewInit {
     //this.mapService.getRoomMap(0).then(rooms => this.showRooms(rooms));
     this.mapService.getRoomMap(0).subscribe(rooms => this.showRooms(rooms));
     this.mapService.getNavigationEdges(0).subscribe(edges => this.showNavigationEdges(edges));
+
+    this.select.on('select', evt => this.selectionChanged(evt));
   }
 
   ngOnInit(): void {
@@ -149,17 +151,22 @@ export class TestmapComponent implements OnInit, AfterViewInit {
 
   @Input()
   set applicationMode(applicationMode: ApplicationMode) {
-    this._applicationMode = applicationMode;
-
     if (this.select) {
-      console.log("Clear selection..." + this.select.getFeatures().getArray().length);
+      //console.log("Clear selection..." + this.select.getFeatures().getArray().length);
       let selected_collection = this.select.getFeatures();
+
+      if (this._applicationMode.mode == ApplicationModeT.EDIT_PATHS &&
+        selected_collection.getArray().length > 0) {
+        this.navigationmap.updateEdges(selected_collection.getArray());
+      }
+
       selected_collection.clear();
     }
     if (this.roommap) {
       this.roommap.Clear();
     }
 
+    this._applicationMode = applicationMode;
 
     console.log("TestmapComponent::Set applicationMode - New App Mode: " + this._applicationMode.name);
   }
@@ -172,6 +179,8 @@ export class TestmapComponent implements OnInit, AfterViewInit {
     {
       console.log("KEYDOWN - Delete Edge " + event.keyCode + "#" + this.select.getFeatures().getArray().length);
       this.navigationmap.deleteSelectedEdge();
+      let selected_collection = this.select.getFeatures();
+      selected_collection.clear();
     }
 
   }
@@ -185,6 +194,20 @@ export class TestmapComponent implements OnInit, AfterViewInit {
       return true;
     }
     return false;
+  }
+
+  selectionChanged(evt: any): void {
+
+    let selectedFeatures = evt.selected;
+    let deselectedFeatures = evt.deselected;
+
+    //console.log("Selection changed:  newFeatures: " + selectedFeatures.length +
+    //  "  unselectedFeatures: " + deselectedFeatures.length +
+    //  "  mode: " + this._applicationMode.name);
+
+    if (deselectedFeatures.length > 0) {
+      this.navigationmap.updateEdges(deselectedFeatures);
+    }
   }
 
   allowOLModify(evt: any) {
