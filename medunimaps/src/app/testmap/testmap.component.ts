@@ -5,6 +5,7 @@ import { MapService } from '../mapservice/map.service';
 import { MapHttpService } from '../mapservicehttp/mapservicehttp.service';
 
 import { USEHTTPSERVICE } from '../base/globalconstants';
+import { MODIFY_EDGE_MINSTARTPOINT_DISTANCE } from '../base/globalconstants';
 import { ApplicationMode } from '../base/applicationmode';
 import { ApplicationModeT } from '../base/applicationmode';
 
@@ -83,14 +84,15 @@ export class TestmapComponent implements OnInit, AfterViewInit {
     this.routemap = new RouteMap();
     this.routemap.Initialize();
 
-    this.roommap = new RoomMap();
-    this.roommap.Initialize(this.navigationmap);
-
     this.navigationmap = new NavigationMap(this.mapService);
     this.navigationmap.Initialize(this.select);
 
+    this.roommap = new RoomMap();
+    this.roommap.Initialize(this.navigationmap);
+
     this.modify = new ol.interaction.Modify({
-      features: this.select.getFeatures()
+      features: this.select.getFeatures(),
+      condition: (evt => this.allowOLModify(evt))
     });
 
     let extent = [0, 0, 51200, 25600];
@@ -168,7 +170,7 @@ export class TestmapComponent implements OnInit, AfterViewInit {
 
     if (this._applicationMode.mode == ApplicationModeT.EDIT_PATHS && event.keyCode == 46) //Entf Key
     {
-      console.log("KEYDOWN - Delete Edge " + event.keyCode + "#" + this.select.getFeatures().length);
+      console.log("KEYDOWN - Delete Edge " + event.keyCode + "#" + this.select.getFeatures().getArray().length);
       this.navigationmap.deleteSelectedEdge();
     }
 
@@ -185,7 +187,42 @@ export class TestmapComponent implements OnInit, AfterViewInit {
     return false;
   }
 
-  loadPOIs(): void {
+  allowOLModify(evt: any) {
+    if (this._applicationMode.mode == ApplicationModeT.EDIT_PATHS) {
+      let selectedFeatures = this.select.getFeatures().getArray();
+
+      //console.log("allowOLModify: Length: " + selectedFeatures.length);
+
+      if (selectedFeatures.length > 0) {
+        for (let feature of selectedFeatures) {
+          let geometry = feature.getGeometry();
+          let startPoint = geometry.getFirstCoordinate();
+          let endPoint = geometry.getLastCoordinate();
+
+          //console.log("allowOLModify: " + JSON.stringify(evt.coordinate) +
+          //  "::" + JSON.stringify(startPoint) +
+          //  "::" + JSON.stringify(endPoint) +
+          //  "d1:" + this.getDistance(startPoint, evt.coordinate) +
+          //  "d2:" + this.getDistance(endPoint, evt.coordinate)
+          //);
+
+          if (this.getDistance(startPoint, evt.coordinate) < MODIFY_EDGE_MINSTARTPOINT_DISTANCE ||
+            this.getDistance(endPoint, evt.coordinate) < MODIFY_EDGE_MINSTARTPOINT_DISTANCE) {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
+  }
+
+  private getDistance(p1: number[], p2: number[]): number {
+    let xdiff = p2[0] - p1[0];
+    let ydiff = p2[1] - p1[1];
+    return Math.sqrt(xdiff * xdiff + ydiff * ydiff);
+  }
+
+  private loadPOIs(): void {
     let iconFeature = new ol.Feature({
       geometry: new ol.geom.Point(ol.proj.fromLonLat([15.470230579376215, 47.0812626175388])),
       name: 'Test Point',
@@ -315,7 +352,7 @@ export class TestmapComponent implements OnInit, AfterViewInit {
     var lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
     //console.log("Coord: " + lonlat);
     console.log("Coord Org: " + evt.coordinate + " strg: " + evt.originalEvent.ctrlKey);
-    console.log("Number of selected features: " + this.select.getFeatures().length);
+    console.log("Number of selected features: " + this.select.getFeatures().getArray().length);
 
     if (this._applicationMode.mode == ApplicationModeT.EDIT_EDGES) {
       if (evt.originalEvent.ctrlKey) {
