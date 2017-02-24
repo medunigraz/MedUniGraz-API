@@ -1,5 +1,25 @@
 
+<table>
+  <tr>
+    <td>
+      <i class="material-icons app-input-icon">search</i>
+    </td>
+    <td>
+      <md-input-container>
+        <input type="text" mdInput [formControl]="term" [mdAutocomplete]="auto">
+      </md-input-container>
+    </td>
+  </tr>
+</table>
 
+<md-autocomplete #auto="mdAutocomplete">
+   <md-option *ngFor="let room of rooms" [value]="room.name" (click)="selectRoom(room)">
+      {{ room.name }}
+   </md-option>
+</md-autocomplete>
+
+
+<!--
 <i class="material-icons app-input-icon">search</i>
 
 <md-input-container>
@@ -16,6 +36,8 @@
        <button md-menu-item *ngFor="let room of rooms" (click)="selectRoom(room)">{{room.name}}</button>
   </md-menu>
 </div>
+-->
+
 
 <!--
 <div class="suggestions" *ngIf="rooms.length > 0">

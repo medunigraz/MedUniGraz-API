@@ -3,8 +3,6 @@ import { FormControl }       from '@angular/forms';
 import { Observable }        from 'rxjs/Observable';
 import { Subject }           from 'rxjs/Subject';
 
-import {MdMenuTrigger} from '@angular/material';
-
 import { MapService } from '../mapservice/map.service';
 import { MapHttpService } from '../mapservicehttp/mapservicehttp.service';
 
@@ -19,7 +17,6 @@ import { Room } from '../base/room';
   styleUrls: ['./roomsearchmd.component.css']
 })
 export class RoomsearchmdComponent implements OnInit {
-  @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
 
   rooms: Room[];
   showsuggestions: boolean = false;
@@ -50,13 +47,6 @@ export class RoomsearchmdComponent implements OnInit {
 
     this.showsuggestions = this.rooms.length > 0;
     console.log('Showsuggestions: ' + this.showsuggestions);
-
-    if (this.rooms.length > 0) {
-      this.trigger.openMenu();
-    }
-    else {
-      //this.trigger.closeMenu();
-    }
   }
 
   log(logstring: string) {
