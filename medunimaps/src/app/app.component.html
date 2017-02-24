@@ -1,8 +1,10 @@
-<app-testmap #mapComp [applicationMode]="currentAppMode"></app-testmap>
-<app-floorselector></app-floorselector>
-
-
+<!--<app-testmap #mapComp [applicationMode]="currentAppMode"></app-testmap>
 <app-routetest [mapComponentRef] = mapComp *ngIf="currentAppMode && currentAppMode.showDemoRoute"></app-routetest>
+-->
+
+
+<app-editablemap #mapComp [applicationMode]="currentAppMode"></app-editablemap>
+<app-floorselector></app-floorselector>
 
 <app-modeselector (currentAppModeEvt)="appModeChanged($event)"></app-modeselector>
 <!---->

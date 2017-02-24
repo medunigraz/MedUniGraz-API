@@ -17,6 +17,7 @@ import { FloorselectorComponent } from './floorselector/floorselector.component'
 import { RoomsearchmdComponent } from './roomsearchmd/roomsearchmd.component';
 import { RoutetestComponent } from './routetest/routetest.component';
 import { ModeselectorComponent } from './modeselector/modeselector.component';
+import { EditablemapComponent } from './editablemap/editablemap.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ModeselectorComponent } from './modeselector/modeselector.component';
     FloorselectorComponent,
     RoomsearchmdComponent,
     RoutetestComponent,
-    ModeselectorComponent
+    ModeselectorComponent,
+    EditablemapComponent
   ],
   imports: [
     BrowserModule,

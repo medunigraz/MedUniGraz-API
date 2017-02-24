@@ -1,7 +1,6 @@
 declare var ol: any;
 
-export class RouteMap
-{
+export class RouteMap {
   private isActive: boolean = false;
 
   private routeLayer: any;
@@ -10,12 +9,10 @@ export class RouteMap
   private routeLayerSource: any;
   private routeLayerSourceHidden: any;
 
-  constructor()
-  {
+  constructor() {
   }
 
-  public Initialize(): void
-  {
+  public Initialize(): void {
     let geojsonObject = {
       'type': 'FeatureCollection',
       'crs': {
@@ -73,38 +70,31 @@ export class RouteMap
 
   }
 
-  public getRouteLayer() : any
-  {
+  public getRouteLayer(): any {
     return this.routeLayer;
   }
 
-  public getHiddenRouteLayer() : any
-  {
+  public getHiddenRouteLayer(): any {
     return this.routeLayerHidden;
   }
 
-  public showRoute(route: Object[]) : void
-  {
+  public showRoute(route: Object[]): void {
     console.log("showRoute called");
 
     this.routeLayerSource.clear();
     this.routeLayerSourceHidden.clear();
 
-    for(let i = 0; i < route.length; i++ )
-    {
-      if(route[i]["layer"] == 0)
-      {
+    for (let i = 0; i < route.length; i++) {
+      if (route[i]["layer"] == 0) {
         this.routeLayerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(route[i]["geojson"]));
       }
-      else
-      {
+      else {
         this.routeLayerSourceHidden.addFeatures((new ol.format.GeoJSON()).readFeatures(route[i]["geojson"]));
       }
     }
   }
 
-  public hideRoute() : void
-  {
+  public hideRoute(): void {
     console.log("hideRoute called");
 
     this.routeLayerSource.clear();
