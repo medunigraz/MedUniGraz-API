@@ -10,6 +10,8 @@ import { MODIFY_EDGE_MINSTARTPOINT_DISTANCE } from '../base/globalconstants';
 import { ApplicationMode } from '../base/applicationmode';
 import { ApplicationModeT } from '../base/applicationmode';
 
+import { MapWalls } from './mapWalls';
+
 
 declare var ol: any;
 
@@ -27,7 +29,9 @@ export class EditablemapComponent implements OnInit {
 
   private map: any;
   private baseMapLayer: any;
-  baseMapVectorSource: any;
+  private baseMapVectorSource: any;
+
+  private mapWalls: MapWalls = null;
 
   ngOnInit() {
   }
@@ -37,7 +41,7 @@ export class EditablemapComponent implements OnInit {
       this.mapService = this.mapServiceHttp;
     }
 
-    this.loadBaseMap();
+    this.mapWalls = new MapWalls(this.mapService);
 
     this.map = new ol.Map({
       controls: ol.control.defaults({
@@ -52,7 +56,7 @@ export class EditablemapComponent implements OnInit {
         new ol.layer.Tile({
           source: new ol.source.OSM()
         }),
-        this.baseMapLayer
+        this.mapWalls.getLayer()
       ],
       overlays: [],
       target: 'map',
@@ -66,7 +70,8 @@ export class EditablemapComponent implements OnInit {
       })
     });
 
-    this.mapService.getRoomMap(0).subscribe(rooms => this.showRooms(rooms));
+    this.mapWalls.updateData();
+
 
   }
 
@@ -86,60 +91,4 @@ export class EditablemapComponent implements OnInit {
     }
   }
 
-  loadBaseMap(): void {
-
-    let geojsonObject = {
-      'type': 'FeatureCollection',
-      'crs': {
-        'type': 'name',
-        'properties': {
-          'name': 'EPSG:3857'
-        }
-      },
-      'features': [{
-        'type': 'Feature',
-        'geometry': {
-          'type': 'Polygon',
-          'coordinates': [[
-            [1722183.8736183767, 5955368.127460353],
-            [1722202.0871290227, 5955358.871413959],
-            [1722195.2197397628, 5955345.435217581]
-          ]]
-        }
-      }]
-    };
-
-    this.baseMapVectorSource = new ol.source.Vector({
-      features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
-    });
-
-    let styleFunction = function(feature) {
-      return new ol.style.Style({
-        stroke: new ol.style.Stroke({
-          color: 'red',
-          width: 1
-        }),
-        fill: new ol.style.Fill({
-          color: 'rgba(255,0,0,0.1)'
-        })
-      })
-    };
-
-    this.baseMapLayer = new ol.layer.Vector({
-      source: this.baseMapVectorSource,
-      style: styleFunction
-    });
-
-    //this.heroService.getHeroesSlowly().then(heroes => this.heroesList = heroes);
-    this.mapService.getBaseMap(0).then(basemap => this.updateBaseMap(basemap));
-  }
-
-  updateBaseMap(baseMap): void {
-    this.baseMapVectorSource.clear();
-    this.baseMapVectorSource.addFeatures((new ol.format.GeoJSON()).readFeatures(baseMap));
-  }
-
-  showRooms(rooms: Object) {
-    //this.roommap.showRooms(rooms);
-  }
 }
