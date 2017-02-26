@@ -78,6 +78,9 @@ export class MapService {
     return Observable.of(rooms);
   }
 
+  getNavigationNodes(layer: number): Observable<Object> {
+    return null;
+  }
 
   addEdge(source: number, destination: number, length: number, path: any): Observable<Object> {
     return null;

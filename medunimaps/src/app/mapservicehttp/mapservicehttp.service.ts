@@ -14,6 +14,7 @@ export class MapHttpService extends MapService {
 
   private roomUrl = '/geo/rooms/';  // URL to web API
   private edgeUrl = '/geo/edges/';
+  private nodeUrl = '/geo/nodes/';
 
   constructor(private http: Http) {
     super();
@@ -30,6 +31,13 @@ export class MapHttpService extends MapService {
       .map(this.extractData)
       .catch(this.handleError);
   }
+
+  getNavigationNodes(layer: number): Observable<Object> {
+    return this.http.get(this.nodeUrl)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
 
   addEdge(source: number, destination: number, length: number, path: any): Observable<Object> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -74,6 +82,7 @@ export class MapHttpService extends MapService {
   }
 
   private extractData(res: Response) {
+    console.log("RESPONSE DATA...");
     let body = res.json();
 
     console.log("RESPONSE DATA: " + JSON.stringify(body));
