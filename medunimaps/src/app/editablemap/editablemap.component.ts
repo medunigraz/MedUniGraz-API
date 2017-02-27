@@ -94,9 +94,10 @@ export class EditablemapComponent implements OnInit {
   keyboardInput(event: KeyboardEvent) {
     //console.log("KEYDOWN: " + event.keyCode);
 
-    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_PATHS && event.keyCode == 46) //Entf Key
+    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_EDGES && event.keyCode == 46) //Entf Key
     {
-      console.log("KEYDOWN - Delete Edge " + event.keyCode + "#");
+      console.log("KEYDOWN - Delete Node" + event.keyCode + "#");
+      this.mapNodes.deleteSelectedNodes();
     }
   }
 

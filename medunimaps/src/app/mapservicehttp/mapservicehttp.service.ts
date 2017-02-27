@@ -73,6 +73,18 @@ export class MapHttpService extends MapService {
       .catch(this.handleError);
   }
 
+  deleteNode(id: number): Observable<Object> {
+    let headers = new Headers({});
+
+    let options = new RequestOptions({
+      headers: headers,
+    });
+
+    return this.http.delete(this.nodeUrl + id + "/", options)
+      .map(response => this.extractDataDel(response, id))
+      .catch(this.handleError);
+  }
+
   deleteEdge(id: number): Observable<Object> {
 
     let headers = new Headers({});
@@ -115,7 +127,7 @@ export class MapHttpService extends MapService {
   }
 
   private extractDataDel(res: Response, id: number) {
-    console.log("RESPONSE DATA org: " + JSON.stringify(res));
+    //console.log("RESPONSE DATA org: " + JSON.stringify(res));
     return { id: id };
   }
 

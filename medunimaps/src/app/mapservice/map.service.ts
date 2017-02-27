@@ -90,6 +90,10 @@ export class MapService {
     return null;
   }
 
+  deleteNode(id: number): Observable<Object> {
+    return null;
+  }
+
   deleteEdge(id: number): Observable<Object> {
     return null;
   }

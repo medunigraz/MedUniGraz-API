@@ -1,4 +1,5 @@
 import { MapService } from '../mapservice/map.service';
+import { USEHTTPSERVICE } from '../base/globalconstants';
 
 import { ApplicationMode } from '../base/applicationmode';
 import { ApplicationModeT } from '../base/applicationmode';
@@ -104,6 +105,34 @@ export class MapNodes {
   private updateAddNode(node: any) {
     console.log("updateAddNode! - " + JSON.stringify(node));
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(node));
+  }
+
+  public deleteSelectedNodes() {
+    if (!USEHTTPSERVICE) {
+      console.log("Offline mode, dont delete edge!");
+      return;
+    }
+
+    for (let feature of this.select.getFeatures().getArray()) {
+      if (feature.get('ctype') == 'node') {
+        this.mapService.deleteNode(feature.getId()).subscribe(
+          edge => this.nodeDeleted(edge),
+          error => console.log("ERROR deleteNode: " + <any>error));
+      }
+      else {
+        console.log("Not allowed to delete feature of type: " + feature.get('ctype'));
+      }
+    }
+  }
+
+  private nodeDeleted(node: any): void {
+    console.log("edgeDeleted..." + JSON.stringify(node));
+    let feature = this.layerSource.getFeatureById(node.id);
+    if (feature) {
+      this.layerSource.removeFeature(feature);
+      let selected_collection = this.select.getFeatures();
+      selected_collection.clear();
+    }
   }
 
   private testLayer(layer: any) {
