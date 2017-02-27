@@ -77,6 +77,7 @@ export class EditablemapComponent implements OnInit {
     this.mapWalls.updateData();
     this.mapNodes.updateData();
 
+    this.map.on('pointermove', evt => this.mapMouseMoved(evt));
   }
 
   @Input()
@@ -92,6 +93,16 @@ export class EditablemapComponent implements OnInit {
     if (this._applicationMode.mode == ApplicationModeT.EDIT_PATHS && event.keyCode == 46) //Entf Key
     {
       console.log("KEYDOWN - Delete Edge " + event.keyCode + "#");
+    }
+  }
+
+  mapMouseMoved(evt): void {
+    if (evt.dragging) {
+      return;
+    }
+    let pixel = this.map.getEventPixel(evt.originalEvent);
+    if (this._applicationMode.mode == ApplicationModeT.EDIT_EDGES) {
+      this.mapNodes.mouseMoved(pixel, this.map);
     }
   }
 
