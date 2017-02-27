@@ -1,5 +1,7 @@
 import { MapService } from '../mapservice/map.service';
 
+import { OpenlayersHelper } from './openlayershelper';
+
 declare var ol: any;
 
 export class MapNodes {
@@ -11,27 +13,11 @@ export class MapNodes {
   }
 
   private Initialize(): void {
-    let geojsonObject = {
-      'type': 'FeatureCollection',
-      'crs': {
-        'type': 'name',
-        'properties': {
-          'name': 'EPSG:3857'
-        }
-      },
-      'features': []
-    };
-
-    console.log('Create Node layer source!');
-    this.layerSource = new ol.source.Vector({
-      features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
-    });
-
     let image = new ol.style.Circle({
-        radius: 4,
-        fill: null,
-        stroke: new ol.style.Stroke({color: 'green', width: 2})
-      });
+      radius: 4,
+      fill: null,
+      stroke: new ol.style.Stroke({ color: 'green', width: 2 })
+    });
 
     let styleFunction = function(feature) {
       return new ol.style.Style({
@@ -39,10 +25,9 @@ export class MapNodes {
       })
     };
 
-    this.layer = new ol.layer.Vector({
-      source: this.layerSource,
-      style: styleFunction
-    });
+    let res = OpenlayersHelper.CreateBasicLayer(styleFunction);
+    this.layerSource = res.layerSource;
+    this.layer = res.layer;
   }
 
   public getLayer(): any {
@@ -58,8 +43,7 @@ export class MapNodes {
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(features));
   }
 
-  private initSelection()
-  {
+  private initSelection() {
     /*
     let selectPointerMove = new ol.interaction.Select({
         condition: ol.events.condition.pointerMove
