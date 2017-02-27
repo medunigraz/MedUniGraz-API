@@ -12,4 +12,26 @@ export class MapNodesStyles {
     image: MapNodesStyles.higlightImage
   })
 
+
+  public static DefaultNodeImage = new ol.style.Circle({
+    radius: 4,
+    fill: null,
+    stroke: new ol.style.Stroke({ color: 'black', width: 2 })
+  });
+
+  public static DefaultNodeStyle: any = new ol.style.Style({
+    image: MapNodesStyles.DefaultNodeImage
+  })
+
+
+  public static VirtualNodeImage = new ol.style.Circle({
+    radius: 4,
+    fill: null,
+    stroke: new ol.style.Stroke({ color: 'green', width: 2 })
+  });
+
+  public static VirtualNodeStyle: any = new ol.style.Style({
+    image: MapNodesStyles.VirtualNodeImage
+  })
+
 }

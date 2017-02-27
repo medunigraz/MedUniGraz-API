@@ -23,16 +23,11 @@ export class MapNodes {
   }
 
   private Initialize(): void {
-    let image = new ol.style.Circle({
-      radius: 4,
-      fill: null,
-      stroke: new ol.style.Stroke({ color: 'darkgreen', width: 2 })
-    });
-
     let styleFunction = function(feature) {
-      return new ol.style.Style({
-        image: image
-      })
+      if (feature.get('ctype') == 'node') {
+        return MapNodesStyles.VirtualNodeStyle;
+      }
+      return MapNodesStyles.DefaultNodeStyle;
     };
 
     let res = OpenlayersHelper.CreateBasicLayer(styleFunction);
