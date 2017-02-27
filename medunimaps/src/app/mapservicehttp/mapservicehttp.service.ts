@@ -57,6 +57,22 @@ export class MapHttpService extends MapService {
       .catch(this.handleError);
   }
 
+  addNode(floor: number, center: any): Observable<Object> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    let data = {
+      "floor": floor,
+      "center": JSON.stringify(center)
+    }
+
+    console.log("Send Node: " + JSON.stringify(data));
+
+    return this.http.post(this.nodeUrl, data, options)
+      .map(this.extractDataAdd)
+      .catch(this.handleError);
+  }
+
   deleteEdge(id: number): Observable<Object> {
 
     let headers = new Headers({});

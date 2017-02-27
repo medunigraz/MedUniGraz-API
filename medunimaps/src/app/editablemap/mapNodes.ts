@@ -90,6 +90,27 @@ export class MapNodes {
     }
   }
 
+  public mouseClickedCtrl(position: any, map: any) {
+    let floor = 1;
+    console.log("mouseClickedCtrl! - POS: " + JSON.stringify(position));
+    let center = {
+      "type": "Point",
+      "coordinates": [position[0], position[1]]
+    };
+
+    console.log("mouseClickedCtrl! - OBJ: " + JSON.stringify(center));
+
+    this.mapService.addNode(floor, center).
+      subscribe(
+      node => this.updateAddNode(node),
+      error => console.log("ERROR: " + <any>error));
+  }
+
+  private updateAddNode(node: any) {
+    console.log("updateAddNode! - " + JSON.stringify(node));
+    this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(node));
+  }
+
   private testLayer(layer: any) {
     return this.layer === layer;
   }
@@ -119,6 +140,7 @@ export class MapNodes {
 
   private showNodes(features: Object): void {
     this.layerSource.clear();
+    console.log("showNodes! - " + JSON.stringify(features));
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(features));
   }
 }

@@ -82,6 +82,10 @@ export class MapService {
     return null;
   }
 
+  addNode(floor: number, center: any): Observable<Object> {
+    return null;
+  }
+
   addEdge(source: number, destination: number, length: number, path: any): Observable<Object> {
     return null;
   }

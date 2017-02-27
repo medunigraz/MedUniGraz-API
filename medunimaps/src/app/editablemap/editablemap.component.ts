@@ -80,6 +80,7 @@ export class EditablemapComponent implements OnInit {
     this.mapWalls.updateData();
     this.mapNodes.updateData();
 
+    this.map.on('click', evt => this.mapClicked(evt));
     this.map.on('pointermove', evt => this.mapMouseMoved(evt));
   }
 
@@ -91,7 +92,7 @@ export class EditablemapComponent implements OnInit {
 
   @HostListener('window:keydown', ['$event'])
   keyboardInput(event: KeyboardEvent) {
-    console.log("KEYDOWN: " + event.keyCode);
+    //console.log("KEYDOWN: " + event.keyCode);
 
     if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_PATHS && event.keyCode == 46) //Entf Key
     {
@@ -109,4 +110,17 @@ export class EditablemapComponent implements OnInit {
     }
   }
 
+  mapClicked(evt): void {
+    //console.log("mapClicked called");
+
+    //let lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+    //console.log("Coord: " + lonlat);
+    console.log("Coord Org: " + evt.coordinate + " strg: " + evt.originalEvent.ctrlKey);
+
+    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_EDGES) {
+      if (evt.originalEvent.ctrlKey) {
+        this.mapNodes.mouseClickedCtrl(evt.coordinate, this.map);
+      }
+    }
+  }
 }
