@@ -11,6 +11,7 @@ import { ApplicationMode } from '../base/applicationmode';
 import { ApplicationModeT } from '../base/applicationmode';
 
 import { MapWalls } from './mapWalls';
+import { MapNodes } from './mapNodes';
 
 
 declare var ol: any;
@@ -32,6 +33,7 @@ export class EditablemapComponent implements OnInit {
   private baseMapVectorSource: any;
 
   private mapWalls: MapWalls = null;
+  private mapNodes: MapNodes = null;
 
   ngOnInit() {
   }
@@ -42,6 +44,7 @@ export class EditablemapComponent implements OnInit {
     }
 
     this.mapWalls = new MapWalls(this.mapService);
+    this.mapNodes = new MapNodes(this.mapService);
 
     this.map = new ol.Map({
       controls: ol.control.defaults({
@@ -56,7 +59,8 @@ export class EditablemapComponent implements OnInit {
         new ol.layer.Tile({
           source: new ol.source.OSM()
         }),
-        this.mapWalls.getLayer()
+        this.mapWalls.getLayer(),
+        this.mapNodes.getLayer()
       ],
       overlays: [],
       target: 'map',
@@ -71,7 +75,7 @@ export class EditablemapComponent implements OnInit {
     });
 
     this.mapWalls.updateData();
-
+    this.mapNodes.updateData();
 
   }
 
