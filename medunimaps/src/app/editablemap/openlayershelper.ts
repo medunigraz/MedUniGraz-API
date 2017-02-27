@@ -1,6 +1,11 @@
 declare var ol: any;
 
+import { ApplicationMode } from '../base/applicationmode';
+import { ApplicationModeT } from '../base/applicationmode';
+
 export class OpenlayersHelper {
+
+  public static CurrentApplicationMode: ApplicationMode = ApplicationMode.CreateDefault();
 
   constructor() {
   }

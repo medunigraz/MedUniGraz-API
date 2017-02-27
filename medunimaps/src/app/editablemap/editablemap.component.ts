@@ -12,6 +12,7 @@ import { ApplicationModeT } from '../base/applicationmode';
 
 import { MapWalls } from './mapWalls';
 import { MapNodes } from './mapNodes';
+import { OpenlayersHelper } from './openlayershelper';
 
 
 declare var ol: any;
@@ -23,7 +24,7 @@ declare var ol: any;
 })
 export class EditablemapComponent implements OnInit {
 
-  private _applicationMode: ApplicationMode = ApplicationMode.CreateDefault();
+  //private _applicationMode: ApplicationMode = ApplicationMode.CreateDefault();
 
   constructor(private mapServiceHttp: MapHttpService,
     private mapService: MapService) { }
@@ -74,6 +75,8 @@ export class EditablemapComponent implements OnInit {
       })
     });
 
+    this.mapNodes.extendMap(this.map);
+
     this.mapWalls.updateData();
     this.mapNodes.updateData();
 
@@ -82,15 +85,15 @@ export class EditablemapComponent implements OnInit {
 
   @Input()
   set applicationMode(applicationMode: ApplicationMode) {
-    this._applicationMode = applicationMode;
-    console.log("TestmapComponent::Set applicationMode - New App Mode: " + this._applicationMode.name);
+    OpenlayersHelper.CurrentApplicationMode = applicationMode;
+    console.log("TestmapComponent::Set applicationMode - New App Mode: " + OpenlayersHelper.CurrentApplicationMode.name);
   }
 
   @HostListener('window:keydown', ['$event'])
   keyboardInput(event: KeyboardEvent) {
     console.log("KEYDOWN: " + event.keyCode);
 
-    if (this._applicationMode.mode == ApplicationModeT.EDIT_PATHS && event.keyCode == 46) //Entf Key
+    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_PATHS && event.keyCode == 46) //Entf Key
     {
       console.log("KEYDOWN - Delete Edge " + event.keyCode + "#");
     }
@@ -101,7 +104,7 @@ export class EditablemapComponent implements OnInit {
       return;
     }
     let pixel = this.map.getEventPixel(evt.originalEvent);
-    if (this._applicationMode.mode == ApplicationModeT.EDIT_EDGES) {
+    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_EDGES) {
       this.mapNodes.mouseMoved(pixel, this.map);
     }
   }

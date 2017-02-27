@@ -1,6 +1,10 @@
 import { MapService } from '../mapservice/map.service';
 
+import { ApplicationMode } from '../base/applicationmode';
+import { ApplicationModeT } from '../base/applicationmode';
+
 import { OpenlayersHelper } from './openlayershelper';
+import { MapNodesStyles } from './mapNodesStyles';
 
 declare var ol: any;
 
@@ -11,6 +15,9 @@ export class MapNodes {
   private highlightedFeature: any;
   private highlightFeatureOverlay: any = null;
 
+  select: any;
+  modify: any;
+
   constructor(private mapService: MapService) {
     this.Initialize();
   }
@@ -19,7 +26,7 @@ export class MapNodes {
     let image = new ol.style.Circle({
       radius: 4,
       fill: null,
-      stroke: new ol.style.Stroke({ color: 'green', width: 2 })
+      stroke: new ol.style.Stroke({ color: 'darkgreen', width: 2 })
     });
 
     let styleFunction = function(feature) {
@@ -31,6 +38,22 @@ export class MapNodes {
     let res = OpenlayersHelper.CreateBasicLayer(styleFunction);
     this.layerSource = res.layerSource;
     this.layer = res.layer;
+  }
+
+  public extendMap(map: any): void {
+    this.select = new ol.interaction.Select({
+      wrapX: false,
+      layers: (layer => this.testSelect(layer))
+    });
+
+    map.addInteraction(this.select);
+
+    this.modify = new ol.interaction.Modify({
+      features: this.select.getFeatures(),
+      condition: (evt => this.testModify(evt))
+    });
+
+    map.addInteraction(this.modify);
   }
 
   public getLayer(): any {
@@ -71,32 +94,31 @@ export class MapNodes {
     return this.layer === layer;
   }
 
-  private initHighlightFeatureOverlay(map: any) {
-    //console.log("Create Room Featureoverlay");
-    let image = new ol.style.Circle({
-      radius: 6,
-      fill: null,
-      stroke: new ol.style.Stroke({ color: 'red', width: 3 })
-    });
+  private testSelect(layer: any) {
+    return this.testLayer(layer) && OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_EDGES;
+  }
 
+  private testModify(evt: any) {
+    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_EDGES) {
+      let selectedFeatures = this.select.getFeatures().getArray();
+      for (let feature of selectedFeatures) {
+        return true;
+      }
+      return true;
+    }
+    return false;
+  }
+
+  private initHighlightFeatureOverlay(map: any) {
     this.highlightFeatureOverlay = new ol.layer.Vector({
       source: new ol.source.Vector(),
       map: map,
-      style: new ol.style.Style({
-        image: image
-      })
+      style: MapNodesStyles.higlightStyle
     });
   }
 
   private showNodes(features: Object): void {
     this.layerSource.clear();
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(features));
-  }
-
-  private initSelection() {
-    /*
-    let selectPointerMove = new ol.interaction.Select({
-        condition: ol.events.condition.pointerMove
-      });*/
   }
 }
