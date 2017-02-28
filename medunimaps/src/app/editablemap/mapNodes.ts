@@ -50,6 +50,8 @@ export class MapNodes {
     });
 
     map.addInteraction(this.modify);
+
+    this.modify.on('modifyend', evt => this.featureModified(evt));
   }
 
   public getLayer(): any {
@@ -146,10 +148,10 @@ export class MapNodes {
   private testModify(evt: any) {
     if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_EDGES) {
       let selectedFeatures = this.select.getFeatures().getArray();
-      for (let feature of selectedFeatures) {
+      if (selectedFeatures.length > 0 && selectedFeatures[0].get('ctype') == 'node') {
         return true;
       }
-      return true;
+      return false;
     }
     return false;
   }
@@ -166,5 +168,20 @@ export class MapNodes {
     this.layerSource.clear();
     console.log("showNodes! - " + JSON.stringify(features));
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(features));
+  }
+
+  private featureModified(evt) {
+    let features = evt.features.getArray();
+    for (let feature of features) {
+      console.log("Feature " + feature.getId() + " modified!");
+      this.mapService.updateNode((new ol.format.GeoJSON()).writeFeature(feature), feature.getId()).
+        subscribe(
+        node => this.nodeUpdated(node),
+        error => console.log("ERROR: " + <any>error));;
+    }
+  }
+
+  private nodeUpdated(node: any) {
+    console.log("node Updated! - " + JSON.stringify(node));
   }
 }

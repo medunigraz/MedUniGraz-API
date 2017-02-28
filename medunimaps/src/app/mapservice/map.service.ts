@@ -98,6 +98,10 @@ export class MapService {
     return null;
   }
 
+  updateNode(node: any, id: number): Observable<Object> {
+    return null;
+  }
+
   updateEdge(edge: any, id: number): Observable<Object> {
     return null;
   }
