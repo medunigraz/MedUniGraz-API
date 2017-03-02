@@ -101,7 +101,7 @@ export class MapNodes {
   }
 
   public mouseClicked(position: any, map: any) {
-    if (this.mapEditEdges) {
+    if (this.displayEditLines) {
       let floor = 1;
       console.log("mouseClickedCtrl! - POS: " + JSON.stringify(position));
       let center = {
