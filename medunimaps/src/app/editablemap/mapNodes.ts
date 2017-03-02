@@ -100,20 +100,22 @@ export class MapNodes {
     }
   }
 
-  public mouseClickedCtrl(position: any, map: any) {
-    let floor = 1;
-    console.log("mouseClickedCtrl! - POS: " + JSON.stringify(position));
-    let center = {
-      "type": "Point",
-      "coordinates": [position[0], position[1]]
-    };
+  public mouseClicked(position: any, map: any) {
+    if (this.mapEditEdges) {
+      let floor = 1;
+      console.log("mouseClickedCtrl! - POS: " + JSON.stringify(position));
+      let center = {
+        "type": "Point",
+        "coordinates": [position[0], position[1]]
+      };
 
-    console.log("mouseClickedCtrl! - OBJ: " + JSON.stringify(center));
+      console.log("mouseClickedCtrl! - OBJ: " + JSON.stringify(center));
 
-    this.mapService.addNode(floor, center).
-      subscribe(
-      node => this.updateAddNode(node),
-      error => console.log("ERROR: " + <any>error));
+      this.mapService.addNode(floor, center).
+        subscribe(
+        node => this.updateAddNode(node),
+        error => console.log("ERROR: " + <any>error));
+    }
   }
 
   public ctlPressed() {

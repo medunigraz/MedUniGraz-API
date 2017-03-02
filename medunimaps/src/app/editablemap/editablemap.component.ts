@@ -150,9 +150,7 @@ export class EditablemapComponent implements OnInit {
     console.log("Coord Org: " + evt.coordinate + " strg: " + evt.originalEvent.ctrlKey);
 
     if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES) {
-      if (evt.originalEvent.ctrlKey) {
-        this.mapNodes.mouseClickedCtrl(evt.coordinate, this.map);
-      }
+      this.mapNodes.mouseClicked(evt.coordinate, this.map);
     }
   }
 }

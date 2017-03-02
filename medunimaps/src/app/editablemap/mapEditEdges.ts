@@ -27,7 +27,7 @@ export class MapEditEdges {
     let res = OpenlayersHelper.CreateBasicLayer(new ol.style.Style({
       stroke: new ol.style.Stroke({
         color: 'gray',
-        width: 1
+        width: 3
       })
     }));
     this.layerSource = res.layerSource;
