@@ -12,6 +12,8 @@ import { ApplicationModeT } from '../base/applicationmode';
 
 import { MapWalls } from './mapWalls';
 import { MapNodes } from './mapNodes';
+import { MapEdges } from './mapEdges';
+import { MapEditEdges } from './mapEditEdges';
 import { OpenlayersHelper } from './openlayershelper';
 
 
@@ -35,6 +37,10 @@ export class EditablemapComponent implements OnInit {
 
   private mapWalls: MapWalls = null;
   private mapNodes: MapNodes = null;
+  private mapEdges: MapEdges = null;
+  private mapEditEdges: MapEditEdges = null;
+
+  private ctlPressed: boolean = false;
 
   ngOnInit() {
   }
@@ -45,7 +51,9 @@ export class EditablemapComponent implements OnInit {
     }
 
     this.mapWalls = new MapWalls(this.mapService);
-    this.mapNodes = new MapNodes(this.mapService);
+    this.mapEdges = new MapEdges(this.mapService);
+    this.mapEditEdges = new MapEditEdges(this.mapService);
+    this.mapNodes = new MapNodes(this.mapService, this.mapEditEdges);
 
     this.map = new ol.Map({
       controls: ol.control.defaults({
@@ -61,7 +69,9 @@ export class EditablemapComponent implements OnInit {
           source: new ol.source.OSM()
         }),
         this.mapWalls.getLayer(),
-        this.mapNodes.getLayer()
+        this.mapNodes.getLayer(),
+        this.mapEditEdges.getLayer(),
+        this.mapEdges.getLayer()
       ],
       overlays: [],
       target: 'map',
@@ -92,7 +102,28 @@ export class EditablemapComponent implements OnInit {
 
   @HostListener('window:keydown', ['$event'])
   keyboardInput(event: KeyboardEvent) {
-    //console.log("KEYDOWN: " + event.keyCode);
+    console.log("KEYDOWN: " + event.keyCode);
+
+    if (event.keyCode == 17 && !this.ctlPressed) {
+      this.ctlPressed = true;
+      this.mapNodes.ctlPressed();
+    }
+  }
+
+  /*
+    @HostListener('window:keypress', ['$event'])
+    keyboardKeyPress(event: KeyboardEvent) {
+      console.log("KEYPRESS: " + event.keyCode);
+    }*/
+
+  @HostListener('window:keyup', ['$event'])
+  keyboardKeyUp(event: KeyboardEvent) {
+    console.log("KEYUP: " + event.keyCode);
+
+    if (event.keyCode == 17) {
+      this.ctlPressed = false;
+      this.mapNodes.ctlReleased();
+    }
 
     if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES && event.keyCode == 46) //Entf Key
     {
@@ -107,7 +138,7 @@ export class EditablemapComponent implements OnInit {
     }
     let pixel = this.map.getEventPixel(evt.originalEvent);
     if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES) {
-      this.mapNodes.mouseMoved(pixel, this.map);
+      this.mapNodes.mouseMoved(pixel, evt.coordinate, this.map);
     }
   }
 

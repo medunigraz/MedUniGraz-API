@@ -4,6 +4,7 @@ import { USEHTTPSERVICE } from '../base/globalconstants';
 import { ApplicationMode } from '../base/applicationmode';
 import { ApplicationModeT } from '../base/applicationmode';
 
+import { MapEditEdges } from './mapeditedges';
 import { OpenlayersHelper } from './openlayershelper';
 import { MapNodesStyles } from './mapNodesStyles';
 
@@ -16,10 +17,13 @@ export class MapNodes {
   private highlightedFeature: any;
   private highlightFeatureOverlay: any = null;
 
-  select: any;
-  modify: any;
+  private select: any;
+  private modify: any;
 
-  constructor(private mapService: MapService) {
+  private displayEditLines: boolean = false;
+
+  constructor(private mapService: MapService,
+    private mapEditEdges: MapEditEdges) {
     this.Initialize();
   }
 
@@ -62,7 +66,7 @@ export class MapNodes {
     this.mapService.getNavigationNodes(0).subscribe(nodes => this.showNodes(nodes));
   }
 
-  public mouseMoved(position: any, map: any) {
+  public mouseMoved(position: any, worldposition: any, map: any) {
     if (this.highlightFeatureOverlay === null) {
       this.initHighlightFeatureOverlay(map);
     }
@@ -86,6 +90,14 @@ export class MapNodes {
       }
       this.highlightedFeature = feature;
     }
+
+    if (this.select.getFeatures().getArray().length <= 0 && this.displayEditLines) {
+      this.ctlReleased();
+    }
+
+    if (this.displayEditLines) {
+      this.mapEditEdges.setNewEndPos(worldposition);
+    }
   }
 
   public mouseClickedCtrl(position: any, map: any) {
@@ -102,6 +114,21 @@ export class MapNodes {
       subscribe(
       node => this.updateAddNode(node),
       error => console.log("ERROR: " + <any>error));
+  }
+
+  public ctlPressed() {
+    let selectedFeatures = this.select.getFeatures().getArray();
+    if (selectedFeatures.length >= 1) {
+      this.displayEditLines = true;
+      let coord = selectedFeatures[0].getGeometry().getCoordinates();
+      console.log("Set Startpoint: " + JSON.stringify(coord));
+      this.mapEditEdges.setNewStartPos(coord);
+    }
+  }
+
+  public ctlReleased() {
+    this.displayEditLines = false;
+    this.mapEditEdges.clear();
   }
 
   private updateAddNode(node: any) {
