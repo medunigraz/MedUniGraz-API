@@ -155,7 +155,7 @@ export class TestmapComponent implements OnInit, AfterViewInit {
       //console.log("Clear selection..." + this.select.getFeatures().getArray().length);
       let selected_collection = this.select.getFeatures();
 
-      if (this._applicationMode.mode == ApplicationModeT.EDIT_PATHS &&
+      if (this._applicationMode.mode == /*ApplicationModeT.EDIT_PATHS*/ ApplicationModeT.EDIT_NODES &&
         selected_collection.getArray().length > 0) {
         this.navigationmap.updateEdges(selected_collection.getArray());
       }
@@ -175,7 +175,7 @@ export class TestmapComponent implements OnInit, AfterViewInit {
   keyboardInput(event: KeyboardEvent) {
     console.log("KEYDOWN: " + event.keyCode);
 
-    if (this._applicationMode.mode == ApplicationModeT.EDIT_PATHS && event.keyCode == 46) //Entf Key
+    if (this._applicationMode.mode == /*ApplicationModeT.EDIT_PATHS*/ ApplicationModeT.EDIT_NODES && event.keyCode == 46) //Entf Key
     {
       console.log("KEYDOWN - Delete Edge " + event.keyCode + "#" + this.select.getFeatures().getArray().length);
       this.navigationmap.deleteSelectedEdge();
@@ -190,7 +190,7 @@ export class TestmapComponent implements OnInit, AfterViewInit {
     //console.log("allowOLSelection..." + JSON.stringify(layer.get('dummy')));
     //console.log("allowOLSelection... isSelectable ..." + JSON.stringify(layer.get('isSelectable')));
 
-    if (layer.get('isSelectable') && this._applicationMode.mode == ApplicationModeT.EDIT_PATHS) {
+    if (layer.get('isSelectable') && this._applicationMode.mode == /*ApplicationModeT.EDIT_PATHS*/ ApplicationModeT.EDIT_NODES) {
       return true;
     }
     return false;
@@ -211,7 +211,7 @@ export class TestmapComponent implements OnInit, AfterViewInit {
   }
 
   allowOLModify(evt: any) {
-    if (this._applicationMode.mode == ApplicationModeT.EDIT_PATHS) {
+    if (this._applicationMode.mode == /*ApplicationModeT.EDIT_PATHS*/ ApplicationModeT.EDIT_NODES) {
       let selectedFeatures = this.select.getFeatures().getArray();
 
       //console.log("allowOLModify: Length: " + selectedFeatures.length);
