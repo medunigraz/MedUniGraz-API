@@ -94,7 +94,7 @@ export class EditablemapComponent implements OnInit {
   keyboardInput(event: KeyboardEvent) {
     //console.log("KEYDOWN: " + event.keyCode);
 
-    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_EDGES && event.keyCode == 46) //Entf Key
+    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES && event.keyCode == 46) //Entf Key
     {
       console.log("KEYDOWN - Delete Node" + event.keyCode + "#");
       this.mapNodes.deleteSelectedNodes();
@@ -106,7 +106,7 @@ export class EditablemapComponent implements OnInit {
       return;
     }
     let pixel = this.map.getEventPixel(evt.originalEvent);
-    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_EDGES) {
+    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES) {
       this.mapNodes.mouseMoved(pixel, this.map);
     }
   }
@@ -118,7 +118,7 @@ export class EditablemapComponent implements OnInit {
     //console.log("Coord: " + lonlat);
     console.log("Coord Org: " + evt.coordinate + " strg: " + evt.originalEvent.ctrlKey);
 
-    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_EDGES) {
+    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES) {
       if (evt.originalEvent.ctrlKey) {
         this.mapNodes.mouseClickedCtrl(evt.coordinate, this.map);
       }

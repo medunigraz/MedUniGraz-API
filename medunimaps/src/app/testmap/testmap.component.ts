@@ -364,7 +364,7 @@ export class TestmapComponent implements OnInit, AfterViewInit {
       return;
     }
     let pixel = this.map.getEventPixel(evt.originalEvent);
-    if (this._applicationMode.mode == ApplicationModeT.EDIT_EDGES) {
+    if (this._applicationMode.mode == ApplicationModeT.EDIT_NODES) {
       this.roommap.mouseMoved(pixel, this.map);
     }
   }
@@ -377,7 +377,7 @@ export class TestmapComponent implements OnInit, AfterViewInit {
     console.log("Coord Org: " + evt.coordinate + " strg: " + evt.originalEvent.ctrlKey);
     console.log("Number of selected features: " + this.select.getFeatures().getArray().length);
 
-    if (this._applicationMode.mode == ApplicationModeT.EDIT_EDGES) {
+    if (this._applicationMode.mode == ApplicationModeT.EDIT_NODES) {
       if (evt.originalEvent.ctrlKey) {
         this.roommap.mouseClickedCtrl(evt.coordinate, this.map);
       }

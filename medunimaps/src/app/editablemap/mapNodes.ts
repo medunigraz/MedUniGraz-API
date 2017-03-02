@@ -142,11 +142,19 @@ export class MapNodes {
   }
 
   private testSelect(layer: any) {
-    return this.testLayer(layer) && OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_EDGES;
+    if (this.testLayer(layer) &&
+      (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES)) {
+      let selectedFeatures = this.select.getFeatures();
+      if (selectedFeatures.getArray().length > 0) {
+        selectedFeatures.clear();
+      }
+      return true;
+    }
+    return false;
   }
 
   private testModify(evt: any) {
-    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_EDGES) {
+    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES) {
       let selectedFeatures = this.select.getFeatures().getArray();
       if (selectedFeatures.length > 0 && selectedFeatures[0].get('ctype') == 'node') {
         return true;

@@ -1,8 +1,7 @@
 
 export enum ApplicationModeT {
   DEFAULT,
-  EDIT_NODES,
-  EDIT_EDGES
+  EDIT_NODES
 }
 
 export class ApplicationMode {
@@ -15,14 +14,14 @@ export class ApplicationMode {
   { }
 
   static CreateDefault(): ApplicationMode {
-    return new ApplicationMode(ApplicationModeT.DEFAULT, "Default", true);
+    //return new ApplicationMode(ApplicationModeT.DEFAULT, "Default", true);
+    return new ApplicationMode(ApplicationModeT.EDIT_NODES, "Edit Nodes", false)
   }
 
 }
 
 export const ApplicationModes = [
   ApplicationMode.CreateDefault(),
-  new ApplicationMode(ApplicationModeT.EDIT_NODES, "Edit Nodes", false),
-  new ApplicationMode(ApplicationModeT.EDIT_EDGES, "Edit Edges", false)
+  //new ApplicationMode(ApplicationModeT.EDIT_NODES, "Edit Nodes", false)
 
 ]
