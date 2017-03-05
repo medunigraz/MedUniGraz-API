@@ -42,6 +42,17 @@ export class MapEdges {
     this.mapService.getNavigationEdges(0).subscribe(edges => this.showEdges(edges));
   }
 
+  public getHighlightedEdgeId(): any {
+    if (this.highlightedFeature) {
+      return this.highlightedFeature.getId();
+    }
+    return -1;
+  }
+
+  public getEdgeForId(id: number): any {
+    return this.layerSource.getFeatureById(id);
+  }
+
   public updateMouseMoved(position: any, map: any, allowHighlight: boolean) {
     if (this.highlightFeatureOverlay === null) {
       this.initHighlightFeatureOverlay(map);
@@ -106,6 +117,17 @@ export class MapEdges {
       this.mapService.deleteEdge(this.selectFeature.getId()).subscribe(
         edge => this.edgeDeleted(edge),
         error => console.log("ERROR deleteNode: " + <any>error));
+  }
+
+  public deleteEdgeById(id: number) {
+    if (!USEHTTPSERVICE) {
+      console.log("Offline mode, dont delete edge!");
+      return;
+    }
+
+    this.mapService.deleteEdge(id).subscribe(
+      edge => this.edgeDeleted(edge),
+      error => console.log("ERROR deleteNode: " + <any>error));
   }
 
   public addNewEdge(start, end) {

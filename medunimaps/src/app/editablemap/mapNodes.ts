@@ -122,21 +122,7 @@ export class MapNodes {
         this.addNewEdge(selectedFeature, this.highlightedFeature);
       }
       else {
-        let floor = 1;
-        //console.log("mouseClickedCtrl! - POS: " + JSON.stringify(position));
-        let center = {
-          "type": "Point",
-          "coordinates": [position[0], position[1]]
-        };
-
-        //console.log("mouseClickedCtrl! - OBJ: " + JSON.stringify(center));
-
-        console.log("mouseClicked Add new node: " + JSON.stringify(center));
-        //Add edge to new Node
-        this.mapService.addNode(floor, center).
-          subscribe(
-          node => this.updateAddNode(node, selectedFeature),
-          error => console.log("ERROR: " + <any>error));
+        this.addNewNodeOnPos(selectedFeature, position);
       }
     }
     else if (!this.highlightedFeature) {
@@ -164,7 +150,8 @@ export class MapNodes {
     this.mapEditEdges.clear();
   }
 
-  private updateAddNode(node: any, selectedStartNodeFeature: any) {
+  private updateAddNode(node: any, selectedStartNodeFeature: any,
+    edgeToSplitId: number) {
     console.log("updateAddNode! - " + JSON.stringify(node));
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(node));
     let endNode = this.layerSource.getFeatureById(node.id);
@@ -173,6 +160,24 @@ export class MapNodes {
 
     if (selectedStartNodeFeature) {
       this.addNewEdge(selectedStartNodeFeature, endNode);
+
+      console.log("Split Edge?");
+      if (edgeToSplitId >= 0) {
+        let edgeToSplit = this.mapEdges.getEdgeForId(edgeToSplitId);
+        if (edgeToSplit) {
+          console.log("Split Edge: " + edgeToSplit.getId());
+          let node1 = this.layerSource.getFeatureById(edgeToSplit.get("source"));
+          let node2 = this.layerSource.getFeatureById(edgeToSplit.get("destination"));
+          this.mapEdges.deleteEdgeById(edgeToSplit.getId());
+          if (node1) {
+            this.addNewEdge(node1, endNode);
+          }
+          if (node2) {
+            this.addNewEdge(node2, endNode);
+          }
+        }
+      }
+
     }
   }
 
@@ -240,6 +245,26 @@ export class MapNodes {
       return false;
     }
     return false;
+  }
+
+  private addNewNodeOnPos(selectedFeature: any, position: number[]) {
+    let floor = 1;
+    //console.log("mouseClickedCtrl! - POS: " + JSON.stringify(position));
+    let center = {
+      "type": "Point",
+      "coordinates": [position[0], position[1]]
+    };
+
+    //console.log("mouseClickedCtrl! - OBJ: " + JSON.stringify(center));
+
+    let highlightedEdgeId = this.mapEdges.getHighlightedEdgeId();
+    console.log("mouseClicked Add new node: " + JSON.stringify(center) +
+      "   SplitEdgeID: " + highlightedEdgeId);
+    //Add edge to new Node
+    this.mapService.addNode(floor, center).
+      subscribe(
+      node => this.updateAddNode(node, selectedFeature, highlightedEdgeId),
+      error => console.log("ERROR: " + <any>error));
   }
 
   private initHighlightFeatureOverlay(map: any) {
