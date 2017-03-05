@@ -140,6 +140,12 @@ export class MapEdges {
       error => console.log("ERROR: " + <any>error));
   }
 
+  public getEdgesForNode(nodeId: number): any[] {
+    return this.layerSource.getFeatures().filter(
+      feature => feature.get("source") == nodeId || feature.get("destination") == nodeId
+    )
+  }
+
   private edgeDeleted(edge: any): void {
     let feature = this.layerSource.getFeatureById(edge.id);
     if (feature) {

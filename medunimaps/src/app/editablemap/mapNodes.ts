@@ -22,6 +22,7 @@ export class MapNodes {
   private modify: any;
 
   private displayEditLines: boolean = false;
+  private isModifying: boolean = false;
   private lastMousePostion: number[] = [0, 0];
 
   constructor(private mapService: MapService,
@@ -59,6 +60,8 @@ export class MapNodes {
 
     map.addInteraction(this.modify);
 
+    this.select.on('select', evt => this.featureSelected(evt));
+    this.modify.on('modifystart', evt => this.featureModifyStart(evt));
     this.modify.on('modifyend', evt => this.featureModified(evt));
   }
 
@@ -99,7 +102,7 @@ export class MapNodes {
 
     this.mapEdges.updateMouseMoved(position, map, this.highlightedFeature == null);
 
-    if (this.displayEditLines) {
+    if (this.displayEditLines || this.isModifying) {
       this.mapEditEdges.setNewEndPos(worldposition);
     }
   }
@@ -252,15 +255,40 @@ export class MapNodes {
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(features));
   }
 
+  private featureSelected(evt: any) {
+    console.log("Feature selected...");
+
+  }
+
   private featureModified(evt) {
+    console.log("MapNodes::featureModifyEnd...");
+    this.isModifying = false;
+    this.mapEditEdges.clear();
     let features = evt.features.getArray();
     for (let feature of features) {
       console.log("Feature " + feature.getId() + " modified!");
       this.mapService.updateNode((new ol.format.GeoJSON()).writeFeature(feature), feature.getId()).
         subscribe(
         node => this.nodeUpdated(node),
-        error => console.log("ERROR: " + <any>error));;
+        error => console.log("ERROR: " + <any>error));
+
+      let edges = this.mapEdges.getEdgesForNode(feature.getId());
+      this.mapEditEdges.updateEdges(edges, feature);
     }
+  }
+
+  private featureModifyStart(evt) {
+    console.log("MapNodes::featureModifyStart...");
+    let selFeatures = this.select.getFeatures().getArray();
+    console.log("Feature selected: " + selFeatures.length);
+    if (selFeatures.length >= 1) {
+
+      let edges = this.mapEdges.getEdgesForNode(selFeatures[0].getId());
+      console.log("Feature selected: " + selFeatures[0].getId() + "  Edges: " + edges.length);
+      this.mapEditEdges.setNewStartPositionsForEdgeFeatures(selFeatures[0].getId(), edges);
+    }
+
+    this.isModifying = true;
   }
 
   private nodeUpdated(node: any) {

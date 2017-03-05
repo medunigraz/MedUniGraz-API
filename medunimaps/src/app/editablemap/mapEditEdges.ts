@@ -1,5 +1,6 @@
 import { MapService } from '../mapservice/map.service';
 import { USEHTTPSERVICE } from '../base/globalconstants';
+import { Point } from '../base/point'
 
 import { ApplicationMode } from '../base/applicationmode';
 import { ApplicationModeT } from '../base/applicationmode';
@@ -17,7 +18,7 @@ export class MapEditEdges {
   private multiLineString: any;
   private lineAr: any[];
 
-  private startPosition: number[] = null;
+  private startPositions: Point[] = null;
 
   constructor(private mapService: MapService) {
     this.Initialize();
@@ -48,20 +49,38 @@ export class MapEditEdges {
   }
 
   public setNewStartPos(p: number[]) {
-    this.startPosition = p;
+    let point = new Point();
+    point.createFromAr(p);
+    this.startPositions = [point];
+  }
+
+  public setNewStartPositionsForEdgeFeatures(startnodeId: number, edges: any[]) {
+    this.startPositions = [];
+    for (let edge of edges) {
+      let pos = edge.getGeometry().getFirstCoordinate();
+      if (edge.get("source") == startnodeId) {
+        pos = edge.getGeometry().getLastCoordinate();
+      }
+
+      let p = new Point();
+      p.createFromAr(pos);
+      this.startPositions.push(p);
+    }
   }
 
   public setNewEndPos(p: number[]) {
     //console.log("MapEditEdges::setNewEndPos - " + p[0] + ", " + p[1]);
-    if (this.startPosition != null) {
+    if (this.startPositions != null) {
       this.lineAr = [];
-      this.lineAr.push([this.startPosition, p]);
+      for (let pos of this.startPositions) {
+        this.lineAr.push([pos.getAr(), p]);
+      }
       this.multiLineString.setCoordinates(this.lineAr);
     }
   }
 
   public clear() {
-    this.startPosition = null;
+    this.startPositions = null;
     this.lineAr = [];
     this.multiLineString.setCoordinates(this.lineAr);
   }
@@ -74,8 +93,33 @@ export class MapEditEdges {
     this.multiLineString.setCoordinates(this.lineAr);
   }
 
+  public updateEdges(edges: any[], updatedNode: any) {
+    let coord = updatedNode.getGeometry().getCoordinates();
+
+    for (let edge of edges) {
+      //console.log("Update Edge: " + JSON.stringify(new ol.format.GeoJSON().writeFeature(edge)));
+      let geo = edge.getGeometry().getCoordinates();
+      if (edge.get("source") == updatedNode.getId()) {
+        geo[0] = coord;
+      }
+      else {
+        geo[geo.length - 1] = coord;
+      }
+      edge.getGeometry().setCoordinates(geo);
+      this.mapService.updateEdge(new ol.format.GeoJSON().writeFeature(edge), edge.getId()).
+        subscribe(
+        node => this.edgeUpdated(node),
+        error => console.log("ERROR: " + <any>error));
+      //console.log("   New Edge: " + JSON.stringify(new ol.format.GeoJSON().writeFeature(edge)));
+    }
+  }
+
   public getLayer(): any {
     return this.layer;
+  }
+
+  private edgeUpdated(edge: any) {
+    //Nothing todo
   }
 
 }

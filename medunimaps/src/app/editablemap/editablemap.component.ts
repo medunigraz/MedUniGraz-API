@@ -134,9 +134,9 @@ export class EditablemapComponent implements OnInit {
   }
 
   mapMouseMoved(evt): void {
-    if (evt.dragging) {
-      return;
-    }
+    //if (evt.dragging) {
+    //  return;
+    //}
     let pixel = this.map.getEventPixel(evt.originalEvent);
     if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES) {
       this.mapNodes.mouseMoved(pixel, evt.coordinate, this.map);
