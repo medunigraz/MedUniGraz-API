@@ -119,7 +119,7 @@ export class EditablemapComponent implements OnInit {
 
   @HostListener('window:keyup', ['$event'])
   keyboardKeyUp(event: KeyboardEvent) {
-    console.log("KEYUP: " + event.keyCode);
+    //console.log("KEYUP: " + event.keyCode);
 
     if (event.keyCode == 17) {
       this.ctlPressed = false;

@@ -106,19 +106,33 @@ export class MapNodes {
 
   public mouseClicked(position: any, map: any) {
     if (this.displayEditLines) {
-      let floor = 1;
-      console.log("mouseClickedCtrl! - POS: " + JSON.stringify(position));
-      let center = {
-        "type": "Point",
-        "coordinates": [position[0], position[1]]
-      };
 
-      console.log("mouseClickedCtrl! - OBJ: " + JSON.stringify(center));
+      let selectedFeature = null;
+      let selectedFeatures = this.select.getFeatures().getArray();
+      if (selectedFeatures.length >= 1) {
+        selectedFeature = selectedFeatures[0];
+      }
 
-      this.mapService.addNode(floor, center).
-        subscribe(
-        node => this.updateAddNode(node),
-        error => console.log("ERROR: " + <any>error));
+      if (this.highlightedFeature) {
+        //Add edge to existing Node
+        this.addNewEdge(selectedFeature, this.highlightedFeature);
+      }
+      else {
+        let floor = 1;
+        console.log("mouseClickedCtrl! - POS: " + JSON.stringify(position));
+        let center = {
+          "type": "Point",
+          "coordinates": [position[0], position[1]]
+        };
+
+        console.log("mouseClickedCtrl! - OBJ: " + JSON.stringify(center));
+
+        //Add edge to new Node
+        this.mapService.addNode(floor, center).
+          subscribe(
+          node => this.updateAddNode(node, selectedFeature),
+          error => console.log("ERROR: " + <any>error));
+      }
     }
     else if (!this.highlightedFeature) {
       this.mapEdges.updateMouseClicked(map);
@@ -143,9 +157,19 @@ export class MapNodes {
     this.mapEditEdges.clear();
   }
 
-  private updateAddNode(node: any) {
+  private updateAddNode(node: any, selectedStartNodeFeature: any) {
     console.log("updateAddNode! - " + JSON.stringify(node));
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(node));
+    let endNode = this.layerSource.getFeatureById(node.id);
+
+    if (selectedStartNodeFeature) {
+      this.addNewEdge(selectedStartNodeFeature, endNode);
+    }
+  }
+
+  private addNewEdge(start, end) {
+    console.log("addNewEdge! - " + JSON.stringify(start.getId()) + " to " + end.getId());
+    this.mapEdges.addNewEdge(start, end);
   }
 
   public deleteSelectedNodes() {

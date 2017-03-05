@@ -108,12 +108,48 @@ export class MapEdges {
         error => console.log("ERROR deleteNode: " + <any>error));
   }
 
+  public addNewEdge(start, end) {
+    console.log("addNewEdge! - " + JSON.stringify(start.getId()) + " to " + end.getId());
+
+    if (!start || !end) {
+      return;
+    }
+
+    let sourceId = start.getId();
+    let destinationId = end.getId();
+    if (sourceId == destinationId) {
+      return;
+    }
+
+    let p1 = start.getGeometry().getCoordinates();
+    let p2 = end.getGeometry().getCoordinates();
+    let line = new ol.geom.LineString([p1, p2]);
+    let distance = line.getLength();
+
+    let path = {
+      'type': 'LineString',
+      'coordinates': [
+        p1,
+        p2
+      ]
+    }
+
+    this.mapService.addEdge(sourceId, destinationId, distance, path).
+      subscribe(
+      edge => this.edgeAdded(edge),
+      error => console.log("ERROR: " + <any>error));
+  }
+
   private edgeDeleted(edge: any): void {
     let feature = this.layerSource.getFeatureById(edge.id);
     if (feature) {
       this.layerSource.removeFeature(feature);
       this.clearSelection();
     }
+  }
+
+  private edgeAdded(edge: any): void {
+    this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(edge));
   }
 
   private initHighlightFeatureOverlay(map: any) {
