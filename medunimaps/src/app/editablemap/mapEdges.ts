@@ -146,6 +146,14 @@ export class MapEdges {
     )
   }
 
+  public removeEdgesForNode(nodeId: number) {
+    console.log("MapEdges::removeEdgesForNode - " + nodeId);
+    let edges = this.getEdgesForNode(nodeId);
+    for (let edge of edges) {
+      this.layerSource.removeFeature(edge);
+    }
+  }
+
   private edgeDeleted(edge: any): void {
     let feature = this.layerSource.getFeatureById(edge.id);
     if (feature) {

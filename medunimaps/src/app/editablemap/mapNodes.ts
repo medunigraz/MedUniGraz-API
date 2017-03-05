@@ -210,6 +210,7 @@ export class MapNodes {
 
   private nodeDeleted(node: any): void {
     console.log("edgeDeleted..." + JSON.stringify(node));
+    this.mapEdges.removeEdgesForNode(node.id);
     let feature = this.layerSource.getFeatureById(node.id);
     if (feature) {
       this.layerSource.removeFeature(feature);
