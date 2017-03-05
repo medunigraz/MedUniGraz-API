@@ -22,6 +22,7 @@ export class MapNodes {
   private modify: any;
 
   private displayEditLines: boolean = false;
+  private lastMousePostion: number[] = [0, 0];
 
   constructor(private mapService: MapService,
     private mapEditEdges: MapEditEdges,
@@ -45,7 +46,8 @@ export class MapNodes {
   public extendMap(map: any): void {
     this.select = new ol.interaction.Select({
       wrapX: false,
-      layers: (layer => this.testSelect(layer))
+      layers: (layer => this.testSelect(layer)),
+      toggleCondition: ol.events.condition.never
     });
 
     map.addInteraction(this.select);
@@ -69,6 +71,8 @@ export class MapNodes {
   }
 
   public mouseMoved(position: any, worldposition: any, map: any) {
+    this.lastMousePostion = worldposition;
+
     if (this.highlightFeatureOverlay === null) {
       this.initHighlightFeatureOverlay(map);
     }
@@ -95,10 +99,6 @@ export class MapNodes {
 
     this.mapEdges.updateMouseMoved(position, map, this.highlightedFeature == null);
 
-    if (this.select.getFeatures().getArray().length <= 0 && this.displayEditLines) {
-      this.ctlReleased();
-    }
-
     if (this.displayEditLines) {
       this.mapEditEdges.setNewEndPos(worldposition);
     }
@@ -115,18 +115,20 @@ export class MapNodes {
 
       if (this.highlightedFeature) {
         //Add edge to existing Node
+        this.selectNewNode(this.highlightedFeature);
         this.addNewEdge(selectedFeature, this.highlightedFeature);
       }
       else {
         let floor = 1;
-        console.log("mouseClickedCtrl! - POS: " + JSON.stringify(position));
+        //console.log("mouseClickedCtrl! - POS: " + JSON.stringify(position));
         let center = {
           "type": "Point",
           "coordinates": [position[0], position[1]]
         };
 
-        console.log("mouseClickedCtrl! - OBJ: " + JSON.stringify(center));
+        //console.log("mouseClickedCtrl! - OBJ: " + JSON.stringify(center));
 
+        console.log("mouseClicked Add new node: " + JSON.stringify(center));
         //Add edge to new Node
         this.mapService.addNode(floor, center).
           subscribe(
@@ -149,10 +151,12 @@ export class MapNodes {
       let coord = selectedFeatures[0].getGeometry().getCoordinates();
       console.log("Set Startpoint: " + JSON.stringify(coord));
       this.mapEditEdges.setNewStartPos(coord);
+      this.mapEditEdges.setNewEndPos(this.lastMousePostion);
     }
   }
 
   public ctlReleased() {
+    console.log("ctlReleased...");
     this.displayEditLines = false;
     this.mapEditEdges.clear();
   }
@@ -162,13 +166,24 @@ export class MapNodes {
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(node));
     let endNode = this.layerSource.getFeatureById(node.id);
 
+    this.selectNewNode(endNode);
+
     if (selectedStartNodeFeature) {
       this.addNewEdge(selectedStartNodeFeature, endNode);
     }
   }
 
+  private selectNewNode(node: any) {
+    let selectedFeatures = this.select.getFeatures();
+    selectedFeatures.clear();
+    selectedFeatures.push(node);
+    let coord = node.getGeometry().getCoordinates();
+    this.mapEditEdges.setNewStartPos(coord);
+    this.mapEditEdges.setNewEndPos(coord);
+  }
+
   private addNewEdge(start, end) {
-    console.log("addNewEdge! - " + JSON.stringify(start.getId()) + " to " + end.getId());
+    //console.log("addNewEdge! - " + JSON.stringify(start.getId()) + " to " + end.getId());
     this.mapEdges.addNewEdge(start, end);
   }
 
@@ -207,10 +222,6 @@ export class MapNodes {
   private testSelect(layer: any) {
     if (this.testLayer(layer) &&
       (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES)) {
-      let selectedFeatures = this.select.getFeatures();
-      if (selectedFeatures.getArray().length > 0) {
-        selectedFeatures.clear();
-      }
       return true;
     }
     return false;

@@ -52,6 +52,7 @@ export class MapEditEdges {
   }
 
   public setNewEndPos(p: number[]) {
+    //console.log("MapEditEdges::setNewEndPos - " + p[0] + ", " + p[1]);
     if (this.startPosition != null) {
       this.lineAr = [];
       this.lineAr.push([this.startPosition, p]);
