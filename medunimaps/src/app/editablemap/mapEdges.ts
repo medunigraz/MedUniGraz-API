@@ -13,10 +13,11 @@ export class MapEdges {
   private layer: any;
   private layerSource: any;
 
-  private highlightedFeature: any;
+  private highlightedFeature: any = null;
   private highlightFeatureOverlay: any = null;
 
-  select: any;
+  private selectFeature: any = null;
+  private selectFeatureOverlay: any = null;
 
   constructor(private mapService: MapService) {
     this.Initialize();
@@ -71,6 +72,29 @@ export class MapEdges {
     }
   }
 
+  public updateMouseClicked(map: any) {
+    console.log("mapEdges::updateMouseClicked...")
+    if (this.highlightedFeature) {
+      if (!this.selectFeatureOverlay) {
+        this.initSelectFeatureOverlay(map);
+      }
+
+      console.log("mapEdges::updateMouseClicked add new Feature!");
+      this.selectFeatureOverlay.getSource().clear();
+      this.selectFeature = this.highlightedFeature;
+      this.selectFeatureOverlay.getSource().addFeature(this.selectFeature);
+    }
+    else {
+      this.clearSelection();
+    }
+  }
+
+  public clearSelection() {
+    if (this.selectFeatureOverlay) {
+      console.log("mapEdges::clearSelection...")
+      this.selectFeatureOverlay.getSource().clear();
+    }
+  }
 
   private initHighlightFeatureOverlay(map: any) {
     this.highlightFeatureOverlay = new ol.layer.Vector({
@@ -85,10 +109,23 @@ export class MapEdges {
     });
   }
 
+  private initSelectFeatureOverlay(map: any) {
+    console.log("mapEdges::initSelectFeatureOverlay...")
+    this.selectFeatureOverlay = new ol.layer.Vector({
+      source: new ol.source.Vector(),
+      map: map,
+      style: new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: 'rgba(0,190,255,0.8)',
+          width: 6
+        })
+      })
+    });
+  }
+
   private testLayer(layer: any) {
     return this.layer === layer;
   }
-
 
   private showEdges(features: Object): void {
     this.layerSource.clear();

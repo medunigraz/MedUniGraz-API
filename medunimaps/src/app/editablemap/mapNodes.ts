@@ -120,6 +120,12 @@ export class MapNodes {
         node => this.updateAddNode(node),
         error => console.log("ERROR: " + <any>error));
     }
+    else if (!this.highlightedFeature) {
+      this.mapEdges.updateMouseClicked(map);
+    }
+    else {
+      this.mapEdges.clearSelection();
+    }
   }
 
   public ctlPressed() {
