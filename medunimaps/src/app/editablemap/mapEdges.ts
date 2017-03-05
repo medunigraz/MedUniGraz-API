@@ -96,6 +96,26 @@ export class MapEdges {
     }
   }
 
+  public deleteSelectedEdges() {
+    if (!USEHTTPSERVICE) {
+      console.log("Offline mode, dont delete edge!");
+      return;
+    }
+
+    if (this.selectFeature)
+      this.mapService.deleteEdge(this.selectFeature.getId()).subscribe(
+        edge => this.edgeDeleted(edge),
+        error => console.log("ERROR deleteNode: " + <any>error));
+  }
+
+  private edgeDeleted(edge: any): void {
+    let feature = this.layerSource.getFeatureById(edge.id);
+    if (feature) {
+      this.layerSource.removeFeature(feature);
+      this.clearSelection();
+    }
+  }
+
   private initHighlightFeatureOverlay(map: any) {
     this.highlightFeatureOverlay = new ol.layer.Vector({
       source: new ol.source.Vector(),

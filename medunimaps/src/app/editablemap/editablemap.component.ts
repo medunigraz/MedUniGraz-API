@@ -128,8 +128,8 @@ export class EditablemapComponent implements OnInit {
 
     if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES && event.keyCode == 46) //Entf Key
     {
-      console.log("KEYDOWN - Delete Node" + event.keyCode + "#");
       this.mapNodes.deleteSelectedNodes();
+      this.mapEdges.deleteSelectedEdges();
     }
   }
 
