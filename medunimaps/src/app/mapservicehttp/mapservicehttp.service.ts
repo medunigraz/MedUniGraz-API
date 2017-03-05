@@ -126,7 +126,8 @@ export class MapHttpService extends MapService {
 
     console.log("RESPONSE DATA: " + JSON.stringify(body));
 
-    return body.results || {};
+    //return body.results || {};
+    return body || {};
   }
 
   private extractDataAdd(res: Response) {

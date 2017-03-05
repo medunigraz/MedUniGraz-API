@@ -5,6 +5,7 @@ import { ApplicationMode } from '../base/applicationmode';
 import { ApplicationModeT } from '../base/applicationmode';
 
 import { MapEditEdges } from './mapeditedges';
+import { MapEdges } from './mapedges';
 import { OpenlayersHelper } from './openlayershelper';
 import { MapNodesStyles } from './mapNodesStyles';
 
@@ -23,7 +24,8 @@ export class MapNodes {
   private displayEditLines: boolean = false;
 
   constructor(private mapService: MapService,
-    private mapEditEdges: MapEditEdges) {
+    private mapEditEdges: MapEditEdges,
+    private mapEdges: MapEdges) {
     this.Initialize();
   }
 
@@ -90,6 +92,8 @@ export class MapNodes {
       }
       this.highlightedFeature = feature;
     }
+
+    this.mapEdges.updateMouseMoved(position, map, this.highlightedFeature == null);
 
     if (this.select.getFeatures().getArray().length <= 0 && this.displayEditLines) {
       this.ctlReleased();

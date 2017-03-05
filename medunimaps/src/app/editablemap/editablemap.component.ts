@@ -53,7 +53,7 @@ export class EditablemapComponent implements OnInit {
     this.mapWalls = new MapWalls(this.mapService);
     this.mapEdges = new MapEdges(this.mapService);
     this.mapEditEdges = new MapEditEdges(this.mapService);
-    this.mapNodes = new MapNodes(this.mapService, this.mapEditEdges);
+    this.mapNodes = new MapNodes(this.mapService, this.mapEditEdges, this.mapEdges);
 
     this.map = new ol.Map({
       controls: ol.control.defaults({
@@ -88,6 +88,7 @@ export class EditablemapComponent implements OnInit {
     this.mapNodes.extendMap(this.map);
 
     this.mapWalls.updateData();
+    this.mapEdges.updateData();
     this.mapNodes.updateData();
 
     this.map.on('click', evt => this.mapClicked(evt));
