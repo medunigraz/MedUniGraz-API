@@ -70,6 +70,7 @@ export class MapNodes {
   }
 
   public updateData(floorId: number): any {
+    this.clear();
     this.mapService.getNavigationNodes(floorId).subscribe(nodes => this.showNodes(nodes));
   }
 
@@ -321,5 +322,12 @@ export class MapNodes {
 
   private nodeUpdated(node: any) {
     console.log("node Updated! - " + JSON.stringify(node));
+  }
+
+  private clear() {
+    let selectedFeatures = this.select.getFeatures();
+    selectedFeatures.clear();
+    this.displayEditLines = false;
+    this.isModifying = false;
   }
 }
