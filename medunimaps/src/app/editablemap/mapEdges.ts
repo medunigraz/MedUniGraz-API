@@ -90,10 +90,10 @@ export class MapEdges {
         this.initSelectFeatureOverlay(map);
       }
 
-      console.log("mapEdges::updateMouseClicked add new Feature!");
       this.selectFeatureOverlay.getSource().clear();
       this.selectFeature = this.highlightedFeature;
       this.selectFeatureOverlay.getSource().addFeature(this.selectFeature);
+      console.log("mapEdges::updateMouseClicked Select Edge: " + this.selectFeature.getId());
     }
     else {
       this.clearSelection();
