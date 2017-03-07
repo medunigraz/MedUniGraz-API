@@ -39,7 +39,9 @@ export class MapEdges {
   }
 
   public updateData(floorId: number): any {
-    this.mapService.getNavigationEdges(floorId).subscribe(edges => this.showEdges(edges));
+    this.mapService.getNavigationEdges(floorId).subscribe(
+      edges => this.showEdges(edges),
+      error => console.log("ERROR deleteNode: " + <any>error));
   }
 
   public getHighlightedEdgeId(): any {
@@ -219,8 +221,14 @@ export class MapEdges {
     return this.layer === layer;
   }
 
-  private showEdges(features: Object): void {
+  private clear() {
+    this.clearSelection();
     this.layerSource.clear();
+  }
+
+  private showEdges(features: any): void {
+    console.log("MapEdges::showEdges");
+    this.clear();
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(features));
   }
 

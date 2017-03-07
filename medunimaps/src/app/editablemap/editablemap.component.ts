@@ -103,7 +103,7 @@ export class EditablemapComponent implements OnInit {
     console.log("EditAbleMapComponent::Set currentFloor - New Floor: " + JSON.stringify(currentFloor));
     if (currentFloor && currentFloor.id >= 0) {
       this.mapWalls.updateData(currentFloor.id);
-      this.mapEdges.updateData();
+      this.mapEdges.updateData(currentFloor.id);
       this.mapNodes.updateData(currentFloor.id);
     }
   }
