@@ -9,6 +9,7 @@ import { USEHTTPSERVICE } from '../base/globalconstants';
 import { MODIFY_EDGE_MINSTARTPOINT_DISTANCE } from '../base/globalconstants';
 import { ApplicationMode } from '../base/applicationmode';
 import { ApplicationModeT } from '../base/applicationmode';
+import { Floor } from '../base/floor';
 
 import { MapWalls } from './mapWalls';
 import { MapNodes } from './mapNodes';
@@ -99,6 +100,13 @@ export class EditablemapComponent implements OnInit {
   set applicationMode(applicationMode: ApplicationMode) {
     OpenlayersHelper.CurrentApplicationMode = applicationMode;
     console.log("TestmapComponent::Set applicationMode - New App Mode: " + OpenlayersHelper.CurrentApplicationMode.name);
+  }
+
+  @Input()
+  set currentFloor(currentFloor: Floor) {
+    console.log("EditAbleMapComponent::Set currentFloor - New Floor: " + JSON.stringify(currentFloor));
+    if (currentFloor && currentFloor.id >= 0) {
+    }
   }
 
   @HostListener('window:keydown', ['$event'])

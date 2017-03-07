@@ -10,4 +10,12 @@ export class Floor {
     this.name = obj["name"];
     this.building = obj["building"];
   }
+
+  public static getDefaultFloor(): Floor {
+    return new Floor({
+      "id": -1,
+      "name": "EG",
+      "building": 1
+    })
+  }
 }

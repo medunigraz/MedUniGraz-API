@@ -2,6 +2,7 @@ import { Component, Optional, OnInit } from '@angular/core';
 import {MdDialog, MdDialogRef} from '@angular/material';
 
 import { ApplicationMode } from './base/applicationmode';
+import { Floor } from './base/floor';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,7 @@ export class AppComponent {
   lastDialogResult: string;
 
   currentAppMode: ApplicationMode = ApplicationMode.CreateDefault();
+  currentFloor: Floor = Floor.getDefaultFloor();
 
   constructor(private _dialog: MdDialog) {
   }
@@ -44,6 +46,13 @@ export class AppComponent {
   appModeChanged(mode: ApplicationMode): void {
     console.log("AppComponent --- appModeChanged: " + mode.name);
     this.currentAppMode = mode;
+  }
+
+  floorChanged(floor: Floor): void {
+    if (floor) {
+      console.log("AppComponent --- floorChanged: " + floor.name);
+      this.currentFloor = floor;
+    }
   }
 }
 

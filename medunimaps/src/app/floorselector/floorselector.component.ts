@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { MapService } from '../mapservice/map.service';
 import { MapHttpService } from '../mapservicehttp/mapservicehttp.service';
 
@@ -13,7 +13,9 @@ import { USEHTTPSERVICE } from '../base/globalconstants';
 export class FloorselectorComponent implements OnInit {
 
   floorList: Floor[] = [];
-  selectedFloor: Floor;
+  selectedFloor: Floor = null;
+
+  @Output() currentFloorEvt = new EventEmitter<Floor>();
 
   constructor(private mapServiceHttp: MapHttpService,
     private mapService: MapService) { }
@@ -34,8 +36,8 @@ export class FloorselectorComponent implements OnInit {
   }
 
   onSelect(floor: Floor): void {
-    this.selectedFloor = floor;
-    console.log("Floor: " + JSON.stringify(floor));
+    this.selectFloor(floor);
+    //console.log("Floor: " + JSON.stringify(floor));
   }
 
   updateFloors(floors: Floor[]) {
@@ -43,13 +45,20 @@ export class FloorselectorComponent implements OnInit {
 
     for (let floor of this.floorList) {
       if (floor.name == 'EG') {
-        this.selectedFloor = floor;
+        this.selectFloor(floor);
+        //console.log("FloorselectorComponent::updateFloors Select Floor: " + JSON.stringify(floor));
         return;
       }
     }
 
     if (this.floorList.length > 0) {
-      this.selectedFloor = this.floorList[0];
+      this.selectFloor(this.floorList[0]);
+      //console.log("FloorselectorComponent::updateFloors Select Floor: " + JSON.stringify(this.selectedFloor));
     }
+  }
+
+  private selectFloor(floor: Floor) {
+    this.selectedFloor = floor;
+    this.currentFloorEvt.emit(this.selectedFloor);
   }
 }
