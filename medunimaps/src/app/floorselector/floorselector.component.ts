@@ -35,14 +35,14 @@ export class FloorselectorComponent implements OnInit {
 
   onSelect(floor: Floor): void {
     this.selectedFloor = floor;
-    console.log("Floor: " + floor);
+    console.log("Floor: " + JSON.stringify(floor));
   }
 
   updateFloors(floors: Floor[]) {
     this.floorList = floors;
 
     for (let floor of this.floorList) {
-      if (floor.name = 'EG') {
+      if (floor.name == 'EG') {
         this.selectedFloor = floor;
         return;
       }
