@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MapService } from '../mapservice/map.service';
+import { MapHttpService } from '../mapservicehttp/mapservicehttp.service';
+
+import { Floor } from '../base/floor';
+import { USEHTTPSERVICE } from '../base/globalconstants';
 
 @Component({
   selector: 'app-floorselector',
@@ -8,21 +12,33 @@ import { MapService } from '../mapservice/map.service';
 })
 export class FloorselectorComponent implements OnInit {
 
-  floorList = [];
-  selectedFloor: String;
+  floorList: Floor[] = [];
+  selectedFloor: Floor;
 
-  constructor(private mapService: MapService) { }
+  constructor(private mapServiceHttp: MapHttpService,
+    private mapService: MapService) { }
 
   ngOnInit() {
-    this.mapService.getFloors().then(floors => this.updateFloors(floors));
+    if (USEHTTPSERVICE) {
+      this.mapService = this.mapServiceHttp;
+    }
+
+    this.updateData();
   }
 
-  onSelect(floor: String): void {
+  public updateData(): any {
+
+    this.mapService.getFloors().subscribe(
+      floors => this.updateFloors(floors),
+      error => console.log("ERROR deleteNode: " + <any>error));
+  }
+
+  onSelect(floor: Floor): void {
     this.selectedFloor = floor;
     console.log("Floor: " + floor);
   }
 
-  updateFloors(floors) {
+  updateFloors(floors: Floor[]) {
     this.floorList = floors;
     if (this.floorList.length > 0) {
       this.selectedFloor = this.floorList[0];

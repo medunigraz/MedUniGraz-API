@@ -7,6 +7,7 @@ import {ROOMS_MAP} from './mock-roomGeoInformation'
 import {NAVIGATIONEDGES_DEMO} from './mock-navigationedges'
 
 import {Room} from '../base/room';
+import { Floor } from '../base/floor';
 import { Observable } from 'rxjs';
 
 @Injectable()
@@ -27,10 +28,8 @@ export class MapService {
       .then(() => this.getBaseMapIntern(layer));
   }
 
-  getFloors(): Promise<Array<string>> {
-    return new Promise<Array<string>>(resolve =>
-      setTimeout(resolve, 500)) // delay 2 seconds
-      .then(() => Promise.resolve(FLOORS.reverse()));
+  getFloors(): Observable<Floor[]> {
+    return Observable.of(FLOORS);
   }
 
   getRoomMap(layer: number): Observable<Object> {

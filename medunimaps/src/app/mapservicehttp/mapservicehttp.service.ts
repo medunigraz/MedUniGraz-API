@@ -8,6 +8,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
 import { MapService } from '../mapservice/map.service';
+import { Floor } from '../base/floor';
 
 @Injectable()
 export class MapHttpService extends MapService {
@@ -15,6 +16,7 @@ export class MapHttpService extends MapService {
   private roomUrl = '/geo/rooms/';  // URL to web API
   private edgeUrl = '/geo/edges/';
   private nodeUrl = '/geo/nodes/';
+  private floorUrl = '/geo/floors/';
 
   constructor(private http: Http) {
     super();
@@ -38,6 +40,11 @@ export class MapHttpService extends MapService {
       .catch(this.handleError);
   }
 
+  getFloors(): Observable<Floor[]> {
+    return this.http.get(this.floorUrl)
+      .map(this.extractDataFloors)
+      .catch(this.handleError);
+  }
 
   addEdge(source: number, destination: number, length: number, path: any): Observable<Object> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -120,6 +127,9 @@ export class MapHttpService extends MapService {
       .catch(this.handleError);
   }
 
+
+
+
   private extractData(res: Response) {
     console.log("RESPONSE DATA...");
     let body = res.json();
@@ -141,6 +151,16 @@ export class MapHttpService extends MapService {
   private extractDataDel(res: Response, id: number) {
     //console.log("RESPONSE DATA org: " + JSON.stringify(res));
     return { id: id };
+  }
+
+  private extractDataFloors(res: Response) {
+    let body = res.json();
+    console.log("RESPONSE DATA FLOORS: " + JSON.stringify(body));
+    let floors: Floor[] = [];
+    for (let obj of body) {
+      floors.push(new Floor(obj));
+    }
+    return floors;
   }
 
   private handleError(error: Response | any) {
