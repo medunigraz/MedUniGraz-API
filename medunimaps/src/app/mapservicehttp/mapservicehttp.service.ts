@@ -29,13 +29,13 @@ export class MapHttpService extends MapService {
   }
 
   getNavigationEdges(layer: number): Observable<Object> {
-    return this.http.get(this.edgeUrl)
+    return this.http.get(this.edgeUrl + '?floor=' + layer)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
   getNavigationNodes(layer: number): Observable<Object> {
-    return this.http.get(this.nodeUrl)
+    return this.http.get(this.nodeUrl + '?floor=' + layer)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -126,8 +126,6 @@ export class MapHttpService extends MapService {
       .map(this.extractDataAdd)
       .catch(this.handleError);
   }
-
-
 
 
   private extractData(res: Response) {
