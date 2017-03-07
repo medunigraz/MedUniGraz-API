@@ -282,8 +282,10 @@ export class MapNodes {
   }
 
   private featureSelected(evt: any) {
-    console.log("Feature selected...");
-
+    let features = evt.selected;
+    if (features.length > 0) {
+      console.log("Feature selected => " + features[0].getId());
+    }
   }
 
   private featureModified(evt) {
