@@ -6,6 +6,7 @@ import { ApplicationModeT } from '../base/applicationmode';
 
 import { MapEditEdges } from './mapeditedges';
 import { MapEdges } from './mapedges';
+import { MapRoute } from './maproute';
 import { OpenlayersHelper } from './openlayershelper';
 import { MapNodesStyles } from './mapNodesStyles';
 
@@ -27,7 +28,8 @@ export class MapNodes {
 
   constructor(private mapService: MapService,
     private mapEditEdges: MapEditEdges,
-    private mapEdges: MapEdges) {
+    private mapEdges: MapEdges,
+    private mapRoute: MapRoute) {
     this.Initialize();
   }
 

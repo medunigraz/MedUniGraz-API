@@ -15,6 +15,7 @@ import { MapWalls } from './mapWalls';
 import { MapNodes } from './mapNodes';
 import { MapEdges } from './mapEdges';
 import { MapEditEdges } from './mapEditEdges';
+import { MapRoute } from './mapRoute';
 import { OpenlayersHelper } from './openlayershelper';
 
 
@@ -40,6 +41,7 @@ export class EditablemapComponent implements OnInit {
   private mapNodes: MapNodes = null;
   private mapEdges: MapEdges = null;
   private mapEditEdges: MapEditEdges = null;
+  private mapRoute: MapRoute = null;
 
   private ctlPressed: boolean = false;
 
@@ -54,7 +56,8 @@ export class EditablemapComponent implements OnInit {
     this.mapWalls = new MapWalls(this.mapService);
     this.mapEdges = new MapEdges(this.mapService);
     this.mapEditEdges = new MapEditEdges(this.mapService);
-    this.mapNodes = new MapNodes(this.mapService, this.mapEditEdges, this.mapEdges);
+    this.mapRoute = new MapRoute(this.mapService);
+    this.mapNodes = new MapNodes(this.mapService, this.mapEditEdges, this.mapEdges, this.mapRoute);
 
     this.map = new ol.Map({
       controls: ol.control.defaults({
@@ -72,7 +75,8 @@ export class EditablemapComponent implements OnInit {
         this.mapWalls.getLayer(),
         this.mapNodes.getLayer(),
         this.mapEditEdges.getLayer(),
-        this.mapEdges.getLayer()
+        this.mapEdges.getLayer(),
+        this.mapRoute.getLayer()
       ],
       overlays: [],
       target: 'map',
@@ -137,6 +141,10 @@ export class EditablemapComponent implements OnInit {
     {
       this.mapNodes.deleteSelectedNodes();
       this.mapEdges.deleteSelectedEdges();
+    }
+
+    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES && event.keyCode == 88) { //x Key
+      this.mapRoute.clear();
     }
   }
 
