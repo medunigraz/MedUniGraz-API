@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BASEMAP } from './mock-basemap02';
+import { BASEMAP_1 } from './mock-basemap01';
 import { FLOORS } from './mock-floors';
 import {ROOMS} from './mock-rooms';
 import {DEMOROUTE} from './mock-route';
@@ -16,10 +17,10 @@ export class MapService {
   constructor() { }
 
   getBaseMapIntern(layer: number): Promise<Object> {
-    if (layer == 0) {
+    if (layer == 1) {
       return Promise.resolve(BASEMAP);
     }
-    return Promise.resolve(BASEMAP);
+    return Promise.resolve(BASEMAP_1);
   }
 
   getBaseMap(layer: number): Promise<Object> {

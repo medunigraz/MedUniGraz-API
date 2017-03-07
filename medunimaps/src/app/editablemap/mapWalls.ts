@@ -26,8 +26,8 @@ export class MapWalls {
     return this.layer;
   }
 
-  public updateData(): any {
-    this.mapService.getBaseMap(0).then(basemap => this.showWalls(basemap));
+  public updateData(floorId: number): any {
+    this.mapService.getBaseMap(floorId).then(basemap => this.showWalls(basemap));
   }
 
   private showWalls(features: Object): void {

@@ -38,8 +38,8 @@ export class MapEdges {
     return this.layer;
   }
 
-  public updateData(): any {
-    this.mapService.getNavigationEdges(0).subscribe(edges => this.showEdges(edges));
+  public updateData(floorId: number): any {
+    this.mapService.getNavigationEdges(floorId).subscribe(edges => this.showEdges(edges));
   }
 
   public getHighlightedEdgeId(): any {

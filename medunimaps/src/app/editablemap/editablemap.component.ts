@@ -88,10 +88,6 @@ export class EditablemapComponent implements OnInit {
 
     this.mapNodes.extendMap(this.map);
 
-    this.mapWalls.updateData();
-    this.mapEdges.updateData();
-    this.mapNodes.updateData();
-
     this.map.on('click', evt => this.mapClicked(evt));
     this.map.on('pointermove', evt => this.mapMouseMoved(evt));
   }
@@ -106,6 +102,9 @@ export class EditablemapComponent implements OnInit {
   set currentFloor(currentFloor: Floor) {
     console.log("EditAbleMapComponent::Set currentFloor - New Floor: " + JSON.stringify(currentFloor));
     if (currentFloor && currentFloor.id >= 0) {
+      this.mapWalls.updateData(currentFloor.id);
+      this.mapEdges.updateData();
+      this.mapNodes.updateData(currentFloor.id);
     }
   }
 

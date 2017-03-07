@@ -69,8 +69,8 @@ export class MapNodes {
     return this.layer;
   }
 
-  public updateData(): any {
-    this.mapService.getNavigationNodes(0).subscribe(nodes => this.showNodes(nodes));
+  public updateData(floorId: number): any {
+    this.mapService.getNavigationNodes(floorId).subscribe(nodes => this.showNodes(nodes));
   }
 
   public mouseMoved(position: any, worldposition: any, map: any) {
