@@ -40,6 +40,14 @@ export class FloorselectorComponent implements OnInit {
 
   updateFloors(floors: Floor[]) {
     this.floorList = floors;
+
+    for (let floor of this.floorList) {
+      if (floor.name = 'EG') {
+        this.selectedFloor = floor;
+        return;
+      }
+    }
+
     if (this.floorList.length > 0) {
       this.selectedFloor = this.floorList[0];
     }
