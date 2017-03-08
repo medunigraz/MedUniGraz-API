@@ -36,7 +36,7 @@ export class RoutetestComponent implements OnInit {
       this.routeVisible = false;
     }
     else {
-      this.mapService.getRoute().then(route => this.showRoute(route));
+      //this.mapService.getRoute().then(route => this.showRoute(route));
 
 
       this.mapService.addEdge(14, 16, 1.123, {

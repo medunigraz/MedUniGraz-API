@@ -26,6 +26,8 @@ export class MapNodes {
   private isModifying: boolean = false;
   private lastMousePostion: number[] = [0, 0];
 
+  private currentFloorId: number = -1;
+
   constructor(private mapService: MapService,
     private mapEditEdges: MapEditEdges,
     private mapEdges: MapEdges,
@@ -72,6 +74,7 @@ export class MapNodes {
   }
 
   public updateData(floorId: number): any {
+    this.currentFloorId = floorId;
     this.clear();
     this.mapService.getNavigationNodes(floorId).subscribe(nodes => this.showNodes(nodes));
   }
@@ -251,7 +254,11 @@ export class MapNodes {
   }
 
   private addNewNodeOnPos(selectedFeature: any, position: number[]) {
-    let floor = 1;
+
+    if (this.currentFloorId < 0) {
+      return;
+    }
+
     //console.log("mouseClickedCtrl! - POS: " + JSON.stringify(position));
     let center = {
       "type": "Point",
@@ -264,7 +271,7 @@ export class MapNodes {
     console.log("mouseClicked Add new node: " + JSON.stringify(center) +
       "   SplitEdgeID: " + highlightedEdgeId);
     //Add edge to new Node
-    this.mapService.addNode(floor, center).
+    this.mapService.addNode(this.currentFloorId, center).
       subscribe(
       node => this.updateAddNode(node, selectedFeature, highlightedEdgeId),
       error => console.log("ERROR: " + <any>error));
@@ -288,6 +295,10 @@ export class MapNodes {
     let features = evt.selected;
     if (features.length > 0) {
       console.log("Feature selected => " + features[0].getId());
+      if (this.mapRoute.doShowRoute()) {
+        this.mapRoute.generateRoute(features[0].getId());
+      }
+      this.mapRoute.setNewStartPos(features[0].getId());
     }
   }
 

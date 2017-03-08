@@ -17,6 +17,7 @@ export class MapHttpService extends MapService {
   private edgeUrl = '/geo/edges/';
   private nodeUrl = '/geo/nodes/';
   private floorUrl = '/geo/floors/';
+  private routeUrl = '/geo/routing/edges/';
 
   constructor(private http: Http) {
     super();
@@ -43,6 +44,13 @@ export class MapHttpService extends MapService {
   getFloors(): Observable<Floor[]> {
     return this.http.get(this.floorUrl)
       .map(this.extractDataFloors)
+      .catch(this.handleError);
+  }
+
+  getRoute(sourceNodeId: number, destinationNodeId: number): Observable<Object> {
+    console.log("Get Route HTTP!");
+    return this.http.get(this.routeUrl + '?from=' + sourceNodeId + '&to=' + destinationNodeId)
+      .map(this.extractData)
       .catch(this.handleError);
   }
 

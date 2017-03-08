@@ -120,6 +120,10 @@ export class EditablemapComponent implements OnInit {
       this.ctlPressed = true;
       this.mapNodes.ctlPressed();
     }
+
+    if (event.keyCode == 16) {
+      this.mapRoute.shiftPressed();
+    }
   }
 
   /*
@@ -141,6 +145,10 @@ export class EditablemapComponent implements OnInit {
     {
       this.mapNodes.deleteSelectedNodes();
       this.mapEdges.deleteSelectedEdges();
+    }
+
+    if (event.keyCode == 16) {
+      this.mapRoute.shiftReleased();
     }
 
     if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES && event.keyCode == 88) { //x Key

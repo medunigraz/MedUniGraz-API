@@ -25,7 +25,7 @@ export class MapService {
 
   getBaseMap(layer: number): Promise<Object> {
     return new Promise<Object>(resolve =>
-      setTimeout(resolve, 1000)) // delay 2 seconds
+      setTimeout(resolve, 200)) // delay 2 seconds
       .then(() => this.getBaseMapIntern(layer));
   }
 
@@ -54,10 +54,9 @@ export class MapService {
     return Observable.of(NAVIGATIONEDGES_DEMO);
   }
 
-  getRoute(): Promise<Object[]> {
-    return new Promise<Array<string>>(resolve =>
-      setTimeout(resolve, 300)) // delay 2 seconds
-      .then(() => Promise.resolve(DEMOROUTE));
+  getRoute(sourceNodeId: number, destinationNodeId: number): Observable<Object> {
+    console.log("Get Route Local!");
+    return Observable.of(DEMOROUTE);
   }
 
   searchRoom(term: string): Observable<Room[]> {
