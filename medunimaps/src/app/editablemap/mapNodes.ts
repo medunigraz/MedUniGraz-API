@@ -27,6 +27,8 @@ export class MapNodes {
   private lastMousePostion: number[] = [0, 0];
 
   private currentFloorId: number = -1;
+  private ctrlPressed: boolean = false;
+  private lastSelectedNode: any = null;
 
   constructor(private mapService: MapService,
     private mapEditEdges: MapEditEdges,
@@ -131,6 +133,10 @@ export class MapNodes {
         this.addNewNodeOnPos(selectedFeature, position);
       }
     }
+    else if (this.lastSelectedNode && this.highlightedFeature && this.ctrlPressed) {
+      this.selectNewNode(this.highlightedFeature);
+      this.addNewEdge(this.lastSelectedNode, this.highlightedFeature);
+    }
     else if (!this.highlightedFeature) {
       this.mapEdges.updateMouseClicked(map);
     }
@@ -140,6 +146,7 @@ export class MapNodes {
   }
 
   public ctlPressed() {
+    this.ctrlPressed = true;
     let selectedFeatures = this.select.getFeatures().getArray();
     if (selectedFeatures.length >= 1) {
       this.displayEditLines = true;
@@ -151,6 +158,7 @@ export class MapNodes {
   }
 
   public ctlReleased() {
+    this.ctrlPressed = false;
     console.log("ctlReleased...");
     this.displayEditLines = false;
     this.mapEditEdges.clear();
@@ -295,6 +303,7 @@ export class MapNodes {
     let features = evt.selected;
     if (features.length > 0) {
       console.log("Feature selected => " + features[0].getId());
+      this.lastSelectedNode = features[0];
       if (this.mapRoute.doShowRoute()) {
         this.mapRoute.generateRoute(features[0].getId());
       }

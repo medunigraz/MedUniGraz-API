@@ -12,6 +12,7 @@ export class MapRoute {
   private layerSource: any;
 
   private currentStartNodeId: number = -1;
+  private currentFloorId: number = -1;
   private createRoute: boolean = false;
 
   constructor(private mapService: MapService) {
@@ -20,12 +21,27 @@ export class MapRoute {
 
   private Initialize(): void {
 
-    let styleFunction = function(feature) {
-      return MapRouteStyles.routeCurrentFloor;
-      //return MapRouteStyles.routeHiddenFloor;
+    let styleFunction = function(feature, currentFloor) {
+      let style: any = null;
+      try {
+        let source = feature.get("source_node").properties.floor;
+        let destination = feature.get("destination_node").properties.floor;
+
+        if (source == currentFloor || destination == currentFloor) {
+          style = MapRouteStyles.routeCurrentFloor;
+        }
+      }
+      catch (e) {
+      }
+      if (style) {
+        return style;
+      }
+      else {
+        return MapRouteStyles.routeHiddenFloor;
+      }
     };
 
-    let res = OpenlayersHelper.CreateBasicLayer(styleFunction);
+    let res = OpenlayersHelper.CreateBasicLayer(feature => styleFunction(feature, this.currentFloorId));
     this.layerSource = res.layerSource;
     this.layer = res.layer;
   }
@@ -57,13 +73,17 @@ export class MapRoute {
     }
   }
 
-
   public clear() {
     this.layerSource.clear();
   }
 
   public getLayer(): any {
     return this.layer;
+  }
+
+  public setCurrentFloor(floor: number) {
+    this.currentFloorId = floor;
+    this.layerSource.refresh();
   }
 
   private updateRoute(route: any) {

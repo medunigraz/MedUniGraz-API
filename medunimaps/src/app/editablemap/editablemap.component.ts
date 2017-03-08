@@ -109,6 +109,7 @@ export class EditablemapComponent implements OnInit {
       this.mapWalls.updateData(currentFloor.id);
       this.mapEdges.updateData(currentFloor.id);
       this.mapNodes.updateData(currentFloor.id);
+      this.mapRoute.setCurrentFloor(currentFloor.id);
     }
   }
 

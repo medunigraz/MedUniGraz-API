@@ -13,7 +13,7 @@ export class MapRouteStyles {
     stroke: new ol.style.Stroke({
       color: 'green',
       width: 3,
-      lineDash: [3, 2]
+      lineDash: [3, 5]
     })
   });
 
