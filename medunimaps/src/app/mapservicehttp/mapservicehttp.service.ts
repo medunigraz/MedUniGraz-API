@@ -13,11 +13,12 @@ import { Floor } from '../base/floor';
 @Injectable()
 export class MapHttpService extends MapService {
 
-  private roomUrl = '/geo/rooms/';  // URL to web API
-  private edgeUrl = '/geo/edges/';
-  private nodeUrl = '/geo/nodes/';
-  private floorUrl = '/geo/floors/';
-  private routeUrl = '/geo/routing/edges/';
+  private baseUrl = '/api/v1'
+  private roomUrl = this.baseUrl + '/geo/rooms/';  // URL to web API
+  private edgeUrl = this.baseUrl + '/geo/edges/';
+  private nodeUrl = this.baseUrl + '/geo/nodes/';
+  private floorUrl = this.baseUrl + '/geo/floors/';
+  private routeUrl = this.baseUrl + '/geo/routing/edges/';
 
   constructor(private http: Http) {
     super();

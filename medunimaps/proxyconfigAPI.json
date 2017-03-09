@@ -1,6 +1,6 @@
 {
   "/api/*": {
-    "target": "http://hetzner.fladi.at:8088/",
+    "target": "https://api.medunigraz.at",
     "changeOrigin": true,
     "secure": false,
     "logLevel": "debug"
