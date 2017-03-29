@@ -1,0 +1,10 @@
+#controlBox {
+    left: 0;
+    margin: 16px;
+    position: absolute;
+    top: 0;
+
+    z-index: 10;
+
+    background-color: white;
+}
