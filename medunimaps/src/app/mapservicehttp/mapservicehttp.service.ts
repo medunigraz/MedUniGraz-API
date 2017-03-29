@@ -13,7 +13,7 @@ import { Floor } from '../base/floor';
 @Injectable()
 export class MapHttpService extends MapService {
 
-  private baseUrl = '/api/v1'
+  private baseUrl = '/v1'
   private roomUrl = this.baseUrl + '/geo/rooms/';  // URL to web API
   private edgeUrl = this.baseUrl + '/geo/edges/';
   private nodeUrl = this.baseUrl + '/geo/nodes/';
@@ -143,7 +143,9 @@ export class MapHttpService extends MapService {
 
     console.log("RESPONSE DATA: " + JSON.stringify(body));
 
-    //return body.results || {};
+    if (body.results) {
+      return body.results || {};
+    }
     return body || {};
   }
 
@@ -162,6 +164,9 @@ export class MapHttpService extends MapService {
 
   private extractDataFloors(res: Response) {
     let body = res.json();
+    if (body.results) {
+      body = body.results;
+    }
     console.log("RESPONSE DATA FLOORS: " + JSON.stringify(body));
     let floors: Floor[] = [];
     for (let obj of body) {

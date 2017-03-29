@@ -28,7 +28,7 @@ export class MapEdges {
       stroke: new ol.style.Stroke({
         color: 'black',
         width: 2,
-        lineDash: [4, 3]
+        lineDash: [2, 5]
       })
     }));
     this.layerSource = res.layerSource;

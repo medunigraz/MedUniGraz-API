@@ -4,7 +4,7 @@ export class MapRouteStyles {
   public static routeCurrentFloor: any = new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: 'green',
-      width: 3
+      width: 5
     })
   });
 
@@ -12,8 +12,8 @@ export class MapRouteStyles {
   public static routeHiddenFloor: any = new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: 'green',
-      width: 3,
-      lineDash: [3, 5]
+      width: 5,
+      lineDash: [3, 7]
     })
   });
 

@@ -1,5 +1,5 @@
 {
-  "/api/*": {
+  "/v1/*": {
     "target": "https://api.medunigraz.at",
     "changeOrigin": true,
     "secure": false,

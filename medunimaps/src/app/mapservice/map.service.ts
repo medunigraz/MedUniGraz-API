@@ -78,7 +78,25 @@ export class MapService {
   }
 
   getNavigationNodes(layer: number): Observable<Object> {
-    return null;
+    return Observable.of({
+      'geojson': {
+        'type': 'FeatureCollection',
+        'crs': {
+          'type': 'name',
+          'properties': {
+            'name': 'EPSG:3857'
+          }
+        },
+        'features': [{
+          'type': 'Feature',
+          'geometry': {
+            'type': 'LineString',
+            'coordinates': [
+            ]
+          }
+        }]
+      }
+    });
   }
 
   addNode(floor: number, center: any): Observable<Object> {

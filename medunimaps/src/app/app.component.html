@@ -5,9 +5,7 @@
 
 <app-editablemap #mapComp [applicationMode]="currentAppMode" [currentFloor]="currentFloor"></app-editablemap>
 <app-floorselector (currentFloorEvt)="floorChanged($event)"></app-floorselector>
-
 <app-modeselector (currentAppModeEvt)="appModeChanged($event)"></app-modeselector>
-<!---->
 
 <md-toolbar class = "header-toolbar">
   <span>Medcampus</span>

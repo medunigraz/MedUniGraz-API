@@ -30,6 +30,8 @@ Available options
     --target: string, default development, environment to use
     --watch: boolean, default false, watch files for changes and rebuild when a change is detected
 
+ng build --target=production --base-href=mapeditor
+
 
 ## Running unit tests
 
