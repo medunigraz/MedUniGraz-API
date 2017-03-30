@@ -1,0 +1,151 @@
+
+/*
+  controlBox
+*/
+
+#controlBox {
+    left: 0;
+    margin: 1em;
+    position: absolute;
+    top: 0;
+
+    z-index: 10;
+
+    background-color: white;
+    text-align: left;
+
+    border: 2px;
+    border-color: black;
+    box-shadow: 1px 1px 1px #888888;
+}
+
+/*
+  controlBox Tabelle
+*/
+
+#controlBoxTable
+{
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  border: 1px solid silver;
+  border-spacing: 0;
+}
+
+#controlBoxTableBody
+{
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  font-size: small;
+}
+
+/*
+  controlBox Suchzeile
+*/
+
+
+.controlBoxTableSearchRow
+{
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  border-bottom: 2px;
+  text-align:left;
+  vertical-align:middle;
+}
+
+
+/*
+  controlBox Ergebniszeilen
+*/
+
+
+.controlBoxTableResultRow
+{
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  text-align:left;
+  vertical-align:middle;
+}
+
+
+.controlBoxCenterCol
+{
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  min-width: 5em;
+  width: 20em;
+}
+
+.resultBoxCenter
+{
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  min-width: 5em;
+  width: 17em;
+}
+
+/*
+  Steuerelemente
+*/
+
+#searchInput
+{
+  border: medium none;
+  padding: 0px;
+  margin: 0px;
+  height: auto;
+  width: 100%;
+  z-index: 20;
+  background-color: transparent;
+  text-align: left;
+  left: 0px;
+  font-size: medium;
+}
+
+#searchInput:focus{ outline-width: 0; }
+#searchInput::-webkit-input-placeholder { font-size: small; }
+#searchInput::-moz-placeholder {font-size: small; }
+#searchInput:-ms-input-placeholder { font-size: small; }
+#searchInput:-moz-placeholder { font-size: small; }
+
+.controlBoxButton
+{
+  padding: 0 0;
+  min-width: 3em;
+  color: #51AE32;
+}
+
+.controlBoxResultButton
+{
+  width: 100%;
+  text-align: left;
+  padding: 0;
+}
+
+.controlBoxHeaderSpacer
+{
+  width: 100%;
+  color: rgba(0, 0, 0, 0);
+  height: 1px;
+
+  background-color: black;
+}
+
+.controlBoxResultSpacer
+{
+  width: 100%;
+  color: rgba(0, 0, 0, 0);
+  height: 1px;
+
+  background-color: #51AE32;
+}
+
+.controlBoxResultText
+{
+  white-space: normal;
+}

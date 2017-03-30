@@ -1,0 +1,48 @@
+<div id="controlBox" class="noprint">
+  <table id = "controlBoxTable">
+    <tbody id = "controlBoxTableBody">
+      <tr class="controlBoxTableSearchRow">
+        <td class="controlBoxLeftCol">
+          <button class="controlBoxButton" md-button><md-icon>more_vert</md-icon></button>
+        </td>
+        <td class="controlBoxCenterCol">
+          <input id="searchInput" autocomplete="off" placeholder="Suche nach Räumen, Personen, Instituten, ..." mdInput [formControl]="term">
+        </td>
+        <td class="controlBoxRightCol">
+          <button class="controlBoxButton" md-button><md-icon>search</md-icon></button>
+        </td>
+      </tr>
+
+      <tr *ngIf="showResults">
+        <td colspan="3">
+          <div class="controlBoxHeaderSpacer"></div>
+        </td>
+      </tr>
+
+
+      <!--
+      <template *ngFor="let result of searchResults">
+      -->
+      <template ngFor let-result [ngForOf]="searchResults">
+        <tr class="controlBoxTableResultRow" >
+          <td class="controlBoxLeftResultCol">
+            <button class="controlBoxButton" md-button><md-icon>room</md-icon></button>
+          </td>
+          <td class="controlBoxCenterResultCol">
+            <button class="controlBoxResultButton" md-button>
+              <span class="controlBoxResultText">{{result.text}}</span>
+            </button>
+          </td>
+          <td class="controlBoxLeftResultCol">
+            <button class="controlBoxButton" md-button><md-icon>navigation</md-icon></button>
+          </td>
+        </tr>
+        <tr *ngIf="!result.lastElem">
+          <td colspan="3">
+            <div class="controlBoxResultSpacer"></div>
+          </td>
+        </tr>
+      </template>
+    </tbody>
+  </table>
+</div>

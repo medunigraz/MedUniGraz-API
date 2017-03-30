@@ -1,2 +1,10 @@
 @import '~https://fonts.googleapis.com/icon?family=Material+Icons';
 @import '~@angular/material/core/theming/prebuilt/deeppurple-amber.css';
+
+/*
+  Global
+*/
+
+html, body {
+    font-family: Roboto,Arial,sans-serif;
+}
