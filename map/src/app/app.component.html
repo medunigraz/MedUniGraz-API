@@ -1,3 +1,4 @@
 <app-olmap></app-olmap>
-<app-searchcontrol></app-searchcontrol>
-<app-floorcontrol></app-floorcontrol>
+<app-searchcontrol (openSideMenuEvt)="openSideMenu($event)">></app-searchcontrol>
+<app-floorcontrol (currentFloorEvt)="floorChanged($event)"></app-floorcontrol>
+<app-sidemenu [updateSideMenu]="isSideMenuOpenend"></app-sidemenu>

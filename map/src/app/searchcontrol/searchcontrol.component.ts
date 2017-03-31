@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl }       from '@angular/forms';
 import { Subject }           from 'rxjs/Subject';
 import { Observable } from 'rxjs';
@@ -16,6 +16,8 @@ export class SearchcontrolComponent implements OnInit {
   private showResults: boolean = false;
   private searchTerms = new Subject<string>();
   private term = new FormControl();
+
+  @Output() openSideMenuEvt = new EventEmitter<boolean>();
 
   constructor() { }
 
@@ -51,8 +53,17 @@ export class SearchcontrolComponent implements OnInit {
     this.searchResults = items;
   }
 
-  select(selected: string) {
-    console.log('SearchComponent::select:' + selected);
+  select(selected: SearchResult) {
+    console.log('SearchComponent::select:' + selected.text);
+  }
+
+  route(selected: SearchResult) {
+    console.log('SearchComponent::route:' + selected.text);
+  }
+
+  openSideMenu() {
+    console.log("SearchcontrolComponent::openSideMenu()")
+    this.openSideMenuEvt.emit(true);
   }
 
 }

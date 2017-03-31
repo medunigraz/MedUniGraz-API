@@ -10,13 +10,15 @@ import { AppComponent } from './app.component';
 import { OlmapComponent } from './olmap/olmap.component';
 import { SearchcontrolComponent } from './searchcontrol/searchcontrol.component';
 import { FloorcontrolComponent } from './floorcontrol/floorcontrol.component';
+import { SidemenuComponent } from './sidemenu/sidemenu.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     OlmapComponent,
     SearchcontrolComponent,
-    FloorcontrolComponent
+    FloorcontrolComponent,
+    SidemenuComponent
   ],
   imports: [
     BrowserModule,

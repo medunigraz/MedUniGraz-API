@@ -3,7 +3,7 @@
     <tbody id="controlBoxTableBody">
       <tr class="controlBoxTableSearchRow">
         <td class="controlBoxLeftCol">
-          <button class="controlBoxButton" md-button><md-icon>more_vert</md-icon></button>
+          <button class="controlBoxButton" (click)="openSideMenu()" md-button><md-icon>more_vert</md-icon></button>
         </td>
         <td class="controlBoxCenterCol">
           <input id="searchInput" autocomplete="off" placeholder="Suche nach Räumen, Personen, Instituten, ..." mdInput [formControl]="term">
@@ -22,19 +22,19 @@
       <template ngFor let-result [ngForOf]="searchResults">
         <tr class="controlBoxTableResultRow" >
           <td class="controlBoxLeftResultCol">
-            <button class="controlBoxButton" md-button>
+            <button class="controlBoxButton" (click)="select(result)" md-button>
               <md-icon *ngIf="result.type == 0">room</md-icon>
               <md-icon *ngIf="result.type == 1">person</md-icon>
               <md-icon *ngIf="result.type == 2">group</md-icon>
             </button>
           </td>
           <td class="controlBoxCenterResultCol">
-            <button class="controlBoxResultButton" md-button>
+            <button class="controlBoxResultButton" (click)="select(result)" md-button>
               <span class="controlBoxResultText">{{result.text}}</span>
             </button>
           </td>
           <td class="controlBoxLeftResultCol">
-            <button class="controlBoxButton" md-button><md-icon>navigation</md-icon></button>
+            <button class="controlBoxButton"  (click)="route(result)" md-button><md-icon>navigation</md-icon></button>
           </td>
         </tr>
         <tr *ngIf="!result.lastElem">
