@@ -14,9 +14,4 @@ export class SidemenuComponent implements OnInit {
   ngOnInit() {
   }
 
-  @Input()
-  set updateSideMenu(open: boolean) {
-    console.log("SidemenuComponent::updateSideMenu - Open: " + open);
-  }
-
 }

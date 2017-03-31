@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { ViewChild, Component } from '@angular/core';
 import { Floor } from './base/floor';
+import {OlmapComponent} from './olmap/olmap.component'
+
+import {MdSidenav } from '@angular/material/sidenav'
 
 @Component({
   selector: 'app-root',
@@ -7,7 +10,9 @@ import { Floor } from './base/floor';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app works!';
+
+  @ViewChild('sidenav') public sideNav: MdSidenav;
+  @ViewChild('mapComp') public mapComponent: OlmapComponent;
 
   private isSideMenuOpenend: boolean = false;
 
@@ -22,5 +27,12 @@ export class AppComponent {
 
     console.log("AppComponent --- open Side Menu..." + open);
     this.isSideMenuOpenend = open;
+    this.sideNav.open();
   }
+
+  sideNavClosed() {
+    console.log("AppComponent --- Side Nav closed");
+    this.mapComponent.setFocus();
+  }
+
 }

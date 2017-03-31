@@ -1,4 +1,9 @@
-<app-olmap></app-olmap>
-<app-searchcontrol (openSideMenuEvt)="openSideMenu($event)">></app-searchcontrol>
-<app-floorcontrol (currentFloorEvt)="floorChanged($event)"></app-floorcontrol>
-<app-sidemenu [updateSideMenu]="isSideMenuOpenend"></app-sidemenu>
+<md-sidenav-container class="mainSideNavContainer">
+  <md-sidenav #sidenav mode="over" opened="false" (close)="sideNavClosed()">
+    <app-sidemenu></app-sidemenu>
+  </md-sidenav>
+
+  <app-olmap #mapComp></app-olmap>
+  <app-searchcontrol (openSideMenuEvt)="openSideMenu($event)">></app-searchcontrol>
+  <app-floorcontrol (currentFloorEvt)="floorChanged($event)"></app-floorcontrol>
+</md-sidenav-container>

@@ -10,6 +10,8 @@ declare var ol: any;
 })
 export class OlmapComponent implements OnInit {
 
+  @ViewChild('mapDiv') public mapDiv: ElementRef;
+
   constructor() { }
 
   ngOnInit() {
@@ -45,6 +47,10 @@ export class OlmapComponent implements OnInit {
       })
     });
 
+  }
+
+  setFocus(): void {
+    this.mapDiv.nativeElement.focus();
   }
 
 }
