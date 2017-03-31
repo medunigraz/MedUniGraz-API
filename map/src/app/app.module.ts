@@ -9,12 +9,14 @@ import { MaterialModule } from '@angular/material';
 import { AppComponent } from './app.component';
 import { OlmapComponent } from './olmap/olmap.component';
 import { SearchcontrolComponent } from './searchcontrol/searchcontrol.component';
+import { FloorcontrolComponent } from './floorcontrol/floorcontrol.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     OlmapComponent,
-    SearchcontrolComponent
+    SearchcontrolComponent,
+    FloorcontrolComponent
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,6 @@
 <div id="controlBox" class="noprint">
-  <table id = "controlBoxTable">
-    <tbody id = "controlBoxTableBody">
+  <table id="controlBoxTable">
+    <tbody id="controlBoxTableBody">
       <tr class="controlBoxTableSearchRow">
         <td class="controlBoxLeftCol">
           <button class="controlBoxButton" md-button><md-icon>more_vert</md-icon></button>
@@ -19,14 +19,14 @@
         </td>
       </tr>
 
-
-      <!--
-      <template *ngFor="let result of searchResults">
-      -->
       <template ngFor let-result [ngForOf]="searchResults">
         <tr class="controlBoxTableResultRow" >
           <td class="controlBoxLeftResultCol">
-            <button class="controlBoxButton" md-button><md-icon>room</md-icon></button>
+            <button class="controlBoxButton" md-button>
+              <md-icon *ngIf="result.type == 0">room</md-icon>
+              <md-icon *ngIf="result.type == 1">person</md-icon>
+              <md-icon *ngIf="result.type == 2">group</md-icon>
+            </button>
           </td>
           <td class="controlBoxCenterResultCol">
             <button class="controlBoxResultButton" md-button>

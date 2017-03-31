@@ -1,30 +1,25 @@
-
 /*
   controlBox
 */
 
 #controlBox {
-    left: 0;
-    margin: 1em;
-    position: absolute;
-    top: 0;
-
-    z-index: 10;
-
-    background-color: white;
-    text-align: left;
-
-    border: 2px;
-    border-color: black;
-    box-shadow: 1px 1px 1px #888888;
+  left: 0;
+  margin: 1em;
+  position: absolute;
+  top: 0;
+  z-index: 10;
+  background-color: white;
+  text-align: left;
+  border: medium medium;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
+
 
 /*
   controlBox Tabelle
 */
 
-#controlBoxTable
-{
+#controlBoxTable {
   padding: 0px;
   margin: 0px;
   border: 0px;
@@ -32,27 +27,25 @@
   border-spacing: 0;
 }
 
-#controlBoxTableBody
-{
+#controlBoxTableBody {
   padding: 0px;
   margin: 0px;
   border: 0px;
   font-size: small;
 }
 
+
 /*
   controlBox Suchzeile
 */
 
-
-.controlBoxTableSearchRow
-{
+.controlBoxTableSearchRow {
   padding: 0px;
   margin: 0px;
   border: 0px;
   border-bottom: 2px;
-  text-align:left;
-  vertical-align:middle;
+  text-align: left;
+  vertical-align: middle;
 }
 
 
@@ -60,19 +53,15 @@
   controlBox Ergebniszeilen
 */
 
-
-.controlBoxTableResultRow
-{
+.controlBoxTableResultRow {
   padding: 0px;
   margin: 0px;
   border: 0px;
-  text-align:left;
-  vertical-align:middle;
+  text-align: left;
+  vertical-align: middle;
 }
 
-
-.controlBoxCenterCol
-{
+.controlBoxCenterCol {
   padding: 0px;
   margin: 0px;
   border: 0px;
@@ -80,8 +69,7 @@
   width: 20em;
 }
 
-.resultBoxCenter
-{
+.resultBoxCenter {
   padding: 0px;
   margin: 0px;
   border: 0px;
@@ -89,12 +77,12 @@
   width: 17em;
 }
 
+
 /*
   Steuerelemente
 */
 
-#searchInput
-{
+#searchInput {
   border: medium none;
   padding: 0px;
   margin: 0px;
@@ -107,45 +95,52 @@
   font-size: medium;
 }
 
-#searchInput:focus{ outline-width: 0; }
-#searchInput::-webkit-input-placeholder { font-size: small; }
-#searchInput::-moz-placeholder {font-size: small; }
-#searchInput:-ms-input-placeholder { font-size: small; }
-#searchInput:-moz-placeholder { font-size: small; }
+#searchInput:focus {
+  outline-width: 0;
+}
 
-.controlBoxButton
-{
+#searchInput::-webkit-input-placeholder {
+  font-size: small;
+}
+
+#searchInput::-moz-placeholder {
+  font-size: small;
+}
+
+#searchInput:-ms-input-placeholder {
+  font-size: small;
+}
+
+#searchInput:-moz-placeholder {
+  font-size: small;
+}
+
+.controlBoxButton {
   padding: 0 0;
   min-width: 3em;
   color: #51AE32;
 }
 
-.controlBoxResultButton
-{
+.controlBoxResultButton {
   width: 100%;
   text-align: left;
   padding: 0;
 }
 
-.controlBoxHeaderSpacer
-{
+.controlBoxHeaderSpacer {
   width: 100%;
   color: rgba(0, 0, 0, 0);
   height: 1px;
-
   background-color: black;
 }
 
-.controlBoxResultSpacer
-{
+.controlBoxResultSpacer {
   width: 100%;
   color: rgba(0, 0, 0, 0);
   height: 1px;
-
   background-color: #51AE32;
 }
 
-.controlBoxResultText
-{
+.controlBoxResultText {
   white-space: normal;
 }

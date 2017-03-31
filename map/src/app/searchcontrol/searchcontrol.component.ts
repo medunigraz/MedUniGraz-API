@@ -34,8 +34,8 @@ export class SearchcontrolComponent implements OnInit {
     }
     if (term.length == 1) {
       return Observable.of([new SearchResult("Hörsaal 1 (MC1.A.EG.001)", 0),
-        new SearchResult("Hörsaal 2 (MC1.A.EG.002)", 0),
-        new SearchResult("Hörsaal 3 (MC1.A.EG.003)", 0),
+        new SearchResult("Dr. Igor Tester", 1),
+        new SearchResult("Institut für Physiologische Chemie", 2),
         new SearchResult("Hörsaal 4 (MC1.A.EG.004)", 0),
         new SearchResult("Hörsaal 5 (MC1.A.EG.005)", 0)]);
     }
