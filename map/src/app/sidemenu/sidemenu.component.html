@@ -1,3 +1,57 @@
-<p>
-  sidemenu works!
-</p>
+<div id="sideMenuDiv">
+
+  <section class="sideMenuHeaderSection">
+    <div class="sideMenuRowContent">
+      <img src="/assets/HeaderLogo.jpg" alt="logo">
+      <div class="poiTableHeaderSpacer"></div>
+      <!--
+      <button class="closeSideMenuButton" (click)="close()" md-button>
+        <md-icon>first_page</md-icon>
+      </button>
+    -->
+      <p class="poiHeader">Interessante Punkte</p>
+    </div>
+  </section>
+  <section class="sideMenuCenterSection">
+    <div class="sideMenuRowContent l-scroll">
+      <div class="sideMenuCenterScrollContent">
+        <table class="poiTable">
+          <tbody>
+            <tr>
+              <td colspan="3">
+                <div class="poiTableRowSpacer"></div>
+              </td>
+            </tr>
+            <template ngFor let-poi [ngForOf]="pois">
+            <tr>
+              <td>
+
+                <md-checkbox [(ngModel)]="poi.isActive" (change)="updatePOIs()"></md-checkbox>
+
+              </td>
+              <td>
+                <md-icon class="poiIcon">{{poi.icon}}</md-icon>
+              </td>
+              <td>
+                <span>{{poi.name}}</span>
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="3">
+                <div class="poiTableRowSpacer"></div>
+              </td>
+            </tr>
+          </template>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  <section class="sideMenuFooterSection">
+    <div class="sideMenuRowContent">
+      <p class="copyright">© 2017 Medizinische Universität Graz</p>
+    </div>
+  </section>
+</div>

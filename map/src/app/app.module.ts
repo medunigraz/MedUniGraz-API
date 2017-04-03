@@ -6,6 +6,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { MaterialModule } from '@angular/material';
 
+import { MapService } from './mapservice/map.service';
+
 import { AppComponent } from './app.component';
 import { OlmapComponent } from './olmap/olmap.component';
 import { SearchcontrolComponent } from './searchcontrol/searchcontrol.component';
@@ -27,7 +29,7 @@ import { SidemenuComponent } from './sidemenu/sidemenu.component';
     ReactiveFormsModule,
     MaterialModule.forRoot()
   ],
-  providers: [],
+  providers: [MapService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -111,8 +111,16 @@
   font-size: small;
 }
 
+#searchInput::-ms-input-placeholder { /* Edge */
+    font-size: small;
+}
+
 #searchInput:-moz-placeholder {
   font-size: small;
+}
+
+#searchInput::placeholder {
+    font-size: small;
 }
 
 .controlBoxButton {

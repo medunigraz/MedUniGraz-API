@@ -1,0 +1,99 @@
+/*
+  Table
+*/
+
+#sideMenuDiv {
+  display: table;
+  height: 100%;
+  max-width: 90%;
+}
+
+.sideMenuHeaderSection {
+  display: table-row;
+  height: 1px;
+}
+
+.sideMenuRowContent {
+  /* Firefox requires this */
+  display: table-cell;
+}
+
+.sideMenuCenterSection {
+  height: 100%;
+  display: table-row;
+}
+
+.sideMenuCenterSection>.sideMenuRowContent {
+  height: 100%;
+  width: 100%;
+}
+
+.l-scroll {
+  overflow-y: auto;
+  position: relative;
+  height: 100px;
+}
+
+@-moz-document url-prefix() {
+  .l-scroll {
+    display: inline-block !important;
+  }
+}
+
+.sideMenuCenterScrollContent {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+/*
+  Controls
+*/
+
+.poiTable
+{
+  width: 100%;
+}
+
+.poiTableHeaderSpacer {
+  width: 100%;
+  color: rgba(0, 0, 0, 0);
+  height: 1px;
+  background-color: black;
+}
+
+.poiTableRowSpacer {
+  width: 100%;
+  color: rgba(0, 0, 0, 0);
+  height: 1px;
+  background-color: #51AE32;
+}
+
+.poiHeader
+{
+  padding: 0.5em;
+  margin: 0;
+}
+
+.copyright
+{
+  padding: 0.5em;
+  margin: 0;
+  font-size: x-small;
+}
+
+.poiIcon
+{
+  color: #51AE32;
+}
+
+.closeSideMenuButton
+{
+  z-index: 30;
+  position: absolute;
+  top: 0;
+  right: 2em;
+  padding: 0;
+  margin: 0;
+}
