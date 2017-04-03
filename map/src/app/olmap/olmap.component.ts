@@ -53,4 +53,12 @@ export class OlmapComponent implements OnInit {
     this.mapDiv.nativeElement.focus();
   }
 
+  showRoom(id: number) {
+    console.log("OlmapComponent::showRoom: " + id);
+  }
+
+  showRoute(from: number, to: number) {
+    console.log("OlmapComponent::showRoute: " + from + " --> " + to);
+  }
+
 }

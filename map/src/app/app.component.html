@@ -4,6 +4,6 @@
   </md-sidenav>
 
   <app-olmap #mapComp></app-olmap>
-  <app-searchcontrol (openSideMenuEvt)="openSideMenu($event)">></app-searchcontrol>
+  <app-searchcontrol [mapComponentRef]=mapComp (openSideMenuEvt)="openSideMenu($event)">></app-searchcontrol>
   <app-floorcontrol (currentFloorEvt)="floorChanged($event)"></app-floorcontrol>
 </md-sidenav-container>
