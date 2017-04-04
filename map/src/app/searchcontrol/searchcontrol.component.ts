@@ -60,7 +60,7 @@ export class SearchcontrolComponent implements OnInit {
 
   select(selected: SearchResult) {
     console.log('SearchComponent::select:' + selected.text);
-    this.mapComponentRef.showRoom(selected.id);
+    this.mapComponentRef.showRoom(selected.id, selected.text);
     this.term.setValue(selected.text, { "emitEvent": false });
     this.searchUpdateResults([]);
   }

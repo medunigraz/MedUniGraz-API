@@ -15,6 +15,7 @@ export class OlmapComponent implements OnInit {
 
   @ViewChild('mapDiv') public mapDiv: ElementRef;
   @ViewChild('roomPopup') public roomPopupDiv: ElementRef;
+  @ViewChild('roomPopupText') public roomPopupText: ElementRef;
 
   constructor() { }
 
@@ -29,7 +30,7 @@ export class OlmapComponent implements OnInit {
   ngAfterViewInit(): void {
 
     this.mapPois = new MapPois();
-    this.mapRoom = new MapRoom(this.roomPopupDiv);
+    this.mapRoom = new MapRoom(this.roomPopupDiv, this.roomPopupText);
 
     this.map = new ol.Map({
       controls: ol.control.defaults({
@@ -44,7 +45,8 @@ export class OlmapComponent implements OnInit {
         new ol.layer.Tile({
           source: new ol.source.OSM()
         }),
-        this.mapPois.getLayer()
+        this.mapPois.getLayer(),
+        this.mapRoom.getLayer()
       ],
       overlays: [this.mapRoom.getOverlay()],
       target: 'map',
@@ -64,9 +66,9 @@ export class OlmapComponent implements OnInit {
     this.mapDiv.nativeElement.focus();
   }
 
-  showRoom(id: number) {
-    console.log("OlmapComponent::showRoom: " + id);
-    this.mapRoom.showRoom(id);
+  showRoom(id: number, text: string) {
+    console.log("OlmapComponent::showRoom: " + id + "/" + text);
+    this.mapRoom.showRoom(id, text);
   }
 
   showRoute(from: number, to: number) {
