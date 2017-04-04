@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
 
 import { MapPois } from './mapPois';
+import { MapRoom } from './mapRoom';
 
 declare var ol: any;
 
@@ -13,10 +14,12 @@ declare var ol: any;
 export class OlmapComponent implements OnInit {
 
   @ViewChild('mapDiv') public mapDiv: ElementRef;
+  @ViewChild('roomPopup') public roomPopupDiv: ElementRef;
 
   constructor() { }
 
   private mapPois: MapPois = null;
+  private mapRoom: MapRoom = null;
 
   ngOnInit() {
   }
@@ -26,6 +29,7 @@ export class OlmapComponent implements OnInit {
   ngAfterViewInit(): void {
 
     this.mapPois = new MapPois();
+    this.mapRoom = new MapRoom(this.roomPopupDiv);
 
     this.map = new ol.Map({
       controls: ol.control.defaults({
@@ -42,7 +46,7 @@ export class OlmapComponent implements OnInit {
         }),
         this.mapPois.getLayer()
       ],
-      overlays: [],
+      overlays: [this.mapRoom.getOverlay()],
       target: 'map',
       view: new ol.View({
         projection: 'EPSG:900913',
@@ -62,10 +66,15 @@ export class OlmapComponent implements OnInit {
 
   showRoom(id: number) {
     console.log("OlmapComponent::showRoom: " + id);
+    this.mapRoom.showRoom(id);
   }
 
   showRoute(from: number, to: number) {
     console.log("OlmapComponent::showRoute: " + from + " --> " + to);
   }
 
+  closePopup() {
+    console.log("OlmapComponent::closePopup");
+    this.mapRoom.closePopup();
+  }
 }
