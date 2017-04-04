@@ -1,3 +1,7 @@
+# Icons
+
+https://mapicons.mapsmarker.com/
+
 # Atom Plugins
 
   atom-typescript

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
 
+import { MapPois } from './mapPois';
+
 declare var ol: any;
 
 @Component({
@@ -14,12 +16,16 @@ export class OlmapComponent implements OnInit {
 
   constructor() { }
 
+  private mapPois: MapPois = null;
+
   ngOnInit() {
   }
 
   private map: any;
 
   ngAfterViewInit(): void {
+
+    this.mapPois = new MapPois();
 
     this.map = new ol.Map({
       controls: ol.control.defaults({
@@ -33,7 +39,8 @@ export class OlmapComponent implements OnInit {
       layers: [
         new ol.layer.Tile({
           source: new ol.source.OSM()
-        })
+        }),
+        this.mapPois.getLayer()
       ],
       overlays: [],
       target: 'map',

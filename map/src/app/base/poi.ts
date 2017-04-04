@@ -16,52 +16,52 @@ export class Poi {
     return [new Poi({
       "id": 1,
       "name": "Lernplätze",
-      "icon": "local_library"
+      "icon": "assets/beergarden.png"
     }),
       new Poi({
         "id": 2,
         "name": "Servicestellen",
-        "icon": "info"
+        "icon": "assets/information.png"
       }),
       new Poi({
         "id": 3,
         "name": "Öffentliche Verkehrsmittel",
-        "icon": "directions_bus"
+        "icon": "assets/busstop.png"
       }),
       new Poi({
         "id": 4,
         "name": " Radabstellplatz",
-        "icon": "directions_bike"
+        "icon": "assets/parking_bicycle-2.png"
       }),
       new Poi({
         "id": 5,
         "name": "Zugänge",
-        "icon": "directions_walk"
+        "icon": "assets/entrance.png"
       }),
       new Poi({
         "id": 6,
         "name": "Barrierefreie Zugänge",
-        "icon": "accessible"
+        "icon": "assets/disability.png"
       }),
       new Poi({
         "id": 7,
         "name": "Aufzüge",
-        "icon": "place"
+        "icon": "assets/elevator.png"
       }),
       new Poi({
         "id": 8,
         "name": "Wickeltisch",
-        "icon": "child_friendly"
+        "icon": "assets/babymarkt_ausstattung.png"
       }),
       new Poi({
         "id": 9,
         "name": "Portier",
-        "icon": "person_pin"
+        "icon": "assets/sight-2.png"
       }),
       new Poi({
         "id": 9,
         "name": "WC",
-        "icon": "wc"
+        "icon": "assets/toilets.png"
       })
     ];
   }
