@@ -13,6 +13,7 @@ import { OlmapComponent } from './olmap/olmap.component';
 import { SearchcontrolComponent } from './searchcontrol/searchcontrol.component';
 import { FloorcontrolComponent } from './floorcontrol/floorcontrol.component';
 import { SidemenuComponent } from './sidemenu/sidemenu.component';
+import { RoomDialogComponent } from './room-dialog/room-dialog.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { SidemenuComponent } from './sidemenu/sidemenu.component';
     OlmapComponent,
     SearchcontrolComponent,
     FloorcontrolComponent,
-    SidemenuComponent
+    SidemenuComponent,
+    RoomDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -30,6 +32,7 @@ import { SidemenuComponent } from './sidemenu/sidemenu.component';
     MaterialModule.forRoot()
   ],
   providers: [MapService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [RoomDialogComponent]
 })
 export class AppModule { }

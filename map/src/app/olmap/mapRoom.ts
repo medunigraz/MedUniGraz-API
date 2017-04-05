@@ -1,6 +1,8 @@
 import { OpenlayersHelper } from './openlayershelper';
 import { ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
 
+import {OlmapComponent} from './olmap.component'
+
 declare var ol: any;
 
 export class MapRoom {
@@ -12,17 +14,16 @@ export class MapRoom {
 
   private currentOverlayText: string = "";
 
-  constructor(public roomPopupDiv: ElementRef, public roomContentSpan: ElementRef) {
+  private currentOverlayPosition: [number];
+
+  constructor(public roomPopupDiv: ElementRef, public roomContentSpan: ElementRef, private mapComponent: OlmapComponent) {
     this.Initialize();
   }
 
   private Initialize(): void {
     this.overlay = new ol.Overlay(/** @type {olx.OverlayOptions} */({
       element: this.roomPopupDiv.nativeElement,
-      autoPan: true,
-      autoPanAnimation: {
-        duration: 250
-      }
+      autoPan: false
     }));
 
     let res = OpenlayersHelper.CreateBasicLayer(new ol.style.Style({
@@ -39,10 +40,11 @@ export class MapRoom {
   }
 
   public showRoom(id: number, text: string) {
-
     this.currentOverlayText = text;
     this.roomContentSpan.nativeElement.innerHTML = this.currentOverlayText;
-    this.overlay.setPosition([1722195.294385298, 5955266.126823761]);
+    this.currentOverlayPosition = [1722195.294385298, 5955266.126823761];
+    this.overlay.setPosition(this.currentOverlayPosition);
+    this.mapComponent.zoomToPosition(this.currentOverlayPosition);
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(this.getDummyRoom()));
   }
 
@@ -55,7 +57,8 @@ export class MapRoom {
   }
 
   closePopup() {
-    this.overlay.setPosition(undefined);
+    this.currentOverlayPosition = undefined;
+    this.overlay.setPosition(this.currentOverlayPosition);
     return false;
   }
 
