@@ -113,6 +113,7 @@ export class OlmapComponent implements OnInit {
 
     dialogRef = this.dialog.open(RoomDialogComponent);
     dialogRef.afterClosed().subscribe(res => this.roomDialogClosed(res));
+    this.setFocus();
   }
 
   roomDialogClosed(res: any) {
