@@ -38,6 +38,8 @@ export class OlmapComponent implements OnInit {
     this.mapPois = new MapPois();
     this.mapRoom = new MapRoom(this.roomPopupDiv, this.roomPopupText, this);
 
+    let interactions = ol.interaction.defaults({ altShiftDragRotate: false, pinchRotate: false });
+
     this.mapView = new ol.View({
       projection: 'EPSG:900913',
       center: ol.proj.fromLonLat([15.47, 47.0805]),
@@ -54,6 +56,7 @@ export class OlmapComponent implements OnInit {
         }),
         zoom: false
       }),
+      interactions: interactions,
       //interactions: ol.interaction.defaults().extend([this.select, this.modify]),
       //controls: [],
       layers: [
