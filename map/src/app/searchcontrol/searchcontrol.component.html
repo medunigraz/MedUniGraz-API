@@ -6,10 +6,23 @@
           <button class="controlBoxButton" (click)="openSideMenu()" md-button><md-icon>more_vert</md-icon></button>
         </td>
         <td class="controlBoxCenterCol">
-          <input id="searchInput" autocomplete="off" placeholder="Suche nach Räumen, Personen, Instituten, ..." mdInput [formControl]="term">
+
+          <div *ngIf="isRoutingSearchBox" class="controlBoxCenterColHorizontalImg">
+            <img class="routeImage" src="assets/route_from_to.svg" alt="logo">
+          </div>
+
+          <div class="controlBoxCenterColHorizontalSearch">
+            <input *ngIf="isRoutingSearchBox" class="searchInput" autocomplete="off" placeholder="Startpunkt..." mdInput [formControl]="startPointTerm">
+            <div *ngIf="isRoutingSearchBox" class="controlBoxRouteSpacer"></div>
+
+            <input class="searchInput" [ngClass]="{'searchInputRoutingSource': isRoutingSearchBox }" autocomplete="off" placeholder="Suche Räume, Personen, Institute, ..." mdInput [formControl]="term">
+            <div class="controlBoxRouteSpacer"></div>
+          </div>
+
         </td>
         <td class="controlBoxRightCol">
-          <button class="controlBoxButton" md-button><md-icon>search</md-icon></button>
+          <button *ngIf="!isRoutingSearchBox" class="controlBoxButton" (click)="showCurrentResult()" md-button><md-icon>search</md-icon></button>
+          <button *ngIf="isRoutingSearchBox" class="controlBoxButton" (click)="closeBtnClicked()" md-button><md-icon>close</md-icon></button>
         </td>
       </tr>
 
