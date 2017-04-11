@@ -50,6 +50,12 @@ export class SearchcontrolComponent implements OnInit {
       .distinctUntilChanged()
       .flatMap(term => this.searchStartPoint(term))
       .subscribe(items => this.searchUpdateResultsStartPoint(items));
+
+  }
+
+  showRouteCalled(result: SearchResult) {
+    //console.log('SearchComponent::showRouteCalled: ' + result.text);
+    this.route(result);
   }
 
   search(term: string): Observable<SearchResult[]> {
@@ -150,7 +156,7 @@ export class SearchcontrolComponent implements OnInit {
 
   private showCurrentResult() {
     if (this.currentResult != null) {
-      this.mapComponentRef.showRoom(this.currentResult.id, this.currentResult.text);
+      this.mapComponentRef.showRoom(this.currentResult);
       this.term.setValue(this.currentResult.text, { "emitEvent": false });
       this.searchUpdateResults([]);
     }

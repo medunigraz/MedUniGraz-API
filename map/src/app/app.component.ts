@@ -1,8 +1,11 @@
 import { ViewChild, Component } from '@angular/core';
 import { Floor } from './base/floor';
 import {OlmapComponent} from './olmap/olmap.component'
+import {SearchcontrolComponent} from './searchcontrol/searchcontrol.component'
 
 import {MdSidenav } from '@angular/material/sidenav'
+
+import {SearchResult} from './base/searchresult';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +16,7 @@ export class AppComponent {
 
   @ViewChild('sidenav') public sideNav: MdSidenav;
   @ViewChild('mapComp') public mapComponent: OlmapComponent;
+  @ViewChild('searchBoxComp') public searchBoxComponent: SearchcontrolComponent;
 
   private isSideMenuOpenend: boolean = false;
 
@@ -33,6 +37,11 @@ export class AppComponent {
   sideNavClosed() {
     console.log("AppComponent --- Side Nav closed");
     this.mapComponent.setFocus();
+  }
+
+  showRouteCalled(result: SearchResult) {
+    //console.log('AppComponent::showRouteCalled: ' + result.text);
+    this.searchBoxComponent.showRouteCalled(result);
   }
 
 }

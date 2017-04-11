@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter } from '@angular/core';
+import { ViewChild, ElementRef, AfterViewInit, Input, Output } from '@angular/core';
 
 import { MapPois } from './mapPois';
 import { MapRoom } from './mapRoom';
@@ -7,6 +7,8 @@ import { MapRoom } from './mapRoom';
 import {MdDialog, MdDialogRef} from '@angular/material';
 
 import {RoomDialogComponent} from '../room-dialog/room-dialog.component'
+import {SearchResult} from '../base/searchresult';
+
 
 declare var ol: any;
 
@@ -21,7 +23,11 @@ export class OlmapComponent implements OnInit {
   @ViewChild('roomPopup') public roomPopupDiv: ElementRef;
   @ViewChild('roomPopupText') public roomPopupText: ElementRef;
 
+  @Output('onShowRoute') onShowRoute: EventEmitter<SearchResult> = new EventEmitter();
+
   constructor(private dialog: MdDialog) { }
+
+  private currentRoomMarkerResult: SearchResult = null;
 
   private mapPois: MapPois = null;
   private mapRoom: MapRoom = null;
@@ -77,17 +83,18 @@ export class OlmapComponent implements OnInit {
     this.mapDiv.nativeElement.focus();
   }
 
-  showRoom(id: number, text: string) {
-    console.log("OlmapComponent::showRoom: " + id + "/" + text);
-    this.mapRoom.showRoom(id, text);
+  showRoom(roomResult: SearchResult) {
+    //console.log("OlmapComponent::showRoom: " + roomResult.id + "/" + roomResult.text);
+    this.currentRoomMarkerResult = roomResult;
+    this.mapRoom.showRoom(roomResult.id, roomResult.text);
   }
 
   showRoute(from: number, to: number) {
-    console.log("OlmapComponent::showRoute: " + from + " --> " + to);
+    //console.log("OlmapComponent::showRoute: " + from + " --> " + to);
   }
 
   closePopup() {
-    console.log("OlmapComponent::closePopup");
+    //console.log("OlmapComponent::closePopup");
     this.mapRoom.closePopup();
   }
 
@@ -110,7 +117,7 @@ export class OlmapComponent implements OnInit {
   }
 
   openRoomDialog() {
-    console.log("OlmapComponent::openRoomDialog");
+    //console.log("OlmapComponent::openRoomDialog");
 
     let dialogRef: MdDialogRef<RoomDialogComponent>;
 
@@ -121,6 +128,10 @@ export class OlmapComponent implements OnInit {
 
   roomDialogClosed(res: any) {
     console.log("OlmapComponent::openRoomDialogClosed: " + JSON.stringify(res));
+    if (this.currentRoomMarkerResult != null && res == "Navigate...") {
+      //console.log("OlmapComponent::openRoomDialogClosed Emit Navigation Event!");
+      this.onShowRoute.emit(this.currentRoomMarkerResult);
+    }
   }
 
 }

@@ -3,7 +3,7 @@
     <app-sidemenu></app-sidemenu>
   </md-sidenav>
 
-  <app-olmap #mapComp></app-olmap>
-  <app-searchcontrol [mapComponentRef]=mapComp (openSideMenuEvt)="openSideMenu($event)">></app-searchcontrol>
+  <app-olmap #mapComp (onShowRoute)="showRouteCalled($event)"></app-olmap>
+  <app-searchcontrol #searchBoxComp [mapComponentRef]=mapComp (openSideMenuEvt)="openSideMenu($event)"></app-searchcontrol>
   <app-floorcontrol (currentFloorEvt)="floorChanged($event)"></app-floorcontrol>
 </md-sidenav-container>
