@@ -2,12 +2,20 @@ import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl }       from '@angular/forms';
 import { Subject }           from 'rxjs/Subject';
 import { Observable } from 'rxjs';
+import {Subscription} from "rxjs";
+import {TimerObservable} from "rxjs/observable/TimerObservable";
 
 import { OlmapComponent} from '../olmap/olmap.component';
 
 import {SearchResult} from '../base/searchresult';
 import {DefaultStartPointWithPos, DefaultStartPoint} from './searchcontrolconstants';
 
+
+export enum FocusStatus {
+  NONE = 1,
+  SEARCH = 2,
+  START = 3
+}
 
 @Component({
   selector: 'app-searchcontrol',
@@ -33,6 +41,10 @@ export class SearchcontrolComponent implements OnInit {
 
   private term = new FormControl();
   private startPointTerm = new FormControl();
+
+  private currentFocusStatus: FocusStatus = FocusStatus.NONE;
+
+  private unFocusTimerSubscription: Subscription;
 
   @Output() openSideMenuEvt = new EventEmitter<boolean>();
 
@@ -83,8 +95,8 @@ export class SearchcontrolComponent implements OnInit {
         DefaultStartPoint])
     };
     if (term.length == 1) {
-      return Observable.of([new SearchResult(0, "Aktueller Standort", 0),
-        new SearchResult(1, "Haupteingang", 1),
+      return Observable.of([DefaultStartPointWithPos,
+        DefaultStartPoint,
         new SearchResult(3, "Hörsaal 4 (MC1.A.EG.004)", 0),
         new SearchResult(4, "Hörsaal 5 (MC1.A.EG.005)", 0)]);
     }
@@ -97,14 +109,14 @@ export class SearchcontrolComponent implements OnInit {
       items[items.length - 1].lastElem = true;
     }
     this.searchResultsTo = items;
-
-    this.doShowResults(this.searchResultsTo); //TODO;
+    this.showResultTable();
   }
 
   searchUpdateResultsStartPoint(items: SearchResult[]) {
     console.log('searchResults Start Point: ');
 
     for (let i = 0; i < items.length; i++) {
+      items[i].lastElem = false;
       items[i].isStartPoint = true;
     }
 
@@ -112,6 +124,7 @@ export class SearchcontrolComponent implements OnInit {
       items[items.length - 1].lastElem = true;
     }
     this.searchResultsFrom = items;
+    this.showResultTable();
   }
 
   select(selected: SearchResult) {
@@ -119,10 +132,10 @@ export class SearchcontrolComponent implements OnInit {
     if (!selected.isStartPoint) {
       this.currentResult = selected;
       this.showCurrentResult();
-
     }
     else {
       this.currentStartPointResult = selected;
+      this.showCurrentStartResult();
     }
   }
 
@@ -139,6 +152,37 @@ export class SearchcontrolComponent implements OnInit {
     this.isRoutingSearchBox = true;
   }
 
+  searchFocus() {
+    console.log("SearchcontrolComponent::searchFocus()")
+    this.stopUnFocusTimer();
+    this.currentFocusStatus = FocusStatus.SEARCH;
+    this.showResultTable();
+  }
+
+  searchFocusOut() {
+    console.log("SearchcontrolComponent::searchFocusOut()")
+    this.currentFocusStatus = FocusStatus.NONE;
+    this.startUnFocusTimer();
+  }
+
+  startFocus() {
+    console.log("SearchcontrolComponent::startFocus()")
+    this.stopUnFocusTimer();
+    this.currentFocusStatus = FocusStatus.START;
+
+    if (this.currentStartPointResult != null && this.currentStartPointResult.id < 0) {
+      this.startPointTerm.setValue("");
+    }
+
+    this.showResultTable();
+  }
+
+  startFocusOut() {
+    console.log("SearchcontrolComponent::startFocusOut()")
+    this.currentFocusStatus = FocusStatus.NONE;
+    this.startUnFocusTimer();
+  }
+
   openSideMenu() {
     console.log("SearchcontrolComponent::openSideMenu()")
     this.openSideMenuEvt.emit(true);
@@ -152,6 +196,18 @@ export class SearchcontrolComponent implements OnInit {
     this.term.setValue("");
     this.startPointTerm.setValue("");
     this.isRoutingSearchBox = false;
+  }
+
+  private showResultTable() {
+    if (this.currentFocusStatus == FocusStatus.SEARCH) {
+      this.doShowResults(this.searchResultsTo);
+    }
+    else if (this.currentFocusStatus == FocusStatus.START) {
+      this.doShowResults(this.searchResultsFrom);
+    }
+    else {
+      this.doShowResults([]);
+    }
   }
 
   private showCurrentResult() {
@@ -174,6 +230,37 @@ export class SearchcontrolComponent implements OnInit {
       this.showResults = items.length > 0;
       this.searchResults = items;
     }
+  }
+
+  private startUnFocusTimer() {
+
+    console.log("SearchcontrolComponent::startUnFocusTimer()");
+
+    if (this.unFocusTimerSubscription != null) {
+      this.stopUnFocusTimer();
+    }
+
+    let timer = TimerObservable.create(250);
+    this.unFocusTimerSubscription = timer.subscribe(t => {
+      this.unFocusTimerEvent();
+    });
+  }
+
+  private stopUnFocusTimer() {
+    console.log("SearchcontrolComponent::stopUnFocusTimer()");
+
+    if (this.unFocusTimerSubscription != null) {
+
+      this.unFocusTimerSubscription.unsubscribe();
+      this.unFocusTimerSubscription = null;
+    }
+  }
+
+  private unFocusTimerEvent() {
+    console.log("SearchcontrolComponent::unFocusTimerEvent()");
+
+    this.stopUnFocusTimer();
+    this.showResultTable();
   }
 
 }

@@ -12,10 +12,10 @@
           </div>
 
           <div class="controlBoxCenterColHorizontalSearch">
-            <input *ngIf="isRoutingSearchBox" class="searchInput" autocomplete="off" placeholder="Startpunkt..." mdInput [formControl]="startPointTerm">
+            <input *ngIf="isRoutingSearchBox" class="searchInput" autocomplete="off" placeholder="Startpunkt..." mdInput [formControl]="startPointTerm" (focus)="startFocus()" (focusout)="startFocusOut()">
             <div *ngIf="isRoutingSearchBox" class="controlBoxRouteSpacer"></div>
 
-            <input class="searchInput" [ngClass]="{'searchInputRoutingSource': isRoutingSearchBox }" autocomplete="off" placeholder="Suche Räume, Personen, Institute, ..." mdInput [formControl]="term">
+            <input class="searchInput" [ngClass]="{'searchInputRoutingSource': isRoutingSearchBox }" autocomplete="off" placeholder="Suche Räume, Personen, Institute, ..." mdInput [formControl]="term" (focus)="searchFocus()" (focusout)="searchFocusOut()">
             <div class="controlBoxRouteSpacer"></div>
           </div>
 
@@ -47,7 +47,7 @@
             </button>
           </td>
           <td class="controlBoxLeftResultCol">
-            <button class="controlBoxButton"  (click)="route(result)" md-button><md-icon>navigation</md-icon></button>
+            <button *ngIf="result.isStartPoint == false" class="controlBoxButton" (click)="route(result)" md-button><md-icon>navigation</md-icon></button>
           </td>
         </tr>
         <tr *ngIf="!result.lastElem">
