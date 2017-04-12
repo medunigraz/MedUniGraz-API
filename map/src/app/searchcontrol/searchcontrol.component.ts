@@ -87,12 +87,16 @@ export class SearchcontrolComponent implements OnInit {
       (5, "Hörsaal 5 (MC1.A.EG.005)", 0)]);
   }
 
+  getDefaultStartPositions(): SearchResult[] {
+    return [DefaultStartPointWithPos,
+      DefaultStartPoint];
+  }
+
   searchStartPoint(term: string): Observable<SearchResult[]> {
     console.log('SearchComponent::searchStartPoint:' + term);
     this.currentStartPointResult = null;
     if (term.length == 0) {
-      return Observable.of([DefaultStartPointWithPos,
-        DefaultStartPoint])
+      return Observable.of(this.getDefaultStartPositions());
     };
     if (term.length == 1) {
       return Observable.of([DefaultStartPointWithPos,
@@ -153,28 +157,31 @@ export class SearchcontrolComponent implements OnInit {
   }
 
   searchFocus() {
-    console.log("SearchcontrolComponent::searchFocus()")
+    console.log("SearchcontrolComponent::searchFocus()");
     this.stopUnFocusTimer();
     this.currentFocusStatus = FocusStatus.SEARCH;
     this.showResultTable();
   }
 
   searchFocusOut() {
-    console.log("SearchcontrolComponent::searchFocusOut()")
+    console.log("SearchcontrolComponent::searchFocusOut()");
     this.currentFocusStatus = FocusStatus.NONE;
     this.startUnFocusTimer();
   }
 
   startFocus() {
-    console.log("SearchcontrolComponent::startFocus()")
+    console.log("SearchcontrolComponent::startFocus()");
     this.stopUnFocusTimer();
     this.currentFocusStatus = FocusStatus.START;
 
     if (this.currentStartPointResult != null && this.currentStartPointResult.id < 0) {
-      this.startPointTerm.setValue("");
+      this.startPointTerm.setValue("", { "emitEvent": false });
+      this.searchUpdateResultsStartPoint(this.getDefaultStartPositions());
     }
+    else {
 
-    this.showResultTable();
+      this.showResultTable();
+    }
   }
 
   startFocusOut() {
