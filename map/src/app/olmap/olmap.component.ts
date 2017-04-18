@@ -4,6 +4,7 @@ import { ViewChild, ElementRef, AfterViewInit, Input, Output } from '@angular/co
 import { MapPois } from './mapPois';
 import { MapRoom } from './mapRoom';
 import { MapBuilding } from './mapBuilding'
+import { MapDoors } from './mapDoors'
 
 import {MdDialog, MdDialogRef} from '@angular/material';
 
@@ -33,6 +34,7 @@ export class OlmapComponent implements OnInit {
   private mapPois: MapPois = null;
   private mapRoom: MapRoom = null;
   private mapBuilding: MapBuilding = null;
+  private mapDoors: MapDoors = null;
 
   private mapView: any;
 
@@ -46,6 +48,7 @@ export class OlmapComponent implements OnInit {
     this.mapPois = new MapPois();
     this.mapRoom = new MapRoom(this.roomPopupDiv, this.roomPopupText, this);
     this.mapBuilding = new MapBuilding();
+    this.mapDoors = new MapDoors();
 
     let interactions = ol.interaction.defaults({ altShiftDragRotate: false, pinchRotate: false });
 
@@ -74,7 +77,8 @@ export class OlmapComponent implements OnInit {
         }),
         this.mapPois.getLayer(),
         this.mapRoom.getLayer(),
-        this.mapBuilding.getLayer()
+        this.mapBuilding.getLayer(),
+        this.mapDoors.getLayer()
       ],
       overlays: [this.mapRoom.getOverlay()],
       target: 'map',
@@ -82,7 +86,7 @@ export class OlmapComponent implements OnInit {
     });
 
     this.mapBuilding.showFloor(0);
-
+    this.mapDoors.showFloor(0);
   }
 
   setFocus(): void {

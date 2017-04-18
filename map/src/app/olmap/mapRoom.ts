@@ -13,7 +13,6 @@ export class MapRoom {
   private overlay: any;
 
   private currentOverlayText: string = "";
-
   private currentOverlayPosition: [number];
 
   constructor(public roomPopupDiv: ElementRef, public roomContentSpan: ElementRef, private mapComponent: OlmapComponent) {
@@ -29,7 +28,7 @@ export class MapRoom {
     let res = OpenlayersHelper.CreateBasicLayer(new ol.style.Style({
       stroke: new ol.style.Stroke({
         color: 'red',
-        width: 1
+        width: 0
       }),
       fill: new ol.style.Fill({
         color: 'rgba(128,0,255,0.5)'
