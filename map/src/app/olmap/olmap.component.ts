@@ -3,6 +3,7 @@ import { ViewChild, ElementRef, AfterViewInit, Input, Output } from '@angular/co
 
 import { MapPois } from './mapPois';
 import { MapRoom } from './mapRoom';
+import { MapBuilding } from './mapBuilding'
 
 import {MdDialog, MdDialogRef} from '@angular/material';
 
@@ -31,6 +32,7 @@ export class OlmapComponent implements OnInit {
 
   private mapPois: MapPois = null;
   private mapRoom: MapRoom = null;
+  private mapBuilding: MapBuilding = null;
 
   private mapView: any;
 
@@ -43,6 +45,7 @@ export class OlmapComponent implements OnInit {
 
     this.mapPois = new MapPois();
     this.mapRoom = new MapRoom(this.roomPopupDiv, this.roomPopupText, this);
+    this.mapBuilding = new MapBuilding();
 
     let interactions = ol.interaction.defaults({ altShiftDragRotate: false, pinchRotate: false });
 
@@ -70,12 +73,15 @@ export class OlmapComponent implements OnInit {
           source: new ol.source.OSM()
         }),
         this.mapPois.getLayer(),
-        this.mapRoom.getLayer()
+        this.mapRoom.getLayer(),
+        this.mapBuilding.getLayer()
       ],
       overlays: [this.mapRoom.getOverlay()],
       target: 'map',
       view: this.mapView
     });
+
+    this.mapBuilding.showFloor(0);
 
   }
 
