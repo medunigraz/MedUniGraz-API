@@ -1,5 +1,6 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
 import { ViewChild, ElementRef, AfterViewInit, Input, Output } from '@angular/core';
+import { MapService } from '../mapservice/map.service';
 
 import { MapPois } from './mapPois';
 import { MapRoom } from './mapRoom';
@@ -27,7 +28,7 @@ export class OlmapComponent implements OnInit {
 
   @Output('onShowRoute') onShowRoute: EventEmitter<SearchResult> = new EventEmitter();
 
-  constructor(private dialog: MdDialog) { }
+  constructor(private dialog: MdDialog, private mapService: MapService) { }
 
   private currentRoomMarkerResult: SearchResult = null;
 
@@ -46,8 +47,8 @@ export class OlmapComponent implements OnInit {
   ngAfterViewInit(): void {
 
     this.mapPois = new MapPois();
-    this.mapRoom = new MapRoom(this.roomPopupDiv, this.roomPopupText, this);
-    this.mapBuilding = new MapBuilding();
+    this.mapRoom = new MapRoom(this.roomPopupDiv, this.roomPopupText, this, this.mapService);
+    this.mapBuilding = new MapBuilding(this.mapService);
     this.mapDoors = new MapDoors();
 
     let interactions = ol.interaction.defaults({ altShiftDragRotate: false, pinchRotate: false });
@@ -58,7 +59,7 @@ export class OlmapComponent implements OnInit {
       //center: ol.extent.getCenter(extent),
       zoom: 18,
       maxZoom: 24,
-      minZoom: 16
+      minZoom: 4//16
     });
 
     this.map = new ol.Map({
@@ -75,10 +76,10 @@ export class OlmapComponent implements OnInit {
         new ol.layer.Tile({
           source: new ol.source.OSM()
         }),
-        this.mapPois.getLayer(),
-        this.mapRoom.getLayer(),
         this.mapBuilding.getLayer(),
-        this.mapDoors.getLayer()
+        this.mapRoom.getLayer(),
+        this.mapDoors.getLayer(),
+        this.mapPois.getLayer()
       ],
       overlays: [this.mapRoom.getOverlay()],
       target: 'map',
@@ -86,7 +87,8 @@ export class OlmapComponent implements OnInit {
     });
 
     this.mapBuilding.showFloor(0);
-    this.mapDoors.showFloor(0);
+    //this.mapDoors.showFloor(0);
+    this.mapRoom.showFloor(1);
   }
 
   setFocus(): void {
@@ -96,7 +98,7 @@ export class OlmapComponent implements OnInit {
   showRoom(roomResult: SearchResult) {
     //console.log("OlmapComponent::showRoom: " + roomResult.id + "/" + roomResult.text);
     this.currentRoomMarkerResult = roomResult;
-    this.mapRoom.showRoom(roomResult.id, roomResult.text);
+    this.mapRoom.highlightRoom(roomResult.id, roomResult.text);
   }
 
   showRoute(from: number, to: number) {

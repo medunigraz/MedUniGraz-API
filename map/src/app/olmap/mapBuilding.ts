@@ -1,5 +1,6 @@
 import { OpenlayersHelper } from './openlayershelper';
 import { ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
+import { MapService } from '../mapservice/map.service';
 
 import {OlmapComponent} from './olmap.component'
 
@@ -10,7 +11,7 @@ export class MapBuilding {
   private layer: any;
   private layerSource: any;
 
-  constructor() {
+  constructor(private mapService: MapService) {
     this.Initialize();
   }
 
@@ -24,12 +25,28 @@ export class MapBuilding {
     this.layer = res.layer;
   }
 
-  public showFloor(id: number) {
-    this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(this.getDummyBuilding()));
+  public showFloor(floorid: number) {
+
+    this.clear();
+    this.mapService.getBuildings(floorid).subscribe(
+      buildings => this.showBuildings(buildings),
+      error => console.log("ERROR deleteNode: " + <any>error));
+
+    //this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(this.getDummyBuilding()));
   }
 
   public getLayer(): any {
     return this.layer;
+  }
+
+  private clear() {
+    this.layerSource.clear();
+  }
+
+  private showBuildings(features: any) {
+    console.log("MapBuildings::showBuildings");
+    this.clear();
+    this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(features));
   }
 
   private getDummyBuilding(): any {
