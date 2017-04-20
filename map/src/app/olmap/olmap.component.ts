@@ -10,7 +10,7 @@ import { MapDoors } from './mapDoors'
 import {MdDialog, MdDialogRef} from '@angular/material';
 
 import {RoomDialogComponent} from '../room-dialog/room-dialog.component'
-import {SearchResult} from '../base/searchresult';
+import {Room} from '../base/room';
 
 
 declare var ol: any;
@@ -26,11 +26,11 @@ export class OlmapComponent implements OnInit {
   @ViewChild('roomPopup') public roomPopupDiv: ElementRef;
   @ViewChild('roomPopupText') public roomPopupText: ElementRef;
 
-  @Output('onShowRoute') onShowRoute: EventEmitter<SearchResult> = new EventEmitter();
+  @Output('onShowRoute') onShowRoute: EventEmitter<Room> = new EventEmitter();
 
   constructor(private dialog: MdDialog, private mapService: MapService) { }
 
-  private currentRoomMarkerResult: SearchResult = null;
+  private currentRoomMarker: Room = null;
 
   private mapPois: MapPois = null;
   private mapRoom: MapRoom = null;
@@ -98,9 +98,9 @@ export class OlmapComponent implements OnInit {
     this.mapDiv.nativeElement.focus();
   }
 
-  showRoom(roomResult: SearchResult) {
+  showRoom(roomResult: Room) {
     //console.log("OlmapComponent::showRoom: " + roomResult.id + "/" + roomResult.text);
-    this.currentRoomMarkerResult = roomResult;
+    this.currentRoomMarker = roomResult;
     this.mapRoom.highlightRoom(roomResult.id, roomResult.text);
   }
 
@@ -143,9 +143,9 @@ export class OlmapComponent implements OnInit {
 
   roomDialogClosed(res: any) {
     console.log("OlmapComponent::openRoomDialogClosed: " + JSON.stringify(res));
-    if (this.currentRoomMarkerResult != null && res == "Navigate...") {
+    if (this.currentRoomMarker != null && res == "Navigate...") {
       //console.log("OlmapComponent::openRoomDialogClosed Emit Navigation Event!");
-      this.onShowRoute.emit(this.currentRoomMarkerResult);
+      this.onShowRoute.emit(this.currentRoomMarker);
     }
   }
 

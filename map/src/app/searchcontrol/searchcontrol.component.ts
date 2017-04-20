@@ -7,7 +7,8 @@ import {TimerObservable} from "rxjs/observable/TimerObservable";
 
 import { OlmapComponent} from '../olmap/olmap.component';
 
-import {SearchResult} from '../base/searchresult';
+import {SearchResult} from './searchresult';
+import {Room} from '../base/room';
 import {DefaultStartPointWithPos, DefaultStartPoint} from './searchcontrolconstants';
 
 
@@ -65,9 +66,9 @@ export class SearchcontrolComponent implements OnInit {
 
   }
 
-  showRouteCalled(result: SearchResult) {
+  showRouteCalled(destinationroom: Room) {
     //console.log('SearchComponent::showRouteCalled: ' + result.text);
-    this.route(result);
+    this.route(destinationroom);
   }
 
   search(term: string): Observable<SearchResult[]> {
@@ -143,10 +144,10 @@ export class SearchcontrolComponent implements OnInit {
     }
   }
 
-  route(selected: SearchResult) {
-    console.log('SearchComponent::route:' + selected.text);
-    this.mapComponentRef.showRoute(selected.id, selected.id);
-    this.term.setValue(selected.text, { "emitEvent": false });
+  route(destinationroom: Room) {
+    console.log('SearchComponent::route:' + destinationroom.text);
+    this.mapComponentRef.showRoute(destinationroom.id, destinationroom.id);
+    this.term.setValue(destinationroom.text, { "emitEvent": false });
     this.searchUpdateResults([]);
 
     if (this.currentStartPointResult == null) {
@@ -219,7 +220,7 @@ export class SearchcontrolComponent implements OnInit {
 
   private showCurrentResult() {
     if (this.currentResult != null) {
-      this.mapComponentRef.showRoom(this.currentResult);
+      this.mapComponentRef.showRoom(new Room(this.currentResult.id, this.currentResult.text));
       this.term.setValue(this.currentResult.text, { "emitEvent": false });
       this.searchUpdateResults([]);
     }

@@ -5,7 +5,7 @@ import {SearchcontrolComponent} from './searchcontrol/searchcontrol.component'
 
 import {MdSidenav } from '@angular/material/sidenav'
 
-import {SearchResult} from './base/searchresult';
+import {Room} from './base/room';
 
 @Component({
   selector: 'app-root',
@@ -39,9 +39,9 @@ export class AppComponent {
     this.mapComponent.setFocus();
   }
 
-  showRouteCalled(result: SearchResult) {
+  showRouteCalled(destinationRoom: Room) {
     //console.log('AppComponent::showRouteCalled: ' + result.text);
-    this.searchBoxComponent.showRouteCalled(result);
+    this.searchBoxComponent.showRouteCalled(destinationRoom);
   }
 
 }
