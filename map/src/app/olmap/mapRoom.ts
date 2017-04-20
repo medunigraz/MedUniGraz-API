@@ -19,6 +19,9 @@ export class MapRoom {
 
   private styleManager = new MapRoomStyles();
 
+  private currentHighlightedRoom: any = null;
+  private currentSelectedRoom: any = null;
+
   constructor(public roomPopupDiv: ElementRef, public roomContentSpan: ElementRef, private mapComponent: OlmapComponent, private mapService: MapService) {
     this.Initialize();
   }
@@ -64,6 +67,42 @@ export class MapRoom {
 
   public getOverlay(): any {
     return this.overlay;
+  }
+
+  public setHighlightedRoom(roomFeature: any) {
+    if (this.currentHighlightedRoom) {
+      if (!this.isRoomSelected(this.currentHighlightedRoom)) {
+        this.currentHighlightedRoom.setStyle(this.styleManager.getStyleForRoom(this.currentHighlightedRoom.getId(), false, false));
+      }
+    }
+
+    this.currentHighlightedRoom = roomFeature;
+    if (this.currentHighlightedRoom) {
+      if (!this.isRoomSelected(this.currentHighlightedRoom)) {
+        this.currentHighlightedRoom.setStyle(this.styleManager.getStyleForRoom(this.currentHighlightedRoom.getId(), true, false));
+      }
+    }
+  }
+
+  public setSelectedRoom(roomFeature: any) {
+    if (this.currentSelectedRoom) {
+      this.currentSelectedRoom.setStyle(this.styleManager.getStyleForRoom(this.currentSelectedRoom.getId(), false, false));
+    }
+
+    this.currentSelectedRoom = roomFeature;
+    if (this.currentSelectedRoom) {
+      this.currentSelectedRoom.setStyle(this.styleManager.getStyleForRoom(this.currentSelectedRoom.getId(), false, true));
+    }
+  }
+
+  private isRoomSelected(roomFeature: any) {
+    if (!roomFeature || !this.currentSelectedRoom) {
+      return false;
+    }
+
+
+
+    return roomFeature.getId() == this.currentSelectedRoom.getId()
   }
 
   closePopup() {

@@ -89,6 +89,9 @@ export class OlmapComponent implements OnInit {
     this.mapBuilding.showFloor(0);
     //this.mapDoors.showFloor(0);
     this.mapRoom.showFloor(1);
+
+    this.map.on('click', evt => this.mapClicked(evt));
+    this.map.on('pointermove', evt => this.mapMouseMoved(evt));
   }
 
   setFocus(): void {
@@ -144,6 +147,39 @@ export class OlmapComponent implements OnInit {
       //console.log("OlmapComponent::openRoomDialogClosed Emit Navigation Event!");
       this.onShowRoute.emit(this.currentRoomMarkerResult);
     }
+  }
+
+  private mapMouseMoved(evt): void {
+    let pixel = this.map.getEventPixel(evt.originalEvent);
+    let roomFeature = this.getRoomForPos(pixel);
+    this.mapRoom.setHighlightedRoom(roomFeature);
+  }
+
+  private mapClicked(evt): void {
+    let pixel = this.map.getEventPixel(evt.originalEvent);
+    console.log("Coord Org: " + evt.coordinate + " Pixel: " + pixel);
+
+    let roomFeature = this.getRoomForPos(pixel);
+    this.mapRoom.setSelectedRoom(roomFeature);
+  }
+
+  private getRoomForPos(posPixel: any) {
+    let options = {
+      layerFilter: (layer => this.testLayerRooms(layer))
+    }
+    let feature = this.map.forEachFeatureAtPixel(posPixel, function(feature) {
+      return feature;
+    }, options);
+
+    //if (feature != null) {
+    //  console.log("Found room: " + feature.getId());
+    //}
+
+    return feature;
+  }
+
+  private testLayerRooms(layer: any) {
+    return this.mapRoom.getLayer() === layer;
   }
 
 }

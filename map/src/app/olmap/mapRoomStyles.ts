@@ -22,25 +22,16 @@ export class MapRoomStyles {
 
   public getStyleForRoom(id: number, isHighlighted: boolean, isSelected: boolean): any {
 
-    if (id % 6 == 0) {
-      return this.styles[0];
+    if (isSelected) {
+      return this.selectedStyles[id % 2];
     }
-    if (id % 6 == 1) {
-      return this.styles[1];
+    else if (isHighlighted) {
+      return this.highlightStyles[id % 2];
     }
-    if (id % 6 == 2) {
-      return this.highlightStyles[0];
+    else {
+      return this.styles[id % 2];
     }
-    if (id % 6 == 3) {
-      return this.highlightStyles[1];
-    }
-    if (id % 6 == 4) {
-      return this.selectedStyles[0];
-    }
-    if (id % 6 == 5) {
-      return this.selectedStyles[1];
-    }
-    return this.defaultStyle;
+    //return this.defaultStyle;
   }
 
   private InitStyles() {
