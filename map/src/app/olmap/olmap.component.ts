@@ -141,10 +141,14 @@ export class OlmapComponent implements OnInit {
   zoomToPosition(position: number[]) {
     if (position && position != undefined) {
 
-      this.mapView.animate({
-        zoom: 20,
-        duration: 500
-      });
+      let destinationZoom = 20;
+
+      if (destinationZoom > this.map.getView().getZoom()) {
+        this.mapView.animate({
+          zoom: destinationZoom,
+          duration: 500
+        });
+      }
 
       this.mapView.animate({
         center: position,
