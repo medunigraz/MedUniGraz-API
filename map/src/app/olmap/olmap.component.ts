@@ -74,7 +74,7 @@ export class OlmapComponent implements OnInit {
       //controls: [],
       layers: [
         new ol.layer.Tile({
-          source: new ol.source.OSM()
+          source: this.getTileSource()
         }),
         this.mapBuilding.getLayer(),
         this.mapRoom.getLayer(),
@@ -92,6 +92,32 @@ export class OlmapComponent implements OnInit {
 
     this.map.on('click', evt => this.mapClicked(evt));
     this.map.on('pointermove', evt => this.mapMouseMoved(evt));
+  }
+
+  private getTileSource(): any {
+    return new ol.source.OSM();
+
+    /*
+        let projection = ol.proj.get('EPSG:3857');
+        let projectionExtent = projection.getExtent();
+        let resolutions = new Array(14);
+        let matrixIds = new Array(14);
+        let size = ol.extent.getWidth(projectionExtent) / 256;
+
+        for (var z = 0; z < 14; ++z) {
+          // generate resolutions and matrixIds arrays for this WMTS
+          resolutions[z] = size / Math.pow(2, z);
+          matrixIds[z] = z;
+        }
+
+        return new ol.source.WMTS({
+          url: 'https://www.basemap.at/wmts/1.0.0/WMTSCapabilities.xml',
+          layer: 'bmaphidpi',
+          matrixSet: 'google3857',
+          projection: projection,
+          tilePixelRatio: 2,
+          style: 'normal'
+        })*/
   }
 
   setFocus(): void {
@@ -117,12 +143,12 @@ export class OlmapComponent implements OnInit {
 
       this.mapView.animate({
         zoom: 20,
-        duration: 1000
+        duration: 500
       });
 
       this.mapView.animate({
         center: position,
-        duration: 1000
+        duration: 500
       });
 
       //this.mapView.setCenter(position);

@@ -20,22 +20,48 @@ export class MapRoomStyles {
   private highlightStyles: any[] = [];
   private selectedStyles: any[] = [];
 
-  public getStyleForRoom(id: number, isHighlighted: boolean, isSelected: boolean): any {
+  public getStyleForRoom(id: number, categoryId: number, isHighlighted: boolean, isSelected: boolean): any {
+
+    //console.log("MapRoomStyles::getStyleForRoom: " + id + " cat: " + categoryId);
+
+    let arIndex = 0;
+
+    if (categoryId == 18) {
+      arIndex = 1;
+    }
+    else if (categoryId == 3) {
+      arIndex = 2;
+    }
+    else if (categoryId == 2) {
+      arIndex = 3;
+    }
+    else if (categoryId > 7) {
+      arIndex = 4;
+    }
+    else if (categoryId > 0) {
+      arIndex = 5;
+    }
+
+
 
     if (isSelected) {
-      return this.selectedStyles[id % 2];
+      return this.selectedStyles[arIndex];
     }
     else if (isHighlighted) {
-      return this.highlightStyles[id % 2];
+      return this.highlightStyles[arIndex];
     }
     else {
-      return this.styles[id % 2];
+      return this.styles[arIndex];
     }
     //return this.defaultStyle;
   }
 
   private InitStyles() {
+    this.AddColor([255, 0, 0]);
+    this.AddColor([242, 239, 233]);
+    this.AddColor([255, 137, 29]);  //orange
     this.AddColor([164, 64, 255]);
+    this.AddColor([64, 255, 164]);
     this.AddColor([64, 164, 255]);
   }
 

@@ -64,7 +64,7 @@ export class MapRoom {
   }
 
   public markRoom(room: RoomDetail) {
-    console.log("MapRoom::Mark room: " + room.id);
+    console.log("MapRoom::Mark room: " + room.id + " category: " + room.coCategory);
 
     this.currentMarkedRoom = room;
     this.currentOverlayText = room.text;
@@ -90,7 +90,7 @@ export class MapRoom {
   public setHighlightedRoom(roomFeature: any) {
     if (this.currentHighlightedRoom) {
       if (!this.isRoomSelected(this.currentHighlightedRoom)) {
-        this.currentHighlightedRoom.setStyle(this.styleManager.getStyleForRoom(this.currentHighlightedRoom.getId(), false, false));
+        this.currentHighlightedRoom.setStyle(this.styleManager.getStyleForRoom(this.currentHighlightedRoom.getId(), RoomDetail.getCategoryId(this.currentHighlightedRoom), false, false));
       }
     }
 
@@ -103,14 +103,14 @@ export class MapRoom {
 
     if (this.currentHighlightedRoom) {
       if (!this.isRoomSelected(this.currentHighlightedRoom)) {
-        this.currentHighlightedRoom.setStyle(this.styleManager.getStyleForRoom(this.currentHighlightedRoom.getId(), true, false));
+        this.currentHighlightedRoom.setStyle(this.styleManager.getStyleForRoom(this.currentHighlightedRoom.getId(), RoomDetail.getCategoryId(this.currentHighlightedRoom), true, false));
       }
     }
   }
 
   public setSelectedRoom(roomFeature: any) {
     if (this.currentSelectedRoom) {
-      this.currentSelectedRoom.setStyle(this.styleManager.getStyleForRoom(this.currentSelectedRoom.getId(), false, false));
+      this.currentSelectedRoom.setStyle(this.styleManager.getStyleForRoom(this.currentSelectedRoom.getId(), RoomDetail.getCategoryId(this.currentSelectedRoom), false, false));
     }
 
     if (RoomDetail.isRoomFeatureSelectAble(roomFeature)) {
@@ -121,7 +121,7 @@ export class MapRoom {
     }
 
     if (this.currentSelectedRoom) {
-      this.currentSelectedRoom.setStyle(this.styleManager.getStyleForRoom(this.currentSelectedRoom.getId(), false, true));
+      this.currentSelectedRoom.setStyle(this.styleManager.getStyleForRoom(this.currentSelectedRoom.getId(), RoomDetail.getCategoryId(this.currentSelectedRoom), false, true));
       this.markRoom(new RoomDetail(this.currentSelectedRoom));
     }
     else {
@@ -155,7 +155,7 @@ export class MapRoom {
     for (let i = 0; i < olFeatures.length; i++) {
       let id = olFeatures[i].getId();
       //console.log("MapRoom::showRoom: " + id);
-      olFeatures[i].setStyle(this.styleManager.getStyleForRoom(id, false, false));
+      olFeatures[i].setStyle(this.styleManager.getStyleForRoom(id, RoomDetail.getCategoryId(olFeatures[i]), false, false));
     }
 
     this.layerSource.addFeatures(olFeatures);
