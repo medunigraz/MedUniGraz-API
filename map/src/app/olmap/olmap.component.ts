@@ -134,9 +134,13 @@ export class OlmapComponent implements OnInit {
     //console.log("OlmapComponent::openRoomDialog");
 
     let dialogRef: MdDialogRef<RoomDialogComponent>;
+    let room = this.mapRoom.getMarkedRoom();
 
-    dialogRef = this.dialog.open(RoomDialogComponent);
-    dialogRef.afterClosed().subscribe(res => this.roomDialogClosed(res));
+    if (room) {
+      dialogRef = this.dialog.open(RoomDialogComponent);
+      dialogRef.componentInstance.currentRoom = room;
+      dialogRef.afterClosed().subscribe(res => this.roomDialogClosed(res));
+    }
     this.setFocus();
   }
 

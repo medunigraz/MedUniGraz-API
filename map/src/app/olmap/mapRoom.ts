@@ -75,7 +75,7 @@ export class MapRoom {
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(this.getDummyRoom()));
   }
 
-  public getMarkedRoom(): Room {
+  public getMarkedRoom(): RoomDetail {
     return this.currentMarkedRoom;
   }
 

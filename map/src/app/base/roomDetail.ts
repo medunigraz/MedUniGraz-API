@@ -3,6 +3,9 @@ import {Room} from '../base/room';
 export class RoomDetail {
   id: number = -1;
   text: string = '';
+  title: string = '';
+  code: string = '';
+  medonlineurl: string = '';
   floorId: number = -1;
 
   center: number[] = null;
@@ -24,7 +27,10 @@ export class RoomDetail {
   private readCO(co: any) {
     if (co) {
       this.text = Room.GetRoomTxt(co['title'], co['name_full']);
+      this.title = co['title'];
+      this.code = co['name_full'];
       this.coId = co['id'];
+      this.medonlineurl = 'https://online.medunigraz.at/mug_online/wbRaum.editRaum?pRaumNr=' + this.coId;
       this.coArea = co['area'];
       this.coOrganization = co['organization'];
     }

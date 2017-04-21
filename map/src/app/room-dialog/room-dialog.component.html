@@ -1,16 +1,18 @@
 <div class="dialogDiv">
   <input type="hidden" tabindex="0" autofocus/>
-  <h2>
-    Hörsaal 5 TEST....
-  </h2>
-  <p>
-    MC1.A.EG.004
-  </p>
-  <p>
-    Organisation: Abteilung Studienorganisation und Lernen mit Medien
-  </p>
-  <a href="https://online.medunigraz.at/mug_online/wbRaum.editRaum?pRaumNr=20828" target="_blank">MedOnline</a>
 
+  <div *ngIf="currentRoom">
+    <h2>
+      {{currentRoom.title}}
+    </h2>
+    <p>
+      {{currentRoom.code}}
+    </p>
+    <p>
+      Organistation:<br/>{{currentRoom.coOrganization}}
+    </p>
+    <a href="{{currentRoom.medonlineurl}}" target="_blank">MedOnline</a>
+  </div>
 
   <button class='closeDialogButton' (click)="closeDialog()" md-button>
     <md-icon>close</md-icon>
