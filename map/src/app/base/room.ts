@@ -8,6 +8,6 @@ export class Room {
   }
 
   public static GetRoomTxt(title: string, fullname: string): string {
-    return title + '&nbsp;(' + fullname + ')';
+    return title + '<br />(' + fullname + ')';
   }
 }
