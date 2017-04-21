@@ -7,4 +7,7 @@ export class Room {
     this.text = text;
   }
 
+  public static GetRoomTxt(title: string, fullname: string): string {
+    return title + '&nbsp;(' + fullname + ')';
+  }
 }

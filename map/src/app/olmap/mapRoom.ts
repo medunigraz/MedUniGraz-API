@@ -5,6 +5,9 @@ import {MapRoomStyles} from './mapRoomStyles'
 
 import {OlmapComponent} from './olmap.component'
 
+import {Room} from '../base/room';
+import {RoomDetail} from '../base/roomDetail';
+
 declare var ol: any;
 
 export class MapRoom {
@@ -15,12 +18,13 @@ export class MapRoom {
   private overlay: any;
 
   private currentOverlayText: string = "";
-  private currentOverlayPosition: [number];
+  private currentOverlayPosition: number[];
 
   private styleManager = new MapRoomStyles();
 
   private currentHighlightedRoom: any = null;
   private currentSelectedRoom: any = null;
+  private currentMarkedRoom: RoomDetail = null;
 
   constructor(public roomPopupDiv: ElementRef, public roomContentSpan: ElementRef, private mapComponent: OlmapComponent, private mapService: MapService) {
     this.Initialize();
@@ -52,13 +56,27 @@ export class MapRoom {
       error => console.log("ERROR deleteNode: " + <any>error));
   }
 
-  public highlightRoom(id: number, text: string) {
-    this.currentOverlayText = text;
+  public markRoomDummyRoom() {
+    let feature = this.layerSource.getFeatureById(266);
+    if (feature) {
+      this.setSelectedRoom(feature);
+    }
+  }
+
+  public markRoom(room: RoomDetail) {
+    console.log("MapRoom::Mark room: " + room.id);
+
+    this.currentMarkedRoom = room;
+    this.currentOverlayText = room.text;
     this.roomContentSpan.nativeElement.innerHTML = this.currentOverlayText;
-    this.currentOverlayPosition = [1722195.294385298, 5955266.126823761];
+    this.currentOverlayPosition = (room.marker);
     this.overlay.setPosition(this.currentOverlayPosition);
-    this.mapComponent.zoomToPosition(this.currentOverlayPosition);
+    this.mapComponent.zoomToPosition(room.center);
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(this.getDummyRoom()));
+  }
+
+  public getMarkedRoom(): Room {
+    return this.currentMarkedRoom;
   }
 
   public getLayer(): any {
@@ -76,7 +94,13 @@ export class MapRoom {
       }
     }
 
-    this.currentHighlightedRoom = roomFeature;
+    if (RoomDetail.isRoomFeatureSelectAble(roomFeature)) {
+      this.currentHighlightedRoom = roomFeature;
+    }
+    else {
+      this.currentHighlightedRoom = null;
+    }
+
     if (this.currentHighlightedRoom) {
       if (!this.isRoomSelected(this.currentHighlightedRoom)) {
         this.currentHighlightedRoom.setStyle(this.styleManager.getStyleForRoom(this.currentHighlightedRoom.getId(), true, false));
@@ -89,20 +113,27 @@ export class MapRoom {
       this.currentSelectedRoom.setStyle(this.styleManager.getStyleForRoom(this.currentSelectedRoom.getId(), false, false));
     }
 
-    this.currentSelectedRoom = roomFeature;
+    if (RoomDetail.isRoomFeatureSelectAble(roomFeature)) {
+      this.currentSelectedRoom = roomFeature;
+    }
+    else {
+      this.currentSelectedRoom = null;
+    }
+
     if (this.currentSelectedRoom) {
       this.currentSelectedRoom.setStyle(this.styleManager.getStyleForRoom(this.currentSelectedRoom.getId(), false, true));
+      this.markRoom(new RoomDetail(this.currentSelectedRoom));
+    }
+    else {
+      this.closePopup();
     }
   }
-
   private isRoomSelected(roomFeature: any) {
     if (!roomFeature || !this.currentSelectedRoom) {
       return false;
     }
 
-
-
-    return roomFeature.getId() == this.currentSelectedRoom.getId()
+    return roomFeature.getId() == this.currentSelectedRoom.getId();
   }
 
   closePopup() {
@@ -116,14 +147,14 @@ export class MapRoom {
   }
 
   private showRooms(features: any): void {
-    console.log("MapRoom::showRooms");
+    //console.log("MapRoom::showRooms");
     this.clear();
 
     let olFeatures = (new ol.format.GeoJSON()).readFeatures(features);
 
     for (let i = 0; i < olFeatures.length; i++) {
       let id = olFeatures[i].getId();
-      console.log("MapRoom::showRoom: " + id);
+      //console.log("MapRoom::showRoom: " + id);
       olFeatures[i].setStyle(this.styleManager.getStyleForRoom(id, false, false));
     }
 

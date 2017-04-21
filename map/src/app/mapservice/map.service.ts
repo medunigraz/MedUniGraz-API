@@ -34,10 +34,10 @@ export class MapService {
   }
 
   private extractData(res: Response) {
-    console.log("RESPONSE DATA...");
+    //console.log("RESPONSE DATA...");
     let body = res.json();
 
-    console.log("RESPONSE DATA: " + JSON.stringify(body));
+    //console.log("RESPONSE DATA: " + JSON.stringify(body));
 
     if (body.results) {             //For multiple pages
       return body.results || {};
