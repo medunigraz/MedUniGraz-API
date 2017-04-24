@@ -1,5 +1,7 @@
 import { OpenlayersHelper } from './openlayershelper';
 import { ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
+import { MapService } from '../mapservice/map.service';
+
 
 import {OlmapComponent} from './olmap.component'
 
@@ -10,27 +12,45 @@ export class MapDoors {
   private layer: any;
   private layerSource: any;
 
-  constructor() {
+  constructor(private mapService: MapService) {
     this.Initialize();
   }
 
   private Initialize(): void {
     let res = OpenlayersHelper.CreateBasicLayer(new ol.style.Style({
       fill: new ol.style.Fill({
-        color: 'rgba(128,128,128,0.5)'
+        color: 'rgba(212, 209, 203,1.0)'
       })
     }));
+    res.layer.set('maxResolution', 0.2);
     this.layerSource = res.layerSource;
     this.layer = res.layer;
   }
 
-  public showFloor(id: number) {
-    console.log("MapDoors::showFloor - " + id);
-    this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(this.getDummyDoors()));
+  public showFloor(floorId: number) {
+    console.log("MapDoors::showFloor - " + floorId);
+    //this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(this.getDummyDoors()));
+
+    this.clear();
+    this.mapService.getDoors(floorId).subscribe(
+      doors => this.showDoors(doors),
+      error => console.log("ERROR deleteNode: " + <any>error));
+
   }
+
 
   public getLayer(): any {
     return this.layer;
+  }
+
+  private clear() {
+    this.layerSource.clear();
+  }
+
+  private showDoors(features: any) {
+    console.log("MapDoors::showDoors");
+    this.clear();
+    this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(features));
   }
 
   private getDummyDoors(): any {

@@ -13,6 +13,7 @@ export class MapService {
   private baseUrl = '/v1'
   private searchUrl = this.baseUrl + '/geo/autocomplete/';
   private roomUrl = this.baseUrl + '/geo/rooms/';
+  private doorUrl = this.baseUrl + '/geo/doors/';
   private buildingUrl = this.baseUrl + '/geo/buildings/';
   private floorUrl = this.baseUrl + '/geo/floors/';
   private routeUrl = this.baseUrl + '/geo/routing/edges/';
@@ -29,6 +30,13 @@ export class MapService {
   getBuildings(layer: number): Observable<Object> {
     //return this.http.get(this.roomUrl + '?floor=' + layer)
     return this.http.get(this.buildingUrl)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  getDoors(layer: number): Observable<Object> {
+    //return this.http.get(this.roomUrl + '?floor=' + layer)
+    return this.http.get(this.doorUrl)
       .map(this.extractData)
       .catch(this.handleError);
   }
