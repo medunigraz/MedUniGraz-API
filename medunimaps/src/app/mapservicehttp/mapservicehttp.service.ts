@@ -16,7 +16,9 @@ export class MapHttpService extends MapService {
   private baseUrl = '/v1'
   private roomUrl = this.baseUrl + '/geo/rooms/';  // URL to web API
   private edgeUrl = this.baseUrl + '/geo/edges/';
+  private buildingUrl = this.baseUrl + '/geo/buildings/';
   private nodeUrl = this.baseUrl + '/geo/nodes/';
+  private doorUrl = this.baseUrl + '/geo/doors/';
   private floorUrl = this.baseUrl + '/geo/floors/';
   private routeUrl = this.baseUrl + '/geo/routing/edges/';
 
@@ -25,6 +27,13 @@ export class MapHttpService extends MapService {
   }
 
   getRoomMap(layer: number): Observable<Object> {
+    return this.http.get(this.roomUrl)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  getRooms(layer: number): Observable<Object> {
+    //return this.http.get(this.roomUrl + '?floor=' + layer)
     return this.http.get(this.roomUrl)
       .map(this.extractData)
       .catch(this.handleError);
@@ -45,6 +54,20 @@ export class MapHttpService extends MapService {
   getFloors(): Observable<Floor[]> {
     return this.http.get(this.floorUrl)
       .map(this.extractDataFloors)
+      .catch(this.handleError);
+  }
+
+  getDoors(layer: number): Observable<Object> {
+    //return this.http.get(this.roomUrl + '?floor=' + layer)
+    return this.http.get(this.doorUrl)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  getBuildings(layer: number): Observable<Object> {
+    //return this.http.get(this.roomUrl + '?floor=' + layer)
+    return this.http.get(this.buildingUrl)
+      .map(this.extractData)
       .catch(this.handleError);
   }
 

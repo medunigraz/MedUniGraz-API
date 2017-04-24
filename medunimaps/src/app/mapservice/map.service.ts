@@ -33,8 +33,23 @@ export class MapService {
     return Observable.of(FLOORS);
   }
 
+  getRooms(layer: number): Observable<Object> {
+    //return this.http.get(this.roomUrl + '?floor=' + layer)
+    return this.http.get(this.roomUrl)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
   getRoomMap(layer: number): Observable<Object> {
     return this.getRoomMapIntern(layer);
+  }
+
+  getDoors(layer: number): Observable<Object> {
+    return null;
+  }
+
+  getBuildings(layer: number): Observable<Object> {
+    return null;
   }
 
   private getRoomMapIntern(layer: number): Observable<Object> {

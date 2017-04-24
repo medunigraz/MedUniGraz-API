@@ -11,8 +11,10 @@ import { ApplicationMode } from '../base/applicationmode';
 import { ApplicationModeT } from '../base/applicationmode';
 import { Floor } from '../base/floor';
 
-import { MapWalls } from './mapWalls';
 import { MapNodes } from './mapNodes';
+import { MapDoors } from './mapDoors';
+import { MapRoom } from './mapRoom';
+import { MapBuilding } from './mapBuilding';
 import { MapEdges } from './mapEdges';
 import { MapEditEdges } from './mapEditEdges';
 import { MapRoute } from './mapRoute';
@@ -37,8 +39,10 @@ export class EditablemapComponent implements OnInit {
   private baseMapLayer: any;
   private baseMapVectorSource: any;
 
-  private mapWalls: MapWalls = null;
   private mapNodes: MapNodes = null;
+  private mapDoors: MapDoors = null;
+  private mapRooms: MapRoom = null;
+  private mapBuilding: MapBuilding = null;
   private mapEdges: MapEdges = null;
   private mapEditEdges: MapEditEdges = null;
   private mapRoute: MapRoute = null;
@@ -53,7 +57,9 @@ export class EditablemapComponent implements OnInit {
       this.mapService = this.mapServiceHttp;
     }
 
-    this.mapWalls = new MapWalls(this.mapService);
+    this.mapBuilding = new MapBuilding(this.mapService);
+    this.mapDoors = new MapDoors(this.mapService);
+    this.mapRooms = new MapRoom(this.mapService);
     this.mapEdges = new MapEdges(this.mapService);
     this.mapEditEdges = new MapEditEdges(this.mapService);
     this.mapRoute = new MapRoute(this.mapService);
@@ -72,7 +78,9 @@ export class EditablemapComponent implements OnInit {
         new ol.layer.Tile({
           source: new ol.source.OSM()
         }),
-        this.mapWalls.getLayer(),
+        this.mapBuilding.getLayer(),
+        this.mapRooms.getLayer(),
+        this.mapDoors.getLayer(),
         this.mapNodes.getLayer(),
         this.mapEditEdges.getLayer(),
         this.mapEdges.getLayer(),
@@ -85,7 +93,7 @@ export class EditablemapComponent implements OnInit {
         center: ol.proj.fromLonLat([15.47, 47.0805]),
         //center: ol.extent.getCenter(extent),
         zoom: 18,
-        maxZoom: 22,
+        maxZoom: 24,
         minZoom: 1//16
       })
     });
@@ -106,7 +114,9 @@ export class EditablemapComponent implements OnInit {
   set currentFloor(currentFloor: Floor) {
     console.log("EditAbleMapComponent::Set currentFloor - New Floor: " + JSON.stringify(currentFloor));
     if (currentFloor && currentFloor.id >= 0) {
-      this.mapWalls.updateData(currentFloor.id);
+      this.mapBuilding.updateData(currentFloor.id);
+      this.mapRooms.updateData(currentFloor.id);
+      this.mapDoors.updateData(currentFloor.id);
       this.mapEdges.updateData(currentFloor.id);
       this.mapNodes.updateData(currentFloor.id);
       this.mapRoute.setCurrentFloor(currentFloor.id);
