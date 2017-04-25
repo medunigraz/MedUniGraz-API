@@ -23,6 +23,6 @@ export class ApplicationMode {
 
 export const ApplicationModes = [
   ApplicationMode.CreateDefault(),
-  new ApplicationMode(ApplicationModeT.EDIT_POIS, "Points of Interest"),
-  new ApplicationMode(ApplicationModeT.EDIT_BACKGROUND, "Hintergrund")
+  new ApplicationMode(ApplicationModeT.EDIT_POIS, "Points of Interest")//,
+  //new ApplicationMode(ApplicationModeT.EDIT_BACKGROUND, "Hintergrund")
 ]

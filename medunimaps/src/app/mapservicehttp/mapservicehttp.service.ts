@@ -13,13 +13,13 @@ import { Floor } from '../base/floor';
 @Injectable()
 export class MapHttpService extends MapService {
 
-  private baseUrl = '/v1'
+  private baseUrl = '/v1';
   private roomUrl = this.baseUrl + '/geo/rooms/';  // URL to web API
   private edgeUrl = this.baseUrl + '/geo/edges/';
   private buildingUrl = this.baseUrl + '/geo/buildings/';
   private nodeUrl = this.baseUrl + '/geo/nodes/';
   private doorUrl = this.baseUrl + '/geo/doors/';
-  private floorUrl = this.baseUrl + '/geo/floors/';
+  private floorUrl = this.baseUrl + '/geo/level/';
   private routeUrl = this.baseUrl + '/geo/routing/edges/';
 
   constructor(private http: Http) {
@@ -89,7 +89,7 @@ export class MapHttpService extends MapService {
       "length": length
     }
 
-    console.log("Send Edge: " + JSON.stringify(data));
+    //console.log("Send Edge: " + JSON.stringify(data));
 
     return this.http.post(this.edgeUrl, data, options)
       .map(this.extractDataAdd)
@@ -141,7 +141,7 @@ export class MapHttpService extends MapService {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
-    console.log("Update Edge: " + id + "::" + JSON.stringify(edge));
+    //console.log("Update Edge: " + id + "::" + JSON.stringify(edge));
 
     return this.http.put(this.edgeUrl + id + "/", edge, options)
       .map(this.extractDataAdd)
@@ -152,7 +152,7 @@ export class MapHttpService extends MapService {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
-    console.log("Update Node: " + id + "::" + JSON.stringify(node));
+    //console.log("Update Node: " + id + "::" + JSON.stringify(node));
 
     return this.http.put(this.nodeUrl + id + "/", node, options)
       .map(this.extractDataAdd)
@@ -161,10 +161,10 @@ export class MapHttpService extends MapService {
 
 
   private extractData(res: Response) {
-    console.log("RESPONSE DATA...");
+    //console.log("RESPONSE DATA...");
     let body = res.json();
 
-    console.log("RESPONSE DATA: " + JSON.stringify(body));
+    //console.log("RESPONSE DATA: " + JSON.stringify(body));
 
     if (body.results) {
       return body.results || {};
@@ -175,7 +175,7 @@ export class MapHttpService extends MapService {
   private extractDataAdd(res: Response) {
     let body = res.json();
 
-    console.log("RESPONSE DATA: " + JSON.stringify(body));
+    //console.log("RESPONSE DATA: " + JSON.stringify(body));
 
     return body || {};
   }

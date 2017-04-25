@@ -296,7 +296,7 @@ export class MapNodes {
   private showNodes(features: any): void {
 
     this.layerSource.clear();
-    console.log("showNodes! - " + JSON.stringify(features));
+    //console.log("showNodes! - " + JSON.stringify(features));
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(features));
   }
 

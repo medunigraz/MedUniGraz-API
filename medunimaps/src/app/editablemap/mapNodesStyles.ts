@@ -3,7 +3,7 @@ declare var ol: any;
 export class MapNodesStyles {
 
   private static higlightImage: any = new ol.style.Circle({
-    radius: 6,
+    radius: 7,
     fill: null,
     stroke: new ol.style.Stroke({ color: 'red', width: 3 })
   });
@@ -14,7 +14,7 @@ export class MapNodesStyles {
 
 
   public static DefaultNodeImage = new ol.style.Circle({
-    radius: 4,
+    radius: 5,
     fill: null,
     stroke: new ol.style.Stroke({ color: 'black', width: 2 })
   });
@@ -25,7 +25,7 @@ export class MapNodesStyles {
 
 
   public static VirtualNodeImage = new ol.style.Circle({
-    radius: 4,
+    radius: 5,
     fill: null,
     stroke: new ol.style.Stroke({ color: 'green', width: 2 })
   });
