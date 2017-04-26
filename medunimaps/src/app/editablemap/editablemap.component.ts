@@ -14,7 +14,7 @@ import { Floor } from '../base/floor';
 import { MapNodes } from './mapNodes';
 import { MapDoors } from './mapDoors';
 import { MapRoom } from './mapRoom';
-import { MapBuilding } from './mapBuilding';
+import { MapFloor } from './mapFloor';
 import { MapEdges } from './mapEdges';
 import { MapEditEdges } from './mapEditEdges';
 import { MapRoute } from './mapRoute';
@@ -42,7 +42,7 @@ export class EditablemapComponent implements OnInit {
   private mapNodes: MapNodes = null;
   private mapDoors: MapDoors = null;
   private mapRooms: MapRoom = null;
-  private mapBuilding: MapBuilding = null;
+  private mapFloor: MapFloor = null;
   private mapEdges: MapEdges = null;
   private mapEditEdges: MapEditEdges = null;
   private mapRoute: MapRoute = null;
@@ -57,7 +57,7 @@ export class EditablemapComponent implements OnInit {
       this.mapService = this.mapServiceHttp;
     }
 
-    this.mapBuilding = new MapBuilding(this.mapService);
+    this.mapFloor = new MapFloor(this.mapService);
     this.mapDoors = new MapDoors(this.mapService);
     this.mapRooms = new MapRoom(this.mapService);
     this.mapEdges = new MapEdges(this.mapService);
@@ -78,7 +78,7 @@ export class EditablemapComponent implements OnInit {
         new ol.layer.Tile({
           source: new ol.source.OSM()
         }),
-        this.mapBuilding.getLayer(),
+        this.mapFloor.getLayer(),
         this.mapRooms.getLayer(),
         this.mapDoors.getLayer(),
         this.mapNodes.getLayer(),
@@ -114,7 +114,7 @@ export class EditablemapComponent implements OnInit {
   set currentFloor(currentFloor: Floor) {
     console.log("EditAbleMapComponent::Set currentFloor - New Floor: " + JSON.stringify(currentFloor));
     if (currentFloor && currentFloor.id >= 0) {
-      this.mapBuilding.updateData(currentFloor.id);
+      this.mapFloor.updateData(currentFloor.id);
       this.mapRooms.updateData(currentFloor.id);
       this.mapDoors.updateData(currentFloor.id);
       this.mapEdges.updateData(currentFloor.id);

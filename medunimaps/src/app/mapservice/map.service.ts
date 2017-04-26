@@ -29,7 +29,7 @@ export class MapService {
       .then(() => this.getBaseMapIntern(layer));
   }
 
-  getFloors(): Observable<Floor[]> {
+  getFloorNames(): Observable<Floor[]> {
     return Observable.of(FLOORS);
   }
 
@@ -41,7 +41,7 @@ export class MapService {
     return null;
   }
 
-  getBuildings(layer: number): Observable<Object> {
+  getFloors(layer: number): Observable<Object> {
     return null;
   }
 
