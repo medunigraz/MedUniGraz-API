@@ -53,6 +53,7 @@ export class MapRoomStyles {
     else {
       return this.styles[arIndex];
     }
+
     //return this.defaultStyle;
   }
 

@@ -35,7 +35,6 @@ export class MapDoors {
     this.mapService.getDoors(floorId).subscribe(
       doors => this.showDoors(doors),
       error => console.log("ERROR deleteNode: " + <any>error));
-
   }
 
 

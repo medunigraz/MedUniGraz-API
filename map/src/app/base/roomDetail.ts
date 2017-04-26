@@ -65,6 +65,7 @@ export class RoomDetail {
   }
 
   public static isRoomFeatureSelectAble(featureRoom: any): boolean {
+
     if (!featureRoom) {
       return false;
     }
