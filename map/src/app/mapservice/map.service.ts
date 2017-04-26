@@ -15,34 +15,31 @@ export class MapService {
   private searchUrl = this.baseUrl + '/geo/autocomplete/';
   private roomUrl = this.baseUrl + '/geo/rooms/';
   private doorUrl = this.baseUrl + '/geo/doors/';
-  private buildingUrl = this.baseUrl + '/geo/buildings/';
+  private floorUrl = this.baseUrl + '/geo/floors/';
   private levelUrl = this.baseUrl + '/geo/level/';
   private routeUrl = this.baseUrl + '/geo/routing/edges/';
 
   constructor(private http: Http) { }
 
   getRooms(layer: number): Observable<Object> {
-    //return this.http.get(this.roomUrl + '?floor=' + layer)
-    return this.http.get(this.roomUrl)
+    return this.http.get(this.roomUrl + '?level=' + layer)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  getBuildings(layer: number): Observable<Object> {
-    //return this.http.get(this.roomUrl + '?floor=' + layer)
-    return this.http.get(this.buildingUrl)
+  getFloors(layer: number): Observable<Object> {
+    return this.http.get(this.floorUrl + '?level=' + layer)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
   getDoors(layer: number): Observable<Object> {
-    //return this.http.get(this.roomUrl + '?floor=' + layer)
-    return this.http.get(this.doorUrl)
+    return this.http.get(this.doorUrl + '?level=' + layer)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  getFloors(): Observable<Floor[]> {
+  getFloorNames(): Observable<Floor[]> {
     return this.http.get(this.levelUrl)
       .map(this.extractDataLevels)
       .catch(this.handleError);

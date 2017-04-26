@@ -19,11 +19,12 @@ export class AppComponent {
   @ViewChild('searchBoxComp') public searchBoxComponent: SearchcontrolComponent;
 
   private isSideMenuOpenend: boolean = false;
+  currentFloor: Floor = Floor.getDefaultFloor();
 
   floorChanged(floor: Floor): void {
     if (floor) {
       console.log("AppComponent --- floorChanged: " + floor.name);
-      //this.currentFloor = floor;
+      this.currentFloor = floor;
     }
   }
 

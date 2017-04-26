@@ -24,7 +24,7 @@ export class FloorcontrolComponent implements OnInit {
 
   public updateData(): any {
 
-    this.mapService.getFloors().subscribe(
+    this.mapService.getFloorNames().subscribe(
       floors => this.updateFloors(floors),
       error => console.log("ERROR deleteNode: " + <any>error));
   }

@@ -37,7 +37,6 @@ export class MapDoors {
       error => console.log("ERROR deleteNode: " + <any>error));
   }
 
-
   public getLayer(): any {
     return this.layer;
   }

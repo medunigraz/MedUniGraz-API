@@ -6,7 +6,7 @@ import {OlmapComponent} from './olmap.component'
 
 declare var ol: any;
 
-export class MapBuilding {
+export class MapFloor {
 
   private layer: any;
   private layerSource: any;
@@ -28,11 +28,11 @@ export class MapBuilding {
   public showFloor(floorid: number) {
 
     this.clear();
-    this.mapService.getBuildings(floorid).subscribe(
-      buildings => this.showBuildings(buildings),
+    this.mapService.getFloors(floorid).subscribe(
+      buildings => this.showFloors(buildings),
       error => console.log("ERROR deleteNode: " + <any>error));
 
-    //this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(this.getDummyBuilding()));
+    //this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(this.getDummyFloor()));
   }
 
   public getLayer(): any {
@@ -43,13 +43,13 @@ export class MapBuilding {
     this.layerSource.clear();
   }
 
-  private showBuildings(features: any) {
-    console.log("MapBuildings::showBuildings");
+  private showFloors(features: any) {
+    console.log("MapFloor::showBuildings");
     this.clear();
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(features));
   }
 
-  private getDummyBuilding(): any {
+  private getDummyFloor(): any {
     return {
       "type": "FeatureCollection",
       "features": [
