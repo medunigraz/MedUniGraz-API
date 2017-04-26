@@ -34,14 +34,7 @@ export class MapService {
   }
 
   getRooms(layer: number): Observable<Object> {
-    //return this.http.get(this.roomUrl + '?floor=' + layer)
-    return this.http.get(this.roomUrl)
-      .map(this.extractData)
-      .catch(this.handleError);
-  }
-
-  getRoomMap(layer: number): Observable<Object> {
-    return this.getRoomMapIntern(layer);
+    return null;
   }
 
   getDoors(layer: number): Observable<Object> {
@@ -50,15 +43,6 @@ export class MapService {
 
   getBuildings(layer: number): Observable<Object> {
     return null;
-  }
-
-  private getRoomMapIntern(layer: number): Observable<Object> {
-    if (layer == 0) {
-      return Observable.of(ROOMS_MAP);
-      //return Promise.resolve(ROOMS_MAP);
-    }
-    //return Promise.resolve(ROOMS_MAP);
-    return Observable.of(ROOMS_MAP);
   }
 
   getNavigationEdges(layer: number): Observable<Object> {

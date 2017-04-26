@@ -139,7 +139,7 @@ export class TestmapComponent implements OnInit, AfterViewInit {
     this.map.on('pointermove', evt => this.mapMouseMoved(evt));
 
     //this.mapService.getRoomMap(0).then(rooms => this.showRooms(rooms));
-    this.mapService.getRoomMap(0).subscribe(rooms => this.showRooms(rooms));
+    //this.mapService.getRoomMap(0).subscribe(rooms => this.showRooms(rooms));
     this.mapService.getNavigationEdges(0).subscribe(edges => this.showNavigationEdges(edges));
 
     this.select.on('select', evt => this.selectionChanged(evt));

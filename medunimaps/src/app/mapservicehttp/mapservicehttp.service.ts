@@ -26,27 +26,20 @@ export class MapHttpService extends MapService {
     super();
   }
 
-  getRoomMap(layer: number): Observable<Object> {
-    return this.http.get(this.roomUrl)
-      .map(this.extractData)
-      .catch(this.handleError);
-  }
-
   getRooms(layer: number): Observable<Object> {
-    //return this.http.get(this.roomUrl + '?floor=' + layer)
-    return this.http.get(this.roomUrl)
+    return this.http.get(this.roomUrl + '?level=' + layer)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
   getNavigationEdges(layer: number): Observable<Object> {
-    return this.http.get(this.edgeUrl + '?floor=' + layer)
+    return this.http.get(this.edgeUrl + '?level=' + layer)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
   getNavigationNodes(layer: number): Observable<Object> {
-    return this.http.get(this.nodeUrl + '?floor=' + layer)
+    return this.http.get(this.nodeUrl + '?level=' + layer)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -59,14 +52,14 @@ export class MapHttpService extends MapService {
 
   getDoors(layer: number): Observable<Object> {
     //return this.http.get(this.roomUrl + '?floor=' + layer)
-    return this.http.get(this.doorUrl)
+    return this.http.get(this.doorUrl + '?level=' + layer)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
   getBuildings(layer: number): Observable<Object> {
     //return this.http.get(this.roomUrl + '?floor=' + layer)
-    return this.http.get(this.buildingUrl)
+    return this.http.get(this.buildingUrl + '?level=' + layer)
       .map(this.extractData)
       .catch(this.handleError);
   }
