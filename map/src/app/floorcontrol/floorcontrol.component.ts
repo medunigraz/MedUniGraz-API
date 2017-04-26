@@ -1,5 +1,6 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs';
+import { MapService } from '../mapservice/map.service';
 
 import { Floor } from '../base/floor';
 
@@ -15,7 +16,7 @@ export class FloorcontrolComponent implements OnInit {
 
   @Output() currentFloorEvt = new EventEmitter<Floor>();
 
-  constructor() { }
+  constructor(private mapService: MapService) { }
 
   ngOnInit() {
     this.updateData();
@@ -23,31 +24,9 @@ export class FloorcontrolComponent implements OnInit {
 
   public updateData(): any {
 
-    Observable.of([
-      new Floor({
-        "id": 1,
-        "name": "OG3",
-        "building": 1
-      }),
-      new Floor({
-        "id": 1,
-        "name": "OG2",
-        "building": 1
-      }),
-      new Floor({
-        "id": 1,
-        "name": "OG1",
-        "building": 1
-      }),
-      new Floor({
-        "id": 2,
-        "name": "EG",
-        "building": 1
-      })
-    ]).subscribe(
+    this.mapService.getFloors().subscribe(
       floors => this.updateFloors(floors),
       error => console.log("ERROR deleteNode: " + <any>error));
-
   }
 
   onSelect(floor: Floor): void {
@@ -75,6 +54,33 @@ export class FloorcontrolComponent implements OnInit {
   private selectFloor(floor: Floor) {
     this.selectedFloor = floor;
     this.currentFloorEvt.emit(this.selectedFloor);
+  }
+
+  private loadDemoFloors() {
+    Observable.of([
+      new Floor({
+        "id": 1,
+        "name": "OG3",
+        "building": 1
+      }),
+      new Floor({
+        "id": 1,
+        "name": "OG2",
+        "building": 1
+      }),
+      new Floor({
+        "id": 1,
+        "name": "OG1",
+        "building": 1
+      }),
+      new Floor({
+        "id": 2,
+        "name": "EG",
+        "building": 1
+      })
+    ]).subscribe(
+      floors => this.updateFloors(floors),
+      error => console.log("ERROR deleteNode: " + <any>error));
   }
 
 }

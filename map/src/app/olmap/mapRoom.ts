@@ -72,7 +72,6 @@ export class MapRoom {
     this.currentOverlayPosition = (room.marker);
     this.overlay.setPosition(this.currentOverlayPosition);
     this.mapComponent.zoomToPosition(room.center);
-    this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(this.getDummyRoom()));
   }
 
   public getMarkedRoom(): RoomDetail {
