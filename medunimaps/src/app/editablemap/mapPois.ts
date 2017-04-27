@@ -1,19 +1,19 @@
 import { OpenlayersHelper } from './openlayershelper';
 import { MapService } from '../mapservice/map.service';
 
+import { MapLayerBase } from './mapLayerBase';
 import {PoiType} from '../base/poitype'
 import {Poi} from '../base/poi'
 
 
 declare var ol: any;
 
-export class MapPois {
-  private layer: any;
-  private layerSource: any;
+export class MapPois extends MapLayerBase {
 
   private poitypes: PoiType[] = null;
 
   constructor(private mapService: MapService) {
+    super();
     this.Initialize();
   }
 
@@ -43,10 +43,6 @@ export class MapPois {
     this.layer = new ol.layer.Vector({
       source: this.layerSource
     });
-  }
-
-  public getLayer(): any {
-    return this.layer;
   }
 
   public updateData(currentFloor: number): any {

@@ -11,6 +11,7 @@ import { ApplicationMode } from '../base/applicationmode';
 import { ApplicationModeT } from '../base/applicationmode';
 import { Floor } from '../base/floor';
 
+import { MapLayerBase } from './mapLayerBase';
 import { MapNodes } from './mapNodes';
 import { MapDoors } from './mapDoors';
 import { MapRoom } from './mapRoom';
@@ -112,6 +113,7 @@ export class EditablemapComponent implements OnInit {
   set applicationMode(applicationMode: ApplicationMode) {
     OpenlayersHelper.CurrentApplicationMode = applicationMode;
     console.log("TestmapComponent::Set applicationMode - New App Mode: " + OpenlayersHelper.CurrentApplicationMode.name);
+    this.updateLayers();
   }
 
   @Input()
@@ -193,4 +195,30 @@ export class EditablemapComponent implements OnInit {
       this.mapNodes.mouseClicked(evt.coordinate, this.map);
     }
   }
+
+  private updateLayers() {
+    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES) {
+      this.setLayerActive(this.mapEdges, true);
+      this.setLayerActive(this.mapEditEdges, true);
+      this.setLayerActive(this.mapNodes, true);
+      this.setLayerActive(this.mapRoute, true);
+
+      this.setLayerActive(this.mapPois, false);
+    }
+    else if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_POIS) {
+      this.setLayerActive(this.mapEdges, false);
+      this.setLayerActive(this.mapEditEdges, false);
+      this.setLayerActive(this.mapNodes, false);
+      this.setLayerActive(this.mapRoute, false);
+
+      this.setLayerActive(this.mapPois, true);
+    }
+  }
+
+  private setLayerActive(layer: MapLayerBase, active: boolean) {
+    if (layer) {
+      layer.setActive(active);
+    }
+  }
+
 }

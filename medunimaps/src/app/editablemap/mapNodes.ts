@@ -4,6 +4,7 @@ import { USEHTTPSERVICE } from '../base/globalconstants';
 import { ApplicationMode } from '../base/applicationmode';
 import { ApplicationModeT } from '../base/applicationmode';
 
+import { MapLayerBase } from './mapLayerBase';
 import { MapEditEdges } from './mapeditedges';
 import { MapEdges } from './mapedges';
 import { MapRoute } from './maproute';
@@ -12,10 +13,7 @@ import { MapNodesStyles } from './mapNodesStyles';
 
 declare var ol: any;
 
-export class MapNodes {
-  private layer: any;
-  private layerSource: any;
-
+export class MapNodes extends MapLayerBase {
   private highlightedFeature: any;
   private highlightFeatureOverlay: any = null;
 
@@ -34,6 +32,7 @@ export class MapNodes {
     private mapEditEdges: MapEditEdges,
     private mapEdges: MapEdges,
     private mapRoute: MapRoute) {
+    super();
     this.Initialize();
   }
 
@@ -69,10 +68,6 @@ export class MapNodes {
     this.select.on('select', evt => this.featureSelected(evt));
     this.modify.on('modifystart', evt => this.featureModifyStart(evt));
     this.modify.on('modifyend', evt => this.featureModified(evt));
-  }
-
-  public getLayer(): any {
-    return this.layer;
   }
 
   public updateData(floorId: number): any {

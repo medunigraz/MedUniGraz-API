@@ -5,14 +5,13 @@ import { Point } from '../base/point'
 import { ApplicationMode } from '../base/applicationmode';
 import { ApplicationModeT } from '../base/applicationmode';
 
+import { MapLayerBase } from './mapLayerBase';
 import { OpenlayersHelper } from './openlayershelper';
 import { MapNodesStyles } from './mapNodesStyles';
 
 declare var ol: any;
 
-export class MapEditEdges {
-  private layer: any;
-  private layerSource: any;
+export class MapEditEdges extends MapLayerBase {
 
   private multiLineFeature: any;
   private multiLineString: any;
@@ -21,6 +20,7 @@ export class MapEditEdges {
   private startPositions: Point[] = null;
 
   constructor(private mapService: MapService) {
+    super();
     this.Initialize();
   }
 
@@ -112,10 +112,6 @@ export class MapEditEdges {
         error => console.log("ERROR: " + <any>error));
       //console.log("   New Edge: " + JSON.stringify(new ol.format.GeoJSON().writeFeature(edge)));
     }
-  }
-
-  public getLayer(): any {
-    return this.layer;
   }
 
   private edgeUpdated(edge: any) {

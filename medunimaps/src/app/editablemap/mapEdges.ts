@@ -4,15 +4,13 @@ import { USEHTTPSERVICE } from '../base/globalconstants';
 import { ApplicationMode } from '../base/applicationmode';
 import { ApplicationModeT } from '../base/applicationmode';
 
+import { MapLayerBase } from './mapLayerBase';
 import { OpenlayersHelper } from './openlayershelper';
 import { MapNodesStyles } from './mapNodesStyles';
 
 declare var ol: any;
 
-export class MapEdges {
-  private layer: any;
-  private layerSource: any;
-
+export class MapEdges extends MapLayerBase {
   private highlightedFeature: any = null;
   private highlightFeatureOverlay: any = null;
 
@@ -20,6 +18,7 @@ export class MapEdges {
   private selectFeatureOverlay: any = null;
 
   constructor(private mapService: MapService) {
+    super();
     this.Initialize();
   }
 
@@ -33,10 +32,6 @@ export class MapEdges {
     }));
     this.layerSource = res.layerSource;
     this.layer = res.layer;
-  }
-
-  public getLayer(): any {
-    return this.layer;
   }
 
   public updateData(floorId: number): any {

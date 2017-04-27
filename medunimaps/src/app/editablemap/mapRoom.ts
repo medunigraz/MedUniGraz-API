@@ -1,15 +1,14 @@
 import { OpenlayersHelper } from './openlayershelper';
 import { ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
 import { MapService } from '../mapservice/map.service';
+import { MapLayerBase } from './mapLayerBase';
 
 declare var ol: any;
 
-export class MapRoom {
-
-  private layer: any;
-  private layerSource: any;
+export class MapRoom extends MapLayerBase {
 
   constructor(private mapService: MapService) {
+    super();
     this.Initialize();
   }
 
@@ -32,10 +31,6 @@ export class MapRoom {
     this.mapService.getRooms(floorid).subscribe(
       rooms => this.showRooms(rooms),
       error => console.log("ERROR deleteNode: " + <any>error));
-  }
-
-  public getLayer(): any {
-    return this.layer;
   }
 
   private clear() {

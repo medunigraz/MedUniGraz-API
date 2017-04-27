@@ -94,7 +94,7 @@ export class MapHttpService extends MapService {
     let options = new RequestOptions({ headers: headers });
 
     let data = {
-      "floor": floor,
+      "level": floor,
       "center": JSON.stringify(center)
     }
 

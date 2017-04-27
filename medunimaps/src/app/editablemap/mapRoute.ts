@@ -2,20 +2,20 @@ import { MapService } from '../mapservice/map.service';
 import { USEHTTPSERVICE } from '../base/globalconstants';
 import { Point } from '../base/point'
 
+import { MapLayerBase } from './mapLayerBase';
 import { OpenlayersHelper } from './openlayershelper';
 import { MapRouteStyles } from './mapRouteStyles';
 
 declare var ol: any;
 
-export class MapRoute {
-  private layer: any;
-  private layerSource: any;
+export class MapRoute extends MapLayerBase {
 
   private currentStartNodeId: number = -1;
   private currentFloorId: number = -1;
   private createRoute: boolean = false;
 
   constructor(private mapService: MapService) {
+    super();
     this.Initialize();
   }
 
@@ -75,10 +75,6 @@ export class MapRoute {
 
   public clear() {
     this.layerSource.clear();
-  }
-
-  public getLayer(): any {
-    return this.layer;
   }
 
   public setCurrentFloor(floor: number) {
