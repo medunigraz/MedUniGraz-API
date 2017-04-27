@@ -1,12 +1,25 @@
 .floorselector {
-  position:absolute;
-  top:5.0em;
-  left:0.7em;
-  z-index: 1;
+  position: absolute;
+  bottom: 1.0em;
+  left: 1.0em;
+  z-index: 10;
   background-color: #FFFFFF80;
-  border-radius: 0.5em;
+  font-size: medium;
 }
 
-.floormenu {
+.floormenubutton {
   background-color: #FFFFFFFF;
+  border: medium medium;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+  min-width: 6em;
+  padding: 0;
+}
+
+.floormenutext {
+  font-size: medium;
+}
+
+.floormenuIcon {
+  color: #51AE32;
+  margin-right: 0.2em;
 }

@@ -18,6 +18,7 @@ import { RoomsearchmdComponent } from './roomsearchmd/roomsearchmd.component';
 import { RoutetestComponent } from './routetest/routetest.component';
 import { ModeselectorComponent } from './modeselector/modeselector.component';
 import { EditablemapComponent } from './editablemap/editablemap.component';
+import { SelectcontrolComponent } from './selectcontrol/selectcontrol.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { EditablemapComponent } from './editablemap/editablemap.component';
     RoomsearchmdComponent,
     RoutetestComponent,
     ModeselectorComponent,
-    EditablemapComponent
+    EditablemapComponent,
+    SelectcontrolComponent
   ],
   imports: [
     BrowserModule,

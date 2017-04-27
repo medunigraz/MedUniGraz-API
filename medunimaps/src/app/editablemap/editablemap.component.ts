@@ -18,6 +18,7 @@ import { MapFloor } from './mapFloor';
 import { MapEdges } from './mapEdges';
 import { MapEditEdges } from './mapEditEdges';
 import { MapRoute } from './mapRoute';
+import { MapPois } from './mappois';
 import { OpenlayersHelper } from './openlayershelper';
 
 
@@ -46,6 +47,7 @@ export class EditablemapComponent implements OnInit {
   private mapEdges: MapEdges = null;
   private mapEditEdges: MapEditEdges = null;
   private mapRoute: MapRoute = null;
+  private mapPois: MapPois = null;
 
   private ctlPressed: boolean = false;
 
@@ -64,6 +66,7 @@ export class EditablemapComponent implements OnInit {
     this.mapEditEdges = new MapEditEdges(this.mapService);
     this.mapRoute = new MapRoute(this.mapService);
     this.mapNodes = new MapNodes(this.mapService, this.mapEditEdges, this.mapEdges, this.mapRoute);
+    this.mapPois = new MapPois(this.mapService);
 
     this.map = new ol.Map({
       controls: ol.control.defaults({
@@ -84,7 +87,8 @@ export class EditablemapComponent implements OnInit {
         this.mapNodes.getLayer(),
         this.mapEditEdges.getLayer(),
         this.mapEdges.getLayer(),
-        this.mapRoute.getLayer()
+        this.mapRoute.getLayer(),
+        this.mapPois.getLayer()
       ],
       overlays: [],
       target: 'map',
@@ -120,6 +124,7 @@ export class EditablemapComponent implements OnInit {
       this.mapEdges.updateData(currentFloor.id);
       this.mapNodes.updateData(currentFloor.id);
       this.mapRoute.setCurrentFloor(currentFloor.id);
+      this.mapPois.updateData(currentFloor.id);
     }
   }
 
