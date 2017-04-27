@@ -27,10 +27,14 @@ export class MapDoors extends MapLayerBase {
     console.log("MapDoors::showFloor - " + floorId);
     //this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(this.getDummyDoors()));
 
+    //TODO: für AlLE!
+    //Observable
+
     this.clear();
-    this.mapService.getDoors(floorId).subscribe(
-      doors => this.showDoors(doors),
-      error => console.log("ERROR deleteNode: " + <any>error));
+    this.subscribeNewRequest(
+      this.mapService.getDoors(floorId).subscribe(
+        doors => this.showDoors(doors),
+        error => console.log("ERROR deleteNode: " + <any>error)));
   }
 
   private showDoors(features: any) {

@@ -46,7 +46,7 @@ export class MapPois extends MapLayerBase {
   }
 
   public updateData(currentFloor: number): any {
-
+    //this.subscribeNewRequest(
   }
 
 }

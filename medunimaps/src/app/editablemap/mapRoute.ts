@@ -66,10 +66,11 @@ export class MapRoute extends MapLayerBase {
     if (this.currentStartNodeId >= 0 && destinationNode >= 0) {
       console.log("MapRoute::generateRoute From: " + this.currentStartNodeId + " to " + destinationNode);
 
-      this.mapService.getRoute(this.currentStartNodeId, destinationNode).
-        subscribe(
-        route => this.updateRoute(route),
-        error => console.log("ERROR: " + <any>error));
+      this.subscribeNewRequest(
+        this.mapService.getRoute(this.currentStartNodeId, destinationNode).
+          subscribe(
+          route => this.updateRoute(route),
+          error => console.log("ERROR: " + <any>error)));
     }
   }
 

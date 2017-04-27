@@ -28,9 +28,10 @@ export class MapRoom extends MapLayerBase {
 
   public updateData(floorid: number) {
     this.clear();
-    this.mapService.getRooms(floorid).subscribe(
-      rooms => this.showRooms(rooms),
-      error => console.log("ERROR deleteNode: " + <any>error));
+    this.subscribeNewRequest(
+      this.mapService.getRooms(floorid).subscribe(
+        rooms => this.showRooms(rooms),
+        error => console.log("ERROR deleteNode: " + <any>error)));
   }
 
   private showRooms(features: any): void {

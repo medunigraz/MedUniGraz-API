@@ -25,9 +25,10 @@ export class MapFloor extends MapLayerBase {
   public updateData(floorid: number) {
 
     this.clear();
-    this.mapService.getFloors(floorid).subscribe(
-      buildings => this.showFloors(buildings),
-      error => console.log("ERROR deleteNode: " + <any>error));
+    this.subscribeNewRequest(
+      this.mapService.getFloors(floorid).subscribe(
+        buildings => this.showFloors(buildings),
+        error => console.log("ERROR deleteNode: " + <any>error)));
 
     //this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(this.getDummyFloor()));
   }

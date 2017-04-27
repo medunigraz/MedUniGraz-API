@@ -73,7 +73,8 @@ export class MapNodes extends MapLayerBase {
   public updateData(floorId: number): any {
     this.currentFloorId = floorId;
     this.clear();
-    this.mapService.getNavigationNodes(floorId).subscribe(nodes => this.showNodes(nodes));
+    this.subscribeNewRequest(
+      this.mapService.getNavigationNodes(floorId).subscribe(nodes => this.showNodes(nodes)));
   }
 
   public mouseMoved(position: any, worldposition: any, map: any) {

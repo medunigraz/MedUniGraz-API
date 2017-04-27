@@ -35,9 +35,10 @@ export class MapEdges extends MapLayerBase {
   }
 
   public updateData(floorId: number): any {
-    this.mapService.getNavigationEdges(floorId).subscribe(
-      edges => this.showEdges(edges),
-      error => console.log("ERROR deleteNode: " + <any>error));
+    this.subscribeNewRequest(
+      this.mapService.getNavigationEdges(floorId).subscribe(
+        edges => this.showEdges(edges),
+        error => console.log("ERROR deleteNode: " + <any>error)));
   }
 
   public getHighlightedEdgeId(): any {
