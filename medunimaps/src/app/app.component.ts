@@ -1,7 +1,7 @@
 import { Component, Optional, OnInit } from '@angular/core';
 import {MdDialog, MdDialogRef} from '@angular/material';
 
-import { ApplicationMode } from './base/applicationmode';
+import { ApplicationMode, ApplicationModeT } from './base/applicationmode';
 import { Floor } from './base/floor';
 import { PoiType } from './base/poitype';
 
@@ -17,6 +17,8 @@ export class AppComponent {
   currentAppMode: ApplicationMode = ApplicationMode.CreateDefault();
   currentFloor: Floor = Floor.getDefaultFloor();
   currentPoiType: PoiType = null;
+
+  showPoiSelector: boolean = false;
 
   constructor(private _dialog: MdDialog) {
   }
@@ -48,6 +50,8 @@ export class AppComponent {
   appModeChanged(mode: ApplicationMode): void {
     console.log("AppComponent --- appModeChanged: " + mode.name);
     this.currentAppMode = mode;
+
+    this.showPoiSelector = (this.currentAppMode.mode == ApplicationModeT.EDIT_POIS);
   }
 
   floorChanged(floor: Floor): void {
