@@ -1,7 +1,7 @@
 <div class="floorselector" *ngIf="selectedFloor">
 
   <button md-raised-button [mdMenuTriggerFor]="menufloors" class="floormenu">
-     <md-icon class="floormenuIcon">more_vert</md-icon><span>{{selectedFloor.name}}</span>
+     <md-icon class="floormenuIcon">layers</md-icon><span>{{selectedFloor.name}}</span>
   </button>
   <md-menu #menufloors="mdMenu">
     <button md-menu-item *ngFor="let floor of floorList" (click)="onSelect(floor)" class="floormenutext">{{floor.name}}</button>

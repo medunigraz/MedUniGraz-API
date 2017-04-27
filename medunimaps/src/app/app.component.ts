@@ -3,6 +3,7 @@ import {MdDialog, MdDialogRef} from '@angular/material';
 
 import { ApplicationMode } from './base/applicationmode';
 import { Floor } from './base/floor';
+import { PoiType } from './base/poitype';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ export class AppComponent {
 
   currentAppMode: ApplicationMode = ApplicationMode.CreateDefault();
   currentFloor: Floor = Floor.getDefaultFloor();
+  currentPoiType: PoiType = null;
 
   constructor(private _dialog: MdDialog) {
   }
@@ -52,6 +54,13 @@ export class AppComponent {
     if (floor) {
       console.log("AppComponent --- floorChanged: " + floor.name);
       this.currentFloor = floor;
+    }
+  }
+
+  currentPoiTypeChanged(poiType: PoiType) {
+    if (poiType) {
+      console.log("AppComponent --- currentPoiType: " + poiType.name);
+      this.currentPoiType = poiType;
     }
   }
 }

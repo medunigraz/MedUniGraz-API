@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { SelectcontrolComponent } from './selectcontrol.component';
+import { PoiselectorComponent } from './poiselector.component';
 
-describe('SelectcontrolComponent', () => {
-  let component: SelectcontrolComponent;
-  let fixture: ComponentFixture<SelectcontrolComponent>;
+describe('PoiselectorComponent', () => {
+  let component: PoiselectorComponent;
+  let fixture: ComponentFixture<PoiselectorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SelectcontrolComponent ]
+      declarations: [ PoiselectorComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SelectcontrolComponent);
+    fixture = TestBed.createComponent(PoiselectorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

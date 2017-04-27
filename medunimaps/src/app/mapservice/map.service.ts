@@ -9,6 +9,7 @@ import {NAVIGATIONEDGES_DEMO} from './mock-navigationedges'
 
 import {Room} from '../base/room';
 import { Floor } from '../base/floor';
+import { PoiType } from '../base/poitype';
 import { Observable } from 'rxjs';
 
 @Injectable()
@@ -56,6 +57,10 @@ export class MapService {
   getRoute(sourceNodeId: number, destinationNodeId: number): Observable<Object> {
     console.log("Get Route Local!");
     return Observable.of(DEMOROUTE);
+  }
+
+  getPoiTypes(): Observable<PoiType[]> {
+    return null;
   }
 
   searchRoom(term: string): Observable<Room[]> {
