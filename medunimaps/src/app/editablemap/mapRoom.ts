@@ -33,10 +33,6 @@ export class MapRoom extends MapLayerBase {
       error => console.log("ERROR deleteNode: " + <any>error));
   }
 
-  private clear() {
-    this.layerSource.clear();
-  }
-
   private showRooms(features: any): void {
     //console.log("MapRoom::showRooms");
     this.clear();

@@ -217,11 +217,6 @@ export class MapEdges extends MapLayerBase {
     return this.layer === layer;
   }
 
-  private clear() {
-    this.clearSelection();
-    this.layerSource.clear();
-  }
-
   private showEdges(features: any): void {
     console.log("MapEdges::showEdges");
     this.clear();

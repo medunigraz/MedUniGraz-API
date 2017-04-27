@@ -33,10 +33,6 @@ export class MapDoors extends MapLayerBase {
       error => console.log("ERROR deleteNode: " + <any>error));
   }
 
-  private clear() {
-    this.layerSource.clear();
-  }
-
   private showDoors(features: any) {
     console.log("MapDoors::showDoors");
     this.clear();

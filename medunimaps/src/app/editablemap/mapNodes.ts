@@ -290,7 +290,7 @@ export class MapNodes extends MapLayerBase {
 
   private showNodes(features: any): void {
 
-    this.layerSource.clear();
+    this.clear();
     //console.log("showNodes! - " + JSON.stringify(features));
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(features));
   }
@@ -342,7 +342,7 @@ export class MapNodes extends MapLayerBase {
     console.log("node Updated! - " + JSON.stringify(node));
   }
 
-  private clear() {
+  public clearSelection() {
     let selectedFeatures = this.select.getFeatures();
     selectedFeatures.clear();
     this.displayEditLines = false;

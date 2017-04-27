@@ -10,5 +10,18 @@ export class MapLayerBase {
 
   public setActive(active: boolean) {
     this.layer.setVisible(active);
+
+    if (!active) {
+      this.clearSelection();
+    }
+  }
+
+  public clear() {
+    this.clearSelection();
+    this.layerSource.clear();
+  }
+
+  public clearSelection() {
+    //overwrite in subclass...
   }
 }

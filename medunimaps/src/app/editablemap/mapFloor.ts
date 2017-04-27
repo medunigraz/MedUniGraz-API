@@ -32,10 +32,6 @@ export class MapFloor extends MapLayerBase {
     //this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(this.getDummyFloor()));
   }
 
-  private clear() {
-    this.layerSource.clear();
-  }
-
   private showFloors(features: any) {
     console.log("MapFloors::showFloors");
     this.clear();
