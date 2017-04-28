@@ -19,6 +19,7 @@ export class PoiselectorComponent implements OnInit {
   selectedPoiType: PoiType = null;
 
   @Output() currentSelectedPoiEvt = new EventEmitter<PoiType>();
+  @Output() poiTypeReceivedEvt = new EventEmitter<PoiType[]>();
 
   constructor(private mapServiceHttp: MapHttpService,
     private mapService: MapService) { }
@@ -48,6 +49,8 @@ export class PoiselectorComponent implements OnInit {
       this.showControl = true;
       this.selectPoi(this.pois[0]);
     }
+
+    this.poiTypeReceivedEvt.emit(this.pois);
   }
 
   private selectPoi(poi: PoiType) {

@@ -17,6 +17,7 @@ export class AppComponent {
   currentAppMode: ApplicationMode = ApplicationMode.CreateDefault();
   currentFloor: Floor = Floor.getDefaultFloor();
   currentPoiType: PoiType = null;
+  poiTypes: PoiType[] = null;
 
   showPoiSelector: boolean = false;
 
@@ -65,6 +66,13 @@ export class AppComponent {
     if (poiType) {
       console.log("AppComponent --- currentPoiType: " + poiType.name);
       this.currentPoiType = poiType;
+    }
+  }
+
+  PoiTypesReceived(poiTypes: PoiType[]) {
+    if (poiTypes) {
+      console.log("AppComponent --- PoiTypesReceived: " + poiTypes.length);
+      this.poiTypes = poiTypes;
     }
   }
 }

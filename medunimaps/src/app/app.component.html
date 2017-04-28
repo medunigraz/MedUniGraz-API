@@ -6,7 +6,7 @@
 <app-editablemap #mapComp [applicationMode]="currentAppMode" [currentFloor]="currentFloor"></app-editablemap>
 <app-floorselector (currentFloorEvt)="floorChanged($event)"></app-floorselector>
 <app-modeselector (currentAppModeEvt)="appModeChanged($event)"></app-modeselector>
-<app-poiselector (currentSelectedPoiEvt)="currentPoiTypeChanged($event)" *ngIf="showPoiSelector"></app-poiselector>
+<app-poiselector (currentSelectedPoiEvt)="currentPoiTypeChanged($event)" (poiTypeReceivedEvt)="PoiTypesReceived($event)" *ngIf="showPoiSelector"></app-poiselector>
 
 <!--
 <md-toolbar class = "header-toolbar">

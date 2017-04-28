@@ -8,6 +8,6 @@ export class PoiType {
     this.id = obj["id"];
     this.name = obj["name"];
     this.selected = obj["selected"];
-    this.iconurl = obj["iconurl"];
+    this.iconurl = obj["icon"];
   }
 }

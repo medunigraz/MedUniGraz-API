@@ -4,5 +4,12 @@
     "changeOrigin": true,
     "secure": false,
     "logLevel": "debug"
+  },
+  "/icon/*": {
+    "target": "https://api.medunigraz.at",
+    "changeOrigin": true,
+    "secure": false,
+    "logLevel": "debug"
   }
+
 }
