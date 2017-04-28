@@ -34,4 +34,15 @@ export class MapNodesStyles {
     image: MapNodesStyles.VirtualNodeImage
   })
 
+  public static PoiNodeImage = new ol.style.Circle({
+    radius: 5,
+    fill: null,
+    stroke: new ol.style.Stroke({ color: 'red', width: 2 })
+  });
+
+  public static PoiNodeStyle: any = new ol.style.Style({
+    image: MapNodesStyles.PoiNodeImage
+  })
+
+
 }

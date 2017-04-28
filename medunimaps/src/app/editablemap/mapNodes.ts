@@ -41,6 +41,9 @@ export class MapNodes extends MapLayerBase {
       if (feature.get('ctype') == 'node') {
         return MapNodesStyles.VirtualNodeStyle;
       }
+      if (feature.get('ctype') == 'point of interest instance') {
+        return MapNodesStyles.PoiNodeStyle;
+      }
       return MapNodesStyles.DefaultNodeStyle;
     };
 
