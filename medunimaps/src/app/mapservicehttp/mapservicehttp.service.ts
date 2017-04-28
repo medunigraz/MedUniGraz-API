@@ -23,6 +23,7 @@ export class MapHttpService extends MapService {
   private levelUrl = this.baseUrl + '/geo/level/';
   private routeUrl = this.baseUrl + '/geo/routing/edges/';
   private poiTypeUrl = this.baseUrl + '/geo/pointofinterest/';
+  private poiInstanceUrl = this.baseUrl + '/geo/pointofinterestinstance/';
 
 
   constructor(private http: Http) {
@@ -80,6 +81,12 @@ export class MapHttpService extends MapService {
       .catch(this.handleError);
   }
 
+  getPoiInstances(layer: number): Observable<Object> {
+    return this.http.get(this.poiInstanceUrl + '?level=' + layer)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
 
   addEdge(source: number, destination: number, length: number, path: any): Observable<Object> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -111,6 +118,23 @@ export class MapHttpService extends MapService {
     console.log("Send Node: " + JSON.stringify(data));
 
     return this.http.post(this.nodeUrl, data, options)
+      .map(this.extractDataAdd)
+      .catch(this.handleError);
+  }
+
+  addPoiInstance(floor: number, center: any, poitypeid: number): Observable<Object> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    let data = {
+      "level": floor,
+      "name": poitypeid,
+      "center": JSON.stringify(center)
+    }
+
+    console.log("Send PoiInstance: " + JSON.stringify(data));
+
+    return this.http.post(this.poiInstanceUrl, data, options)
       .map(this.extractDataAdd)
       .catch(this.handleError);
   }

@@ -10,6 +10,7 @@ import { MODIFY_EDGE_MINSTARTPOINT_DISTANCE } from '../base/globalconstants';
 import { ApplicationMode } from '../base/applicationmode';
 import { ApplicationModeT } from '../base/applicationmode';
 import { Floor } from '../base/floor';
+import { PoiType } from '../base/poitype';
 
 import { MapLayerBase } from './mapLayerBase';
 import { MapNodes } from './mapNodes';
@@ -112,7 +113,7 @@ export class EditablemapComponent implements OnInit {
   @Input()
   set applicationMode(applicationMode: ApplicationMode) {
     OpenlayersHelper.CurrentApplicationMode = applicationMode;
-    console.log("TestmapComponent::Set applicationMode - New App Mode: " + OpenlayersHelper.CurrentApplicationMode.name);
+    console.log("EditAbleMapComponent::Set applicationMode - New App Mode: " + OpenlayersHelper.CurrentApplicationMode.name);
     this.updateLayers();
   }
 
@@ -126,7 +127,25 @@ export class EditablemapComponent implements OnInit {
       this.mapEdges.updateData(currentFloor.id);
       this.mapNodes.updateData(currentFloor.id);
       this.mapRoute.setCurrentFloor(currentFloor.id);
+
+      this.mapPois.setCurrentFloor(currentFloor.id);
       this.mapPois.updateData(currentFloor.id);
+    }
+  }
+
+  @Input()
+  set currentPoiType(poitype: PoiType) {
+    if (poitype) {
+      console.log("EditAbleMapComponent::Set currentPoiType: " + JSON.stringify(poitype));
+      this.mapPois.setCurrentSelectedPoiType(poitype);
+    }
+  }
+
+  @Input()
+  set poiTypes(poitypes: PoiType[]) {
+    if (poitypes) {
+      console.log("EditAbleMapComponent::Set poiTypes: " + JSON.stringify(poitypes));
+      this.mapPois.setPoiTypes(poitypes);
     }
   }
 
@@ -193,6 +212,9 @@ export class EditablemapComponent implements OnInit {
 
     if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES) {
       this.mapNodes.mouseClicked(evt.coordinate, this.map);
+    }
+    else if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_POIS) {
+      this.mapPois.mouseClicked(evt.coordinate, evt.originalEvent.ctrlKey, this.map);
     }
   }
 

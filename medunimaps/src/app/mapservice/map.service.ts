@@ -63,6 +63,11 @@ export class MapService {
     return null;
   }
 
+  getPoiInstances(layer: number): Observable<Object> {
+    return null;
+  }
+
+
   searchRoom(term: string): Observable<Room[]> {
     //https://angular.io/docs/ts/latest/tutorial/toh-pt6.html
     var rooms: Room[] = [];
@@ -108,6 +113,10 @@ export class MapService {
   }
 
   addEdge(source: number, destination: number, length: number, path: any): Observable<Object> {
+    return null;
+  }
+
+  addPoiInstance(floor: number, center: any, poitypeid: number): Observable<Object> {
     return null;
   }
 
