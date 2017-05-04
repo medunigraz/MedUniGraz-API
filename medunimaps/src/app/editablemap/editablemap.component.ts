@@ -184,6 +184,11 @@ export class EditablemapComponent implements OnInit {
       this.mapEdges.deleteSelectedEdges();
     }
 
+    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_POIS && event.keyCode == 46) //Entf Key
+    {
+      this.mapPois.deleteSelectedPoi();
+    }
+
     if (event.keyCode == 16) {
       this.mapRoute.shiftReleased();
     }
@@ -208,13 +213,14 @@ export class EditablemapComponent implements OnInit {
 
     //let lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
     //console.log("Coord: " + lonlat);
-    console.log("Coord Org: " + evt.coordinate + " strg: " + evt.originalEvent.ctrlKey);
+    console.log("Coord Org: " + evt.coordinate + " strg: " + evt.originalEvent.ctrlKey + " shift: " + evt.originalEvent.shiftKey);
+    let pixel = this.map.getEventPixel(evt.originalEvent);
 
     if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES) {
       this.mapNodes.mouseClicked(evt.coordinate, this.map);
     }
     else if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_POIS) {
-      this.mapPois.mouseClicked(evt.coordinate, evt.originalEvent.ctrlKey, this.map);
+      this.mapPois.mouseClicked(evt.coordinate, pixel, evt.originalEvent.ctrlKey, evt.originalEvent.shiftKey, this.map);
     }
   }
 

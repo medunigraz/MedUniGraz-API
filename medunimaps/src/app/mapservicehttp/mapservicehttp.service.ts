@@ -164,6 +164,18 @@ export class MapHttpService extends MapService {
       .catch(this.handleError);
   }
 
+  deletePoi(id: number): Observable<Object> {
+    let headers = new Headers({});
+
+    let options = new RequestOptions({
+      headers: headers,
+    });
+
+    return this.http.delete(this.poiInstanceUrl + id + "/", options)
+      .map(response => this.extractDataDel(response, id))
+      .catch(this.handleError);
+  }
+
   updateEdge(edge: any, id: number): Observable<Object> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });

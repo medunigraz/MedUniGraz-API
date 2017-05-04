@@ -128,6 +128,10 @@ export class MapService {
     return null;
   }
 
+  deletePoi(id: number): Observable<Object> {
+    return null;
+  }
+
   updateNode(node: any, id: number): Observable<Object> {
     return null;
   }
