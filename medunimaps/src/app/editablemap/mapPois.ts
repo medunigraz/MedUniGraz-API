@@ -94,13 +94,16 @@ export class MapPois extends MapLayerBase {
   public mouseClicked(position: any, pixelPos: any, strgPressed: boolean, shiftPressed: boolean, map: any) {
     console.log("MapPois::mouseClicked");
 
-    this.clearSelection();
-
     if (strgPressed && this.currentPoiType && this.currentFloor >= 0) {
+      this.clearSelection();
       this.createNewPoi(position);
     }
     else if (this.currentFloor >= 0) {
-      if (this.selectPoi(pixelPos, map)) {
+      if (this.currentSelectedPoi && shiftPressed) {
+        console.log("MapPois::mouseClicked Move: " + this.currentSelectedPoi.getId());
+        this.moveCurrentPoi(position);
+      }
+      else if (this.selectPoi(pixelPos, map)) {
         if (!this.highlightFeature) {
           this.initHighlightFeatureOverlay(map);
         }
@@ -109,11 +112,8 @@ export class MapPois extends MapLayerBase {
         this.featureAdded = true;
         console.log("MapPois::mouseClicked Select: " + this.currentSelectedPoi.getId());
       }
-      else if (this.currentSelectedPoi && shiftPressed) {
-        console.log("MapPois::mouseClicked Move: " + this.currentSelectedPoi.getId());
-      }
       else {
-        this.currentSelectedPoi = null;
+        this.clearSelection();
       }
     }
   }
@@ -140,7 +140,27 @@ export class MapPois extends MapLayerBase {
     }
   }
 
+  private moveCurrentPoi(position: any) {
+    console.log("MapPois::movePoi... " + JSON.stringify(position));
+
+    if (this.currentSelectedPoi) {
+      this.currentSelectedPoi.getGeometry().setCoordinates(position);
+      this.highlightFeature.getGeometry().setCoordinates(position);
+      this.mapService.updatePoi((new ol.format.GeoJSON()).writeFeature(this.currentSelectedPoi), this.currentSelectedPoi.getId()).
+        subscribe(
+        poi => this.poiUpdated(poi),
+        error => console.log("ERROR: " + <any>error));
+    }
+  }
+
+  private poiUpdated(poi: any) {
+    console.log("Poi Updated! - " + JSON.stringify(poi));
+  }
+
+
   private selectPoi(pixelPos: any, map: any): boolean {
+    this.clearSelection();
+
     let options = {
       layerFilter: (layer => this.testLayer(layer))
     }

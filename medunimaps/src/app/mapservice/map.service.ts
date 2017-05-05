@@ -139,4 +139,8 @@ export class MapService {
   updateEdge(edge: any, id: number): Observable<Object> {
     return null;
   }
+
+  updatePoi(node: any, id: number): Observable<Object> {
+    return null;
+  }
 }

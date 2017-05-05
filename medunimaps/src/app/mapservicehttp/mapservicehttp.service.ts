@@ -198,6 +198,17 @@ export class MapHttpService extends MapService {
       .catch(this.handleError);
   }
 
+  updatePoi(node: any, id: number): Observable<Object> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    //console.log("Update Poi: " + id + "::" + JSON.stringify(node));
+
+    return this.http.put(this.poiInstanceUrl + id + "/", node, options)
+      .map(this.extractDataAdd)
+      .catch(this.handleError);
+  }
+
 
   private extractData(res: Response) {
     //console.log("RESPONSE DATA...");
