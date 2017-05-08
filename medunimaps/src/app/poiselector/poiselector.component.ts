@@ -35,7 +35,7 @@ export class PoiselectorComponent implements OnInit {
   public updateData(): any {
 
     this.mapService.getPoiTypes().subscribe(
-      floors => this.updatePois(floors),
+      poiTypes => this.updatePois(poiTypes),
       error => console.log("ERROR deleteNode: " + <any>error));
   }
 
