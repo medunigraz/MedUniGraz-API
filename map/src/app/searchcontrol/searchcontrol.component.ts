@@ -4,12 +4,13 @@ import { Subject }           from 'rxjs/Subject';
 import { Observable } from 'rxjs';
 import {Subscription} from "rxjs";
 import {TimerObservable} from "rxjs/observable/TimerObservable";
+import { MapService } from '../mapservice/map.service';
 
 import { OlmapComponent} from '../olmap/olmap.component';
 
-import {SearchResult} from './searchresult';
+import {SearchResult} from '../base/searchresult';
 import {Room} from '../base/room';
-import {DefaultStartPointWithPos, DefaultStartPoint} from './searchcontrolconstants';
+import {DefaultStartPointWithPos, DefaultStartPoint, SearchDemoData} from './searchcontrolconstants';
 
 
 export enum FocusStatus {
@@ -47,22 +48,33 @@ export class SearchcontrolComponent implements OnInit {
 
   private unFocusTimerSubscription: Subscription;
 
+  private searchSubscription: Subscription = null;
+  private searchStartSubscription: Subscription = null;
+
   @Output() openSideMenuEvt = new EventEmitter<boolean>();
 
-  constructor() { }
+  constructor(private mapService: MapService) { }
 
   ngOnInit() {
-    this.term.valueChanges
-      .debounceTime(400)
-      .distinctUntilChanged()
-      .flatMap(term => this.search(term))
-      .subscribe(items => this.searchUpdateResults(items));
 
+    this.term.valueChanges
+      .debounceTime(400).subscribe(term => this.search(term));
+
+    this.startPointTerm.valueChanges
+      .debounceTime(400).subscribe(term => this.searchStartPoint(term));
+
+    /*
+        this.term.valueChanges
+          .debounceTime(400)
+          .distinctUntilChanged()
+          .flatMap(term => this.search(term));*/
+
+    /*
     this.startPointTerm.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
       .flatMap(term => this.searchStartPoint(term))
-      .subscribe(items => this.searchUpdateResultsStartPoint(items));
+      .subscribe(items => this.searchUpdateResultsStartPoint(items));*/
 
   }
 
@@ -71,41 +83,40 @@ export class SearchcontrolComponent implements OnInit {
     this.route(destinationroom);
   }
 
-  search(term: string): Observable<SearchResult[]> {
+  search(term: string) {
     console.log('SearchComponent::search:' + term);
-    this.currentResult = null;
-    if (term.length == 0) {
-      return Observable.of([]);
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
+      this.searchSubscription = null;
     }
-    if (term.length == 1) {
-      return Observable.of([new SearchResult(0, "Hörsaal 1 (MC1.A.EG.001)", 0),
-        new SearchResult(1, "Dr. Igor Tester", 1),
-        new SearchResult(2, "Institut für Physiologische Chemie", 2),
-        new SearchResult(3, "Hörsaal 4 (MC1.A.EG.004)", 0),
-        new SearchResult(4, "Hörsaal 5 (MC1.A.EG.005)", 0)]);
+
+    if (term.length > 0) {
+      this.searchSubscription = this.mapService.search(term).subscribe(
+        results => this.searchUpdateResults(results),
+        error => console.log("ERROR search: " + <any>error));
     }
-    return Observable.of([new SearchResult
-      (5, "Hörsaal 5 (MC1.A.EG.005)", 0)]);
+    else {
+      this.searchUpdateResults([]);
+    }
   }
 
-  getDefaultStartPositions(): SearchResult[] {
-    return [DefaultStartPointWithPos,
-      DefaultStartPoint];
-  }
-
-  searchStartPoint(term: string): Observable<SearchResult[]> {
+  searchStartPoint(term: string) {
     console.log('SearchComponent::searchStartPoint:' + term);
-    this.currentStartPointResult = null;
-    if (term.length == 0) {
-      return Observable.of(this.getDefaultStartPositions());
-    };
-    if (term.length == 1) {
-      return Observable.of([DefaultStartPointWithPos,
-        DefaultStartPoint,
-        new SearchResult(3, "Hörsaal 4 (MC1.A.EG.004)", 0),
-        new SearchResult(4, "Hörsaal 5 (MC1.A.EG.005)", 0)]);
+
+    if (this.searchStartSubscription) {
+      this.searchStartSubscription.unsubscribe();
+      this.searchStartSubscription = null;
     }
-    return Observable.of([new SearchResult(5, "Hörsaal 5 (MC1.A.EG.005)", 0)]);
+
+    if (term.length == 0) {
+      this.searchUpdateResultsStartPoint(SearchDemoData.getDefaultStartPositions());
+    }
+    else {
+      this.searchStartSubscription = this.mapService.search(term).subscribe(
+        results => this.searchUpdateResultsStartPoint(results),
+        error => console.log("ERROR searchstartpoint: " + <any>error));
+    }
+
   }
 
   searchUpdateResults(items: SearchResult[]) {
@@ -177,7 +188,7 @@ export class SearchcontrolComponent implements OnInit {
 
     if (this.currentStartPointResult != null && this.currentStartPointResult.id < 0) {
       this.startPointTerm.setValue("", { "emitEvent": false });
-      this.searchUpdateResultsStartPoint(this.getDefaultStartPositions());
+      this.searchUpdateResultsStartPoint(SearchDemoData.getDefaultStartPositions());
     }
     else {
 
