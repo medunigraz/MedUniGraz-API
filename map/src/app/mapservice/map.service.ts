@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Headers, RequestOptions, RequestMethod, RequestOptionsArgs } from '@angular/http';
 import { Floor } from '../base/floor';
+import {PoiType} from '../base/poiType';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
@@ -18,6 +19,8 @@ export class MapService {
   private floorUrl = this.baseUrl + '/geo/floors/';
   private levelUrl = this.baseUrl + '/geo/level/';
   private routeUrl = this.baseUrl + '/geo/routing/edges/';
+  private poiTypeUrl = this.baseUrl + '/geo/pointofinterest/';
+  private poiInstanceUrl = this.baseUrl + '/geo/pointofinterestinstance/';
 
   constructor(private http: Http) { }
 
@@ -45,6 +48,18 @@ export class MapService {
       .catch(this.handleError);
   }
 
+  getPoiTypes(): Observable<PoiType[]> {
+    return this.http.get(this.poiTypeUrl)
+      .map(this.extractDataPoiTypes)
+      .catch(this.handleError);
+  }
+
+  getPoiInstances(layer: number): Observable<Object> {
+    return this.http.get(this.poiInstanceUrl + '?level=' + layer)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
   private extractData(res: Response) {
     //console.log("RESPONSE DATA...");
     let body = res.json();
@@ -67,6 +82,19 @@ export class MapService {
       floors.push(new Floor(obj));
     }
     return floors;
+  }
+
+  private extractDataPoiTypes(res: Response) {
+    let body = res.json();
+    if (body.results) {
+      body = body.results;
+    }
+    console.log("RESPONSE DATA POITYPES: " + JSON.stringify(body));
+    let poitypes: PoiType[] = [];
+    for (let obj of body) {
+      poitypes.push(new PoiType(obj));
+    }
+    return poitypes;
   }
 
   private handleError(error: Response | any) {

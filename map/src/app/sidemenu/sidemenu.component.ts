@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
 import { ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
+import { MapService } from '../mapservice/map.service';
 
-import {Poi} from '../base/poi';
+import {PoiType} from '../base/poiType';
 
 @Component({
   selector: 'app-sidemenu',
@@ -11,16 +11,25 @@ import {Poi} from '../base/poi';
 })
 export class SidemenuComponent implements OnInit {
 
-  private pois: Poi[] = Poi.getDemoData();
+  private pois: PoiType[] = PoiType.getDemoData();
 
-  constructor() { }
+  constructor(private mapService: MapService) { }
 
   ngOnInit() {
-
+    this.updateData();
   }
 
-  updatePOIs() {
-    console.log("SidemenuComponent::updatePOIs() " + JSON.stringify(this.pois));
+  public updateData(): any {
+    this.mapService.getPoiTypes().subscribe(
+      poiTypes => this.updatePOIs(poiTypes),
+      error => console.log("ERROR deleteNode: " + <any>error));
+  }
+
+  updatePOIs(poiTypeList: PoiType[]) {
+    if (poiTypeList) {
+      this.pois = poiTypeList;
+    }
+    //console.log("SidemenuComponent::updatePOIs() " + JSON.stringify(this.pois));
   }
 
   close() {
