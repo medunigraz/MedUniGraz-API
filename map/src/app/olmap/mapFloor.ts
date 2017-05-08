@@ -1,17 +1,16 @@
 import { OpenlayersHelper } from './openlayershelper';
 import { ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
 import { MapService } from '../mapservice/map.service';
+import { MapLayerBase } from './mapLayerBase';
 
 import {OlmapComponent} from './olmap.component'
 
 declare var ol: any;
 
-export class MapFloor {
-
-  private layer: any;
-  private layerSource: any;
+export class MapFloor extends MapLayerBase {
 
   constructor(private mapService: MapService) {
+    super();
     this.Initialize();
   }
 
@@ -28,19 +27,12 @@ export class MapFloor {
   public showFloor(floorid: number) {
 
     this.clear();
-    this.mapService.getFloors(floorid).subscribe(
-      buildings => this.showFloors(buildings),
-      error => console.log("ERROR deleteNode: " + <any>error));
+    this.subscribeNewRequest(
+      this.mapService.getFloors(floorid).subscribe(
+        buildings => this.showFloors(buildings),
+        error => console.log("ERROR deleteNode: " + <any>error)));
 
     //this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(this.getDummyFloor()));
-  }
-
-  public getLayer(): any {
-    return this.layer;
-  }
-
-  private clear() {
-    this.layerSource.clear();
   }
 
   private showFloors(features: any) {

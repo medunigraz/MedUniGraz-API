@@ -2,6 +2,7 @@ import { OpenlayersHelper } from './openlayershelper';
 import { ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
 import { MapService } from '../mapservice/map.service';
 import {MapRoomStyles} from './mapRoomStyles'
+import { MapLayerBase } from './mapLayerBase';
 
 import {OlmapComponent} from './olmap.component'
 
@@ -10,10 +11,7 @@ import {RoomDetail} from '../base/roomDetail';
 
 declare var ol: any;
 
-export class MapRoom {
-
-  private layer: any;
-  private layerSource: any;
+export class MapRoom extends MapLayerBase {
 
   private overlay: any;
 
@@ -27,6 +25,7 @@ export class MapRoom {
   private currentMarkedRoom: RoomDetail = null;
 
   constructor(public roomPopupDiv: ElementRef, public roomContentSpan: ElementRef, private mapComponent: OlmapComponent, private mapService: MapService) {
+    super();
     this.Initialize();
   }
 
@@ -51,9 +50,10 @@ export class MapRoom {
 
   public showFloor(floorid: number) {
     this.clear();
-    this.mapService.getRooms(floorid).subscribe(
-      rooms => this.showRooms(rooms),
-      error => console.log("ERROR deleteNode: " + <any>error));
+    this.subscribeNewRequest(
+      this.mapService.getRooms(floorid).subscribe(
+        rooms => this.showRooms(rooms),
+        error => console.log("ERROR deleteNode: " + <any>error)));
   }
 
   public markRoomDummyRoom() {
@@ -76,10 +76,6 @@ export class MapRoom {
 
   public getMarkedRoom(): RoomDetail {
     return this.currentMarkedRoom;
-  }
-
-  public getLayer(): any {
-    return this.layer;
   }
 
   public getOverlay(): any {
@@ -139,10 +135,6 @@ export class MapRoom {
     this.currentOverlayPosition = undefined;
     this.overlay.setPosition(this.currentOverlayPosition);
     return false;
-  }
-
-  private clear() {
-    this.layerSource.clear();
   }
 
   private showRooms(features: any): void {

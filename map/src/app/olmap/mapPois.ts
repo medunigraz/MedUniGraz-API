@@ -1,14 +1,13 @@
 import { OpenlayersHelper } from './openlayershelper';
-
+import { MapLayerBase } from './mapLayerBase';
 
 declare var ol: any;
 
-export class MapPois {
-  private layer: any;
-  private layerSource: any;
+export class MapPois extends MapLayerBase {
 
 
   constructor() {
+    super();
     this.Initialize();
   }
 
@@ -19,7 +18,6 @@ export class MapPois {
       name: 'Test Point',
       description: 'dummy description'
     });
-
 
     let iconStyle = new ol.style.Style({
       image: new ol.style.Icon(/** @type {olx.style.IconOptions} */({
@@ -38,10 +36,6 @@ export class MapPois {
     this.layer = new ol.layer.Vector({
       source: this.layerSource
     });
-  }
-
-  public getLayer(): any {
-    return this.layer;
   }
 
 
