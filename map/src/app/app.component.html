@@ -1,9 +1,11 @@
 <md-sidenav-container class="mainSideNavContainer">
   <md-sidenav #sidenav mode="over" opened="false" (close)="sideNavClosed()">
-    <app-sidemenu></app-sidemenu>
+    <app-sidemenu (poiTypesChangedEvt)="poiTypesChanged($event)"></app-sidemenu>
   </md-sidenav>
 
-  <app-olmap #mapComp (onShowRoute)="showRouteCalled($event)" [currentFloor]="currentFloor"></app-olmap>
+  <app-olmap #mapComp (onShowRoute)="showRouteCalled($event)"
+                      [currentFloor]="currentFloor">
+  </app-olmap>
   <app-searchcontrol #searchBoxComp [mapComponentRef]=mapComp (openSideMenuEvt)="openSideMenu($event)"></app-searchcontrol>
   <app-floorcontrol (currentFloorEvt)="floorChanged($event)"></app-floorcontrol>
 </md-sidenav-container>

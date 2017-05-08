@@ -15,6 +15,7 @@ import {RoomDialogComponent} from '../room-dialog/room-dialog.component'
 import {Room} from '../base/room';
 import {RoomDetail} from '../base/roomDetail';
 import { Floor } from '../base/floor';
+import { PoiType } from '../base/poitype';
 
 declare var ol: any;
 
@@ -47,7 +48,7 @@ export class OlmapComponent implements OnInit {
 
   ngAfterViewInit(): void {
 
-    this.mapPois = new MapPois();
+    this.mapPois = new MapPois(this.mapService);
     this.mapRoom = new MapRoom(this.roomPopupDiv, this.roomPopupText, this, this.mapService);
     this.mapFloor = new MapFloor(this.mapService);
     this.mapDoors = new MapDoors(this.mapService);
@@ -174,13 +175,21 @@ export class OlmapComponent implements OnInit {
 
   @Input()
   set currentFloor(currentFloor: Floor) {
-    console.log("EditAbleMapComponent::Set currentFloor - New Floor: " + JSON.stringify(currentFloor));
+    console.log("MapComponent::Set currentFloor - New Floor: " + JSON.stringify(currentFloor));
 
     if (currentFloor && currentFloor.id >= 0) {
 
       this.mapFloor.showFloor(currentFloor.id);
       this.mapDoors.showFloor(currentFloor.id);
       this.mapRoom.showFloor(currentFloor.id);
+      this.mapPois.showFloor(currentFloor.id);
+    }
+  }
+
+  public updatePoiTypes(poitypes: PoiType[]) {
+    if (poitypes) {
+      //console.log("MapComponent::Set poiTypes: " + JSON.stringify(poitypes));
+      this.mapPois.setPoiTypes(poitypes);
     }
   }
 
