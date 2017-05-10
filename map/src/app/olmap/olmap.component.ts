@@ -251,8 +251,8 @@ export class OlmapComponent implements OnInit {
     console.log("OlmapComponent::openRoomDialogClosed: " + JSON.stringify(res));
     let currentMarkedRoom = this.mapRoom.getMarkedRoom();
     if (currentMarkedRoom != null && res == "Navigate...") {
-      //console.log("OlmapComponent::openRoomDialogClosed Emit Navigation Event!");
-      this.onShowRoute.emit(currentMarkedRoom);
+      console.log("OlmapComponent::openRoomDialogClosed Emit Navigation Event!");
+      this.onShowRoute.emit(currentMarkedRoom.getSimpleRoom());
     }
   }
 

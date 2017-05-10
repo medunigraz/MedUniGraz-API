@@ -16,7 +16,10 @@ export class RoomDetail {
   public coCategory: number = -1;
   public coOrganization: string = '';
 
-  constructor(roomFeature: any) {
+  public level: number = -1;
+
+  constructor(roomFeature: any, level: number) {
+    this.level = level;
     this.id = roomFeature.getId();
     this.floorId = roomFeature.get('floor');
 
@@ -25,11 +28,15 @@ export class RoomDetail {
     this.readCenter(roomFeature.get('center'));
   }
 
+  public getSimpleRoom(): Room {
+    return new Room(this.id, Room.GetRoomTxtSearch(this.title, this.code), this.level);
+  }
+
   private readCO(co: any) {
     if (co) {
       this.text = Room.GetRoomTxt(co['title'], co['name_full']);
-      this.title = co['title'];
-      this.code = co['name_full'];
+      this.title = co['title'];     //Titel
+      this.code = co['name_full'];  //room code
       this.coId = co['id'];
       if (co['category']) {
         this.coCategory = co['category']['id'];

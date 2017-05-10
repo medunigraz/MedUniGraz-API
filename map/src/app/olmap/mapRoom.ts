@@ -24,6 +24,8 @@ export class MapRoom extends MapLayerBase {
   private currentSelectedRoom: any = null;
   private currentMarkedRoom: RoomDetail = null;
 
+  private currentLevel: number = -1;
+
   constructor(public roomPopupDiv: ElementRef, public roomContentSpan: ElementRef, private mapComponent: OlmapComponent, private mapService: MapService) {
     super();
     this.Initialize();
@@ -50,6 +52,8 @@ export class MapRoom extends MapLayerBase {
 
   public showFloor(floorid: number) {
     this.clear();
+    this.closePopup();
+    this.currentLevel = floorid;
     this.subscribeNewRequest(
       this.mapService.getRooms(floorid).subscribe(
         rooms => this.showRooms(rooms),
@@ -117,7 +121,7 @@ export class MapRoom extends MapLayerBase {
 
     if (this.currentSelectedRoom) {
       this.currentSelectedRoom.setStyle(this.styleManager.getStyleForRoom(this.currentSelectedRoom.getId(), RoomDetail.getCategoryId(this.currentSelectedRoom), false, true));
-      this.markRoom(new RoomDetail(this.currentSelectedRoom));
+      this.markRoom(new RoomDetail(this.currentSelectedRoom, this.currentLevel));
     }
     else {
       this.closePopup();
@@ -140,6 +144,7 @@ export class MapRoom extends MapLayerBase {
   private showRooms(features: any): void {
     //console.log("MapRoom::showRooms");
     this.clear();
+    this.closePopup();
 
     let olFeatures = (new ol.format.GeoJSON()).readFeatures(features);
 

@@ -231,7 +231,7 @@ export class SearchcontrolComponent implements OnInit {
 
   private showCurrentResult() {
     if (this.currentResult != null) {
-      this.mapComponentRef.showRoom(new Room(this.currentResult.id, this.currentResult.text));
+      this.mapComponentRef.showRoom(new Room(this.currentResult.id, this.currentResult.text, this.currentResult.level));
       this.term.setValue(this.currentResult.text, { "emitEvent": false });
       this.searchUpdateResults([]);
     }

@@ -24,6 +24,7 @@ export class RoomDialogComponent implements OnInit {
   }
 
   navigateTo() {
+    //console.log("RoomDialogComponent::closeDialog - " + JSON.stringify(this.currentRoom));
     this.currentRoom = null;
     this.dialogRef.close('Navigate...')
   }
