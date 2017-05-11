@@ -47,7 +47,7 @@
             </button>
           </td>
           <td class="controlBoxLeftResultCol">
-            <button *ngIf="result.isStartPoint == false" class="controlBoxButton" (click)="route(result)" md-button><md-icon>navigation</md-icon></button>
+            <button *ngIf="result.isStartPoint == false" class="controlBoxButton" (click)="routeClicked(result)" md-button><md-icon>navigation</md-icon></button>
           </td>
         </tr>
         <tr *ngIf="!result.lastElem">

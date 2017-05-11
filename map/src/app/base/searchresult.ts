@@ -1,3 +1,5 @@
+import {Room} from '../base/room';
+
 export class SearchResult {
   id: number;
   text: string;
@@ -28,6 +30,10 @@ export class SearchResult {
     result.level = obj["level"];
 
     return result;
+  }
+
+  public getRoom() {
+    return new Room(this.id, this.text, this.level);
   }
 
 }

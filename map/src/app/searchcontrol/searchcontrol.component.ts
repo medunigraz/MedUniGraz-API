@@ -147,26 +147,52 @@ export class SearchcontrolComponent implements OnInit {
     if (!selected.isStartPoint) {
       this.currentResult = selected;
       this.showCurrentResult();
+      if (this.isRoutingSearchBox && this.currentStartPointResult) {
+        this.routeClicked(this.currentResult);
+      }
+      else {
+        this.roomSelectedEvt.emit(this.currentResult.getRoom());
+      }
     }
     else {
       this.currentStartPointResult = selected;
       this.showCurrentStartResult();
+      if (this.currentResult) {
+        this.routeClicked(this.currentResult);
+      }
     }
   }
 
-  route(destinationroom: Room) {
-    console.log('SearchComponent::route:' + destinationroom.text);
+  routeClicked(destinationroom: SearchResult) {
+    this.route(destinationroom.getRoom());
+  }
 
-    this.routeSelectedEvt.emit(new RouteNodes(destinationroom, destinationroom));
+  route(destinationroom: Room) {
+    console.log('SearchComponent::route:' + JSON.stringify(destinationroom));
 
     this.term.setValue(destinationroom.text, { "emitEvent": false });
     this.searchUpdateResults([]);
 
     if (this.currentStartPointResult == null) {
-      this.currentStartPointResult = DefaultStartPointWithPos;
+      this.currentStartPointResult = DefaultStartPoint;
+      this.showCurrentStartResult();
     }
-    this.showCurrentStartResult();
     this.isRoutingSearchBox = true;
+
+    if (this.currentStartPointResult) {
+      if (this.currentStartPointResult.id > 0) {
+        console.log('SearchComponent::route from existing room');
+        this.routeSelectedEvt.emit(new RouteNodes(this.currentStartPointResult.getRoom(), destinationroom));
+      }
+      else if (this.currentStartPointResult.id == -2) //Haupteingang
+      {
+        console.log('SearchComponent::route from entrance');
+        this.routeSelectedEvt.emit(new RouteNodes(new Room(602, "Haupteingang", 1), destinationroom));
+      }
+      else {
+        console.log('SearchComponent::route from ' + this.currentStartPointResult.id + ' not supported!');
+      }
+    }
   }
 
   searchFocus() {
@@ -216,6 +242,8 @@ export class SearchcontrolComponent implements OnInit {
     this.term.setValue("");
     this.startPointTerm.setValue("");
     this.isRoutingSearchBox = false;
+    this.routeSelectedEvt.emit(null);
+    //this.roomSelectedEvt.emit(null);
   }
 
   private showResultTable() {
@@ -232,7 +260,6 @@ export class SearchcontrolComponent implements OnInit {
 
   private showCurrentResult() {
     if (this.currentResult != null) {
-      this.roomSelectedEvt.emit(new Room(this.currentResult.id, this.currentResult.text, this.currentResult.level));
       this.term.setValue(this.currentResult.text, { "emitEvent": false });
       this.searchUpdateResults([]);
     }

@@ -68,6 +68,12 @@ export class MapService {
       .catch(this.handleError);
   }
 
+  getRoute(sourceNodeId: number, destinationNodeId: number): Observable<Object> {
+    return this.http.get(this.routeUrl + '?from=' + sourceNodeId + '&to=' + destinationNodeId)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
   private extractData(res: Response) {
     //console.log("RESPONSE DATA...");
     let body = res.json();

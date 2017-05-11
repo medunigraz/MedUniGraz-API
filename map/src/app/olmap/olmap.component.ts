@@ -6,7 +6,7 @@ import { MapPois } from './mapPois';
 import { MapRoom } from './mapRoom';
 import { MapFloor } from './mapFloor'
 import { MapDoors } from './mapDoors'
-
+import { MapRoute } from './mapRoute'
 
 import {MdDialog, MdDialogRef} from '@angular/material';
 
@@ -38,6 +38,7 @@ export class OlmapComponent implements OnInit {
   private mapRoom: MapRoom = null;
   private mapFloor: MapFloor = null;
   private mapDoors: MapDoors = null;
+  private mapRoute: MapRoute = null;
 
   private mapView: any;
 
@@ -54,6 +55,7 @@ export class OlmapComponent implements OnInit {
     this.mapRoom = new MapRoom(this.roomPopupDiv, this.roomPopupText, this, this.mapService);
     this.mapFloor = new MapFloor(this.mapService);
     this.mapDoors = new MapDoors(this.mapService);
+    this.mapRoute = new MapRoute(this.mapService);
 
     let interactions = ol.interaction.defaults({ altShiftDragRotate: false, pinchRotate: false });
 
@@ -83,7 +85,8 @@ export class OlmapComponent implements OnInit {
         this.mapFloor.getLayer(),
         this.mapRoom.getLayer(),
         this.mapDoors.getLayer(),
-        this.mapPois.getLayer()
+        this.mapPois.getLayer(),
+        this.mapRoute.getLayer()
       ],
       overlays: [this.mapRoom.getOverlay()],
       target: 'map',
@@ -185,6 +188,7 @@ export class OlmapComponent implements OnInit {
       this.mapDoors.showFloor(currentFloor.id);
       this.mapRoom.showFloor(currentFloor.id);
       this.mapPois.showFloor(currentFloor.id);
+      this.mapRoute.setCurrentLevel(currentFloor.id);
     }
   }
 
@@ -205,7 +209,13 @@ export class OlmapComponent implements OnInit {
   }
 
   showRoute(from: number, to: number) {
-    //console.log("OlmapComponent::showRoute: " + from + " --> " + to);
+    console.log("OlmapComponent::showRoute: " + from + " --> " + to);
+    this.mapRoute.showRoute(from, to);
+  }
+
+  clearRoute() {
+    console.log("OlmapComponent::clearRoute");
+    this.mapRoute.clear();
   }
 
   closePopup() {

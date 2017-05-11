@@ -14,6 +14,11 @@ export class MapLayerBase {
   }
 
   public clear() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
+    }
+
     this.layerSource.clear();
   }
 

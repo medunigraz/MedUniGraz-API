@@ -43,12 +43,20 @@ export class AppComponent {
 
     this.mapComponent.showRoom(room);
   }
-  routeSelected(route: RouteNodes): void {
-    if (this.currentFloor.id != route.start.level) {
-      this.floorControlComponent.currentFloorFromId(route.start.level);
-    }
 
-    this.mapComponent.showRoute(route.start.id, route.end.id);
+  routeSelected(route: RouteNodes): void {
+    console.log("AppComponent --- routeSelected: " + JSON.stringify(route) + "###Floor: " + JSON.stringify(this.currentFloor));
+
+    if (route) {
+      if (this.currentFloor.id != route.start.level) {
+        this.floorControlComponent.currentFloorFromId(route.start.level);
+      }
+
+      this.mapComponent.showRoute(route.start.id, route.end.id);
+    }
+    else {
+      this.mapComponent.clearRoute();
+    }
   }
 
   openSideMenu(open: boolean): void {
