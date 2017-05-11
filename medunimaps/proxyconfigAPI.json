@@ -1,6 +1,6 @@
 {
   "/v1/*": {
-    "target": "https://api.medunigraz.at",
+    "target": "http://api.medunigraz.at:8088",
     "changeOrigin": true,
     "secure": false,
     "logLevel": "debug"

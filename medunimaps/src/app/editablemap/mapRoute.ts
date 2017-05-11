@@ -24,8 +24,8 @@ export class MapRoute extends MapLayerBase {
     let styleFunction = function(feature, currentFloor) {
       let style: any = null;
       try {
-        let source = feature.get("source_node").properties.floor;
-        let destination = feature.get("destination_node").properties.floor;
+        let source = feature.get("source_node").properties.level;
+        let destination = feature.get("destination_node").properties.level;
 
         if (source == currentFloor || destination == currentFloor) {
           style = MapRouteStyles.routeCurrentFloor;
