@@ -201,12 +201,7 @@ export class OlmapComponent implements OnInit {
 
   showRoom(roomResult: Room) {
     console.log("OLMap::showRoom: " + JSON.stringify(roomResult));
-
-    if (this.currentLevel && roomResult.level == this.currentLevel.id) {
-      this.mapRoom.markRoomFromSearch(roomResult);
-    }
-
-
+    this.mapRoom.markRoomFromSearch(roomResult);
   }
 
   showRoute(from: number, to: number) {

@@ -3,6 +3,8 @@ import { Observable } from 'rxjs';
 import { MapService } from '../mapservice/map.service';
 
 import { Floor } from '../base/floor';
+import {Room} from '../base/room';
+import {RouteNodes} from '../base/routeNodes';
 
 @Component({
   selector: 'app-floorcontrol',
@@ -48,6 +50,19 @@ export class FloorcontrolComponent implements OnInit {
     if (this.floorList.length > 0) {
       this.selectFloor(this.floorList[0]);
       //console.log("FloorselectorComponent::updateFloors Select Floor: " + JSON.stringify(this.selectedFloor));
+    }
+  }
+
+  currentFloorFromId(floorId: number) {
+    console.log("FloorcontrolComponent::Set currentFloor - New Floor: " + JSON.stringify(floorId));
+
+    if (this.floorList) {
+      for (let floor of this.floorList) {
+        if (floor.id == floorId) {
+          this.selectFloor(floor);
+          return;
+        }
+      }
     }
   }
 

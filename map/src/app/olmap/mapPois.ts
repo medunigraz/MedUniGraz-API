@@ -53,7 +53,7 @@ export class MapPois extends MapLayerBase {
   }
 
   public poisReceived(features: any) {
-    console.log("MapPois::poisReceived: " + JSON.stringify(features));
+    //console.log("MapPois::poisReceived: " + JSON.stringify(features));
     this.poiInstances = (new ol.format.GeoJSON()).readFeatures(features);
     this.updatePois();
   }

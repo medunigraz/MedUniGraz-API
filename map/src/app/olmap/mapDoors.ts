@@ -27,7 +27,7 @@ export class MapDoors extends MapLayerBase {
   }
 
   public showFloor(floorId: number) {
-    console.log("MapDoors::showFloor - " + floorId);
+    //console.log("MapDoors::showFloor - " + floorId);
     //this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(this.getDummyDoors()));
 
     this.clear();
@@ -38,7 +38,7 @@ export class MapDoors extends MapLayerBase {
   }
 
   private showDoors(features: any) {
-    console.log("MapDoors::showDoors");
+    //console.log("MapDoors::showDoors");
     this.clear();
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(features));
   }

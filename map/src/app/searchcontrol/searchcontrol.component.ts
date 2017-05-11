@@ -6,10 +6,9 @@ import {Subscription} from "rxjs";
 import {TimerObservable} from "rxjs/observable/TimerObservable";
 import { MapService } from '../mapservice/map.service';
 
-import { OlmapComponent} from '../olmap/olmap.component';
-
 import {SearchResult} from '../base/searchresult';
 import {Room} from '../base/room';
+import {RouteNodes} from '../base/routeNodes';
 import {DefaultStartPointWithPos, DefaultStartPoint, SearchDemoData} from './searchcontrolconstants';
 
 
@@ -25,9 +24,6 @@ export enum FocusStatus {
   styleUrls: ['./searchcontrol.component.css']
 })
 export class SearchcontrolComponent implements OnInit {
-
-  @Input()
-  mapComponentRef: OlmapComponent;
 
   isRoutingSearchBox: boolean = false;
 
@@ -52,6 +48,9 @@ export class SearchcontrolComponent implements OnInit {
   private searchStartSubscription: Subscription = null;
 
   @Output() openSideMenuEvt = new EventEmitter<boolean>();
+
+  @Output() roomSelectedEvt = new EventEmitter<Room>();
+  @Output() routeSelectedEvt = new EventEmitter<RouteNodes>();
 
   constructor(private mapService: MapService) { }
 
@@ -157,7 +156,9 @@ export class SearchcontrolComponent implements OnInit {
 
   route(destinationroom: Room) {
     console.log('SearchComponent::route:' + destinationroom.text);
-    this.mapComponentRef.showRoute(destinationroom.id, destinationroom.id);
+
+    this.routeSelectedEvt.emit(new RouteNodes(destinationroom, destinationroom));
+
     this.term.setValue(destinationroom.text, { "emitEvent": false });
     this.searchUpdateResults([]);
 
@@ -231,7 +232,7 @@ export class SearchcontrolComponent implements OnInit {
 
   private showCurrentResult() {
     if (this.currentResult != null) {
-      this.mapComponentRef.showRoom(new Room(this.currentResult.id, this.currentResult.text, this.currentResult.level));
+      this.roomSelectedEvt.emit(new Room(this.currentResult.id, this.currentResult.text, this.currentResult.level));
       this.term.setValue(this.currentResult.text, { "emitEvent": false });
       this.searchUpdateResults([]);
     }

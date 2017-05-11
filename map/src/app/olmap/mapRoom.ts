@@ -26,6 +26,8 @@ export class MapRoom extends MapLayerBase {
 
   private currentLevel: number = -1;
 
+  private roomToHighlight: Room = null;
+
   constructor(public roomPopupDiv: ElementRef, public roomContentSpan: ElementRef, private mapComponent: OlmapComponent, private mapService: MapService) {
     super();
     this.Initialize();
@@ -68,9 +70,18 @@ export class MapRoom extends MapLayerBase {
   }
 
   public markRoomFromSearch(room: Room) {
-    let feature = this.layerSource.getFeatureById(room.id);
-    if (feature) {
-      this.setSelectedRoom(feature);
+    console.log("MapRoom::Mark room from Search: " + JSON.stringify(room));
+    this.roomToHighlight = null;
+    if (room.level != this.currentLevel) {
+      console.log("MapRoom::Mark room from Search; Wait for Level change... " + JSON.stringify(room));
+      this.roomToHighlight = room;
+    }
+    else {
+      console.log("MapRoom::Mark room from Search -> correct Level " + JSON.stringify(room));
+      let feature = this.layerSource.getFeatureById(room.id);
+      if (feature) {
+        this.setSelectedRoom(feature);
+      }
     }
   }
 
@@ -162,6 +173,10 @@ export class MapRoom extends MapLayerBase {
     }
 
     this.layerSource.addFeatures(olFeatures);
+
+    if (this.roomToHighlight) {
+      this.markRoomFromSearch(this.roomToHighlight);
+    }
   }
 
   private getDummyRoom(): any {

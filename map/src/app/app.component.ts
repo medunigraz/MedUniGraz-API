@@ -2,10 +2,12 @@ import { ViewChild, Component } from '@angular/core';
 import { Floor } from './base/floor';
 import {OlmapComponent} from './olmap/olmap.component'
 import {SearchcontrolComponent} from './searchcontrol/searchcontrol.component'
+import {FloorcontrolComponent} from './floorcontrol/floorcontrol.component'
 
 import {MdSidenav } from '@angular/material/sidenav'
 
 import {Room} from './base/room';
+import {RouteNodes} from './base/routeNodes';
 import { PoiType } from './base/poitype';
 
 @Component({
@@ -18,6 +20,7 @@ export class AppComponent {
   @ViewChild('sidenav') public sideNav: MdSidenav;
   @ViewChild('mapComp') public mapComponent: OlmapComponent;
   @ViewChild('searchBoxComp') public searchBoxComponent: SearchcontrolComponent;
+  @ViewChild('floorComp') public floorControlComponent: FloorcontrolComponent;
 
   private isSideMenuOpenend: boolean = false;
   currentFloor: Floor = Floor.getDefaultFloor();
@@ -29,6 +32,23 @@ export class AppComponent {
       console.log("AppComponent --- floorChanged: " + floor.name);
       this.currentFloor = floor;
     }
+  }
+
+  roomSelected(room: Room): void {
+    console.log("AppComponent --- roomSelected: " + JSON.stringify(room) + "###Floor: " + JSON.stringify(this.currentFloor));
+
+    if (this.currentFloor.id != room.level) {
+      this.floorControlComponent.currentFloorFromId(room.level);
+    }
+
+    this.mapComponent.showRoom(room);
+  }
+  routeSelected(route: RouteNodes): void {
+    if (this.currentFloor.id != route.start.level) {
+      this.floorControlComponent.currentFloorFromId(route.start.level);
+    }
+
+    this.mapComponent.showRoute(route.start.id, route.end.id);
   }
 
   openSideMenu(open: boolean): void {
