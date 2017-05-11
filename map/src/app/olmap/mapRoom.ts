@@ -67,6 +67,13 @@ export class MapRoom extends MapLayerBase {
     }
   }
 
+  public markRoomFromSearch(room: Room) {
+    let feature = this.layerSource.getFeatureById(room.id);
+    if (feature) {
+      this.setSelectedRoom(feature);
+    }
+  }
+
   public markRoom(room: RoomDetail) {
     console.log("MapRoom::Mark room: " + room.id + " category: " + room.coCategory);
 

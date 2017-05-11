@@ -41,6 +41,8 @@ export class OlmapComponent implements OnInit {
 
   private mapView: any;
 
+  private currentLevel: Floor = null;
+
   ngOnInit() {
   }
 
@@ -178,7 +180,7 @@ export class OlmapComponent implements OnInit {
     console.log("MapComponent::Set currentFloor - New Floor: " + JSON.stringify(currentFloor));
 
     if (currentFloor && currentFloor.id >= 0) {
-
+      this.currentLevel = currentFloor;
       this.mapFloor.showFloor(currentFloor.id);
       this.mapDoors.showFloor(currentFloor.id);
       this.mapRoom.showFloor(currentFloor.id);
@@ -199,7 +201,12 @@ export class OlmapComponent implements OnInit {
 
   showRoom(roomResult: Room) {
     console.log("OLMap::showRoom: " + JSON.stringify(roomResult));
-    this.mapRoom.markRoomDummyRoom();
+
+    if (this.currentLevel && roomResult.level == this.currentLevel.id) {
+      this.mapRoom.markRoomFromSearch(roomResult);
+    }
+
+
   }
 
   showRoute(from: number, to: number) {
