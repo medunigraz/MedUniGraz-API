@@ -98,84 +98,84 @@ export class OlmapComponent implements OnInit {
   }
 
   private getTileSource(): any {
-    //return new ol.source.OSM();
+    return new ol.source.OSM();
 
+    /*
+        let tilegrid = new ol.tilegrid.WMTS({
+          origin: [-20037508.3428, 20037508.3428],
+          extent: [977650, 5838030, 1913530, 6281290],
 
-    let tilegrid = new ol.tilegrid.WMTS({
-      origin: [-20037508.3428, 20037508.3428],
-      extent: [977650, 5838030, 1913530, 6281290],
+          resolutions: [
+            156543.03392811998,
+            78271.51696419998,
+            39135.758481959994,
+            19567.879241008,
+            9783.939620504,
+            4891.969810252,
+            2445.984905126,
+            1222.9924525644,
+            611.4962262807999,
+            305.74811314039994,
+            152.87405657047998,
+            76.43702828523999,
+            38.21851414248,
+            19.109257071295996,
+            9.554628535647998,
+            4.777314267823999,
+            2.3886571339119995,
+            1.1943285669559998,
+            0.5971642834779999,
+            0.29858214174039993//,
+            //0.14929107086936
+          ],
+          matrixIds: [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19"//,
+            //"20"
+          ]
+        });
 
-      resolutions: [
-        156543.03392811998,
-        78271.51696419998,
-        39135.758481959994,
-        19567.879241008,
-        9783.939620504,
-        4891.969810252,
-        2445.984905126,
-        1222.9924525644,
-        611.4962262807999,
-        305.74811314039994,
-        152.87405657047998,
-        76.43702828523999,
-        38.21851414248,
-        19.109257071295996,
-        9.554628535647998,
-        4.777314267823999,
-        2.3886571339119995,
-        1.1943285669559998,
-        0.5971642834779999,
-        0.29858214174039993//,
-        //0.14929107086936
-      ],
-      matrixIds: [
-        "0",
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "10",
-        "11",
-        "12",
-        "13",
-        "14",
-        "15",
-        "16",
-        "17",
-        "18",
-        "19"//,
-        //"20"
-      ]
-    });
+        let IS_CROSS_ORIGIN = "anonymous";
+        let sm = ol.proj.get("EPSG:3857");
+        let templatepng =
+          "{Layer}/{Style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png";
+        let urlsbmappng = [
+          "//maps1.wien.gv.at/basemap/" + templatepng,
+          "//maps2.wien.gv.at/basemap/" + templatepng,
+          "//maps3.wien.gv.at/basemap/" + templatepng,
+          "//maps4.wien.gv.at/basemap/" + templatepng
+        ];
 
-    let IS_CROSS_ORIGIN = "anonymous";
-    let sm = ol.proj.get("EPSG:3857");
-    let templatepng =
-      "{Layer}/{Style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png";
-    let urlsbmappng = [
-      "//maps1.wien.gv.at/basemap/" + templatepng,
-      "//maps2.wien.gv.at/basemap/" + templatepng,
-      "//maps3.wien.gv.at/basemap/" + templatepng,
-      "//maps4.wien.gv.at/basemap/" + templatepng
-    ];
-
-    return new ol.source.WMTS({
-      //url: 'https://www.basemap.at/wmts/1.0.0/WMTSCapabilities.xml',
-      tilePixelRatio: 1,
-      projection: sm,
-      layer: "bmapgrau",
-      style: "normal",
-      matrixSet: 'google3857',
-      urls: urlsbmappng,
-      //crossOrigin: IS_CROSS_ORIGIN,
-      requestEncoding: ("REST"),
-      tileGrid: tilegrid
-    });
+        return new ol.source.WMTS({
+          //url: 'https://www.basemap.at/wmts/1.0.0/WMTSCapabilities.xml',
+          tilePixelRatio: 1,
+          projection: sm,
+          layer: "bmapgrau",
+          style: "normal",
+          matrixSet: 'google3857',
+          urls: urlsbmappng,
+          //crossOrigin: IS_CROSS_ORIGIN,
+          requestEncoding: ("REST"),
+          tileGrid: tilegrid
+        });*/
   }
 
   @Input()
