@@ -7,6 +7,7 @@ import { MapRoom } from './mapRoom';
 import { MapFloor } from './mapFloor'
 import { MapDoors } from './mapDoors'
 import { MapRoute } from './mapRoute'
+import { MapBackground } from './mapBackground'
 
 import {MdDialog, MdDialogRef} from '@angular/material';
 
@@ -39,6 +40,7 @@ export class OlmapComponent implements OnInit {
   private mapFloor: MapFloor = null;
   private mapDoors: MapDoors = null;
   private mapRoute: MapRoute = null;
+  private mapBackground: MapBackground = null;
 
   private mapView: any;
 
@@ -50,7 +52,7 @@ export class OlmapComponent implements OnInit {
   private map: any;
 
   ngAfterViewInit(): void {
-
+    this.mapBackground = new MapBackground(this.mapService);
     this.mapPois = new MapPois(this.mapService);
     this.mapRoom = new MapRoom(this.roomPopupDiv, this.roomPopupText, this, this.mapService);
     this.mapFloor = new MapFloor(this.mapService);
@@ -82,16 +84,19 @@ export class OlmapComponent implements OnInit {
         new ol.layer.Tile({
           source: this.getTileSource()
         }),
+        this.mapBackground.getLayer(),
         this.mapFloor.getLayer(),
         this.mapRoom.getLayer(),
         this.mapDoors.getLayer(),
-        this.mapPois.getLayer(),
-        this.mapRoute.getLayer()
+        this.mapRoute.getLayer(),
+        this.mapPois.getLayer()
       ],
       overlays: [this.mapRoom.getOverlay()],
       target: 'map',
       view: this.mapView
     });
+
+    this.mapBackground.showBackground();
 
     this.map.on('click', evt => this.mapClicked(evt));
     this.map.on('pointermove', evt => this.mapMouseMoved(evt));
