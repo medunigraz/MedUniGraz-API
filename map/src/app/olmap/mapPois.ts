@@ -59,11 +59,11 @@ export class MapPois extends MapLayerBase {
   }
 
   private updatePois() {
-    this.clear();
-
     if (!this.poiInstances || !this.iconStyleMap || !this.activeIconsMap) {
       return;
     }
+
+    this.clear();
 
     //console.log("MapPois::updatePois: " + JSON.stringify(this.poiInstances.length));
     for (let i = 0; i < this.poiInstances.length; i++) {
