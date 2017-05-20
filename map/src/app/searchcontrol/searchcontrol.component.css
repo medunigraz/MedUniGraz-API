@@ -166,6 +166,10 @@
 
 .controlBoxResultText {
   white-space: normal;
+  max-width: 18em;
+  line-height: 1.8em;
+  overflow: hidden;
+  display:inline-block;
 }
 
 .routeImage {}
