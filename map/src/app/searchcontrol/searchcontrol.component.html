@@ -12,10 +12,10 @@
           </div>
 
           <div class="controlBoxCenterColHorizontalSearch">
-            <input *ngIf="isRoutingSearchBox" class="searchInput" autocomplete="off" placeholder="Startpunkt..." mdInput [formControl]="startPointTerm" (focus)="startFocus()" (focusout)="startFocusOut()">
+            <input *ngIf="isRoutingSearchBox" #searchStartInput class="searchInput" autocomplete="off" placeholder="Startpunkt..." mdInput [formControl]="startPointTerm" (focus)="startFocus()" (focusout)="startFocusOut()">
             <div *ngIf="isRoutingSearchBox" class="controlBoxRouteSpacer"></div>
 
-            <input class="searchInput" [ngClass]="{'searchInputRoutingSource': isRoutingSearchBox }" autocomplete="off" placeholder="Suche Räume, Personen, Institute, ..." mdInput [formControl]="term" (focus)="searchFocus()" (focusout)="searchFocusOut()">
+            <input class="searchInput"  #searchInput [ngClass]="{'searchInputRoutingSource': isRoutingSearchBox }" autocomplete="off" placeholder="Suche Räume, Personen, Institute, ..." mdInput [formControl]="term" (focus)="searchFocus()" (focusout)="searchFocusOut()">
             <div class="controlBoxRouteSpacer"></div>
           </div>
 

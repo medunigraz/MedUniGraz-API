@@ -1,4 +1,5 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { ViewChild, ElementRef } from '@angular/core';
 import { FormControl }       from '@angular/forms';
 import { Subject }           from 'rxjs/Subject';
 import { Observable } from 'rxjs';
@@ -24,6 +25,9 @@ export enum FocusStatus {
   styleUrls: ['./searchcontrol.component.css']
 })
 export class SearchcontrolComponent implements OnInit {
+
+  @ViewChild('searchStartInput') public searchStartInputRef: ElementRef;
+  @ViewChild('searchInput') public searchInputRef: ElementRef;
 
   isRoutingSearchBox: boolean = false;
 
@@ -199,6 +203,9 @@ export class SearchcontrolComponent implements OnInit {
     console.log("SearchcontrolComponent::searchFocus()");
     this.stopUnFocusTimer();
     this.currentFocusStatus = FocusStatus.SEARCH;
+
+    this.searchInputRef.nativeElement.select();
+
     this.showResultTable();
   }
 
@@ -213,14 +220,17 @@ export class SearchcontrolComponent implements OnInit {
     this.stopUnFocusTimer();
     this.currentFocusStatus = FocusStatus.START;
 
-    if (this.currentStartPointResult != null && this.currentStartPointResult.id < 0) {
-      this.startPointTerm.setValue("", { "emitEvent": false });
-      this.searchUpdateResultsStartPoint(SearchDemoData.getDefaultStartPositions());
-    }
-    else {
+    /*
+        if (this.currentStartPointResult != null && this.currentStartPointResult.id < 0) {
+          this.startPointTerm.setValue("", { "emitEvent": false });
+          this.searchUpdateResultsStartPoint(SearchDemoData.getDefaultStartPositions());
+        }
+        else {
 
-      this.showResultTable();
-    }
+          this.showResultTable();
+        }*/
+    this.searchStartInputRef.nativeElement.select();
+    this.showResultTable();
   }
 
   startFocusOut() {
