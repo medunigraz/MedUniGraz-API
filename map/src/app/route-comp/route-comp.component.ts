@@ -1,6 +1,8 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MapService } from '../mapservice/map.service';
+import { MainappService } from '../mainappservice/mainapp.service';
+
 import {Room } from '../base/room';
 
 @Component({
@@ -12,7 +14,9 @@ export class RouteCompComponent implements OnInit {
 
   sub: any;
 
-  constructor(private route: ActivatedRoute, private mapService: MapService) { }
+  constructor(private route: ActivatedRoute,
+    private mapService: MapService,
+    private mainAppService: MainappService) { }
 
   ngOnInit() {
     console.log("RouteCompComponent::ngOnInit init!");
@@ -37,6 +41,7 @@ export class RouteCompComponent implements OnInit {
         let roomFeature = roomFeatures.features[0];
         console.log("RouteCompComponent::roomRecieved - " + JSON.stringify(roomFeature));
         let room = Room.createFromRestObj(roomFeature);
+        this.mainAppService.emitChange(room);
       }
     }
   }

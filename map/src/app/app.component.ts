@@ -3,6 +3,7 @@ import { Floor } from './base/floor';
 import {OlmapComponent} from './olmap/olmap.component'
 import {SearchcontrolComponent} from './searchcontrol/searchcontrol.component'
 import {FloorcontrolComponent} from './floorcontrol/floorcontrol.component'
+import { MainappService } from './mainappservice/mainapp.service';
 
 import {MdSidenav } from '@angular/material/sidenav'
 
@@ -26,6 +27,17 @@ export class AppComponent {
   currentFloor: Floor = Floor.getDefaultFloor();
 
   private poiTypes: PoiType[] = null;
+
+  constructor(
+    private mainAppService: MainappService
+  ) {
+    mainAppService.changeEmitted$.subscribe(
+      room => {
+        console.log("AppComponent - Room from URL..." + room.text);
+        this.searchBoxComponent.showRoomCalled(room);
+      });
+  }
+
 
   floorChanged(floor: Floor): void {
     if (floor) {

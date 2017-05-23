@@ -83,6 +83,11 @@ export class SearchcontrolComponent implements OnInit {
 
   showRoomCalled(destinationroom: Room) {
     console.log('SearchComponent::destinationroom: ' + destinationroom.text);
+
+    this.term.setValue(destinationroom.text, { "emitEvent": false });
+    this.searchUpdateResults([]);
+    this.roomSelectedEvt.emit(destinationroom);
+
     //this.route(destinationroom);
   }
 

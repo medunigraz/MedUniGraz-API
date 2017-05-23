@@ -20,6 +20,10 @@ export class Room {
   public static createFromRestObj(obj: any) {
     let prop = obj["properties"];
     let co = prop["campusonline"];
-    return new Room(obj["id"], Room.GetRoomTxtSearch(co["title"], co["name_full"]), obj["level"]);
+    let room = new Room(obj["id"], Room.GetRoomTxtSearch(co["title"], co["name_full"]), prop["level"]);
+
+    //console.log("Room created LEvel: " + prop["level"]);
+    //console.log("Room created: " + JSON.stringify(room));
+    return room;
   }
 }

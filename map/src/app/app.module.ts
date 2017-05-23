@@ -10,6 +10,7 @@ import { MaterialModule } from '@angular/material';
 import { routes } from './app.routes';
 
 import { MapService } from './mapservice/map.service';
+import { MainappService } from './mainappservice/mainapp.service';
 
 import { AppComponent } from './app.component';
 import { OlmapComponent } from './olmap/olmap.component';
@@ -38,7 +39,7 @@ import { RouteCompComponent } from './route-comp/route-comp.component';
     RouterModule.forRoot(routes),
     MaterialModule.forRoot()
   ],
-  providers: [MapService],
+  providers: [MapService, MainappService],
   bootstrap: [AppComponent],
   entryComponents: [RoomDialogComponent]
 })
