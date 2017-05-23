@@ -16,4 +16,10 @@ export class Room {
   public static GetRoomTxtSearch(title: string, fullname: string): string {
     return title + ' (' + fullname + ')';
   }
+
+  public static createFromRestObj(obj: any) {
+    let prop = obj["properties"];
+    let co = prop["campusonline"];
+    return new Room(obj["id"], Room.GetRoomTxtSearch(co["title"], co["name_full"]), obj["level"]);
+  }
 }

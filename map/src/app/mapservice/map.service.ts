@@ -32,6 +32,12 @@ export class MapService {
       .catch(this.handleError);
   }
 
+  getRoomByID(id: number): Observable<Object> {
+    return this.http.get(this.roomUrl + '?campusonline=' + id)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
   getFloors(layer: number): Observable<Object> {
     return this.http.get(this.floorUrl + '?level=' + layer)
       .map(this.extractData)
