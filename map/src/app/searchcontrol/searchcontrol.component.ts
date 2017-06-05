@@ -160,6 +160,7 @@ export class SearchcontrolComponent implements OnInit {
     console.log('SearchComponent::select:' + selected.text + " Start?=" + selected.isStartPoint);
     if (!selected.isStartPoint) {
       this.currentResult = selected;
+      console.log('SearchComponent::Select new Destination:' + JSON.stringify(this.currentResult));
       this.showCurrentResult();
       if (this.isRoutingSearchBox && this.currentStartPointResult) {
         this.routeClicked(this.currentResult);
@@ -171,6 +172,7 @@ export class SearchcontrolComponent implements OnInit {
     else {
       this.currentStartPointResult = selected;
       this.showCurrentStartResult();
+      console.log('SearchComponent::Select new Startpoint - For Destination:' + JSON.stringify(this.currentResult));
       if (this.currentResult) {
         this.routeClicked(this.currentResult);
       }
@@ -178,19 +180,22 @@ export class SearchcontrolComponent implements OnInit {
   }
 
   routeClicked(destinationroom: SearchResult) {
+    this.currentResult = destinationroom;
+    this.showCurrentResult();
     this.route(destinationroom.getRoom());
   }
 
   route(destinationroom: Room) {
     console.log('SearchComponent::route:' + JSON.stringify(destinationroom));
+    console.log('SearchComponent::route from:' + JSON.stringify(this.currentStartPointResult));
 
     this.term.setValue(destinationroom.text, { "emitEvent": false });
     this.searchUpdateResults([]);
 
     if (this.currentStartPointResult == null) {
       this.currentStartPointResult = DefaultStartPoint;
-      this.showCurrentStartResult();
     }
+    this.showCurrentStartResult();
     this.isRoutingSearchBox = true;
 
     if (this.currentStartPointResult) {
@@ -259,6 +264,7 @@ export class SearchcontrolComponent implements OnInit {
   }
 
   closeBtnClicked() {
+    this.currentStartPointResult = null;
     this.term.setValue("");
     this.startPointTerm.setValue("");
     this.isRoutingSearchBox = false;
