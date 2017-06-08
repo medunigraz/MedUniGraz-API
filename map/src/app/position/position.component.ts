@@ -1,7 +1,9 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, EventEmitter, NgZone, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import {Subscription} from "rxjs";
 import {TimerObservable} from "rxjs/observable/TimerObservable";
+
+import {Position} from '../base/position';
 
 enum PositionStatus {
   InActive = 0,
@@ -17,6 +19,8 @@ declare var appInterfaceObject: any;
   styleUrls: ['./position.component.css']
 })
 export class PositionComponent implements OnInit {
+
+  @Output() newPositionEvent = new EventEmitter<Position>();
 
   isActive: boolean = false;
   positionStatus: PositionStatus = PositionStatus.InActive;
@@ -97,14 +101,16 @@ export class PositionComponent implements OnInit {
     this.updatePositionStatus();
 
     this.stopCheckTimer();
-    this.startCheckTimer();
+    if (this.isActive) {
+      this.startCheckTimer();
+    }
   }
 
   private updatePositionStatus() {
 
     //console.log("PositionComponent::updatePositionStatus()" + appInterfaceObject.check());
 
-    if (appInterfaceObject.check() == 0) {
+    if (appInterfaceObject.check() != 0) {
       this.positionStatus = PositionStatus.InActive;
     }
     else {
