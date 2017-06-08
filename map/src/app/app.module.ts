@@ -19,6 +19,7 @@ import { FloorcontrolComponent } from './floorcontrol/floorcontrol.component';
 import { SidemenuComponent } from './sidemenu/sidemenu.component';
 import { RoomDialogComponent } from './room-dialog/room-dialog.component';
 import { RouteCompComponent } from './route-comp/route-comp.component';
+import { PositionComponent } from './position/position.component';
 
 
 @NgModule({
@@ -29,14 +30,15 @@ import { RouteCompComponent } from './route-comp/route-comp.component';
     FloorcontrolComponent,
     SidemenuComponent,
     RoomDialogComponent,
-    RouteCompComponent
+    RouteCompComponent,
+    PositionComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(routes),
+    //RouterModule.forRoot(routes),
     MaterialModule.forRoot()
   ],
   providers: [MapService, MainappService],

@@ -21,7 +21,8 @@
       "../node_modules/openlayers/dist/ol.css"
     ],
     "scripts": [
-      "../node_modules/openlayers/dist/ol.js"
+      "../node_modules/openlayers/dist/ol.js",
+      "appInterface.js"
     ],
     "environments": {
       "source": "environments/environment.ts",
