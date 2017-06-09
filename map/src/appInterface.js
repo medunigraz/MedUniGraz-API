@@ -1,4 +1,6 @@
 
+var demoDataStarted = false;
+
 function checkappinterface()
 {
   if(typeof JSInterface !== "undefined")
@@ -10,22 +12,22 @@ function checkappinterface()
 
 function checkdevice()
 {
-  console.log("#JS# checkdevice()");
+  //console.log("#JS# checkdevice()");
 
   if(typeof JSInterface !== "undefined")
   {
     return JSInterface.checkdevice();
   }
   else {
-    console.log("#JS# JSInterface not defined!");
+    //console.log("#JS# JSInterface not defined!");
   }
 
-  return 0;
+  return -1;
 }
 
 function updatesignals(data)
 {
-  console.log("#JS# addtableentry() " + data);
+  //console.log("#JS# addtableentry() " + data);
   signalDataJson = data;
 
   if(window["angularComponentRef"])
@@ -60,22 +62,30 @@ function stopscan()
 }
 
 
+function startdemoData()
+{
+  setTimeout(sendDemoData, 150);
+}
 
-  var appInterfaceObject = (function() {
-  return {
-    testapp: function() {
-      return checkappinterface();
-    },
-    check: function() {
-      return checkdevice();
-    },
-    start: function() {
-      return startscan();
-    },
-    stop: function() {
-      return stopscan();
-    }
+
+var appInterfaceObject = (function() {
+return {
+  testapp: function() {
+    return checkappinterface();
+  },
+  check: function() {
+    return checkdevice();
+  },
+  start: function() {
+    return startscan();
+  },
+  stop: function() {
+    return stopscan();
+  },
+  demo: function() {
+    return startdemoData();
   }
+}
 })(appInterfaceObject||{})
 
 
@@ -96,6 +106,7 @@ function sendDemoData()
   var val1 = -30 - Math.random() * 10;
   var val2 = -60 - Math.random() * 10;
   var val3 = -80 - Math.random() * 10;
+  var val4 = -30 - Math.random() * 10;
 
   var jsondata = '[' + getData("D3:52:E0:9C:FA:85", val1) + ', ' + getData("C1:AD:58:D4:C4:D2", val2);
 
@@ -106,10 +117,17 @@ function sendDemoData()
 
   jsondata += ']';
 
+  jsondata = '[' + getData("D3:52:E0:9C:FA:85", val1) + ', ' + getData("EF:0A:B6:E0:38:BB", val4) + ']';
+
   counter++;
   updatesignals(jsondata);
-  setTimeout(sendDemoData, 1000);
+  //console.log("#JS# sendDemoData: " + jsondata + "#" + counter);
+
+  if(counter % 10 == 0)
+  {
+    setTimeout(sendDemoData, 10000);
+  }
+  else {
+    setTimeout(sendDemoData, 1000);
+  }
 }
-
-
-//setTimeout(sendDemoData, 3000);

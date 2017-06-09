@@ -8,6 +8,7 @@ import { MapFloor } from './mapFloor'
 import { MapDoors } from './mapDoors'
 import { MapRoute } from './mapRoute'
 import { MapBackground } from './mapBackground'
+import { MapLivePosition } from './mapLivePosition'
 
 import {MdDialog, MdDialogRef} from '@angular/material';
 
@@ -17,6 +18,7 @@ import {Room} from '../base/room';
 import {RoomDetail} from '../base/roomDetail';
 import { Floor } from '../base/floor';
 import { PoiType } from '../base/poitype';
+import {Position} from '../base/position';
 
 declare var ol: any;
 
@@ -41,6 +43,7 @@ export class OlmapComponent implements OnInit {
   private mapDoors: MapDoors = null;
   private mapRoute: MapRoute = null;
   private mapBackground: MapBackground = null;
+  private mapLivePosition: MapLivePosition = null;
 
   private mapView: any;
 
@@ -58,6 +61,7 @@ export class OlmapComponent implements OnInit {
     this.mapFloor = new MapFloor(this.mapService);
     this.mapDoors = new MapDoors(this.mapService);
     this.mapRoute = new MapRoute(this.mapService);
+    this.mapLivePosition = new MapLivePosition();
 
     let interactions = ol.interaction.defaults({ altShiftDragRotate: false, pinchRotate: false });
 
@@ -89,7 +93,8 @@ export class OlmapComponent implements OnInit {
         this.mapRoom.getLayer(),
         this.mapDoors.getLayer(),
         this.mapRoute.getLayer(),
-        this.mapPois.getLayer()
+        this.mapPois.getLayer(),
+        this.mapLivePosition.getLayer()
       ],
       overlays: [this.mapRoom.getOverlay()],
       target: 'map',
@@ -202,6 +207,10 @@ export class OlmapComponent implements OnInit {
       //console.log("MapComponent::Set poiTypes: " + JSON.stringify(poitypes));
       this.mapPois.setPoiTypes(poitypes);
     }
+  }
+
+  public showLivePosition(livePos: Position) {
+    this.mapLivePosition.showLivePosition(livePos);
   }
 
   setFocus(): void {

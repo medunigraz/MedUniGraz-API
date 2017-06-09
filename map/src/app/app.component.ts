@@ -9,7 +9,8 @@ import {MdSidenav } from '@angular/material/sidenav'
 
 import {Room} from './base/room';
 import {RouteNodes} from './base/routeNodes';
-import { PoiType } from './base/poitype';
+import {PoiType } from './base/poitype';
+import {Position} from './base/position';
 
 @Component({
   selector: 'app-root',
@@ -94,6 +95,11 @@ export class AppComponent {
       this.poiTypes = poiTypes;
       this.mapComponent.updatePoiTypes(this.poiTypes);
     }
+  }
+
+  livePositionChanged(livePos: Position) {
+    //console.log("AppComponent --- livePositionChanged: " + JSON.stringify(livePos));
+    this.mapComponent.showLivePosition(livePos);
   }
 
 }

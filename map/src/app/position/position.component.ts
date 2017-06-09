@@ -5,11 +5,17 @@ import {TimerObservable} from "rxjs/observable/TimerObservable";
 
 import {Position} from '../base/position';
 
+import {PositionUpdate} from './positionupdate';
+import {SignalBuffer} from './signalbuffer';
+import {SignalBufferCollection} from './signalbuffercollection';
+
 enum PositionStatus {
   InActive = 0,
   Paused = 1,
   Active = 2
 }
+
+const demoMode: boolean = false;
 
 declare var appInterfaceObject: any;
 
@@ -22,11 +28,17 @@ export class PositionComponent implements OnInit {
 
   @Output() newPositionEvent = new EventEmitter<Position>();
 
-  isActive: boolean = false;
-  positionStatus: PositionStatus = PositionStatus.InActive;
+  private isActive: boolean = demoMode;
+  private positionStatus: PositionStatus = PositionStatus.InActive;
   private checkTimerSubscription: Subscription;
+  private posUpdateTimerSubscription: Subscription;
 
-  positioningStarted: boolean = false;
+  private positioningStarted: boolean = false;
+
+  private signalBufferCollection: SignalBufferCollection = new SignalBufferCollection();
+
+  private positionUpdate: PositionUpdate = new PositionUpdate();
+
 
   constructor(private zone: NgZone) {
     window["angularComponentRef"] = {
@@ -64,16 +76,69 @@ export class PositionComponent implements OnInit {
   }
 
   signalDataChanged(value: string) {
-    console.log("PositionComponent::signalDataChanged() - " + JSON.stringify(value));
+    if (this.positionStatus == PositionStatus.Active) {
+      //console.log("PositionComponent::signalDataChanged() - " + JSON.stringify(value));
+      this.signalBufferCollection.addValues(value);
+    }
   }
 
   public startScan() {
+    this.signalBufferCollection.clear();
+    this.signalBufferCollection.start();
+    this.startPosUpdateTimer();
     appInterfaceObject.start();
+    if (demoMode) {
+      appInterfaceObject.demo();
+    }
   }
 
   public stopScan() {
+    this.stopPosUpdateTimer();
     appInterfaceObject.stop();
+    this.signalBufferCollection.clear();
+    this.newPositionEvent.emit(undefined);
   }
+
+  /**********************************************************
+  POSTION UPDATE
+  **********************************************************/
+
+  private startPosUpdateTimer() {
+    //console.log("PositionComponent::startPosUpdateTimer()");
+
+    if (this.posUpdateTimerSubscription != null) {
+      this.stopPosUpdateTimer();
+    }
+
+    let timer = TimerObservable.create(1000);
+    this.posUpdateTimerSubscription = timer.subscribe(t => {
+      this.posUpdateEvent();
+    });
+  }
+
+  private stopPosUpdateTimer() {
+    //console.log("PositionComponent::stopPosUpdateTimer()");
+    if (this.posUpdateTimerSubscription != null) {
+      this.posUpdateTimerSubscription.unsubscribe();
+      this.posUpdateTimerSubscription = null;
+    }
+  }
+
+  private posUpdateEvent() {
+    //console.log("PositionComponent::posUpdateEvent()");
+
+    let pos: Position = this.positionUpdate.getDemoPostion(this.signalBufferCollection.getNearestBeacon(), demoMode);
+    this.newPositionEvent.emit(pos);
+
+    this.stopPosUpdateTimer();
+    if (this.isActive) {
+      this.startPosUpdateTimer();
+    }
+  }
+
+  /**********************************************************
+  CHECK STATUS
+  **********************************************************/
 
   private startCheckTimer() {
     //console.log("PositionComponent::startCheckTimer()");
@@ -110,7 +175,7 @@ export class PositionComponent implements OnInit {
 
     //console.log("PositionComponent::updatePositionStatus()" + appInterfaceObject.check());
 
-    if (appInterfaceObject.check() != 0) {
+    if (appInterfaceObject.check() != 0 && !demoMode) {
       this.positionStatus = PositionStatus.InActive;
     }
     else {
@@ -122,5 +187,6 @@ export class PositionComponent implements OnInit {
       }
     }
   }
+
 
 }
