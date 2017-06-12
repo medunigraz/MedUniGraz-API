@@ -127,7 +127,13 @@ export class PositionComponent implements OnInit {
   private posUpdateEvent() {
     //console.log("PositionComponent::posUpdateEvent()");
 
-    let pos: Position = this.positionUpdate.getDemoPostion(this.signalBufferCollection.getNearestBeacon(), demoMode);
+    let nearestBeacon = this.signalBufferCollection.getNearestBeacon();
+    let pos: Position = this.positionUpdate.getDemoPostion(nearestBeacon, demoMode);
+
+    //LOG POSITION DATA
+    appInterfaceObject.log("" + new Date().getTime() + ";" + nearestBeacon + ";" + this.signalBufferCollection.getJSONString());
+
+
     this.newPositionEvent.emit(pos);
 
     this.stopPosUpdateTimer();

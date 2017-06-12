@@ -58,6 +58,10 @@ export class SignalBufferCollection {
     return bestID;
   }
 
+  public getJSONString(): string {
+    return JSON.stringify(this.map);
+  }
+
   private addValue(id: string, value: number) {
     if (!this.map[id]) {
       this.map[id] = new SignalBuffer(id);

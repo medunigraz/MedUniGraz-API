@@ -30,6 +30,13 @@ function updatesignals(data)
   //console.log("#JS# addtableentry() " + data);
   signalDataJson = data;
 
+  //console.log("#JS# LOG: " + "" + new Date().getTime() + ";" + data);
+  if(typeof JSInterface !== "undefined")
+  {
+    //LOG POSITION DATA
+    //JSInterface.logrt("" + new Date().getTime() + ";" + data);
+  }
+
   if(window["angularComponentRef"])
   {
     window['angularComponentRef'].zone.run(() => {window['angularComponentRef'].component.signalDataChanged(data);})
@@ -61,6 +68,16 @@ function stopscan()
   }
 }
 
+function dolog(data)
+{
+  //console.log("#JS# LOG: " + data);
+  if(typeof JSInterface !== "undefined")
+  {
+    //LOG POSITION DATA
+    //return JSInterface.logbuf(data);
+  }
+  return null;
+}
 
 function startdemoData()
 {
@@ -84,6 +101,9 @@ return {
   },
   demo: function() {
     return startdemoData();
+  },
+  log: function(logstring) {
+    return dolog(logstring);
   }
 }
 })(appInterfaceObject||{})
