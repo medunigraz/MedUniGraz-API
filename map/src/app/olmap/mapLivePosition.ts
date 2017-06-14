@@ -1,5 +1,6 @@
 import { MapLayerBase } from './mapLayerBase';
 import { OpenlayersHelper } from './openlayershelper';
+import { MapService } from '../mapservice/map.service';
 
 import {Position} from '../base/position';
 
@@ -12,7 +13,7 @@ export class MapLivePosition extends MapLayerBase {
 
   private positionVisible: boolean = false;
 
-  constructor() {
+  constructor(private mapService: MapService) {
     super();
     this.Initialize();
   }
@@ -44,7 +45,17 @@ export class MapLivePosition extends MapLayerBase {
         this.AddPositionFeature();
       }
       this.circle.setCenter([livePos.x, livePos.y]);
+
+      this.subscribeNewRequest(
+        this.mapService.getRouteForPos(-1, livePos.urlString).
+          subscribe(
+          route => this.updateRoute(route),
+          error => console.log("ERROR: " + <any>error)));
     }
+  }
+
+  private updateRoute(route: any) {
+    console.log("MapLivePosition::update Route");
   }
 
   private AddPositionFeature() {

@@ -15,7 +15,7 @@ enum PositionStatus {
   Active = 2
 }
 
-const demoMode: boolean = false;
+const demoMode: boolean = true;
 
 declare var appInterfaceObject: any;
 
@@ -127,8 +127,10 @@ export class PositionComponent implements OnInit {
   private posUpdateEvent() {
     //console.log("PositionComponent::posUpdateEvent()");
 
+    let urlString = this.signalBufferCollection.getURLString();
+
     let nearestBeacon = this.signalBufferCollection.getNearestBeacon();
-    let pos: Position = this.positionUpdate.getDemoPostion(nearestBeacon, demoMode);
+    let pos: Position = this.positionUpdate.getDemoPostion(nearestBeacon, demoMode, urlString);
 
     //LOG POSITION DATA
     appInterfaceObject.log("" + new Date().getTime() + ";" + nearestBeacon + ";" + this.signalBufferCollection.getJSONString());

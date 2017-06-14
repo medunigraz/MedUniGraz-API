@@ -61,7 +61,7 @@ export class OlmapComponent implements OnInit {
     this.mapFloor = new MapFloor(this.mapService);
     this.mapDoors = new MapDoors(this.mapService);
     this.mapRoute = new MapRoute(this.mapService);
-    this.mapLivePosition = new MapLivePosition();
+    this.mapLivePosition = new MapLivePosition(this.mapService);
 
     let interactions = ol.interaction.defaults({ altShiftDragRotate: false, pinchRotate: false });
 

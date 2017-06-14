@@ -62,6 +62,26 @@ export class SignalBufferCollection {
     return JSON.stringify(this.map);
   }
 
+  public getURLString(): string {
+
+    let urlString = "";
+    let index = 0;
+
+    for (let key in this.map) {
+
+      let value = this.map[key].lastValue;
+
+      if (index > 0) {
+        urlString += "&";
+      }
+      urlString += 'mac[' + key + ']=' + value;
+
+      index++;
+    }
+
+    return urlString;
+  }
+
   private addValue(id: string, value: number) {
     if (!this.map[id]) {
       this.map[id] = new SignalBuffer(id);
