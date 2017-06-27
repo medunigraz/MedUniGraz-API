@@ -250,6 +250,8 @@ export class EditablemapComponent implements OnInit {
       this.setLayerActive(this.mapRoute, true);
 
       this.setLayerActive(this.mapPois, false);
+
+      this.setLayerActive(this.mapBeacons, false);
     }
     else if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_POIS) {
       this.setLayerActive(this.mapEdges, false);
@@ -258,6 +260,8 @@ export class EditablemapComponent implements OnInit {
       this.setLayerActive(this.mapRoute, false);
 
       this.setLayerActive(this.mapPois, true);
+
+      this.setLayerActive(this.mapBeacons, false);
     }
     else if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_BEACONS) {
       this.setLayerActive(this.mapEdges, false);
@@ -266,6 +270,8 @@ export class EditablemapComponent implements OnInit {
       this.setLayerActive(this.mapRoute, false);
 
       this.setLayerActive(this.mapPois, false);
+
+      this.setLayerActive(this.mapBeacons, true);
     }
     else {
       this.setLayerActive(this.mapEdges, false);
@@ -274,6 +280,8 @@ export class EditablemapComponent implements OnInit {
       this.setLayerActive(this.mapRoute, false);
 
       this.setLayerActive(this.mapPois, false);
+
+      this.setLayerActive(this.mapBeacons, false);
     }
   }
 

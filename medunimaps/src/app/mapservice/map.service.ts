@@ -67,6 +67,10 @@ export class MapService {
     return null;
   }
 
+  getBeacons(layer: number): Observable<Object> {
+    return null;
+  }
+
 
   searchRoom(term: string): Observable<Room[]> {
     //https://angular.io/docs/ts/latest/tutorial/toh-pt6.html
@@ -120,6 +124,10 @@ export class MapService {
     return null;
   }
 
+  addBeacons(floor: number, center: any, id: string): Observable<Object> {
+    return null;
+  }
+
   deleteNode(id: number): Observable<Object> {
     return null;
   }
@@ -129,6 +137,10 @@ export class MapService {
   }
 
   deletePoi(id: number): Observable<Object> {
+    return null;
+  }
+
+  deleteBeacon(id: string): Observable<Object> {
     return null;
   }
 
@@ -143,4 +155,9 @@ export class MapService {
   updatePoi(node: any, id: number): Observable<Object> {
     return null;
   }
+
+  updateBeacon(beacon: any, id: string): Observable<Object> {
+    return null;
+  }
+
 }

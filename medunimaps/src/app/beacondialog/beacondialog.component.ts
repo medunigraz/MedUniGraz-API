@@ -13,8 +13,12 @@ import { Subscription } from "rxjs";
 export class BeacondialogComponent implements OnInit {
 
   private idInputVal = new FormControl();
+  private nameInputVal = new FormControl();
 
   constructor(public dialogRef: MdDialogRef<BeacondialogComponent>) { }
+
+  public id: string = "";
+  public name: string = "";
 
   ngOnInit() {
   }
@@ -33,4 +37,10 @@ export class BeacondialogComponent implements OnInit {
     this.dialogRef.close('Saved and Closed...')
   }
 
+  setIdAndName(id: string, name: string) {
+    this.id = id;
+    this.name = name;
+    this.idInputVal.setValue(this.id);
+    this.nameInputVal.setValue(this.name);
+  }
 }

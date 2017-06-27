@@ -24,7 +24,7 @@ export class MapHttpService extends MapService {
   private routeUrl = this.baseUrl + '/geo/routing/edges/';
   private poiTypeUrl = this.baseUrl + '/geo/pointofinterest/';
   private poiInstanceUrl = this.baseUrl + '/geo/pointofinterestinstance/';
-
+  private beaconUrl = this.baseUrl + '/positioning/beacons/';
 
   constructor(private http: Http) {
     super();
@@ -87,6 +87,11 @@ export class MapHttpService extends MapService {
       .catch(this.handleError);
   }
 
+  getBeacons(layer: number): Observable<Object> {
+    return this.http.get(this.beaconUrl + '?level=' + layer)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
 
   addEdge(source: number, destination: number, length: number, path: any): Observable<Object> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -139,6 +144,24 @@ export class MapHttpService extends MapService {
       .catch(this.handleError);
   }
 
+  addBeacon(floor: number, center: any, id: string): Observable<Object> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    let data = {
+      "level": floor,
+      "mac": id,
+      "name": 'name...',
+      "center": JSON.stringify(center)
+    }
+
+    console.log("Send Beacon: " + JSON.stringify(data));
+
+    return this.http.post(this.beaconUrl, data, options)
+      .map(this.extractDataAdd)
+      .catch(this.handleError);
+  }
+
   deleteNode(id: number): Observable<Object> {
     let headers = new Headers({});
 
@@ -176,6 +199,18 @@ export class MapHttpService extends MapService {
       .catch(this.handleError);
   }
 
+  deleteBeacon(id: string): Observable<Object> {
+    let headers = new Headers({});
+
+    let options = new RequestOptions({
+      headers: headers,
+    });
+
+    return this.http.delete(this.beaconUrl + id + "/", options)
+      .map(response => this.extractDataDelStr(response, id))
+      .catch(this.handleError);
+  }
+
   updateEdge(edge: any, id: number): Observable<Object> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
@@ -209,6 +244,17 @@ export class MapHttpService extends MapService {
       .catch(this.handleError);
   }
 
+  updateBeacon(beacon: any, id: string): Observable<Object> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    //console.log("Update Poi: " + id + "::" + JSON.stringify(node));
+
+    return this.http.put(this.beaconUrl + id + "/", beacon, options)
+      .map(this.extractDataAdd)
+      .catch(this.handleError);
+  }
+
 
   private extractData(res: Response) {
     //console.log("RESPONSE DATA...");
@@ -231,6 +277,11 @@ export class MapHttpService extends MapService {
   }
 
   private extractDataDel(res: Response, id: number) {
+    //console.log("RESPONSE DATA org: " + JSON.stringify(res));
+    return { id: id };
+  }
+
+  private extractDataDelStr(res: Response, id: string) {
     //console.log("RESPONSE DATA org: " + JSON.stringify(res));
     return { id: id };
   }
