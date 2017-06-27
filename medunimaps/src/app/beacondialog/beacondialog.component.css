@@ -15,8 +15,33 @@
   padding: 0 0;
   min-width: 5em;
   color: #51AE32;
+  background-color: lightgreen;
+}
+
+.idInput {
+  width: 100%;
+}
+
+.controlButtonTable {
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  border-spacing: 0;
+}
+
+.ScanButton {
+  padding: 0 0;
+  width: 100%;
+  color: #51AE32;
+  background-color: lightgreen;
+}
+
+.ControlButtonSpacer {
+  min-width: 3em;
+  width: 100%;
 }
 
 .navigateDiv {
-  min-height: 5em;
+  padding-top: 1em;
+  padding-bottom: 1em;
 }

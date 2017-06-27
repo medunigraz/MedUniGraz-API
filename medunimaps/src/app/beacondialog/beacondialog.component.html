@@ -9,17 +9,21 @@
   </div>
 
   <div class='navigateDiv'>
-    <button class='NavigateButton' (click)="scan()" md-button>
+    <button class='ScanButton' (click)="scan()" md-button>
       <span>Scan...</span>
     </button>
   </div>
 
-  <table>
+  <table class="controlButtonTable">
     <tr>
       <td>
         <button class='NavigateButton' (click)="closeDialog()" md-button>
           <span>Cancel</span>
         </button>
+      </td>
+      <td >
+        <div class='ControlButtonSpacer'>
+        </div>
       </td>
       <td>
         <button class='NavigateButton' (click)="save()" md-button>

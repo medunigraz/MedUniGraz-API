@@ -30,6 +30,7 @@ export class BeacondialogComponent implements OnInit {
 
   save() {
     console.log("BeacondialogComponent::save()");
+    this.dialogRef.close('Saved and Closed...')
   }
 
 }
