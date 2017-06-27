@@ -1,0 +1,35 @@
+<div class="dialogDiv">
+  <input type="hidden" tabindex="0" autofocus/>
+
+  <div>
+    <h2>
+      Beacon
+    </h2>
+    <input class="idInput" autocomplete="off" placeholder="Id..." mdInput [formControl]="idInputVal">
+  </div>
+
+  <div class='navigateDiv'>
+    <button class='NavigateButton' (click)="scan()" md-button>
+      <span>Scan...</span>
+    </button>
+  </div>
+
+  <table>
+    <tr>
+      <td>
+        <button class='NavigateButton' (click)="closeDialog()" md-button>
+          <span>Cancel</span>
+        </button>
+      </td>
+      <td>
+        <button class='NavigateButton' (click)="save()" md-button>
+          <span>Ok</span>
+        </button>
+      </td>
+    </tr>
+  </table>
+
+  <button class='closeDialogButton' (click)="closeDialog()" md-button>
+    <md-icon>close</md-icon>
+  </button>
+</div>

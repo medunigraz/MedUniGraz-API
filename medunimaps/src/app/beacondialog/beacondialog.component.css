@@ -1,0 +1,22 @@
+.dialogDiv {
+  position: relative;
+}
+
+.closeDialogButton {
+  position: absolute;
+  top: -42px;
+  right: -22px;
+  padding: 0 0;
+  min-width: 3em;
+  color: #51AE32;
+}
+
+.NavigateButton {
+  padding: 0 0;
+  min-width: 5em;
+  color: #51AE32;
+}
+
+.navigateDiv {
+  min-height: 5em;
+}

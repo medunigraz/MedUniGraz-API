@@ -19,6 +19,7 @@ export class AppComponent {
   currentFloor: Floor = Floor.getDefaultFloor();
   currentPoiType: PoiType = null;
   poiTypes: PoiType[] = null;
+  beaconEditMode: BeaconEditMode = null;
 
   showPoiSelector: boolean = false;
   showBeaconEditModeSelector: boolean = false;
@@ -82,7 +83,7 @@ export class AppComponent {
   beaconEditModeChanged(mode: BeaconEditMode) {
     if (mode) {
       console.log("AppComponent --- BeaconEditMode: " + mode.name);
-      //this.currentPoiType = poiType;
+      this.beaconEditMode = mode;
     }
   }
 }

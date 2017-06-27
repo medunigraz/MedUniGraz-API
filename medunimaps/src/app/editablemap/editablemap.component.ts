@@ -11,6 +11,7 @@ import { ApplicationMode } from '../base/applicationmode';
 import { ApplicationModeT } from '../base/applicationmode';
 import { Floor } from '../base/floor';
 import { PoiType } from '../base/poitype';
+import { BeaconEditMode, BeaconEditModes } from '../base/beaconeditmode';
 
 import { MapLayerBase } from './mapLayerBase';
 import { MapNodes } from './mapNodes';
@@ -21,8 +22,11 @@ import { MapEdges } from './mapEdges';
 import { MapEditEdges } from './mapEditEdges';
 import { MapRoute } from './mapRoute';
 import { MapPois } from './mappois';
+import { MapBeacons } from './mapbeacons';
 import { OpenlayersHelper } from './openlayershelper';
 
+import {MdDialog, MdDialogRef} from '@angular/material';
+import {BeacondialogComponent} from '../beacondialog/beacondialog.component'
 
 declare var ol: any;
 
@@ -35,7 +39,8 @@ export class EditablemapComponent implements OnInit {
 
   //private _applicationMode: ApplicationMode = ApplicationMode.CreateDefault();
 
-  constructor(private mapServiceHttp: MapHttpService,
+  constructor(private dialog: MdDialog,
+    private mapServiceHttp: MapHttpService,
     private mapService: MapService) { }
 
   private map: any;
@@ -50,6 +55,7 @@ export class EditablemapComponent implements OnInit {
   private mapEditEdges: MapEditEdges = null;
   private mapRoute: MapRoute = null;
   private mapPois: MapPois = null;
+  private mapBeacons: MapBeacons = null;
 
   private ctlPressed: boolean = false;
 
@@ -69,6 +75,7 @@ export class EditablemapComponent implements OnInit {
     this.mapRoute = new MapRoute(this.mapService);
     this.mapNodes = new MapNodes(this.mapService, this.mapEditEdges, this.mapEdges, this.mapRoute);
     this.mapPois = new MapPois(this.mapService);
+    this.mapBeacons = new MapBeacons(this.dialog, this.mapService);
 
     this.map = new ol.Map({
       controls: ol.control.defaults({
@@ -87,6 +94,7 @@ export class EditablemapComponent implements OnInit {
         this.mapRooms.getLayer(),
         this.mapDoors.getLayer(),
         this.mapNodes.getLayer(),
+        this.mapBeacons.getLayer(),
         this.mapEditEdges.getLayer(),
         this.mapEdges.getLayer(),
         this.mapRoute.getLayer(),
@@ -127,7 +135,7 @@ export class EditablemapComponent implements OnInit {
       this.mapEdges.updateData(currentFloor.id);
       this.mapNodes.updateData(currentFloor.id);
       this.mapRoute.setCurrentFloor(currentFloor.id);
-
+      this.mapBeacons.updateData(currentFloor.id);
       this.mapPois.setCurrentFloor(currentFloor.id);
       this.mapPois.updateData(currentFloor.id);
     }
@@ -146,6 +154,13 @@ export class EditablemapComponent implements OnInit {
     if (poitypes) {
       console.log("EditAbleMapComponent::Set poiTypes: " + JSON.stringify(poitypes));
       this.mapPois.setPoiTypes(poitypes);
+    }
+  }
+
+  @Input()
+  set beaconEditMode(mode: BeaconEditMode) {
+    if (mode) {
+      this.mapBeacons.setBeaconEditMode(mode);
     }
   }
 
@@ -221,6 +236,9 @@ export class EditablemapComponent implements OnInit {
     }
     else if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_POIS) {
       this.mapPois.mouseClicked(evt.coordinate, pixel, evt.originalEvent.ctrlKey, evt.originalEvent.shiftKey, this.map);
+    }
+    else if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_BEACONS) {
+      this.mapBeacons.mouseClicked(evt.coordinate, this.map);
     }
   }
 

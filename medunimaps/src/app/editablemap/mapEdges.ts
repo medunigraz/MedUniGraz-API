@@ -83,7 +83,7 @@ export class MapEdges extends MapLayerBase {
   }
 
   public updateMouseClicked(map: any) {
-    console.log("mapEdges::updateMouseClicked...")
+    //console.log("mapEdges::updateMouseClicked...")
     if (this.highlightedFeature) {
       if (!this.selectFeatureOverlay) {
         this.initSelectFeatureOverlay(map);

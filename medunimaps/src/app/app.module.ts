@@ -20,6 +20,7 @@ import { ModeselectorComponent } from './modeselector/modeselector.component';
 import { EditablemapComponent } from './editablemap/editablemap.component';
 import { PoiselectorComponent } from './poiselector/poiselector.component';
 import { BeaconmodeselectorComponent } from './beaconmodeselector/beaconmodeselector.component';
+import { BeacondialogComponent } from './beacondialog/beacondialog.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { BeaconmodeselectorComponent } from './beaconmodeselector/beaconmodesele
     ModeselectorComponent,
     EditablemapComponent,
     PoiselectorComponent,
-    BeaconmodeselectorComponent
+    BeaconmodeselectorComponent,
+    BeacondialogComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +45,7 @@ import { BeaconmodeselectorComponent } from './beaconmodeselector/beaconmodesele
     MaterialModule.forRoot()
   ],
   providers: [MapService, MapcontrollerserviceService, MapHttpService],
-  entryComponents: [DialogContent],
+  entryComponents: [DialogContent, BeacondialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
