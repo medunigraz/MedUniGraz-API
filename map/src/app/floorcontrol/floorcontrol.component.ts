@@ -40,7 +40,7 @@ export class FloorcontrolComponent implements OnInit {
     this.floorList = floors;
 
     for (let floor of this.floorList) {
-      if (floor.name == 'EG') {
+      if (floor.name.startsWith('EG')) {
         this.selectFloor(floor);
         //console.log("FloorselectorComponent::updateFloors Select Floor: " + JSON.stringify(floor));
         return;
