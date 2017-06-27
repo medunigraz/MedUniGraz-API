@@ -1,0 +1,10 @@
+<div class="modecontrol" *ngIf="showControl">
+  <button md-raised-button [mdMenuTriggerFor]="menuselectcontrol" class="modecontrolmenubutton">
+     <span class="modecontrolmenutext">{{selectedMode.name}}</span>
+  </button>
+  <md-menu #menuselectcontrol="mdMenu">
+    <button md-menu-item *ngFor="let mode of modes" (click)="onSelect(mode)" class="modecontrolmenubutton">
+      <span class="modecontrolmenutext">{{mode.name}}</span>
+    </button>
+  </md-menu>
+</div>

@@ -19,6 +19,7 @@ import { RoutetestComponent } from './routetest/routetest.component';
 import { ModeselectorComponent } from './modeselector/modeselector.component';
 import { EditablemapComponent } from './editablemap/editablemap.component';
 import { PoiselectorComponent } from './poiselector/poiselector.component';
+import { BeaconmodeselectorComponent } from './beaconmodeselector/beaconmodeselector.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { PoiselectorComponent } from './poiselector/poiselector.component';
     RoutetestComponent,
     ModeselectorComponent,
     EditablemapComponent,
-    PoiselectorComponent
+    PoiselectorComponent,
+    BeaconmodeselectorComponent
   ],
   imports: [
     BrowserModule,

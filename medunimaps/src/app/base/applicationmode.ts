@@ -3,7 +3,8 @@ export enum ApplicationModeT {
   DEFAULT,
   EDIT_NODES,
   EDIT_POIS,
-  EDIT_BACKGROUND
+  EDIT_BACKGROUND,
+  EDIT_BEACONS
 }
 
 export class ApplicationMode {
@@ -23,6 +24,7 @@ export class ApplicationMode {
 
 export const ApplicationModes = [
   ApplicationMode.CreateDefault(),
-  new ApplicationMode(ApplicationModeT.EDIT_POIS, "Points of Interest")//,
+  new ApplicationMode(ApplicationModeT.EDIT_POIS, "Points of Interest"),
+  new ApplicationMode(ApplicationModeT.EDIT_BEACONS, "Beacons")//,
   //new ApplicationMode(ApplicationModeT.EDIT_BACKGROUND, "Hintergrund")
 ]

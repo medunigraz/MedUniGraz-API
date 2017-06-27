@@ -14,6 +14,8 @@
 <app-poiselector (currentSelectedPoiEvt)="currentPoiTypeChanged($event)"
                   (poiTypeReceivedEvt)="PoiTypesReceived($event)"
                   *ngIf="showPoiSelector"></app-poiselector>
+  <app-beaconmodeselector (currentSelectedModeEvt)="beaconEditModeChanged($event)"
+                    *ngIf="showBeaconEditModeSelector"></app-beaconmodeselector>
 
 <!--
 <md-toolbar class = "header-toolbar">

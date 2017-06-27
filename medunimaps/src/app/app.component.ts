@@ -4,6 +4,7 @@ import {MdDialog, MdDialogRef} from '@angular/material';
 import { ApplicationMode, ApplicationModeT } from './base/applicationmode';
 import { Floor } from './base/floor';
 import { PoiType } from './base/poitype';
+import { BeaconEditMode, BeaconEditModes } from './base/beaconeditmode';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,7 @@ export class AppComponent {
   poiTypes: PoiType[] = null;
 
   showPoiSelector: boolean = false;
+  showBeaconEditModeSelector: boolean = false;
 
   constructor(private _dialog: MdDialog) {
   }
@@ -53,6 +55,7 @@ export class AppComponent {
     this.currentAppMode = mode;
 
     this.showPoiSelector = (this.currentAppMode.mode == ApplicationModeT.EDIT_POIS);
+    this.showBeaconEditModeSelector = (this.currentAppMode.mode == ApplicationModeT.EDIT_BEACONS);
   }
 
   floorChanged(floor: Floor): void {
@@ -73,6 +76,13 @@ export class AppComponent {
     if (poiTypes) {
       console.log("AppComponent --- PoiTypesReceived: " + poiTypes.length);
       this.poiTypes = poiTypes;
+    }
+  }
+
+  beaconEditModeChanged(mode: BeaconEditMode) {
+    if (mode) {
+      console.log("AppComponent --- BeaconEditMode: " + mode.name);
+      //this.currentPoiType = poiType;
     }
   }
 }

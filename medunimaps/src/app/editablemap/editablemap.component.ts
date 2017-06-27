@@ -241,6 +241,22 @@ export class EditablemapComponent implements OnInit {
 
       this.setLayerActive(this.mapPois, true);
     }
+    else if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_BEACONS) {
+      this.setLayerActive(this.mapEdges, false);
+      this.setLayerActive(this.mapEditEdges, false);
+      this.setLayerActive(this.mapNodes, false);
+      this.setLayerActive(this.mapRoute, false);
+
+      this.setLayerActive(this.mapPois, false);
+    }
+    else {
+      this.setLayerActive(this.mapEdges, false);
+      this.setLayerActive(this.mapEditEdges, false);
+      this.setLayerActive(this.mapNodes, false);
+      this.setLayerActive(this.mapRoute, false);
+
+      this.setLayerActive(this.mapPois, false);
+    }
   }
 
   private setLayerActive(layer: MapLayerBase, active: boolean) {

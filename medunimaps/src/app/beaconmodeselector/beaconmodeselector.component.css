@@ -1,0 +1,23 @@
+.modecontrol {
+  position: absolute;
+  top: 4.0em;
+  left: 0.7em;
+  z-index: 10;
+  background-color: #FFFFFF80;
+  font-size: medium;
+}
+
+.modecontrolmenubutton {
+  background-color: #FFFFFFFF;
+  border: medium medium;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+  min-width: 6em;
+  padding: 0;
+  padding-left: 0.5em;
+  vertical-align: middle;
+}
+
+.modecontrolmenutext {
+  font-size: medium;
+  margin-right: 0.5em;
+}

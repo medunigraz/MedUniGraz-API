@@ -1,5 +1,11 @@
 {
   "/v1/*": {
+    "target": "https://api.medunigraz.at",
+    "changeOrigin": true,
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/v666/*": {
     "target": "http://api.medunigraz.at:8088",
     "changeOrigin": true,
     "secure": false,
