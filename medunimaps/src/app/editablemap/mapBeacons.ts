@@ -22,6 +22,21 @@ export class MapBeacons extends MapLayerBase {
   private editMode: BeaconEditMode = BeaconEditMode.CreateDefault();
   private dialogRef: MdDialogRef<BeacondialogComponent> = null;
 
+  private currentSelectedBeacon: any = null;
+  private highlightFeature: any = null;
+  private highlightFeatureAdded: boolean = false;
+
+
+  private static higlightObject: any = new ol.style.Circle({
+    radius: 7,
+    fill: null,
+    stroke: new ol.style.Stroke({ color: 'red', width: 6 })
+  });
+
+  public static higlightStyle: any = new ol.style.Style({
+    image: MapBeacons.higlightObject
+  })
+
   constructor(private dialog: MdDialog, private mapService: MapService) {
     super();
     this.Initialize();
@@ -31,8 +46,10 @@ export class MapBeacons extends MapLayerBase {
 
     let circle: any = new ol.style.Circle({
       radius: 5,
-      fill: null,
-      stroke: new ol.style.Stroke({ color: 'black', width: 2 })
+      fill: new ol.style.Fill({
+        color: 'black'
+      })
+      //stroke: new ol.style.Stroke({ color: 'black', width: 2 })
     });
 
     let style: any = new ol.style.Style({
@@ -56,45 +73,53 @@ export class MapBeacons extends MapLayerBase {
     this.editMode = mode;
   }
 
-  public mouseClicked(position: any, map: any) {
+  public mouseClicked(position: any, pixelPos: any, map: any) {
 
     this.lastMouseClickPosition = null;
 
-    if (this.editMode.mode == BeaconEditModeT.ADD) {
-      console.log("MapBeacons::mouseClicked: Add new beacon" + JSON.stringify(position));
-      this.lastMouseClickPosition = position;
-      this.dialogRef = this.dialog.open(BeacondialogComponent);
-      this.dialogRef.componentInstance.setIdAndName("", "");
-      this.dialogRef.afterClosed().subscribe(res => this.beaconDialogClosed(res));
+    if (this.currentFloorId >= 0) {
+      if (this.editMode.mode == BeaconEditModeT.ADD) {
+        console.log("MapBeacons::mouseClicked: Add new beacon" + JSON.stringify(position));
+        this.lastMouseClickPosition = position;
+        this.dialogRef = this.dialog.open(BeacondialogComponent);
+        this.dialogRef.componentInstance.setIdAndName("", "");
+        this.dialogRef.afterClosed().subscribe(res => this.beaconDialogClosed(res));
+      }
     }
-    /*
-        if (this.displayEditLines) {
+  }
 
-          let selectedFeature = null;
-          let selectedFeatures = this.select.getFeatures().getArray();
-          if (selectedFeatures.length >= 1) {
-            selectedFeature = selectedFeatures[0];
-          }
+  public clearSelection() {
 
-          if (this.highlightedFeature) {
-            //Add edge to existing Node
-            this.selectNewNode(this.highlightedFeature);
-            this.addNewEdge(selectedFeature, this.highlightedFeature);
-          }
-          else {
-            this.addNewNodeOnPos(selectedFeature, position);
-          }
-        }
-        else if (this.lastSelectedNode && this.highlightedFeature && this.ctrlPressed) {
-          this.selectNewNode(this.highlightedFeature);
-          this.addNewEdge(this.lastSelectedNode, this.highlightedFeature);
-        }
-        else if (!this.highlightedFeature) {
-          this.mapEdges.updateMouseClicked(map);
-        }
-        else {
-          this.mapEdges.clearSelection();
-        }*/
+    if (this.highlightFeature && this.highlightFeatureAdded) {
+      this.layerSource.removeFeature(this.highlightFeature);
+      this.highlightFeatureAdded = false;
+    }
+
+    this.currentSelectedBeacon = null;
+  }
+
+  private selectBeacon(pixelPos: any, map: any): boolean {
+    this.clearSelection();
+
+    let options = {
+      layerFilter: (layer => this.testLayer(layer))
+    }
+
+    let feature = null;
+    feature = map.forEachFeatureAtPixel(pixelPos, function(feature) {
+      return feature;
+    }, options);
+
+    if (feature) {
+      this.currentSelectedBeacon = feature;
+      return true;
+    }
+
+    return false;
+  }
+
+  private testLayer(layer: any) {
+    return this.layer === layer;
   }
 
   private showBeacons(features: any): void {
@@ -144,5 +169,6 @@ export class MapBeacons extends MapLayerBase {
     console.log("updateAddBeacon! - " + JSON.stringify(beacon));
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(beacon));
   }
+
 
 }

@@ -238,7 +238,7 @@ export class EditablemapComponent implements OnInit {
       this.mapPois.mouseClicked(evt.coordinate, pixel, evt.originalEvent.ctrlKey, evt.originalEvent.shiftKey, this.map);
     }
     else if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_BEACONS) {
-      this.mapBeacons.mouseClicked(evt.coordinate, this.map);
+      this.mapBeacons.mouseClicked(evt.coordinate, pixel, this.map);
     }
   }
 
