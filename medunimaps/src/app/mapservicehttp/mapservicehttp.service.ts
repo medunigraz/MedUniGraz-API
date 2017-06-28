@@ -144,15 +144,15 @@ export class MapHttpService extends MapService {
       .catch(this.handleError);
   }
 
-  addBeacon(floor: number, center: any, id: string): Observable<Object> {
+  addBeacon(floor: number, center: any, id: string, name: string): Observable<Object> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
     let data = {
       "level": floor,
       "mac": id,
-      "name": 'name...',
-      "center": JSON.stringify(center)
+      "name": name,
+      "position": JSON.stringify(center)
     }
 
     console.log("Send Beacon: " + JSON.stringify(data));

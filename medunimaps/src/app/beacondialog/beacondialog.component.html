@@ -8,7 +8,7 @@
     <input class="idInput" autocomplete="off" placeholder="Id..." mdInput [formControl]="idInputVal">
 
     <input class="nameInput" autocomplete="off" placeholder="Name..." mdInput [formControl]="nameInputVal">
-  
+
   </div>
 
   <div class='navigateDiv'>
@@ -29,7 +29,7 @@
         </div>
       </td>
       <td>
-        <button class='NavigateButton' (click)="save()" md-button>
+        <button class='NavigateButton' (click)="save()" [disabled]="okButtonDisabled" md-button>
           <span>Ok</span>
         </button>
       </td>

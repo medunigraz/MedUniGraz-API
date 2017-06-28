@@ -20,7 +20,14 @@ export class BeacondialogComponent implements OnInit {
   public id: string = "";
   public name: string = "";
 
+  public okButtonDisabled: boolean = true;
+
   ngOnInit() {
+    this.idInputVal.valueChanges
+      .debounceTime(400).subscribe(term => this.updateOkButtonEnabled());
+
+    this.nameInputVal.valueChanges
+      .debounceTime(400).subscribe(term => this.updateOkButtonEnabled());
   }
 
   scan() {
@@ -34,7 +41,9 @@ export class BeacondialogComponent implements OnInit {
 
   save() {
     console.log("BeacondialogComponent::save()");
-    this.dialogRef.close('Saved and Closed...')
+    this.id = this.idInputVal.value;
+    this.name = this.nameInputVal.value;
+    this.dialogRef.close('Save')
   }
 
   setIdAndName(id: string, name: string) {
@@ -42,5 +51,9 @@ export class BeacondialogComponent implements OnInit {
     this.name = name;
     this.idInputVal.setValue(this.id);
     this.nameInputVal.setValue(this.name);
+  }
+
+  updateOkButtonEnabled() {
+    this.okButtonDisabled = this.idInputVal.value.length <= 0 || this.nameInputVal.value.length <= 0;
   }
 }

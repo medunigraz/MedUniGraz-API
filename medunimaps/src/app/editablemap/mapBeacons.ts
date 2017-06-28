@@ -17,8 +17,10 @@ declare var ol: any;
 export class MapBeacons extends MapLayerBase {
 
   private currentFloorId: number = -1;
+  private lastMouseClickPosition: number[] = null;
 
   private editMode: BeaconEditMode = BeaconEditMode.CreateDefault();
+  private dialogRef: MdDialogRef<BeacondialogComponent> = null;
 
   constructor(private dialog: MdDialog, private mapService: MapService) {
     super();
@@ -56,11 +58,14 @@ export class MapBeacons extends MapLayerBase {
 
   public mouseClicked(position: any, map: any) {
 
+    this.lastMouseClickPosition = null;
+
     if (this.editMode.mode == BeaconEditModeT.ADD) {
       console.log("MapBeacons::mouseClicked: Add new beacon" + JSON.stringify(position));
-      let dialogRef: MdDialogRef<BeacondialogComponent>;
-      dialogRef = this.dialog.open(BeacondialogComponent);
-      dialogRef.afterClosed().subscribe(res => this.beaconDialogClosed(res));
+      this.lastMouseClickPosition = position;
+      this.dialogRef = this.dialog.open(BeacondialogComponent);
+      this.dialogRef.componentInstance.setIdAndName("", "");
+      this.dialogRef.afterClosed().subscribe(res => this.beaconDialogClosed(res));
     }
     /*
         if (this.displayEditLines) {
@@ -103,15 +108,41 @@ export class MapBeacons extends MapLayerBase {
     console.log("MapBeacons::beaconDialogClosed: " + res);
 
     if (res && res == "Save") {
+      console.log("MapBeacons::beaconDialogClosed: Save Beacon...");
+      if (this.dialogRef && this.dialogRef.componentInstance) {
+        let dialogComp: BeacondialogComponent = this.dialogRef.componentInstance;
+        if (dialogComp.id && dialogComp.id.length > 0 && dialogComp.name && dialogComp.name.length > 0) {
+          console.log("MapBeacons::beaconDialogClosed: Save Beacon: " + dialogComp.id + "/" + dialogComp.name);
+          this.addOrUpdateBeacon(dialogComp.id, dialogComp.name);
+        }
+      }
+    }
+  }
 
+  private addOrUpdateBeacon(id: string, name: string) {
+    if (this.currentFloorId < 0) {
+      return;
     }
 
-    /*
-    let currentMarkedRoom = this.mapRoom.getMarkedRoom();
-    if (currentMarkedRoom != null && res == "Navigate...") {
-      console.log("OlmapComponent::openRoomDialogClosed Emit Navigation Event!");
-      this.onShowRoute.emit(currentMarkedRoom.getSimpleRoom());
-    }*/
+    if (this.lastMouseClickPosition) {
+      //console.log("mouseClickedCtrl! - POS: " + JSON.stringify(position));
+      let center = {
+        "type": "Point",
+        "coordinates": [this.lastMouseClickPosition[0], this.lastMouseClickPosition[1]]
+      };
+
+      console.log("MapBeacons ADD: #" + id + "#" + name + "#" + this.currentFloorId + "#" + JSON.stringify(center));
+
+      this.mapService.addBeacon(this.currentFloorId, center, id, name).
+        subscribe(
+        beacon => this.updateAddBeacon(beacon),
+        error => console.log("ERROR: " + <any>error));
+    }
+  }
+
+  private updateAddBeacon(beacon: any) {
+    console.log("updateAddBeacon! - " + JSON.stringify(beacon));
+    this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(beacon));
   }
 
 }
