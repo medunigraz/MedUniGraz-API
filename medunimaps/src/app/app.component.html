@@ -15,9 +15,10 @@
 <app-poiselector (currentSelectedPoiEvt)="currentPoiTypeChanged($event)"
                   (poiTypeReceivedEvt)="PoiTypesReceived($event)"
                   *ngIf="showPoiSelector"></app-poiselector>
-  <app-beaconmodeselector (currentSelectedModeEvt)="beaconEditModeChanged($event)"
-                    *ngIf="showBeaconEditModeSelector"></app-beaconmodeselector>
-
+<app-beaconmodeselector (currentSelectedModeEvt)="beaconEditModeChanged($event)"
+                  *ngIf="showBeaconEditModeSelector"></app-beaconmodeselector>
+<app-beaconconnector (updateSignalsEvent)="beaconSignalsChanged($event)">
+  </app-beaconconnector>
 <!--
 <md-toolbar class = "header-toolbar">
   <span>Medcampus</span>

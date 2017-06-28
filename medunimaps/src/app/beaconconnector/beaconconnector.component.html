@@ -1,0 +1,5 @@
+<div class="positionindicator" *ngIf="isActive" >
+  <button md-mini-fab class="positionbutton" *ngIf="positionStatus == 0" ><md-icon>location_disabled</md-icon></button>
+  <button md-mini-fab class="positionbutton" *ngIf="positionStatus == 1" (click)="scanButtonClickedPosition()"><md-icon>location_searching</md-icon></button>
+  <button md-mini-fab class="positionbutton" *ngIf="positionStatus == 2" (click)="scanButtonClickedPosition()"><md-icon>gps_fixed</md-icon></button>
+</div>

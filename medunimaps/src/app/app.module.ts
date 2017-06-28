@@ -21,6 +21,7 @@ import { EditablemapComponent } from './editablemap/editablemap.component';
 import { PoiselectorComponent } from './poiselector/poiselector.component';
 import { BeaconmodeselectorComponent } from './beaconmodeselector/beaconmodeselector.component';
 import { BeacondialogComponent } from './beacondialog/beacondialog.component';
+import { BeaconconnectorComponent } from './beaconconnector/beaconconnector.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { BeacondialogComponent } from './beacondialog/beacondialog.component';
     EditablemapComponent,
     PoiselectorComponent,
     BeaconmodeselectorComponent,
-    BeacondialogComponent
+    BeacondialogComponent,
+    BeaconconnectorComponent
   ],
   imports: [
     BrowserModule,

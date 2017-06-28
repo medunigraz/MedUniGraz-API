@@ -5,6 +5,7 @@ import { ApplicationMode, ApplicationModeT } from './base/applicationmode';
 import { Floor } from './base/floor';
 import { PoiType } from './base/poitype';
 import { BeaconEditMode, BeaconEditModes } from './base/beaconeditmode';
+import {Signal} from './base/signal';
 
 @Component({
   selector: 'app-root',
@@ -84,6 +85,12 @@ export class AppComponent {
     if (mode) {
       console.log("AppComponent --- BeaconEditMode: " + mode.name);
       this.beaconEditMode = mode;
+    }
+  }
+
+  beaconSignalsChanged(signal: Signal[]) {
+    if (signal) {
+      console.log("AppComponent --- beaconSignalsChanged: " + JSON.stringify(signal));
     }
   }
 }
