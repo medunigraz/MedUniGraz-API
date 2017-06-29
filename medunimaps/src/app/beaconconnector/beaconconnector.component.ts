@@ -91,7 +91,7 @@ export class BeaconconnectorComponent implements OnInit {
     this.stopPosUpdateTimer();
     appInterfaceObject.stop();
     this.signalBufferCollection.clear();
-    this.updateSignalsEvent.emit(undefined);
+    this.updateSignalsEvent.emit([]);
   }
 
   /**********************************************************
