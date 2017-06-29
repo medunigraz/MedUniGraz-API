@@ -12,18 +12,18 @@ import { Subscription } from "rxjs";
 })
 export class BeacondialogComponent implements OnInit {
 
-  private idInputVal = new FormControl();
+  private macInputVal = new FormControl();
   private nameInputVal = new FormControl();
 
   constructor(public dialogRef: MdDialogRef<BeacondialogComponent>) { }
 
-  public id: string = "";
+  public mac: string = "";
   public name: string = "";
 
   public okButtonDisabled: boolean = true;
 
   ngOnInit() {
-    this.idInputVal.valueChanges
+    this.macInputVal.valueChanges
       .debounceTime(400).subscribe(term => this.updateOkButtonEnabled());
 
     this.nameInputVal.valueChanges
@@ -41,19 +41,19 @@ export class BeacondialogComponent implements OnInit {
 
   save() {
     console.log("BeacondialogComponent::save()");
-    this.id = this.idInputVal.value;
+    this.mac = this.macInputVal.value;
     this.name = this.nameInputVal.value;
     this.dialogRef.close('Save')
   }
 
-  setIdAndName(id: string, name: string) {
-    this.id = id;
+  setMacAndName(mac: string, name: string) {
+    this.mac = mac;
     this.name = name;
-    this.idInputVal.setValue(this.id);
+    this.macInputVal.setValue(this.mac);
     this.nameInputVal.setValue(this.name);
   }
 
   updateOkButtonEnabled() {
-    this.okButtonDisabled = this.idInputVal.value.length <= 0 || this.nameInputVal.value.length <= 0;
+    this.okButtonDisabled = this.macInputVal.value.length <= 0 || this.nameInputVal.value.length <= 0;
   }
 }

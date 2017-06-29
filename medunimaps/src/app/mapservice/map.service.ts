@@ -124,7 +124,7 @@ export class MapService {
     return null;
   }
 
-  addBeacon(floor: number, center: any, id: string, name: string): Observable<Object> {
+  addBeacon(floor: number, center: any, mac: string, name: string): Observable<Object> {
     return null;
   }
 
@@ -140,7 +140,7 @@ export class MapService {
     return null;
   }
 
-  deleteBeacon(id: string): Observable<Object> {
+  deleteBeacon(id: number): Observable<Object> {
     return null;
   }
 
@@ -156,7 +156,7 @@ export class MapService {
     return null;
   }
 
-  updateBeacon(beacon: any, id: string): Observable<Object> {
+  updateBeacon(beacon: any, id: number): Observable<Object> {
     return null;
   }
 

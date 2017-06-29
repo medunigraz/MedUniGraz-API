@@ -120,7 +120,7 @@ export class BeaconconnectorComponent implements OnInit {
   }
 
   private posUpdateEvent() {
-    console.log("BeaconconnectorComponent::posUpdateEvent()");
+    //console.log("BeaconconnectorComponent::posUpdateEvent()");
 
     let signals = this.signalBufferCollection.getAllSignals();
     this.updateSignalsEvent.emit(signals);

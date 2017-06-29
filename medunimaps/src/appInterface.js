@@ -123,10 +123,10 @@ function sendDemoData()
 {
   //var jsondata = "{ [ {'beacon1':" + counter + "},{'beacon2':" + (counter + 100) + "} ] }";
 
-  var val1 = -30 - Math.random() * 10;
+  var val1 = -75 - Math.random() * 10;
   var val2 = -60 - Math.random() * 10;
   var val3 = -80 - Math.random() * 10;
-  var val4 = -30 - Math.random() * 10;
+  var val4 = -50 - Math.random() * 10;
 
   var jsondata = '[' + getData("D3:52:E0:9C:FA:85", val1) + ', ' + getData("C1:AD:58:D4:C4:D2", val2);
 
@@ -137,7 +137,7 @@ function sendDemoData()
 
   jsondata += ']';
 
-  jsondata = '[' + getData("D3:52:E0:9C:FA:85", val1) + ', ' + getData("EF:0A:B6:E0:38:BB", val4) + ']';
+  jsondata = '[' + getData("00-00-00-00-00-01", val1) + ', ' + getData("00-00-00-00-00-02", val4) + ']';
 
   counter++;
   updatesignals(jsondata);

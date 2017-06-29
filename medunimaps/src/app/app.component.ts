@@ -21,6 +21,7 @@ export class AppComponent {
   currentPoiType: PoiType = null;
   poiTypes: PoiType[] = null;
   beaconEditMode: BeaconEditMode = null;
+  beaconSignals: Signal[] = null;
 
   showPoiSelector: boolean = false;
   showBeaconEditModeSelector: boolean = false;
@@ -90,12 +91,11 @@ export class AppComponent {
 
   beaconSignalsChanged(signal: Signal[]) {
     if (signal) {
-      console.log("AppComponent --- beaconSignalsChanged: " + JSON.stringify(signal));
+      //console.log("AppComponent --- beaconSignalsChanged: " + JSON.stringify(signal));
+      this.beaconSignals = signal;
     }
   }
 }
-
-
 
 @Component({
   template: `

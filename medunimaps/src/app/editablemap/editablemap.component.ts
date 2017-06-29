@@ -12,6 +12,7 @@ import { ApplicationModeT } from '../base/applicationmode';
 import { Floor } from '../base/floor';
 import { PoiType } from '../base/poitype';
 import { BeaconEditMode, BeaconEditModes } from '../base/beaconeditmode';
+import { Signal } from '../base/signal';
 
 import { MapLayerBase } from './mapLayerBase';
 import { MapNodes } from './mapNodes';
@@ -116,6 +117,7 @@ export class EditablemapComponent implements OnInit {
 
     this.map.on('click', evt => this.mapClicked(evt));
     this.map.on('pointermove', evt => this.mapMouseMoved(evt));
+    this.updateLayers();
   }
 
   @Input()
@@ -163,6 +165,14 @@ export class EditablemapComponent implements OnInit {
       this.mapBeacons.setBeaconEditMode(mode);
     }
   }
+
+  @Input()
+  set setBeaconSignals(signals: Signal[]) {
+    if (signals) {
+      this.mapBeacons.setBeaconSignals(signals);
+    }
+  }
+
 
   @HostListener('window:keydown', ['$event'])
   keyboardInput(event: KeyboardEvent) {

@@ -144,13 +144,13 @@ export class MapHttpService extends MapService {
       .catch(this.handleError);
   }
 
-  addBeacon(floor: number, center: any, id: string, name: string): Observable<Object> {
+  addBeacon(floor: number, center: any, mac: string, name: string): Observable<Object> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
     let data = {
       "level": floor,
-      "mac": id,
+      "mac": mac,
       "name": name,
       "position": JSON.stringify(center)
     }
@@ -199,7 +199,7 @@ export class MapHttpService extends MapService {
       .catch(this.handleError);
   }
 
-  deleteBeacon(id: string): Observable<Object> {
+  deleteBeacon(id: number): Observable<Object> {
     let headers = new Headers({});
 
     let options = new RequestOptions({
@@ -207,7 +207,7 @@ export class MapHttpService extends MapService {
     });
 
     return this.http.delete(this.beaconUrl + id + "/", options)
-      .map(response => this.extractDataDelStr(response, id))
+      .map(response => this.extractDataDel(response, id))
       .catch(this.handleError);
   }
 
@@ -244,7 +244,7 @@ export class MapHttpService extends MapService {
       .catch(this.handleError);
   }
 
-  updateBeacon(beacon: any, id: string): Observable<Object> {
+  updateBeacon(beacon: any, id: number): Observable<Object> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
@@ -277,11 +277,6 @@ export class MapHttpService extends MapService {
   }
 
   private extractDataDel(res: Response, id: number) {
-    //console.log("RESPONSE DATA org: " + JSON.stringify(res));
-    return { id: id };
-  }
-
-  private extractDataDelStr(res: Response, id: string) {
     //console.log("RESPONSE DATA org: " + JSON.stringify(res));
     return { id: id };
   }
