@@ -23,13 +23,14 @@ export class MapBeacons extends MapLayerBase {
   private dialogRef: MdDialogRef<BeacondialogComponent> = null;
 
   private currentSelectedBeacon: any = null;
+  private highlightFeaturePoint: any = null;
   private highlightFeature: any = null;
   private highlightFeatureAdded: boolean = false;
 
   private beaconFeatures: Array<any> = [];
 
   private static higlightObject: any = new ol.style.Circle({
-    radius: 7,
+    radius: 8,
     fill: null,
     stroke: new ol.style.Stroke({ color: 'red', width: 6 })
   });
@@ -70,6 +71,7 @@ export class MapBeacons extends MapLayerBase {
 
   public setBeaconEditMode(mode: BeaconEditMode) {
     console.log("MapBeacons::setBeaconEditMode: " + JSON.stringify(mode));
+    this.clearSelection();
     this.editMode = mode;
   }
 
@@ -104,13 +106,36 @@ export class MapBeacons extends MapLayerBase {
     this.lastMouseClickPosition = null;
 
     if (this.currentFloorId >= 0) {
+
+      //   this.clearSelection();
+
       if (this.editMode.mode == BeaconEditModeT.ADD) {
-        console.log("MapBeacons::mouseClicked: Add new beacon" + JSON.stringify(position));
-        this.lastMouseClickPosition = position;
-        this.dialogRef = this.dialog.open(BeacondialogComponent);
-        this.dialogRef.componentInstance.setMacAndName("", "");
-        this.dialogRef.afterClosed().subscribe(res => this.beaconDialogClosed(res));
+        this.CreateNewBeacon(position);
       }
+      else {
+
+        let isSelected = this.selectBeacon(pixelPos, map, true);
+
+        if (isSelected) {
+          isSelected = this.selectBeacon(pixelPos, map, false);
+          if (isSelected) {
+            if (!this.highlightFeature) {
+              this.initHighlightFeatureOverlay(map);
+            }
+            this.highlightFeaturePoint.setCoordinates(this.currentSelectedBeacon.getGeometry().getCoordinates());
+            this.layerSource.addFeature(this.highlightFeature);
+            this.highlightFeatureAdded = true;
+            this.showSelectedBeaconInfo();
+          }
+        }
+        else if (this.editMode.mode == BeaconEditModeT.MOVE && this.currentSelectedBeacon) {
+          this.moveCurrentBeacon(position);
+        }
+        else {
+          this.clearSelection();
+        }
+      }
+
     }
   }
 
@@ -124,8 +149,13 @@ export class MapBeacons extends MapLayerBase {
     this.currentSelectedBeacon = null;
   }
 
-  private selectBeacon(pixelPos: any, map: any): boolean {
-    this.clearSelection();
+  private selectBeacon(pixelPos: any, map: any, testOnly: boolean): boolean {
+
+    //console.log("MapBeacons::selectBeacon!" + JSON.stringify(pixelPos));
+
+    if (!testOnly) {
+      this.clearSelection();
+    }
 
     let options = {
       layerFilter: (layer => this.testLayer(layer))
@@ -137,7 +167,10 @@ export class MapBeacons extends MapLayerBase {
     }, options);
 
     if (feature) {
-      this.currentSelectedBeacon = feature;
+      console.log("MapBeacons::selectBeacon Beacon selected! ");
+      if (!testOnly) {
+        this.currentSelectedBeacon = feature;
+      }
       return true;
     }
 
@@ -148,8 +181,43 @@ export class MapBeacons extends MapLayerBase {
     return this.layer === layer;
   }
 
+  private showSelectedBeaconInfo() {
+    console.log("MapBeacons::showSelectedBeaconInfo!");
+  }
+
+  private moveCurrentBeacon(position: any) {
+    console.log("MapBeacons::moveCurrentBeacon... " + JSON.stringify(position));
+
+    if (this.currentSelectedBeacon) {
+      this.currentSelectedBeacon.getGeometry().setCoordinates(position);
+      this.highlightFeature.getGeometry().setCoordinates(position);
+      /*
+      this.mapService.updateBeacon((new ol.format.GeoJSON()).writeFeature(this.currentSelectedBeacon), this.currentSelectedBeacon.getId()).
+        subscribe(
+        poi => this.beaconUpdated(poi),
+        error => console.log("ERROR: " + <any>error));*/
+    }
+  }
+
+  private initHighlightFeatureOverlay(map: any) {
+
+    this.highlightFeaturePoint = new ol.geom.Point([0, 0]);
+
+    this.highlightFeature = new ol.Feature({
+      geometry: this.highlightFeaturePoint,
+      name: 'SelectedPoi'
+    });
+
+    this.highlightFeature.setStyle(MapBeacons.higlightStyle);
+  }
+
+  private beaconUpdated(beacon: any) {
+    console.log("MapBeacons::beaconUpdated Beacon Updated! - " + JSON.stringify(beacon));
+  }
+
   private showBeacons(features: any): void {
 
+    this.clearSelection();
     this.clear();
     //console.log("showBeacons! - " + JSON.stringify(features));
 
@@ -180,6 +248,14 @@ export class MapBeacons extends MapLayerBase {
         }
       }
     }
+  }
+
+  private CreateNewBeacon(position: any) {
+    console.log("MapBeacons::CreateNewBeacon: Add new beacon" + JSON.stringify(position));
+    this.lastMouseClickPosition = position;
+    this.dialogRef = this.dialog.open(BeacondialogComponent);
+    this.dialogRef.componentInstance.setMacAndName("", "");
+    this.dialogRef.afterClosed().subscribe(res => this.beaconDialogClosed(res));
   }
 
   private addOrUpdateBeacon(mac: string, name: string) {
