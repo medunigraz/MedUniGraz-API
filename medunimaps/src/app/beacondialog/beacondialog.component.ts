@@ -4,6 +4,7 @@ import { Subject }           from 'rxjs/Subject';
 import { MdDialogRef } from '@angular/material';
 import { Observable } from 'rxjs';
 import { Subscription } from "rxjs";
+import { Signal } from '../base/signal';
 
 @Component({
   selector: 'app-beacondialog',
@@ -22,6 +23,8 @@ export class BeacondialogComponent implements OnInit {
 
   public okButtonDisabled: boolean = true;
 
+  public nearestSignal: Signal = undefined;
+
   ngOnInit() {
     this.macInputVal.valueChanges
       .debounceTime(400).subscribe(term => this.updateOkButtonEnabled());
@@ -32,6 +35,14 @@ export class BeacondialogComponent implements OnInit {
 
   scan() {
     console.log("BeacondialogComponent::scan()");
+    if (this.nearestSignal && this.nearestSignal.value > -80) {
+      this.macInputVal.setValue(this.nearestSignal.id);
+      this.nameInputVal.setValue("name...");
+    }
+    else {
+      this.macInputVal.setValue("");
+      this.nameInputVal.setValue("");
+    }
   }
 
   closeDialog() {
@@ -51,6 +62,11 @@ export class BeacondialogComponent implements OnInit {
     this.name = name;
     this.macInputVal.setValue(this.mac);
     this.nameInputVal.setValue(this.name);
+  }
+
+  setNearestSignal(val: Signal) {
+    console.log("BeacondialogComponent::setNearestSignal() " + + JSON.stringify(val));
+    this.nearestSignal = val;
   }
 
   updateOkButtonEnabled() {

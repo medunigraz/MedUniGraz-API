@@ -75,6 +75,19 @@ export class MapBeacons extends MapLayerBase {
 
   public setBeaconSignals(signals: Signal[]) {
 
+    let hSignal: Signal = undefined;
+    if (signals.length > 0) {
+      hSignal = signals[0];
+    }
+    for (let i = 1; i < signals.length; i++) {
+      if (signals[i].value > hSignal.value) {
+        hSignal = signals[i];
+      }
+    }
+    if (this.dialogRef && this.dialogRef.componentInstance) {
+      this.dialogRef.componentInstance.setNearestSignal(hSignal);
+    }
+
     for (let i = 0; i < this.beaconFeatures.length; i++) {
       this.beaconFeatures[i].setProperties({ signal: undefined });
       for (let j = 0; j < signals.length; j++) {
