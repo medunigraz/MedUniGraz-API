@@ -191,11 +191,11 @@ export class MapBeacons extends MapLayerBase {
     if (this.currentSelectedBeacon) {
       this.currentSelectedBeacon.getGeometry().setCoordinates(position);
       this.highlightFeature.getGeometry().setCoordinates(position);
-      /*
+
       this.mapService.updateBeacon((new ol.format.GeoJSON()).writeFeature(this.currentSelectedBeacon), this.currentSelectedBeacon.getId()).
         subscribe(
         poi => this.beaconUpdated(poi),
-        error => console.log("ERROR: " + <any>error));*/
+        error => console.log("ERROR: " + <any>error));
     }
   }
 
@@ -221,14 +221,15 @@ export class MapBeacons extends MapLayerBase {
     this.clear();
     //console.log("showBeacons! - " + JSON.stringify(features));
 
-    let dummy: Object =
-      {
-        "type": "FeatureCollection", "features":
-        [{ "id": 1, "type": "Feature", "geometry": { "type": "Point", "coordinates": [1722109.0870171075, 5955257.0827844525] }, "properties": { "mac": "00-00-00-00-00-01", "name": "N1", "deployed": "2017-06-29T10:18:46.040277Z", "seen": "2017-06-29T10:18:46.040319Z", "active": false, "charge": "0.00", "level": 2 } },
-          { "id": 2, "type": "Feature", "geometry": { "type": "Point", "coordinates": [1722094.6153389667, 5955238.592188362] }, "properties": { "mac": "00-00-00-00-00-02", "name": "namexyz", "deployed": "2017-06-29T10:22:07.677524Z", "seen": "2017-06-29T10:22:07.677560Z", "active": false, "charge": "0.00", "level": 2 } }]
-      };
-
-    this.beaconFeatures = (new ol.format.GeoJSON()).readFeatures(dummy);
+    /*
+        let dummy: Object =
+          {
+            "type": "FeatureCollection", "features":
+            [{ "id": 1, "type": "Feature", "geometry": { "type": "Point", "coordinates": [1722109.0870171075, 5955257.0827844525] }, "properties": { "mac": "00-00-00-00-00-01", "name": "N1", "deployed": "2017-06-29T10:18:46.040277Z", "seen": "2017-06-29T10:18:46.040319Z", "active": false, "charge": "0.00", "level": 2 } },
+              { "id": 2, "type": "Feature", "geometry": { "type": "Point", "coordinates": [1722094.6153389667, 5955238.592188362] }, "properties": { "mac": "00-00-00-00-00-02", "name": "namexyz", "deployed": "2017-06-29T10:22:07.677524Z", "seen": "2017-06-29T10:22:07.677560Z", "active": false, "charge": "0.00", "level": 2 } }]
+          };
+    */
+    this.beaconFeatures = (new ol.format.GeoJSON()).readFeatures(features);
 
     //this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(features));
     this.layerSource.addFeatures(this.beaconFeatures);

@@ -152,7 +152,8 @@ export class MapHttpService extends MapService {
       "level": floor,
       "mac": mac,
       "name": name,
-      "position": JSON.stringify(center)
+      "position": JSON.stringify(center),
+      "active": true
     }
 
     console.log("Send Beacon: " + JSON.stringify(data));
