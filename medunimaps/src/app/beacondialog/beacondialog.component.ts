@@ -15,6 +15,7 @@ export class BeacondialogComponent implements OnInit {
 
   private macInputVal = new FormControl();
   private nameInputVal = new FormControl();
+  private batteryOutputVal = new FormControl();
 
   constructor(public dialogRef: MdDialogRef<BeacondialogComponent>) { }
 
@@ -37,7 +38,8 @@ export class BeacondialogComponent implements OnInit {
     console.log("BeacondialogComponent::scan()");
     if (this.nearestSignal && this.nearestSignal.value > -80) {
       this.macInputVal.setValue(this.nearestSignal.id);
-      this.nameInputVal.setValue("name...");
+      this.nameInputVal.setValue(this.nearestSignal.name);
+      this.batteryOutputVal.setValue(this.nearestSignal.battery + "%");
     }
     else {
       this.macInputVal.setValue("");

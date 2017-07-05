@@ -14,7 +14,7 @@ export class MapBeaconStyles {
     image: MapBeaconStyles.circle
   });
 
-  private static maxSignalValue: number = -50;
+  private static maxSignalValue: number = -70;
   private static minSignalValue: number = -90;
 
 

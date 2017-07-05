@@ -28,6 +28,11 @@
   width: 100%;
 }
 
+.batteryOutput {
+  margin-top: 1em;
+  width: 100%;
+}
+
 .controlButtonTable {
   padding: 0px;
   margin: 0px;

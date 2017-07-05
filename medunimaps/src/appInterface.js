@@ -115,7 +115,7 @@ var counter = 0;
 
 function getData(name, val)
 {
-  return '{"ID":"' + name + '", "Value":'+val+'}';
+  return '{"ID":"' + name + '", "Value":'+val+', "Name": "Hi...", "Batterie":100 }';
 }
 
 
