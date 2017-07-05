@@ -62,7 +62,7 @@ export class PositionComponent implements OnInit {
   }
 
   showPosition() {
-    console.log("PositionComponent::signalDataChanged()");
+    console.log("PositionComponent::showPosition()");
     this.positioningStarted = !this.positioningStarted;
     this.updatePositionStatus();
 
