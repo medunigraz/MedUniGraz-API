@@ -31,6 +31,8 @@ import {BeacondialogComponent} from '../beacondialog/beacondialog.component'
 
 declare var ol: any;
 
+const maxNumberOfBeaconOverlays: number = 100;
+
 @Component({
   selector: 'app-editablemap',
   templateUrl: './editablemap.component.html',
@@ -40,9 +42,18 @@ export class EditablemapComponent implements OnInit {
 
   //private _applicationMode: ApplicationMode = ApplicationMode.CreateDefault();
 
+  @ViewChild('beaconPopups') public beaconPopUps: ElementRef;
+
+  public beaconOverlays: number[] = null;
+
   constructor(private dialog: MdDialog,
     private mapServiceHttp: MapHttpService,
-    private mapService: MapService) { }
+    private mapService: MapService) {
+    this.beaconOverlays = new Array(maxNumberOfBeaconOverlays);
+    for (let i = 0; i < maxNumberOfBeaconOverlays; i++) {
+      this.beaconOverlays[i] = i;
+    }
+  }
 
   private map: any;
   private baseMapLayer: any;
@@ -60,6 +71,9 @@ export class EditablemapComponent implements OnInit {
 
   private ctlPressed: boolean = false;
 
+
+
+
   ngOnInit() {
   }
 
@@ -76,7 +90,7 @@ export class EditablemapComponent implements OnInit {
     this.mapRoute = new MapRoute(this.mapService);
     this.mapNodes = new MapNodes(this.mapService, this.mapEditEdges, this.mapEdges, this.mapRoute);
     this.mapPois = new MapPois(this.mapService);
-    this.mapBeacons = new MapBeacons(this.dialog, this.mapService);
+    this.mapBeacons = new MapBeacons(this.dialog, this.mapService, this.beaconPopUps, this);
 
     this.map = new ol.Map({
       controls: ol.control.defaults({
@@ -221,6 +235,10 @@ export class EditablemapComponent implements OnInit {
     if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES && event.keyCode == 88) { //x Key
       this.mapRoute.clear();
     }
+  }
+
+  public addOverlay(overlay: any) {
+    this.map.addOverlay(overlay);
   }
 
   mapMouseMoved(evt): void {

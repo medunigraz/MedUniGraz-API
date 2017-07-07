@@ -3,6 +3,7 @@
 export class SignalBuffer {
   id: string;
   lastValue: number;
+  lastOrigValue: number;
   lastValueTimeStamp: number;
 
   name: string;
@@ -21,6 +22,8 @@ export class SignalBuffer {
     if (!value) {
       value = this.minValue;
     }
+
+    this.lastOrigValue = value;
 
     let filteredValue = (1 - this.filterValue) * this.lastValue + this.filterValue * value;
     this.lastValue = filteredValue;

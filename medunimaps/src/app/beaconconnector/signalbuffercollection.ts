@@ -66,7 +66,7 @@ export class SignalBufferCollection {
     for (let key in this.map) {
       let value = this.map[key].lastValue;
       if (value) {
-        signals.push(new Signal(key, value, this.map[key].name, this.map[key].battery));
+        signals.push(new Signal(key, value, this.map[key].name, this.map[key].battery, this.map[key].lastOrigValue));
       }
     }
 

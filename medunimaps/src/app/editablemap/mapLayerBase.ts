@@ -9,6 +9,8 @@ export class MapLayerBase {
 
   protected subscription: Subscription = null;
 
+  protected isActive = false;
+
   public getLayer(): any {
     return this.layer;
   }
@@ -19,6 +21,8 @@ export class MapLayerBase {
     if (!active) {
       this.clearSelection();
     }
+
+    this.isActive = active;
   }
 
   public clear() {

@@ -1,3 +1,4 @@
+import { ViewChild, ElementRef, AfterViewInit, Input, Output } from '@angular/core';
 import { MapService } from '../mapservice/map.service';
 import { USEHTTPSERVICE } from '../base/globalconstants';
 
@@ -11,6 +12,7 @@ import { BeaconEditMode, BeaconEditModes, BeaconEditModeT } from '../base/beacon
 import { MapLayerBase } from './mapLayerBase';
 import { OpenlayersHelper } from './openlayershelper';
 import { MapBeaconStyles } from './mapbeaconstyles';
+import { EditablemapComponent } from './editablemap.component'
 
 declare var ol: any;
 
@@ -29,6 +31,10 @@ export class MapBeacons extends MapLayerBase {
 
   private beaconFeatures: Array<any> = [];
 
+  private lastOverlaysUsed = 0;
+  private beaconOverlays: any[] = null;
+  private beaconTextFields: any[] = null;
+
   private static higlightObject: any = new ol.style.Circle({
     radius: 8,
     fill: null,
@@ -39,7 +45,7 @@ export class MapBeacons extends MapLayerBase {
     image: MapBeacons.higlightObject
   })
 
-  constructor(private dialog: MdDialog, private mapService: MapService) {
+  constructor(private dialog: MdDialog, private mapService: MapService, private beaconPopUpBaseElem: ElementRef, private mapComponent: EditablemapComponent) {
     super();
     this.Initialize();
   }
@@ -51,7 +57,7 @@ export class MapBeacons extends MapLayerBase {
 
 
       let style = MapBeaconStyles.GetStyle(feature.get("signal"));
-      console.log("MapBeacons::styleFunction   " + feature.get("signal") + "###" + JSON.stringify(style));
+      //console.log("MapBeacons::styleFunction   " + feature.get("signal") + "###" + JSON.stringify(style));
       return style;
     };
 
@@ -77,6 +83,10 @@ export class MapBeacons extends MapLayerBase {
 
   public setBeaconSignals(signals: Signal[]) {
 
+    if (!this.beaconOverlays) {
+      this.initBeaconOverlays();
+    }
+
     let hSignal: Signal = undefined;
     if (signals.length > 0) {
       hSignal = signals[0];
@@ -90,16 +100,78 @@ export class MapBeacons extends MapLayerBase {
       this.dialogRef.componentInstance.setNearestSignal(hSignal);
     }
 
+    this.resetBeaconOverlays();
+
     for (let i = 0; i < this.beaconFeatures.length; i++) {
       this.beaconFeatures[i].setProperties({ signal: undefined });
       for (let j = 0; j < signals.length; j++) {
         if (this.beaconFeatures[i].get("mac") == signals[j].id) {
+
           this.beaconFeatures[i].setProperties({ signal: signals[j].value });
+          this.setBeaconOverlay(i, this.beaconFeatures[i].getGeometry().getCoordinates(), signals[j].value, signals[j].origSignal);
+
+          break;
         }
       }
     }
   }
 
+  private setBeaconOverlay(index: number, position: number[], value: number, orgvalue: number) {
+
+    console.log("MapBeacons::setBeaconOverlay: " + index + "#" + JSON.stringify(position));
+
+    if (index < this.beaconOverlays.length && this.isActive) {
+      this.beaconOverlays[index].setPosition(position);
+      this.beaconTextFields[index].innerHTML = "" + value.toFixed(2) + "/" + orgvalue.toFixed(0);
+      if (index > this.lastOverlaysUsed) {
+        this.lastOverlaysUsed = index;
+      }
+    }
+  }
+
+  private resetBeaconOverlays() {
+    for (let i = 0; i < this.beaconOverlays.length && i <= this.lastOverlaysUsed; i++) {
+      this.beaconOverlays[i].setPosition(undefined);
+      this.beaconTextFields[i].innerHTML = "";
+    }
+    this.lastOverlaysUsed = 0;
+  }
+
+  private initBeaconOverlays() {
+
+    let base = this.beaconPopUpBaseElem.nativeElement;
+    //console.log("MapBeacons::initBeaconOverlays: " + JSON.stringify(this.beaconPopUpBaseElem.nativeElement));
+    let childs = base.children;
+    let elemCount = childs.length;
+    console.log("MapBeacons::initBeaconOverlays: " + elemCount);
+    this.beaconOverlays = new Array(elemCount);
+    this.beaconTextFields = new Array(elemCount);
+
+    let overlayDivs = [];
+
+    for (let i = 0; i < elemCount; i++) {
+
+      let OverlayDiv = childs[i].children[0];
+      overlayDivs.push(OverlayDiv);
+      console.log("MapBeacons::initBeaconOverlays: NEW OVERLAY " + i + "#" + OverlayDiv.className + "#");
+      console.log("MapBeacons::initBeaconOverlays: " + JSON.stringify(OverlayDiv));
+      let innerDiv = OverlayDiv.children[0];
+      console.log("MapBeacons::initBeaconOverlays: " + JSON.stringify(innerDiv));
+      let span = innerDiv.children[0];
+      //console.log("MapBeacons::initBeaconOverlays: " + innerDiv.children.length);
+      this.beaconTextFields[i] = span;
+    }
+
+    for (let i = 0; i < overlayDivs.length; i++) {
+      //new ol.Overlay(/** @type {olx.OverlayOptions} */({
+      this.beaconOverlays[i] = new ol.Overlay(({
+        element: overlayDivs[i],
+        autoPan: false
+      }));
+
+      this.mapComponent.addOverlay(this.beaconOverlays[i]);
+    }
+  }
 
   public mouseClicked(position: any, pixelPos: any, map: any) {
 
