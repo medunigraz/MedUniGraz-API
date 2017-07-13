@@ -137,7 +137,15 @@ function sendDemoData()
 
   jsondata += ']';
 
-  jsondata = '[' + getData("D3:52:E0:9C:FA:85", val1) + ', ' + getData("EF:0A:B6:E0:38:BB", val4) + ']';
+  jsondata = '[' +
+  getData("E3:F0:37:DA:11:32", val2) +', ' +
+  getData("E8:AA:53:47:4A:67", val3) +', ' +
+    getData("FA:7F:B8:61:24:31", val1) + ', ' +
+    getData("E3:DE:B3:CD:C5:A8", val4) +', ' +
+    getData("F1:61:75:80:F5:AC", val3) +
+    ']';
+
+  //jsondata = '[' + getData("FA:7F:B8:61:24:31", val1) + ']';
 
   counter++;
   updatesignals(jsondata);

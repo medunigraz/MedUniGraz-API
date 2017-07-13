@@ -58,6 +58,49 @@ export class SignalBufferCollection {
     return bestID;
   }
 
+
+  public getPosUrlString(): string {
+    let bestValues: number[] = [-9999, -9999, -9999];
+    let bestIDs: string[] = [undefined, undefined, undefined];
+
+    for (let key in this.map) {
+
+      let value = this.map[key].lastValue;
+
+      for (let i = 0; i < 3; i++)
+        if (value) {
+          if (value > bestValues[i]) {
+
+            if (i == 1) {
+              bestValues[2] = bestValues[1];
+              bestIDs[2] = bestIDs[1];
+            }
+
+            if (i == 0) {
+              bestValues[1] = bestValues[0];
+              bestIDs[1] = bestIDs[0];
+            }
+
+            bestValues[i] = value;
+            bestIDs[i] = key;
+            break;
+          }
+        }
+    }
+
+    let resultString = "";
+    for (let i = 0; i < 3; i++) {
+      if (bestIDs[i]) {
+        if (i > 0) {
+          resultString += "&";
+        }
+        resultString += "mac[" + bestIDs[i] + "]=" + bestValues[i];
+      }
+    }
+
+    return resultString;
+  }
+
   public getJSONString(): string {
     return JSON.stringify(this.map);
   }

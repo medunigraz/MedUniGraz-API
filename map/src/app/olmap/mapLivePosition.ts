@@ -26,7 +26,7 @@ export class MapLivePosition extends MapLayerBase {
       })
     }));
 
-    this.circle = new ol.geom.Circle([0, 0], 4);
+    this.circle = new ol.geom.Circle([0, 0], 1);
     this.circleFeature = new ol.Feature(this.circle);
 
     this.layerSource = res.layerSource;
@@ -46,12 +46,13 @@ export class MapLivePosition extends MapLayerBase {
       }
       this.circle.setCenter([livePos.x, livePos.y]);
 
-      this.subscribeNewRequest(
-        this.mapService.getRouteForPos(-1, livePos.urlString).
-          subscribe(
-          route => this.updateRoute(route),
-          error => console.log("ERROR: " + <any>error)));
-    }
+      /*
+            this.subscribeNewRequest(
+              this.mapService.getRouteForPos(-1, livePos.urlString).
+                subscribe(
+                route => this.updateRoute(route),
+                error => console.log("ERROR: " + <any>error)));
+          */}
   }
 
   private updateRoute(route: any) {

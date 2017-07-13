@@ -2,6 +2,7 @@ import { Component, OnInit, EventEmitter, NgZone, Input, Output } from '@angular
 import { Observable } from 'rxjs';
 import {Subscription} from "rxjs";
 import {TimerObservable} from "rxjs/observable/TimerObservable";
+import { MapService } from '../mapservice/map.service';
 
 import {Position} from '../base/position';
 
@@ -15,7 +16,7 @@ enum PositionStatus {
   Active = 2
 }
 
-const demoMode: boolean = true;
+const demoMode: boolean = false;
 
 declare var appInterfaceObject: any;
 
@@ -33,6 +34,8 @@ export class PositionComponent implements OnInit {
   private checkTimerSubscription: Subscription;
   private posUpdateTimerSubscription: Subscription;
 
+  private subscription: Subscription = null;
+
   private positioningStarted: boolean = false;
 
   private signalBufferCollection: SignalBufferCollection = new SignalBufferCollection();
@@ -40,7 +43,7 @@ export class PositionComponent implements OnInit {
   private positionUpdate: PositionUpdate = new PositionUpdate();
 
 
-  constructor(private zone: NgZone) {
+  constructor(private zone: NgZone, private mapService: MapService) {
     window["angularComponentRef"] = {
       zone: this.zone,
       componentFn: (value) => this.signalDataChanged(value),
@@ -72,7 +75,6 @@ export class PositionComponent implements OnInit {
     else {
       this.stopScan();
     }
-
   }
 
   signalDataChanged(value: string) {
@@ -127,22 +129,73 @@ export class PositionComponent implements OnInit {
   private posUpdateEvent() {
     //console.log("PositionComponent::posUpdateEvent()");
 
-    let urlString = this.signalBufferCollection.getURLString();
+    let urlString = this.signalBufferCollection.getPosUrlString();
 
-    let nearestBeacon = this.signalBufferCollection.getNearestBeacon();
-    let pos: Position = this.positionUpdate.getDemoPostion(nearestBeacon, demoMode, urlString);
-
+    //let nearestBeacon = this.signalBufferCollection.getNearestBeacon();
+    //let pos: Position = this.positionUpdate.getDemoPostion(nearestBeacon, demoMode, urlString);
     //LOG POSITION DATA
-    appInterfaceObject.log("" + new Date().getTime() + ";" + nearestBeacon + ";" + this.signalBufferCollection.getJSONString());
+    appInterfaceObject.log("" + new Date().getTime() + ";" + urlString + ";" + this.signalBufferCollection.getJSONString());
+    //this.newPositionEvent.emit(pos);
 
+    let lastedge = 1060;
 
-    this.newPositionEvent.emit(pos);
+    let urlparams = '';
+    if (lastedge >= 0) {
+      urlparams += 'edge=' + lastedge;
+    }
+
+    if (urlString && urlString.length > 0) {
+      if (lastedge >= 0) {
+        urlparams += '&';
+      }
+      urlparams += urlString;
+
+      this.subscribeNewRequest(
+        this.mapService.getRouteForPos(urlparams).
+          subscribe(
+          livePos => this.updateLivePos(livePos, urlparams),
+          error => console.log("ERROR: " + <any>error)));
+    }
+    else {
+      this.updateLivePos(undefined, '');
+    }
 
     this.stopPosUpdateTimer();
     if (this.isActive) {
       this.startPosUpdateTimer();
     }
   }
+
+  public subscribeNewRequest(sub: Subscription) {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
+    }
+    this.subscription = sub;
+  }
+
+  private updateLivePos(posResult: any, urlString: string) {
+    console.log("PositionComponent::updateLivePos: " + JSON.stringify(posResult));
+
+    let pos: Position = undefined;
+
+    try {
+      if (posResult) {
+        //constructor(x: number, y: number, level: number, urlString: string, feature: any) {
+        let coords = posResult.geometry.coordinates;
+        let prop = posResult.properties;
+        //console.log("PositionComponent::updateLivePos: " + JSON.stringify(coords));
+        pos = new Position(coords[0], coords[1], posResult.level, urlString, posResult);
+        //console.log("PositionComponent::updateLivePos: " + JSON.stringify(pos));
+      }
+
+    } catch (e) {
+      console.log("PositionComponent::updateLivePos: " + JSON.stringify(e));
+    }
+
+    this.newPositionEvent.emit(pos);
+  }
+
 
   /**********************************************************
   CHECK STATUS

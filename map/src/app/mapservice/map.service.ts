@@ -23,7 +23,7 @@ export class MapService {
   private routeUrl = this.baseUrl + '/geo/routing/edges/';
   private poiTypeUrl = this.baseUrl + '/geo/pointofinterest/';
   private poiInstanceUrl = this.baseUrl + '/geo/pointofinterestinstance/';
-  private livePosUrl = this.baseUrl + '/geo/positioning/';
+  private livePosUrl = this.baseUrl + '/positioning/locate/';
 
   constructor(private http: Http) { }
 
@@ -81,13 +81,9 @@ export class MapService {
       .catch(this.handleError);
   }
 
-  getRouteForPos(lastedge: number, signalString: string): Observable<Object> {
-    let urlparams = '?edge=' + lastedge;
-    if (signalString && signalString.length > 0) {
-      urlparams += '&' + signalString;
-    }
+  getRouteForPos(urlString: string): Observable<Object> {
 
-    return this.http.get(this.livePosUrl + urlparams)
+    return this.http.get(this.livePosUrl + '?' + urlString)
       .map(this.extractData)
       .catch(this.handleError);
   }
