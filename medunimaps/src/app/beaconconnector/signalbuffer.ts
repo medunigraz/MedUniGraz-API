@@ -20,22 +20,30 @@ export class SignalBuffer {
   public setValue(value, name, battery) {
 
     if (!value) {
-      value = this.minValue;
+      this.clear();
+      //value = this.minValue;
     }
 
     this.lastOrigValue = value;
 
-    let filteredValue = (1 - this.filterValue) * this.lastValue + this.filterValue * value;
-    this.lastValue = filteredValue;
-
-    if (this.lastValue < this.minValue) {
-      this.lastValue = this.minValue;
+    if (value > 0) //error code -> Reset Timer and use old value
+    {
+      let milliseconds = new Date().getTime();
+      this.lastValueTimeStamp = milliseconds;
     }
+    else {
+      let filteredValue = (1 - this.filterValue) * this.lastValue + this.filterValue * value;
+      this.lastValue = filteredValue;
 
-    let milliseconds = new Date().getTime();
-    this.lastValueTimeStamp = milliseconds;
-    this.name = name;
-    this.battery = battery;
+      if (this.lastValue < this.minValue) {
+        this.lastValue = this.minValue;
+      }
+
+      let milliseconds = new Date().getTime();
+      this.lastValueTimeStamp = milliseconds;
+      this.name = name;
+      this.battery = battery;
+    }
 
     //console.log("SignalBuffer::setValue Set value: " + this.lastValue + "/" + this.lastValueTimeStamp);
   }
