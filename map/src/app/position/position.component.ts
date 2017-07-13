@@ -185,13 +185,15 @@ export class PositionComponent implements OnInit {
         let coords = posResult.geometry.coordinates;
         let prop = posResult.properties;
         //console.log("PositionComponent::updateLivePos: " + JSON.stringify(coords));
-        pos = new Position(coords[0], coords[1], posResult.level, urlString, posResult);
+        pos = new Position(coords[0], coords[1], prop.level, urlString, posResult);
         //console.log("PositionComponent::updateLivePos: " + JSON.stringify(pos));
       }
 
     } catch (e) {
       console.log("PositionComponent::updateLivePos: " + JSON.stringify(e));
     }
+
+    //console.log("PositionComponent::updateLivePos: LEVEL: " + JSON.stringify(pos.level));
 
     this.newPositionEvent.emit(pos);
   }

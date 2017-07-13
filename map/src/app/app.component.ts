@@ -99,6 +99,13 @@ export class AppComponent {
 
   livePositionChanged(livePos: Position) {
     //console.log("AppComponent --- livePositionChanged: " + JSON.stringify(livePos));
+
+    if (livePos) {
+      if (livePos.level != this.currentFloor.id) {
+        this.floorControlComponent.currentFloorFromId(livePos.level);
+      }
+    }
+
     this.mapComponent.showLivePosition(livePos);
   }
 

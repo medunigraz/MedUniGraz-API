@@ -67,6 +67,7 @@ export class FloorcontrolComponent implements OnInit {
   }
 
   private selectFloor(floor: Floor) {
+    console.log("FloorcontrolComponent::Set currentFloor - Select floor: " + JSON.stringify(floor));
     this.selectedFloor = floor;
     this.currentFloorEvt.emit(this.selectedFloor);
   }

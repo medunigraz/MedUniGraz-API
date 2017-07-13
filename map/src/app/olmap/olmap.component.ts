@@ -199,6 +199,7 @@ export class OlmapComponent implements OnInit {
       this.mapRoom.showFloor(currentFloor.id);
       this.mapPois.showFloor(currentFloor.id);
       this.mapRoute.setCurrentLevel(currentFloor.id);
+      this.mapLivePosition.setCurrentLevel(currentFloor.id);
     }
   }
 

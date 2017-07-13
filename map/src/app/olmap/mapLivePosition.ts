@@ -13,6 +13,8 @@ export class MapLivePosition extends MapLayerBase {
 
   private positionVisible: boolean = false;
 
+  private currentLevelId: number = -1;
+
   constructor(private mapService: MapService) {
     super();
     this.Initialize();
@@ -33,10 +35,14 @@ export class MapLivePosition extends MapLayerBase {
     this.layer = res.layer;
   }
 
+  public setCurrentLevel(newLevel: number) {
+    this.currentLevelId = newLevel;
+  }
+
   public showLivePosition(livePos: Position) {
     console.log("MapLivePosition::showLivePosition..." + JSON.stringify(livePos));
 
-    if (!livePos) {
+    if (!livePos || this.currentLevelId != livePos.level) {
       this.clear();
       this.positionVisible = false;
     }
