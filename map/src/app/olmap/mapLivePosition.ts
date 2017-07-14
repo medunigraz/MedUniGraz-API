@@ -52,13 +52,7 @@ export class MapLivePosition extends MapLayerBase {
       }
       this.circle.setCenter([livePos.x, livePos.y]);
 
-      /*
-            this.subscribeNewRequest(
-              this.mapService.getRouteForPos(-1, livePos.urlString).
-                subscribe(
-                route => this.updateRoute(route),
-                error => console.log("ERROR: " + <any>error)));
-          */}
+    }
   }
 
   private updateRoute(route: any) {

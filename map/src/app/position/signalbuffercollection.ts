@@ -32,7 +32,7 @@ export class SignalBufferCollection {
 
       for (let signal of data) {
         //console.log('set signal: ' + JSON.stringify(signal));
-        this.addValue(signal["ID"], signal["Value"]);
+        this.addValue(signal["Name"], signal["Value"]);
       }
     }
   }
@@ -94,7 +94,7 @@ export class SignalBufferCollection {
         if (i > 0) {
           resultString += "&";
         }
-        resultString += "mac[" + bestIDs[i] + "]=" + bestValues[i];
+        resultString += "name[" + bestIDs[i] + "]=" + bestValues[i];
       }
     }
 
@@ -117,7 +117,7 @@ export class SignalBufferCollection {
       if (index > 0) {
         urlString += "&";
       }
-      urlString += 'mac[' + key + ']=' + value;
+      urlString += 'name[' + key + ']=' + value;
 
       index++;
     }
@@ -125,12 +125,12 @@ export class SignalBufferCollection {
     return urlString;
   }
 
-  private addValue(id: string, value: number) {
-    if (!this.map[id]) {
-      this.map[id] = new SignalBuffer(id);
+  private addValue(name: string, value: number) {
+    if (!this.map[name]) {
+      this.map[name] = new SignalBuffer(name);
     }
 
-    this.map[id].setValue(value);
+    this.map[name].setValue(value);
   }
 
   private startClearTimer() {

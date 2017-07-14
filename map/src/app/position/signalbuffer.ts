@@ -1,22 +1,23 @@
 
 
 export class SignalBuffer {
-  id: string;
+  name: string;
   lastValue: number;
   lastValueTimeStamp: number;
 
   private filterValue = 0.5;
   private minValue = -90;
 
-  constructor(id) {
-    this.id = id;
+  constructor(name) {
+    this.name = name;
     this.clear();
   }
 
   public setValue(value) {
 
     if (!value) {
-      value = this.minValue;
+      this.clear();
+      //value = this.minValue;
     }
 
     if (value > 0) //error code -> Reset Timer and use old value

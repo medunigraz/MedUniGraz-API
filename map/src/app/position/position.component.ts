@@ -112,7 +112,7 @@ export class PositionComponent implements OnInit {
       this.stopPosUpdateTimer();
     }
 
-    let timer = TimerObservable.create(1000);
+    let timer = TimerObservable.create(2000);
     this.posUpdateTimerSubscription = timer.subscribe(t => {
       this.posUpdateEvent();
     });

@@ -115,7 +115,7 @@ var counter = 0;
 
 function getData(name, val)
 {
-  return '{"ID":"' + name + '", "Value":'+val+'}';
+  return '{"Name":"' + name + '", "Value":'+val+'}';
 }
 
 
@@ -136,7 +136,7 @@ function sendDemoData()
   }
 
   jsondata += ']';
-
+/*
   jsondata = '[' +
   getData("E3:F0:37:DA:11:32", val2) +', ' +
   getData("E8:AA:53:47:4A:67", val3) +', ' +
@@ -144,6 +144,15 @@ function sendDemoData()
     getData("E3:DE:B3:CD:C5:A8", val4) +', ' +
     getData("F1:61:75:80:F5:AC", val3) +
     ']';
+*/
+
+jsondata = '[' +
+  getData("JwIj", val1) +', ' +
+  getData("1iJd", val4) +', ' +
+  getData("aaaaa", val1) + ', ' +
+  getData("bbbbb", val4) +', ' +
+  getData("eeee", val3) +
+  ']';
 
   //jsondata = '[' + getData("FA:7F:B8:61:24:31", val1) + ']';
 
