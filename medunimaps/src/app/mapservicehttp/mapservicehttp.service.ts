@@ -98,6 +98,7 @@ export class MapHttpService extends MapService {
     let options = new RequestOptions({ headers: headers });
 
     let data = {
+      "category": 1,
       "source": source,
       "destination": destination,
       "path": JSON.stringify(path),
