@@ -37,7 +37,7 @@ export class BeacondialogComponent implements OnInit {
   scan() {
     console.log("BeacondialogComponent::scan()");
     if (this.nearestSignal && this.nearestSignal.value > -80) {
-      this.macInputVal.setValue(this.nearestSignal.id);
+      this.macInputVal.setValue(this.nearestSignal.mac);
       this.nameInputVal.setValue(this.nearestSignal.name);
       this.batteryOutputVal.setValue(this.nearestSignal.battery + "%");
     }
@@ -72,6 +72,6 @@ export class BeacondialogComponent implements OnInit {
   }
 
   updateOkButtonEnabled() {
-    this.okButtonDisabled = this.macInputVal.value.length <= 0 || this.nameInputVal.value.length <= 0;
+    this.okButtonDisabled = this.nameInputVal.value.length <= 0;
   }
 }

@@ -124,7 +124,7 @@ export class MapService {
     return null;
   }
 
-  addBeacon(floor: number, center: any, mac: string, name: string): Observable<Object> {
+  addBeacon(floor: number, center: any, name: string): Observable<Object> {
     return null;
   }
 

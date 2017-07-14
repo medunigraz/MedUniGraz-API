@@ -102,27 +102,30 @@ export class MapBeacons extends MapLayerBase {
 
     this.resetBeaconOverlays();
 
-    for (let i = 0; i < this.beaconFeatures.length; i++) {
-      this.beaconFeatures[i].setProperties({ signal: undefined });
-      for (let j = 0; j < signals.length; j++) {
-        if (this.beaconFeatures[i].get("mac") == signals[j].id) {
+    if (this.editMode.mode == BeaconEditModeT.DEFAULT) {
 
-          this.beaconFeatures[i].setProperties({ signal: signals[j].value });
-          this.setBeaconOverlay(i, this.beaconFeatures[i].getGeometry().getCoordinates(), signals[j].value, signals[j].origSignal);
+      for (let i = 0; i < this.beaconFeatures.length; i++) {
+        this.beaconFeatures[i].setProperties({ signal: undefined });
+        for (let j = 0; j < signals.length; j++) {
+          if (this.beaconFeatures[i].get("name") == signals[j].name) {
 
-          break;
+            this.beaconFeatures[i].setProperties({ signal: signals[j].value });
+            this.setBeaconOverlay(i, this.beaconFeatures[i].getGeometry().getCoordinates(), signals[j].name, signals[j].value, signals[j].origSignal);
+
+            break;
+          }
         }
       }
     }
   }
 
-  private setBeaconOverlay(index: number, position: number[], value: number, orgvalue: number) {
+  private setBeaconOverlay(index: number, position: number[], name: string, value: number, orgvalue: number) {
 
     console.log("MapBeacons::setBeaconOverlay: " + index + "#" + JSON.stringify(position));
 
     if (index < this.beaconOverlays.length && this.isActive) {
       this.beaconOverlays[index].setPosition(position);
-      this.beaconTextFields[index].innerHTML = "" + value.toFixed(2) + "/" + orgvalue.toFixed(0);
+      this.beaconTextFields[index].innerHTML = name + ":" + value.toFixed(2) + "/" + orgvalue.toFixed(0);
       if (index > this.lastOverlaysUsed) {
         this.lastOverlaysUsed = index;
       }
@@ -153,10 +156,10 @@ export class MapBeacons extends MapLayerBase {
 
       let OverlayDiv = childs[i].children[0];
       overlayDivs.push(OverlayDiv);
-      console.log("MapBeacons::initBeaconOverlays: NEW OVERLAY " + i + "#" + OverlayDiv.className + "#");
-      console.log("MapBeacons::initBeaconOverlays: " + JSON.stringify(OverlayDiv));
+      //console.log("MapBeacons::initBeaconOverlays: NEW OVERLAY " + i + "#" + OverlayDiv.className + "#");
+      //console.log("MapBeacons::initBeaconOverlays: " + JSON.stringify(OverlayDiv));
       let innerDiv = OverlayDiv.children[0];
-      console.log("MapBeacons::initBeaconOverlays: " + JSON.stringify(innerDiv));
+      //console.log("MapBeacons::initBeaconOverlays: " + JSON.stringify(innerDiv));
       let span = innerDiv.children[0];
       //console.log("MapBeacons::initBeaconOverlays: " + innerDiv.children.length);
       this.beaconTextFields[i] = span;
@@ -239,7 +242,7 @@ export class MapBeacons extends MapLayerBase {
     }, options);
 
     if (feature) {
-      console.log("MapBeacons::selectBeacon Beacon selected! ");
+      console.log("MapBeacons::selectBeacon Beacon selected! - " + feature.get("name"));
       if (!testOnly) {
         this.currentSelectedBeacon = feature;
       }
@@ -315,9 +318,9 @@ export class MapBeacons extends MapLayerBase {
       console.log("MapBeacons::beaconDialogClosed: Save Beacon...");
       if (this.dialogRef && this.dialogRef.componentInstance) {
         let dialogComp: BeacondialogComponent = this.dialogRef.componentInstance;
-        if (dialogComp.mac && dialogComp.mac.length > 0 && dialogComp.name && dialogComp.name.length > 0) {
+        if (dialogComp.name && dialogComp.name.length > 0) {
           console.log("MapBeacons::beaconDialogClosed: Save Beacon: " + dialogComp.mac + "/" + dialogComp.name);
-          this.addOrUpdateBeacon(dialogComp.mac, dialogComp.name);
+          this.addOrUpdateBeacon(dialogComp.name);
         }
       }
     }
@@ -331,7 +334,7 @@ export class MapBeacons extends MapLayerBase {
     this.dialogRef.afterClosed().subscribe(res => this.beaconDialogClosed(res));
   }
 
-  private addOrUpdateBeacon(mac: string, name: string) {
+  private addOrUpdateBeacon(name: string) {
     if (this.currentFloorId < 0) {
       return;
     }
@@ -343,9 +346,9 @@ export class MapBeacons extends MapLayerBase {
         "coordinates": [this.lastMouseClickPosition[0], this.lastMouseClickPosition[1]]
       };
 
-      console.log("MapBeacons ADD: #" + mac + "#" + name + "#" + this.currentFloorId + "#" + JSON.stringify(center));
+      console.log("MapBeacons ADD: #" + name + "#" + this.currentFloorId + "#" + JSON.stringify(center));
 
-      this.mapService.addBeacon(this.currentFloorId, center, mac, name).
+      this.mapService.addBeacon(this.currentFloorId, center, name).
         subscribe(
         beacon => this.updateAddBeacon(beacon),
         error => console.log("ERROR: " + <any>error));

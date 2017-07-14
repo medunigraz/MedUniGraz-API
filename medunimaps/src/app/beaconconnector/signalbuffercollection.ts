@@ -66,7 +66,7 @@ export class SignalBufferCollection {
     for (let key in this.map) {
       let value = this.map[key].lastValue;
       if (value) {
-        signals.push(new Signal(key, value, this.map[key].name, this.map[key].battery, this.map[key].lastOrigValue));
+        signals.push(new Signal(this.map[key].mac, value, this.map[key].name, this.map[key].battery, this.map[key].lastOrigValue));
       }
     }
 
@@ -90,7 +90,7 @@ export class SignalBufferCollection {
       if (index > 0) {
         urlString += "&";
       }
-      urlString += 'mac[' + key + ']=' + value;
+      urlString += 'name[' + key + ']=' + value;
 
       index++;
     }
@@ -98,12 +98,12 @@ export class SignalBufferCollection {
     return urlString;
   }
 
-  private addValue(id: string, value: number, name: string, battery: number) {
-    if (!this.map[id]) {
-      this.map[id] = new SignalBuffer(id);
+  private addValue(mac: string, value: number, name: string, battery: number) {
+    if (!this.map[name]) {
+      this.map[name] = new SignalBuffer(name);
     }
 
-    this.map[id].setValue(value, name, battery);
+    this.map[name].setValue(mac, value, name, battery);
   }
 
   private startClearTimer() {

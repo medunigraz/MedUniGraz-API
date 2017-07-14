@@ -8,6 +8,7 @@ export class SignalBuffer {
 
   name: string;
   battery: number;
+  mac: string;
 
   private filterValue = 0.5;
   private minValue = -90;
@@ -17,7 +18,7 @@ export class SignalBuffer {
     this.clear();
   }
 
-  public setValue(value, name, battery) {
+  public setValue(mac, value, name, battery) {
 
     if (!value) {
       this.clear();
@@ -42,6 +43,7 @@ export class SignalBuffer {
       let milliseconds = new Date().getTime();
       this.lastValueTimeStamp = milliseconds;
       this.name = name;
+      this.mac = mac;
       this.battery = battery;
     }
 
@@ -63,4 +65,4 @@ export class SignalBuffer {
     this.lastValue = this.minValue;
     this.lastValueTimeStamp = undefined;
   }
-}
+} 

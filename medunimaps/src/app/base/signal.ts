@@ -1,12 +1,12 @@
 export class Signal {
-  id: string;
+  mac: string;
   value: number;
   name: string;
   battery: number;
   origSignal: number;
 
-  constructor(id: string, value: number, name: string, battery: number, origSignal: number) {
-    this.id = id;
+  constructor(mac: string, value: number, name: string, battery: number, origSignal: number) {
+    this.mac = mac;
     this.value = value;
     this.name = name;
     this.battery = battery;

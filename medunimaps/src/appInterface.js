@@ -115,7 +115,7 @@ var counter = 0;
 
 function getData(name, val)
 {
-  return '{"ID":"' + name + '", "Value":'+val+', "Name": "Hi...", "Batterie":100 }';
+  return '{"Name":"' + name + '", "Value":'+val+', "Batterie":100 }';
 }
 
 
@@ -137,7 +137,7 @@ function sendDemoData()
 
   jsondata += ']';
 
-  jsondata = '[' + getData("00-00-00-00-00-01", val1) + ', ' + getData("00-00-00-00-00-02", val4) + ']';
+  jsondata = '[' + getData("Test1", val1) + ', ' + getData("xsfY", val4) + ']';
 
   counter++;
   updatesignals(jsondata);
