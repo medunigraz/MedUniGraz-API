@@ -24,7 +24,7 @@ export class MapLivePosition extends MapLayerBase {
 
     let res = OpenlayersHelper.CreateBasicLayer(new ol.style.Style({
       fill: new ol.style.Fill({
-        color: 'rgba(255, 255, 0, 1)'
+        color: 'rgba(0, 0, 0, 1)'
       })
     }));
 

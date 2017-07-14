@@ -147,7 +147,7 @@ function sendDemoData()
 */
 
 jsondata = '[' +
-  getData("JwIj", val1) +', ' +
+  getData("xsfY", val1) +', ' +
   getData("1iJd", val4) +', ' +
   getData("aaaaa", val1) + ', ' +
   getData("bbbbb", val4) +', ' +

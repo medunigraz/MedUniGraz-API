@@ -137,7 +137,7 @@ export class PositionComponent implements OnInit {
     appInterfaceObject.log("" + new Date().getTime() + ";" + urlString + ";" + this.signalBufferCollection.getJSONString());
     //this.newPositionEvent.emit(pos);
 
-    let lastedge = 1060;
+    let lastedge = -1;
 
     let urlparams = '';
     if (lastedge >= 0) {
