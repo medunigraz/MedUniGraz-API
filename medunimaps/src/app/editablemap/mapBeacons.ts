@@ -87,6 +87,12 @@ export class MapBeacons extends MapLayerBase {
       this.initBeaconOverlays();
     }
 
+    this.resetBeaconOverlays();
+
+    if (!signals) {
+      return;
+    }
+
     let hSignal: Signal = undefined;
     if (signals.length > 0) {
       hSignal = signals[0];
@@ -100,10 +106,7 @@ export class MapBeacons extends MapLayerBase {
       this.dialogRef.componentInstance.setNearestSignal(hSignal);
     }
 
-    this.resetBeaconOverlays();
-
     if (this.editMode.mode == BeaconEditModeT.DEFAULT) {
-
       for (let i = 0; i < this.beaconFeatures.length; i++) {
         this.beaconFeatures[i].setProperties({ signal: undefined });
         for (let j = 0; j < signals.length; j++) {
@@ -133,6 +136,11 @@ export class MapBeacons extends MapLayerBase {
   }
 
   private resetBeaconOverlays() {
+
+    if (!this.beaconOverlays) {
+      return;
+    }
+
     for (let i = 0; i < this.beaconOverlays.length && i <= this.lastOverlaysUsed; i++) {
       this.beaconOverlays[i].setPosition(undefined);
       this.beaconTextFields[i].innerHTML = "";
@@ -294,6 +302,7 @@ export class MapBeacons extends MapLayerBase {
 
     this.clearSelection();
     this.clear();
+    this.resetBeaconOverlays();
     //console.log("showBeacons! - " + JSON.stringify(features));
 
     /*
