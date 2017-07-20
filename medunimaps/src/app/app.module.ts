@@ -23,11 +23,8 @@ import { BeaconmodeselectorComponent } from './beaconmodeselector/beaconmodesele
 import { BeacondialogComponent } from './beacondialog/beacondialog.component';
 import { BeaconconnectorComponent } from './beaconconnector/beaconconnector.component';
 
-/*
-export function xsrfFactory() {
-  return new CookieXSRFStrategy('_csrf', 'XSRF-TOKEN');
-}
-*/
+import { OAuthModule } from 'angular-oauth2-oidc';
+
 
 @NgModule({
   declarations: [
@@ -50,13 +47,10 @@ export function xsrfFactory() {
     FormsModule,
     HttpModule,
     ReactiveFormsModule,
-    MaterialModule.forRoot()
+    MaterialModule.forRoot(),
+    OAuthModule.forRoot()
   ],
-  providers: [MapService, MapcontrollerserviceService, MapHttpService/*,
-    {
-      provide: XSRFStrategy,
-      useFactory: xsrfFactory
-    }*/
+  providers: [MapService, MapcontrollerserviceService, MapHttpService
   ],
   entryComponents: [DialogContent, BeacondialogComponent],
   bootstrap: [AppComponent]
