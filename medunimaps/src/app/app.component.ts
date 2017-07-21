@@ -32,16 +32,16 @@ export class AppComponent {
 
     // Login-Url
     //this.oauthService.loginUrl = "https://api.medunigraz.at/oauth2/authorize/"; //Id-Provider?
-    this.oauthService.loginUrl = "http://api.medunigraz:8088/oauth2/authorize/";
+    this.oauthService.loginUrl = "https://api.medunigraz.at/oauth2/authorize/";
 
     // URL of the SPA to redirect the user to after login
     //this.oauthService.redirectUri = window.location.origin + "/mapeditor/";
     this.oauthService.redirectUri = window.location.origin + "/mapeditor/";
 
     // The SPA's id. Register SPA with this id at the auth-server
-    this.oauthService.clientId = "jk49KPtzDx7EQjcYOvWNYmyJUPSpLOsKYwcVroSg";
+    this.oauthService.clientId = "o5AMvJLFuKNhKzBltNK1d0DDyP53h5Ng2gxVBT7p";
     // set the scope for the permissions the client should request
-    //this.oauthService.scope = "openid profile email voucher";
+    this.oauthService.scope = "editor";
 
     // set to true, to receive also an id_token via OpenId Connect (OIDC) in addition to the
     // OAuth2-based access_token
