@@ -107,7 +107,10 @@ export class MapHttpService extends MapService {
   }
 
   addEdge(source: number, destination: number, length: number, path: any): Observable<Object> {
-    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let headers = new Headers({
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + this.oauthService.getAccessToken()
+    });
     let options = new RequestOptions({ headers: headers });
 
     let data = {
@@ -126,7 +129,10 @@ export class MapHttpService extends MapService {
   }
 
   addNode(floor: number, center: any): Observable<Object> {
-    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let headers = new Headers({
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + this.oauthService.getAccessToken()
+    });
     let options = new RequestOptions({ headers: headers });
 
     let data = {
@@ -142,7 +148,10 @@ export class MapHttpService extends MapService {
   }
 
   addPoiInstance(floor: number, center: any, poitypeid: number): Observable<Object> {
-    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let headers = new Headers({
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + this.oauthService.getAccessToken()
+    });
     let options = new RequestOptions({ headers: headers });
 
     let data = {
@@ -159,7 +168,10 @@ export class MapHttpService extends MapService {
   }
 
   addBeacon(floor: number, center: any, name: string): Observable<Object> {
-    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let headers = new Headers({
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + this.oauthService.getAccessToken()
+    });
     let options = new RequestOptions({ headers: headers });
 
     let data = {
@@ -177,7 +189,9 @@ export class MapHttpService extends MapService {
   }
 
   deleteNode(id: number): Observable<Object> {
-    let headers = new Headers({});
+    let headers = new Headers({
+      "Authorization": "Bearer " + this.oauthService.getAccessToken()
+    });
 
     let options = new RequestOptions({
       headers: headers,
@@ -190,7 +204,9 @@ export class MapHttpService extends MapService {
 
   deleteEdge(id: number): Observable<Object> {
 
-    let headers = new Headers({});
+    let headers = new Headers({
+      "Authorization": "Bearer " + this.oauthService.getAccessToken()
+    });
 
     let options = new RequestOptions({
       headers: headers,
@@ -202,7 +218,9 @@ export class MapHttpService extends MapService {
   }
 
   deletePoi(id: number): Observable<Object> {
-    let headers = new Headers({});
+    let headers = new Headers({
+      "Authorization": "Bearer " + this.oauthService.getAccessToken()
+    });
 
     let options = new RequestOptions({
       headers: headers,
@@ -214,7 +232,9 @@ export class MapHttpService extends MapService {
   }
 
   deleteBeacon(id: number): Observable<Object> {
-    let headers = new Headers({});
+    let headers = new Headers({
+      "Authorization": "Bearer " + this.oauthService.getAccessToken()
+    });
 
     let options = new RequestOptions({
       headers: headers,
@@ -226,7 +246,10 @@ export class MapHttpService extends MapService {
   }
 
   updateEdge(edge: any, id: number): Observable<Object> {
-    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let headers = new Headers({
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + this.oauthService.getAccessToken()
+    });
     let options = new RequestOptions({ headers: headers });
 
     //console.log("Update Edge: " + id + "::" + JSON.stringify(edge));
@@ -237,7 +260,10 @@ export class MapHttpService extends MapService {
   }
 
   updateNode(node: any, id: number): Observable<Object> {
-    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let headers = new Headers({
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + this.oauthService.getAccessToken()
+    });
     let options = new RequestOptions({ headers: headers });
 
     //console.log("Update Node: " + id + "::" + JSON.stringify(node));
@@ -248,7 +274,10 @@ export class MapHttpService extends MapService {
   }
 
   updatePoi(node: any, id: number): Observable<Object> {
-    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let headers = new Headers({
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + this.oauthService.getAccessToken()
+    });
     let options = new RequestOptions({ headers: headers });
 
     //console.log("Update Poi: " + id + "::" + JSON.stringify(node));
@@ -259,7 +288,10 @@ export class MapHttpService extends MapService {
   }
 
   updateBeacon(beacon: any, id: number): Observable<Object> {
-    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let headers = new Headers({
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + this.oauthService.getAccessToken()
+    });
     let options = new RequestOptions({ headers: headers });
 
     //console.log("Update Poi: " + id + "::" + JSON.stringify(node));
