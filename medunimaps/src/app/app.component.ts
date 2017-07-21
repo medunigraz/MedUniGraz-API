@@ -59,11 +59,13 @@ export class AppComponent {
     // It dosn't send the user the the login page
     this.oauthService.tryLogin({});
 
+    if (!this.oauthService.hasValidAccessToken()) {
+      this.oauthService.initImplicitFlow();
+    }
   }
 
   ngOnInit(): void {
 
-    this.oauthService.initImplicitFlow();
     /*
     angular.module('myApp', ['ngMaterial'])
       .config(function($mdThemingProvider) {
