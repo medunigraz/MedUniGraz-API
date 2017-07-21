@@ -5,9 +5,9 @@ import { ApplicationMode } from '../base/applicationmode';
 import { ApplicationModeT } from '../base/applicationmode';
 
 import { MapLayerBase } from './mapLayerBase';
-import { MapEditEdges } from './mapeditedges';
-import { MapEdges } from './mapedges';
-import { MapRoute } from './maproute';
+import { MapEditEdges } from './mapEditEdges';
+import { MapEdges } from './mapEdges';
+import { MapRoute } from './mapRoute';
 import { OpenlayersHelper } from './openlayershelper';
 import { MapNodesStyles } from './mapNodesStyles';
 

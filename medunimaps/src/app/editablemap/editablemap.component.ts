@@ -22,8 +22,8 @@ import { MapFloor } from './mapFloor';
 import { MapEdges } from './mapEdges';
 import { MapEditEdges } from './mapEditEdges';
 import { MapRoute } from './mapRoute';
-import { MapPois } from './mappois';
-import { MapBeacons } from './mapbeacons';
+import { MapPois } from './mapPois';
+import { MapBeacons } from './mapBeacons';
 import { OpenlayersHelper } from './openlayershelper';
 
 import {MdDialog, MdDialogRef} from '@angular/material';

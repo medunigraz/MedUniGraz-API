@@ -11,7 +11,7 @@ import { Signal } from '../base/signal';
 import { BeaconEditMode, BeaconEditModes, BeaconEditModeT } from '../base/beaconeditmode';
 import { MapLayerBase } from './mapLayerBase';
 import { OpenlayersHelper } from './openlayershelper';
-import { MapBeaconStyles } from './mapbeaconstyles';
+import { MapBeaconStyles } from './mapBeaconStyles';
 import { EditablemapComponent } from './editablemap.component'
 
 declare var ol: any;
