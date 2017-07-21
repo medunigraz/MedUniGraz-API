@@ -16,17 +16,17 @@ import { OAuthService } from 'angular-oauth2-oidc';
 @Injectable()
 export class MapHttpService extends MapService {
 
-  private baseUrl = '/v1';
-  private roomUrl = this.baseUrl + '/geo/rooms/';  // URL to web API
-  private edgeUrl = this.baseUrl + '/geo/edges/';
-  private floorUrl = this.baseUrl + '/geo/floors/';
-  private nodeUrl = this.baseUrl + '/geo/nodes/';
-  private doorUrl = this.baseUrl + '/geo/doors/';
-  private levelUrl = this.baseUrl + '/geo/level/';
-  private routeUrl = this.baseUrl + '/geo/routing/edges/';
-  private poiTypeUrl = this.baseUrl + '/geo/pointofinterest/';
-  private poiInstanceUrl = this.baseUrl + '/geo/pointofinterestinstance/';
-  private beaconUrl = this.baseUrl + '/positioning/beacons/';
+  private baseUrl = 'https://api.medunigraz.at/v1/';
+  private roomUrl = this.baseUrl + 'geo/rooms/';  // URL to web API
+  private edgeUrl = this.baseUrl + 'geo/edges/';
+  private floorUrl = this.baseUrl + 'geo/floors/';
+  private nodeUrl = this.baseUrl + 'geo/nodes/';
+  private doorUrl = this.baseUrl + 'geo/doors/';
+  private levelUrl = this.baseUrl + 'geo/level/';
+  private routeUrl = this.baseUrl + 'geo/routing/edges/';
+  private poiTypeUrl = this.baseUrl + 'geo/pointofinterest/';
+  private poiInstanceUrl = this.baseUrl + 'geo/pointofinterestinstance/';
+  private beaconUrl = this.baseUrl + 'positioning/beacons/';
 
   constructor(private http: Http, private oauthService: OAuthService) {
     super();
