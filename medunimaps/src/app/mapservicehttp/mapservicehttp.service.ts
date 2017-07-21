@@ -101,7 +101,11 @@ export class MapHttpService extends MapService {
   }
 
   getBeacons(layer: number): Observable<Object> {
-    return this.http.get(this.beaconUrl + '?level=' + layer)
+    var headers = new Headers({
+      "Authorization": "Bearer " + this.oauthService.getAccessToken()
+    });
+    let options = new RequestOptions({ headers: headers });
+    return this.http.get(this.beaconUrl + '?level=' + layer, options)
       .map(this.extractData)
       .catch(this.handleError);
   }
