@@ -14,16 +14,16 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class MapService {
 
-  private baseUrl = '/v1'
-  private searchUrl = this.baseUrl + '/geo/autocomplete/';
-  private roomUrl = this.baseUrl + '/geo/rooms/';
-  private doorUrl = this.baseUrl + '/geo/doors/';
-  private floorUrl = this.baseUrl + '/geo/floors/';
-  private levelUrl = this.baseUrl + '/geo/level/';
-  private routeUrl = this.baseUrl + '/geo/routing/edges/';
-  private poiTypeUrl = this.baseUrl + '/geo/pointofinterest/';
-  private poiInstanceUrl = this.baseUrl + '/geo/pointofinterestinstance/';
-  private livePosUrl = this.baseUrl + '/positioning/locate/';
+  private baseUrl = 'https://api.medunigraz.at/v1/'
+  private searchUrl = this.baseUrl + 'geo/autocomplete/';
+  private roomUrl = this.baseUrl + 'geo/rooms/';
+  private doorUrl = this.baseUrl + 'geo/doors/';
+  private floorUrl = this.baseUrl + 'geo/floors/';
+  private levelUrl = this.baseUrl + 'geo/level/';
+  private routeUrl = this.baseUrl + 'geo/routing/edges/';
+  private poiTypeUrl = this.baseUrl + 'geo/pointofinterest/';
+  private poiInstanceUrl = this.baseUrl + 'geo/pointofinterestinstance/';
+  private livePosUrl = this.baseUrl + 'positioning/locate/';
 
   constructor(private http: Http) { }
 
