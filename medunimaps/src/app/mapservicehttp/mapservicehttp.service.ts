@@ -10,13 +10,14 @@ import 'rxjs/add/operator/map';
 import { MapService } from '../mapservice/map.service';
 import { Floor } from '../base/floor';
 import { PoiType } from '../base/poitype';
+import { API_BASE_URL } from '../base/globalconstants';
 
 import { OAuthService } from 'angular-oauth2-oidc';
 
 @Injectable()
 export class MapHttpService extends MapService {
 
-  private baseUrl = 'https://api.medunigraz.at/v1/';
+  private baseUrl = API_BASE_URL + '/v1/';
   private roomUrl = this.baseUrl + 'geo/rooms/';  // URL to web API
   private edgeUrl = this.baseUrl + 'geo/edges/';
   private floorUrl = this.baseUrl + 'geo/floors/';
