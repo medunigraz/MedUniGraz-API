@@ -5,7 +5,7 @@ import { Headers, RequestOptions, RequestMethod, RequestOptionsArgs } from '@ang
 import { Floor } from '../base/floor';
 import {PoiType} from '../base/poiType';
 import {SearchResult} from '../base/searchresult';
-import {MAX_NUM_OF_AUTOCOMPLETE_RESULTS} from '../base/globalconstants';
+import {MAX_NUM_OF_AUTOCOMPLETE_RESULTS, API_BASE_URL} from '../base/globalconstants';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
@@ -14,7 +14,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class MapService {
 
-  private baseUrl = 'https://api.medunigraz.at/v1/'
+  private baseUrl = API_BASE_URL + '/v1/';
   private searchUrl = this.baseUrl + 'geo/autocomplete/';
   private roomUrl = this.baseUrl + 'geo/rooms/';
   private doorUrl = this.baseUrl + 'geo/doors/';

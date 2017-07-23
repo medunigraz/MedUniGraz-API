@@ -1,3 +1,4 @@
+import {API_BASE_URL} from '../base/globalconstants';
 
 export class PoiType {
   public id: number;
@@ -8,7 +9,7 @@ export class PoiType {
   constructor(obj: any) {
     this.id = obj["id"];
     this.name = obj["name"];
-    this.icon = obj["icon"];
+    this.icon = API_BASE_URL + obj["icon"];
     this.isActive = obj["selected"];
   }
 
