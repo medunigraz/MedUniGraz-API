@@ -12,36 +12,66 @@
   body {
     background-color: #3E3F3A;
   }
-  #loader {
-    width: 5em;
-    height: 5em;
-    background-color: #007B3C;
-    margin: 100px auto;
-    -webkit-animation: rotateplane 1.2s infinite ease-in-out;
-    animation: rotateplane 1.2s infinite ease-in-out;
-  }
-
   app-root:empty + #loader {
     opacity: 1;
     z-index: 100;
   }
-
-  @-webkit-keyframes rotateplane {
-    0% { -webkit-transform: perspective(120px) }
-    50% { -webkit-transform: perspective(120px) rotateY(180deg) }
-    100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg) }
+  #loader {
+    width: 100px;
+    height: 100px;
   }
-
-  @keyframes rotateplane {
+  #loader:before {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+    width: 50px;
+    height: 50px;
+    border-top: solid 20px #51AE32;
+    border-bottom: solid 20px #51AE32;
+    border-left: solid 20px transparent;
+    border-right: solid 20px transparent;
+    content: "";
+    border-radius: 50px;
+    animation: spinner 1s infinite ease, background 1s infinite ease;
+  }
+  #loader:after {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+    width: 40px;
+    height: 40px;
+    background-color: #007B3C;
+    content: "";
+    border-radius: 20px;
+  }
+  @keyframes spinner {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+  }
+  @keyframes background {
     0% {
-      transform: perspective(120px) rotateX(0deg) rotateY(0deg);
-      -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg)
-    } 50% {
-      transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
-      -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg)
-    } 100% {
-      transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
-      -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+      border-top: solid 20px #FFFFFF;
+      border-bottom: solid 20px #FFFFFF;
+    }
+    50% {
+      border-top: solid 20px #51AE32;
+      border-bottom: solid 20px #51AE32;
+    }
+    100% {
+      border-top: solid 20px #007B3C;
+      border-bottom: solid 20px #007B3C;
     }
   }
   </style>
