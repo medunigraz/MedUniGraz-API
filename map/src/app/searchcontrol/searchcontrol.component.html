@@ -32,7 +32,7 @@
         </td>
       </tr>
 
-      <template ngFor let-result [ngForOf]="searchResults">
+      <ng-template ngFor let-result [ngForOf]="searchResults">
         <tr class="controlBoxTableResultRow" >
           <td class="controlBoxLeftResultCol">
             <button class="controlBoxButton" (click)="select(result)" md-button>
@@ -55,7 +55,7 @@
             <div class="controlBoxResultSpacer"></div>
           </td>
         </tr>
-      </template>
+      </ng-template>
     </tbody>
   </table>
 </div>
