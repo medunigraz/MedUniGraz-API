@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -7,7 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { MaterialModule } from '@angular/material';
 
-import { routes } from './app.routes';
+//import { routes } from './app.routes';
 
 import { MapService } from './mapservice/map.service';
 import { MainappService } from './mainappservice/mainapp.service';
@@ -38,6 +39,7 @@ import { PositionComponent } from './position/position.component';
     FormsModule,
     HttpModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
     //RouterModule.forRoot(routes),
     MaterialModule.forRoot()
   ],
