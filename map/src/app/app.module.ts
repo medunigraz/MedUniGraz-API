@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { MaterialModule } from '@angular/material';
+//import { MaterialModule } from '@angular/material'; TODO
 
 //import { routes } from './app.routes';
 
@@ -22,6 +22,7 @@ import { RoomDialogComponent } from './room-dialog/room-dialog.component';
 import { RouteCompComponent } from './route-comp/route-comp.component';
 import { PositionComponent } from './position/position.component';
 
+import {MdButtonModule, MdCheckboxModule, MdButtonToggleModule, MdCoreModule, MdDialogModule, MdIconModule, MdInputModule, MdSelectModule, MdSidenavModule, MdMenuModule} from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,9 @@ import { PositionComponent } from './position/position.component';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     //RouterModule.forRoot(routes),
-    MaterialModule.forRoot()
+    //MaterialModule.forRoot()
+    MdButtonModule, MdCheckboxModule, MdButtonToggleModule, MdCoreModule, MdDialogModule, MdIconModule, MdInputModule, MdSelectModule, MdSidenavModule, MdMenuModule
+
   ],
   providers: [MapService, MainappService],
   bootstrap: [AppComponent],

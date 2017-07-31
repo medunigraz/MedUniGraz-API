@@ -5,7 +5,7 @@ import {SearchcontrolComponent} from './searchcontrol/searchcontrol.component'
 import {FloorcontrolComponent} from './floorcontrol/floorcontrol.component'
 import { MainappService } from './mainappservice/mainapp.service';
 
-import {MdSidenav } from '@angular/material/sidenav'
+import {MdSidenav} from '@angular/material';
 
 import {Room} from './base/room';
 import {RouteNodes} from './base/routeNodes';
