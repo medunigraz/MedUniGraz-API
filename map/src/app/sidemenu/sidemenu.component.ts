@@ -11,7 +11,7 @@ import {PoiType} from '../base/poiType';
 })
 export class SidemenuComponent implements OnInit {
 
-  private pois: PoiType[] = [];
+  public pois: PoiType[] = [];
 
   @Output() poiTypesChangedEvt = new EventEmitter<PoiType[]>();
 

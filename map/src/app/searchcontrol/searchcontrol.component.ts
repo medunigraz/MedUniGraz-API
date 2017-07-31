@@ -31,17 +31,17 @@ export class SearchcontrolComponent implements OnInit {
 
   isRoutingSearchBox: boolean = false;
 
-  private searchResults: SearchResult[];
+  public searchResults: SearchResult[];
   private searchResultsFrom: SearchResult[];
   private searchResultsTo: SearchResult[];
 
   private currentResult: SearchResult = null;
   private currentStartPointResult: SearchResult = null;
 
-  private showResults: boolean = false;
+  public showResults: boolean = false;
   private searchTerms = new Subject<string>();
 
-  private term = new FormControl();
+  public term = new FormControl();
   private startPointTerm = new FormControl();
 
   private currentFocusStatus: FocusStatus = FocusStatus.NONE;

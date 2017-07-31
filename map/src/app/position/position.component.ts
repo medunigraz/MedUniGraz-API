@@ -29,7 +29,7 @@ export class PositionComponent implements OnInit {
 
   @Output() newPositionEvent = new EventEmitter<Position>();
 
-  private isActive: boolean = demoMode;
+  public isActive: boolean = demoMode;
   private positionStatus: PositionStatus = PositionStatus.InActive;
   private checkTimerSubscription: Subscription;
   private posUpdateTimerSubscription: Subscription;
