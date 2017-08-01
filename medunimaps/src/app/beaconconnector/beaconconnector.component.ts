@@ -27,7 +27,7 @@ export class BeaconconnectorComponent implements OnInit {
 
   @Output() updateSignalsEvent = new EventEmitter<Signal[]>();
 
-  private isActive: boolean = demoMode;
+  public isActive: boolean = demoMode;
   private positionStatus: PositionStatus = PositionStatus.InActive;
   private checkTimerSubscription: Subscription;
   private posUpdateTimerSubscription: Subscription;

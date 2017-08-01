@@ -36,7 +36,14 @@ export class AppComponent {
 
     // URL of the SPA to redirect the user to after login
     //this.oauthService.redirectUri = window.location.origin + "/mapeditor/";
-    this.oauthService.redirectUri = window.location.origin + "/editor/";
+
+    this.oauthService.redirectUri = window.location.href;
+    //this.oauthService.redirectUri = window.location.origin + "/editor/";
+    //if (window.location.origin.indexOf('localhost') >= 0) {
+    //  this.oauthService.redirectUri = window.location.origin;
+    //}
+    console.log("AppComponent::constructor " + this.oauthService.redirectUri);
+
 
     // The SPA's id. Register SPA with this id at the auth-server
     this.oauthService.clientId = "o5AMvJLFuKNhKzBltNK1d0DDyP53h5Ng2gxVBT7p";

@@ -13,9 +13,9 @@ import { Signal } from '../base/signal';
 })
 export class BeacondialogComponent implements OnInit {
 
-  private macInputVal = new FormControl();
-  private nameInputVal = new FormControl();
-  private batteryOutputVal = new FormControl();
+  public macInputVal = new FormControl();
+  public nameInputVal = new FormControl();
+  public batteryOutputVal = new FormControl();
 
   constructor(public dialogRef: MdDialogRef<BeacondialogComponent>) { }
 
