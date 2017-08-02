@@ -8,6 +8,7 @@ import { EdgeWeight } from '../base/edgeweight';
 import { MapLayerBase } from './mapLayerBase';
 import { OpenlayersHelper } from './openlayershelper';
 import { MapNodesStyles } from './mapNodesStyles';
+import { MapEdgeStyles } from './mapEdgeStyles';
 
 declare var ol: any;
 
@@ -18,19 +19,20 @@ export class MapEdges extends MapLayerBase {
   private selectFeature: any = null;
   private selectFeatureOverlay: any = null;
 
+  private isWeightMode: boolean = false;
+
   constructor(private mapService: MapService) {
     super();
     this.Initialize();
   }
 
   private Initialize(): void {
-    let res = OpenlayersHelper.CreateBasicLayer(new ol.style.Style({
-      stroke: new ol.style.Stroke({
-        color: 'black',
-        width: 4,
-        lineDash: [4, 8]
-      })
-    }));
+    let styleFunction = function(feature) {
+      let style = MapEdgeStyles.GetStyle(feature.get("category"));
+      return style;
+    };
+
+    let res = OpenlayersHelper.CreateBasicLayer(feature => styleFunction(feature));
     this.layerSource = res.layerSource;
     this.layer = res.layer;
   }
@@ -51,6 +53,8 @@ export class MapEdges extends MapLayerBase {
   }
 
   public setEdgeWeights(edgeWeights: EdgeWeight[]) {
+    MapEdgeStyles.InitStyles(edgeWeights);
+    this.layerSource.refresh();
     console.log("MapEdges::setEdgeWeights -> " + JSON.stringify(edgeWeights));
   }
 
