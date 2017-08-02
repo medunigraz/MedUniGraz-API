@@ -11,6 +11,7 @@ import { MapService } from '../mapservice/map.service';
 import { Floor } from '../base/floor';
 import { PoiType } from '../base/poitype';
 import { API_BASE_URL } from '../base/globalconstants';
+import { EdgeWeight } from '../base/edgeweight';
 
 import { OAuthService } from 'angular-oauth2-oidc';
 
@@ -27,6 +28,7 @@ export class MapHttpService extends MapService {
   private routeUrl = this.baseUrl + 'geo/routing/edges/';
   private poiTypeUrl = this.baseUrl + 'geo/pointofinterest/';
   private poiInstanceUrl = this.baseUrl + 'geo/pointofinterestinstance/';
+  private edgeWeightTypeUrl = this.baseUrl + 'geo/edgecategory/';
   private beaconUrl = this.baseUrl + 'positioning/beacons/';
 
   constructor(private http: Http, private oauthService: OAuthService) {
@@ -92,6 +94,12 @@ export class MapHttpService extends MapService {
   getPoiTypes(): Observable<PoiType[]> {
     return this.http.get(this.poiTypeUrl)
       .map(this.extractDataPoiTypes)
+      .catch(this.handleError);
+  }
+
+  getEdgeWeightTypes(): Observable<EdgeWeight[]> {
+    return this.http.get(this.edgeWeightTypeUrl)
+      .map(this.extractDataEdgeWeightTypes)
       .catch(this.handleError);
   }
 
@@ -357,6 +365,20 @@ export class MapHttpService extends MapService {
     }
     return poitypes;
   }
+
+  private extractDataEdgeWeightTypes(res: Response) {
+    let body = res.json();
+    if (body.results) {
+      body = body.results;
+    }
+    console.log("RESPONSE DATA EDGEWEIGHTS: " + JSON.stringify(body));
+    let edgeweights: EdgeWeight[] = [];
+    for (let obj of body) {
+      edgeweights.push(new EdgeWeight(obj));
+    }
+    return edgeweights;
+  }
+
 
   private handleError(error: Response | any) {
     // In a real world app, we might use a remote logging infrastructure

@@ -1,0 +1,26 @@
+.weightcontrol {
+  position: absolute;
+  top: 4.0em;
+  left: 0.7em;
+  z-index: 10;
+  background-color: #FFFFFF80;
+  font-size: medium;
+}
+
+.weightcontrolmenubutton {
+  background-color: #FFFFFFFF;
+  border: medium medium;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+  min-width: 6em;
+  padding: 0;
+  vertical-align: middle;
+}
+
+.weightcontrolmenutext {
+  font-size: medium;
+  margin-right: 0.5em;
+}
+
+.weightcontrolIcon {
+  margin-right: 0.2em;
+}

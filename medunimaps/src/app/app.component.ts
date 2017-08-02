@@ -29,6 +29,7 @@ export class AppComponent {
   beaconSignals: Signal[] = null;
 
   showPoiSelector: boolean = false;
+  showEdgeWeightSelector: boolean = false;
   showBeaconEditModeSelector: boolean = false;
 
   beaconToDelete: Beacon = null;
@@ -109,6 +110,7 @@ export class AppComponent {
 
     this.showPoiSelector = (this.currentAppMode.mode == ApplicationModeT.EDIT_POIS);
     this.showBeaconEditModeSelector = (this.currentAppMode.mode == ApplicationModeT.EDIT_BEACONS);
+    this.showEdgeWeightSelector = (this.currentAppMode.mode == ApplicationModeT.EDIT_WEIGHTS);
   }
 
   floorChanged(floor: Floor): void {

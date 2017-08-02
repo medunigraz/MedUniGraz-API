@@ -41,6 +41,10 @@ export class MapEdges extends MapLayerBase {
         error => console.log("ERROR deleteNode: " + <any>error)));
   }
 
+  public setWeightMode(weightmode: boolean) {
+    console.log("MapEdges::setWeightmode -> " + weightmode);
+  }
+
   public getHighlightedEdgeId(): any {
     if (this.highlightedFeature) {
       return this.highlightedFeature.getId();

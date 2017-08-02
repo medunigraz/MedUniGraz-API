@@ -24,6 +24,7 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 
 import {MdButtonModule, MdCheckboxModule, MdButtonToggleModule, MdCoreModule, MdDialogModule, MdIconModule, MdInputModule, MdSelectModule, MdSidenavModule, MdMenuModule} from '@angular/material';
 import { BeaconinfoComponent } from './beaconinfo/beaconinfo.component';
+import { WeightselectComponent } from './weightselect/weightselect.component';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { BeaconinfoComponent } from './beaconinfo/beaconinfo.component';
     BeaconmodeselectorComponent,
     BeacondialogComponent,
     BeaconconnectorComponent,
-    BeaconinfoComponent
+    BeaconinfoComponent,
+    WeightselectComponent
   ],
   imports: [
     BrowserModule,

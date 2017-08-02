@@ -141,6 +141,11 @@ export class EditablemapComponent implements OnInit {
   set applicationMode(applicationMode: ApplicationMode) {
     OpenlayersHelper.CurrentApplicationMode = applicationMode;
     console.log("EditAbleMapComponent::Set applicationMode - New App Mode: " + OpenlayersHelper.CurrentApplicationMode.name);
+
+    if (this.mapEdges) {
+      this.mapEdges.setWeightMode(OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_WEIGHTS);
+    }
+
     this.updateLayers();
   }
 
@@ -262,6 +267,9 @@ export class EditablemapComponent implements OnInit {
     if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES) {
       this.mapNodes.mouseMoved(pixel, evt.coordinate, this.map);
     }
+    else if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_WEIGHTS) {
+      this.mapEdges.updateMouseMoved(pixel, this.map, true);
+    }
   }
 
   mapClicked(evt): void {
@@ -281,48 +289,36 @@ export class EditablemapComponent implements OnInit {
     else if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_BEACONS) {
       this.mapBeacons.mouseClicked(evt.coordinate, pixel, this.map);
     }
+    else if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_WEIGHTS) {
+      this.mapEdges.updateMouseClicked(this.map);
+    }
   }
 
   private updateLayers() {
+
+    this.setLayerActive(this.mapEdges, false);
+    this.setLayerActive(this.mapEditEdges, false);
+    this.setLayerActive(this.mapNodes, false);
+    this.setLayerActive(this.mapRoute, false);
+
+    this.setLayerActive(this.mapPois, false);
+
+    this.setLayerActive(this.mapBeacons, false);
+
     if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES) {
       this.setLayerActive(this.mapEdges, true);
       this.setLayerActive(this.mapEditEdges, true);
       this.setLayerActive(this.mapNodes, true);
       this.setLayerActive(this.mapRoute, true);
-
-      this.setLayerActive(this.mapPois, false);
-
-      this.setLayerActive(this.mapBeacons, false);
     }
     else if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_POIS) {
-      this.setLayerActive(this.mapEdges, false);
-      this.setLayerActive(this.mapEditEdges, false);
-      this.setLayerActive(this.mapNodes, false);
-      this.setLayerActive(this.mapRoute, false);
-
       this.setLayerActive(this.mapPois, true);
-
-      this.setLayerActive(this.mapBeacons, false);
     }
     else if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_BEACONS) {
-      this.setLayerActive(this.mapEdges, false);
-      this.setLayerActive(this.mapEditEdges, false);
-      this.setLayerActive(this.mapNodes, false);
-      this.setLayerActive(this.mapRoute, false);
-
-      this.setLayerActive(this.mapPois, false);
-
       this.setLayerActive(this.mapBeacons, true);
     }
-    else {
-      this.setLayerActive(this.mapEdges, false);
-      this.setLayerActive(this.mapEditEdges, false);
-      this.setLayerActive(this.mapNodes, false);
-      this.setLayerActive(this.mapRoute, false);
-
-      this.setLayerActive(this.mapPois, false);
-
-      this.setLayerActive(this.mapBeacons, false);
+    else if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_WEIGHTS) {
+      this.setLayerActive(this.mapEdges, true);
     }
   }
 

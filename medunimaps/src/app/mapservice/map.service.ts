@@ -10,6 +10,7 @@ import {NAVIGATIONEDGES_DEMO} from './mock-navigationedges'
 import {Room} from '../base/room';
 import { Floor } from '../base/floor';
 import { PoiType } from '../base/poitype';
+import { EdgeWeight } from '../base/edgeweight';
 import { Observable } from 'rxjs';
 
 @Injectable()
@@ -68,6 +69,10 @@ export class MapService {
   }
 
   getBeacons(layer: number): Observable<Object> {
+    return null;
+  }
+
+  getEdgeWeightTypes(): Observable<EdgeWeight[]> {
     return null;
   }
 
