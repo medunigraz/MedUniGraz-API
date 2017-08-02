@@ -1,4 +1,4 @@
-import { Component, Optional, OnInit } from '@angular/core';
+import { ViewChild, Component, Optional, OnInit } from '@angular/core';
 import {MdDialog, MdDialogRef} from '@angular/material';
 
 import { ApplicationMode, ApplicationModeT } from './base/applicationmode';
@@ -6,8 +6,11 @@ import { Floor } from './base/floor';
 import { PoiType } from './base/poitype';
 import { BeaconEditMode, BeaconEditModes } from './base/beaconeditmode';
 import {Signal} from './base/signal';
+import { Beacon } from './base/beacon';
 
 import { OAuthService } from 'angular-oauth2-oidc';
+
+import {BeaconinfoComponent} from './beaconinfo/beaconinfo.component'
 
 @Component({
   selector: 'app-root',
@@ -27,6 +30,10 @@ export class AppComponent {
 
   showPoiSelector: boolean = false;
   showBeaconEditModeSelector: boolean = false;
+
+  beaconToDelete: Beacon = null;
+
+  @ViewChild('beaconInfoComp') public beaconInfoComponent: BeaconinfoComponent;
 
   constructor(private _dialog: MdDialog, private oauthService: OAuthService) {
 
@@ -136,6 +143,20 @@ export class AppComponent {
     if (signal) {
       //console.log("AppComponent --- beaconSignalsChanged: " + JSON.stringify(signal));
       this.beaconSignals = signal;
+    }
+  }
+
+  selectedBeaconChanged(beacon: Beacon) {
+    //console.log("AppComponent --- selectedBeaconChanged: " + JSON.stringify(beacon));
+    if (this.beaconInfoComponent) {
+      this.beaconInfoComponent.setSelectedBeacon(beacon);
+    }
+  }
+
+  deleteBeacon(beacon: Beacon) {
+    console.log("AppComponent --- deleteBeacon: " + JSON.stringify(beacon));
+    if (beacon) {
+      this.beaconToDelete = beacon;
     }
   }
 }

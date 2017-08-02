@@ -9,7 +9,9 @@
   [poiTypes]="poiTypes"
   [currentPoiType]="currentPoiType"
   [beaconEditMode]="beaconEditMode"
-  [setBeaconSignals]="beaconSignals">
+  [setBeaconSignals]="beaconSignals"
+  [deleteBeacon]="beaconToDelete"
+  (selectedBeaconEvt)="selectedBeaconChanged($event)">
 </app-editablemap>
 <app-floorselector (currentFloorEvt)="floorChanged($event)"></app-floorselector>
 <app-modeselector (currentAppModeEvt)="appModeChanged($event)"></app-modeselector>
@@ -18,7 +20,13 @@
                   *ngIf="showPoiSelector"></app-poiselector>
 <app-beaconmodeselector (currentSelectedModeEvt)="beaconEditModeChanged($event)"
                   *ngIf="showBeaconEditModeSelector"></app-beaconmodeselector>
-<app-beaconconnector (updateSignalsEvent)="beaconSignalsChanged($event)">
+<app-beaconinfo #beaconInfoComp *ngIf="showBeaconEditModeSelector"
+  (deleteBeaconEvent)="deleteBeacon($event)"
+>
+</app-beaconinfo>
+<app-beaconconnector
+  (deleteBeaconEvent)="beaconSignalsChanged($event)"
+  >
   </app-beaconconnector>
 <!--
 <md-toolbar class = "header-toolbar">

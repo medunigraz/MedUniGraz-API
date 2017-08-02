@@ -7,12 +7,14 @@ import { ApplicationModeT } from '../base/applicationmode';
 import { BeacondialogComponent } from '../beacondialog/beacondialog.component';
 import {MdDialog, MdDialogRef} from '@angular/material';
 import { Signal } from '../base/signal';
+import { Beacon } from '../base/beacon';
 
 import { BeaconEditMode, BeaconEditModes, BeaconEditModeT } from '../base/beaconeditmode';
 import { MapLayerBase } from './mapLayerBase';
 import { OpenlayersHelper } from './openlayershelper';
 import { MapBeaconStyles } from './mapBeaconStyles';
 import { EditablemapComponent } from './editablemap.component'
+
 
 declare var ol: any;
 
@@ -119,6 +121,29 @@ export class MapBeacons extends MapLayerBase {
           }
         }
       }
+    }
+  }
+
+  deleteBeacon(beacon: Beacon) {
+    console.log("MapBeacons::deleteBeacon: " + JSON.stringify(beacon));
+    if (!USEHTTPSERVICE) {
+      console.log("Offline mode, dont delete beacon!");
+      return;
+    }
+
+    if (beacon) {
+      this.mapService.deleteBeacon(beacon.id).subscribe(
+        edge => this.beaconDeleted(edge),
+        error => console.log("ERROR deletePoi: " + <any>error));
+    }
+  }
+
+  private beaconDeleted(beacon: any): void {
+    console.log("poiDeleted..." + JSON.stringify(beacon));
+    let feature = this.layerSource.getFeatureById(beacon.id);
+    if (feature) {
+      this.layerSource.removeFeature(feature);
+      this.clearSelection();
     }
   }
 
@@ -230,6 +255,8 @@ export class MapBeacons extends MapLayerBase {
     }
 
     this.currentSelectedBeacon = null;
+
+    this.showSelectedBeaconInfo();
   }
 
   private selectBeacon(pixelPos: any, map: any, testOnly: boolean): boolean {
@@ -250,7 +277,7 @@ export class MapBeacons extends MapLayerBase {
     }, options);
 
     if (feature) {
-      console.log("MapBeacons::selectBeacon Beacon selected! - " + feature.get("name"));
+      //console.log("MapBeacons::selectBeacon Beacon selected! - " + feature.get("name"));
       if (!testOnly) {
         this.currentSelectedBeacon = feature;
       }
@@ -265,7 +292,16 @@ export class MapBeacons extends MapLayerBase {
   }
 
   private showSelectedBeaconInfo() {
-    console.log("MapBeacons::showSelectedBeaconInfo!");
+    //console.log("MapBeacons::showSelectedBeaconInfo!");
+
+    if (this.mapComponent) {
+      if (this.currentSelectedBeacon) {
+        this.mapComponent.setSelectedBeacon(new Beacon(this.currentSelectedBeacon.get("name"), this.currentSelectedBeacon.getId()));
+      }
+      else {
+        this.mapComponent.setSelectedBeacon(undefined);
+      }
+    }
   }
 
   private moveCurrentBeacon(position: any) {

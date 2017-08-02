@@ -1,0 +1,33 @@
+.beaconinfo {
+  position: absolute;
+  padding: 0.5em;
+  top: 7.0em;
+  left: 0.7em;
+  z-index: 10;
+  background-color: gray;
+  font-size: medium;
+}
+
+.beacondeletebutton {
+  background-color: #FFFFFFFF;
+  border: medium medium;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+  min-width: 6em;
+  padding: 0;
+  padding-left: 0.5em;
+  vertical-align: middle;
+}
+
+.beacondeletetext {
+  position: relative;
+  font-size: medium;
+  margin-right: 0.5em;
+}
+
+.beaconinfotext {
+  position: relative;
+  width: 100%;
+  margin-bottom: 2em;
+  text-align: center;
+  font-size: medium;
+}

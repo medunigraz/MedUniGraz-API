@@ -23,6 +23,7 @@ import { BeaconconnectorComponent } from './beaconconnector/beaconconnector.comp
 import { OAuthModule } from 'angular-oauth2-oidc';
 
 import {MdButtonModule, MdCheckboxModule, MdButtonToggleModule, MdCoreModule, MdDialogModule, MdIconModule, MdInputModule, MdSelectModule, MdSidenavModule, MdMenuModule} from '@angular/material';
+import { BeaconinfoComponent } from './beaconinfo/beaconinfo.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import {MdButtonModule, MdCheckboxModule, MdButtonToggleModule, MdCoreModule, Md
     PoiselectorComponent,
     BeaconmodeselectorComponent,
     BeacondialogComponent,
-    BeaconconnectorComponent
+    BeaconconnectorComponent,
+    BeaconinfoComponent
   ],
   imports: [
     BrowserModule,

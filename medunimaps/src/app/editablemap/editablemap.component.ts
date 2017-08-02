@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
 import { Injectable } from '@angular/core';
 import { HostListener } from '@angular/core';
@@ -13,6 +13,7 @@ import { Floor } from '../base/floor';
 import { PoiType } from '../base/poitype';
 import { BeaconEditMode, BeaconEditModes } from '../base/beaconeditmode';
 import { Signal } from '../base/signal';
+import { Beacon } from '../base/beacon';
 
 import { MapLayerBase } from './mapLayerBase';
 import { MapNodes } from './mapNodes';
@@ -43,6 +44,8 @@ export class EditablemapComponent implements OnInit {
   //private _applicationMode: ApplicationMode = ApplicationMode.CreateDefault();
 
   @ViewChild('beaconPopups') public beaconPopUps: ElementRef;
+
+  @Output() selectedBeaconEvt = new EventEmitter<Beacon>();
 
   public beaconOverlays: number[] = null;
 
@@ -187,6 +190,12 @@ export class EditablemapComponent implements OnInit {
     }
   }
 
+  @Input()
+  set deleteBeacon(beacon: Beacon) {
+    if (this.mapBeacons) {
+      this.mapBeacons.deleteBeacon(beacon);
+    }
+  }
 
   @HostListener('window:keydown', ['$event'])
   keyboardInput(event: KeyboardEvent) {
@@ -239,6 +248,10 @@ export class EditablemapComponent implements OnInit {
 
   public addOverlay(overlay: any) {
     this.map.addOverlay(overlay);
+  }
+
+  public setSelectedBeacon(beacon: Beacon) {
+    this.selectedBeaconEvt.emit(beacon);
   }
 
   mapMouseMoved(evt): void {
