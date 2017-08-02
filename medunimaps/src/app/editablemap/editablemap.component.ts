@@ -14,6 +14,7 @@ import { PoiType } from '../base/poitype';
 import { BeaconEditMode, BeaconEditModes } from '../base/beaconeditmode';
 import { Signal } from '../base/signal';
 import { Beacon } from '../base/beacon';
+import { EdgeWeight } from '../base/edgeweight';
 
 import { MapLayerBase } from './mapLayerBase';
 import { MapNodes } from './mapNodes';
@@ -199,6 +200,22 @@ export class EditablemapComponent implements OnInit {
   set deleteBeacon(beacon: Beacon) {
     if (this.mapBeacons) {
       this.mapBeacons.deleteBeacon(beacon);
+    }
+  }
+
+  @Input()
+  set currentEdgeWeight(edgeWeight: EdgeWeight) {
+    if (edgeWeight) {
+      console.log("EditAbleMapComponent::Set currentEdgeWeight: " + JSON.stringify(edgeWeight));
+      this.mapEdges.setCurrentEdgeWeight(edgeWeight);
+    }
+  }
+
+  @Input()
+  set edgeWeights(edgeWeights: EdgeWeight[]) {
+    if (edgeWeights) {
+      console.log("EditAbleMapComponent::Set edgeWeights: " + JSON.stringify(edgeWeights));
+      this.mapEdges.setEdgeWeights(edgeWeights);
     }
   }
 

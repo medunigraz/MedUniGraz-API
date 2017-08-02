@@ -7,6 +7,8 @@ import { PoiType } from './base/poitype';
 import { BeaconEditMode, BeaconEditModes } from './base/beaconeditmode';
 import {Signal} from './base/signal';
 import { Beacon } from './base/beacon';
+import { EdgeWeight } from './base/edgeweight';
+
 
 import { OAuthService } from 'angular-oauth2-oidc';
 
@@ -27,6 +29,9 @@ export class AppComponent {
   poiTypes: PoiType[] = null;
   beaconEditMode: BeaconEditMode = null;
   beaconSignals: Signal[] = null;
+
+  edgeWeights: EdgeWeight[] = null;
+  currentEdgeWeight: EdgeWeight = null;
 
   showPoiSelector: boolean = false;
   showEdgeWeightSelector: boolean = false;
@@ -159,6 +164,20 @@ export class AppComponent {
     console.log("AppComponent --- deleteBeacon: " + JSON.stringify(beacon));
     if (beacon) {
       this.beaconToDelete = beacon;
+    }
+  }
+
+  edgeWeightChanged(edgeWeight: EdgeWeight) {
+    if (edgeWeight) {
+      console.log("AppComponent --- edgeWeightChanged: " + JSON.stringify(edgeWeight));
+      this.currentEdgeWeight = edgeWeight;
+    }
+  }
+
+  edgeWeightsReceived(edgeWeights: EdgeWeight[]) {
+    if (edgeWeights) {
+      console.log("AppComponent --- edgeWeightsReceived: " + edgeWeights.length);
+      this.edgeWeights = edgeWeights;
     }
   }
 }

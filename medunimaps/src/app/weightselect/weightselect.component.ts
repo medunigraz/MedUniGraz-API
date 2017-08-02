@@ -20,6 +20,7 @@ export class WeightselectComponent implements OnInit {
   selectedWeight: EdgeWeight = null;
 
   @Output() currentSelectedWeightEvt = new EventEmitter<EdgeWeight>();
+  @Output() edgeWeightsReceivedEvt = new EventEmitter<EdgeWeight[]>();
 
   constructor(private mapServiceHttp: MapHttpService,
     private mapService: MapService) { }
@@ -34,6 +35,15 @@ export class WeightselectComponent implements OnInit {
 
   public updateData(): any {
 
+
+
+    this.mapService.getEdgeWeightTypes().subscribe(
+      poiTypes => this.updateWeights(poiTypes),
+      error => this.onUpdateError(error));
+  }
+
+  private onUpdateError(error) {
+    console.log("ERROR deleteNode: " + <any>error)
     this.updateWeights([new EdgeWeight({
       "id": 1,
       "name": "Standard",
@@ -45,10 +55,6 @@ export class WeightselectComponent implements OnInit {
         "weight": "2.5"
       })]);
 
-    /*
-    this.mapService.getEdgeWeightTypes().subscribe(
-      poiTypes => this.updateWeights(poiTypes),
-      error => console.log("ERROR deleteNode: " + <any>error));*/
   }
 
   onSelect(weight: EdgeWeight): void {
@@ -63,6 +69,8 @@ export class WeightselectComponent implements OnInit {
       this.selectWeight(this.weights[0]);
       this.showControl = true;
     }
+
+    this.edgeWeightsReceivedEvt.emit(this.weights);
   }
 
   private selectWeight(weight: EdgeWeight) {

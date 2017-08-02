@@ -11,6 +11,8 @@
   [beaconEditMode]="beaconEditMode"
   [setBeaconSignals]="beaconSignals"
   [deleteBeacon]="beaconToDelete"
+  [edgeWeights]="edgeWeights"
+  [currentEdgeWeight]="currentEdgeWeight"
   (selectedBeaconEvt)="selectedBeaconChanged($event)">
 </app-editablemap>
 <app-floorselector (currentFloorEvt)="floorChanged($event)"></app-floorselector>
@@ -18,7 +20,10 @@
 <app-poiselector (currentSelectedPoiEvt)="currentPoiTypeChanged($event)"
                   (poiTypeReceivedEvt)="PoiTypesReceived($event)"
                   *ngIf="showPoiSelector"></app-poiselector>
-<app-weightselect *ngIf="showEdgeWeightSelector">
+<app-weightselect
+  (currentSelectedWeightEvt) = "edgeWeightChanged($event)"
+  (edgeWeightsReceivedEvt) = "edgeWeightsReceived($event)"
+  *ngIf="showEdgeWeightSelector">
 </app-weightselect>
 <app-beaconmodeselector (currentSelectedModeEvt)="beaconEditModeChanged($event)"
                   *ngIf="showBeaconEditModeSelector"></app-beaconmodeselector>

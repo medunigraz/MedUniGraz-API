@@ -3,6 +3,7 @@ import { USEHTTPSERVICE } from '../base/globalconstants';
 
 import { ApplicationMode } from '../base/applicationmode';
 import { ApplicationModeT } from '../base/applicationmode';
+import { EdgeWeight } from '../base/edgeweight';
 
 import { MapLayerBase } from './mapLayerBase';
 import { OpenlayersHelper } from './openlayershelper';
@@ -44,6 +45,15 @@ export class MapEdges extends MapLayerBase {
   public setWeightMode(weightmode: boolean) {
     console.log("MapEdges::setWeightmode -> " + weightmode);
   }
+
+  public setCurrentEdgeWeight(edgeWeight: EdgeWeight) {
+    console.log("MapEdges::setCurrentEdgeWeight -> " + JSON.stringify(edgeWeight));
+  }
+
+  public setEdgeWeights(edgeWeights: EdgeWeight[]) {
+    console.log("MapEdges::setEdgeWeights -> " + JSON.stringify(edgeWeights));
+  }
+
 
   public getHighlightedEdgeId(): any {
     if (this.highlightedFeature) {
