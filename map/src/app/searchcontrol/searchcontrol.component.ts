@@ -284,6 +284,13 @@ export class SearchcontrolComponent implements OnInit {
     }
   }
 
+  private searchCurrentResultClicked() {
+    if (this.currentResult != null) {
+      this.showCurrentResult();
+      this.roomSelectedEvt.emit(this.currentResult.getRoom());
+    }
+  }
+
   private showCurrentResult() {
     if (this.currentResult != null) {
       this.term.setValue(this.currentResult.text, { "emitEvent": false });
