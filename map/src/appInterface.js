@@ -147,11 +147,11 @@ function sendDemoData()
 */
 
 jsondata = '[' +
-  getData("xsfY", val1) +', ' +
+  getData("8bVP", val1)/* +', ' +
   getData("1iJd", val4) +', ' +
   getData("aaaaa", val1) + ', ' +
   getData("bbbbb", val4) +', ' +
-  getData("eeee", val3) +
+  getData("eeee", val3)*/ +
   ']';
 
   //jsondata = '[' + getData("FA:7F:B8:61:24:31", val1) + ']';
@@ -162,7 +162,7 @@ jsondata = '[' +
 
   if(counter % 10 == 0)
   {
-    setTimeout(sendDemoData, 10000);
+    setTimeout(sendDemoData, 1000);
   }
   else {
     setTimeout(sendDemoData, 1000);

@@ -16,7 +16,7 @@ enum PositionStatus {
   Active = 2
 }
 
-const demoMode: boolean = false;
+const demoMode: boolean = true;
 
 declare var appInterfaceObject: any;
 

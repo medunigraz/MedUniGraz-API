@@ -36,6 +36,7 @@ export class MapLivePosition extends MapLayerBase {
   }
 
   public setCurrentLevel(newLevel: number) {
+    this.clear();
     this.currentLevelId = newLevel;
   }
 

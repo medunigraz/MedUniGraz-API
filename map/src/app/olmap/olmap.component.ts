@@ -49,6 +49,12 @@ export class OlmapComponent implements OnInit {
 
   private currentLevel: Floor = null;
 
+  private lastViewChangeStart: number = -2;
+  private lastViewChangeEnd: number = -1;
+  private lastMapUpdate: number = -1;
+  private lastPositionReceived: number = -1;
+  private lastShowRoom: number = -1;
+
   ngOnInit() {
   }
 
@@ -105,6 +111,19 @@ export class OlmapComponent implements OnInit {
 
     this.map.on('click', evt => this.mapClicked(evt));
     this.map.on('pointermove', evt => this.mapMouseMoved(evt));
+
+    this.map.on('movestart', evt => this.changeViewStart(evt));
+    this.map.on('moveend', evt => this.changeViewEnd(evt));
+  }
+
+  private changeViewStart(evt: any) {
+    console.log("MapComponent::changeView Start!!! " + Date.now());
+    this.lastViewChangeStart = Date.now();
+  }
+
+  private changeViewEnd(evt: any) {
+    console.log("MapComponent::changeView End!!!" + Date.now());
+    this.lastViewChangeEnd = Date.now();
   }
 
   private getTileSource(): any {
@@ -193,6 +212,7 @@ export class OlmapComponent implements OnInit {
     console.log("MapComponent::Set currentFloor - New Floor: " + JSON.stringify(currentFloor));
 
     if (currentFloor && currentFloor.id >= 0) {
+      this.lastMapUpdate = Date.now();
       this.currentLevel = currentFloor;
       this.mapFloor.showFloor(currentFloor.id);
       this.mapDoors.showFloor(currentFloor.id);
@@ -210,8 +230,42 @@ export class OlmapComponent implements OnInit {
     }
   }
 
+  public allowZoomToLivePos() {
+    let zoomToPos: boolean = false;
+    let currentTimeStamp: number = Date.now();
+    //console.log("MapComponent::showLivePosition Zoom to livePos # lastMapUpdate: " + (currentTimeStamp - this.lastMapUpdate) +
+    if (this.lastViewChangeEnd >= this.lastViewChangeStart && currentTimeStamp - this.lastMapUpdate < 2500) //Always zoom to pos after level change
+    {
+      console.log("MapComponent::showLivePosition ALLOW  Zoom to livePos # lastMapUpdate ");
+      zoomToPos = true;
+    }
+    //console.log("MapComponent::showLivePosition Zoom to livePos # ?? " + (currentTimeStamp - this.lastViewChangeEnd) + "#(" + this.lastViewChangeEnd + "/" + this.lastViewChangeStart + ")");
+    if (this.lastViewChangeEnd >= this.lastViewChangeStart && currentTimeStamp - this.lastViewChangeEnd > 5000) //Zoom to pos if no map drag happend in the last 5sec
+    {
+      console.log("MapComponent::showLivePosition ALLOW  Zoom to livePos # lastDrag ");
+      zoomToPos = true;
+    }
+    if (this.lastViewChangeEnd >= this.lastViewChangeStart && currentTimeStamp - this.lastPositionReceived > 5000 && currentTimeStamp - this.lastViewChangeEnd > 2000) {
+      console.log("MapComponent::showLivePosition ALLOW Zoom to livePos # lastPositionReceived");
+      zoomToPos = true;
+    }
+
+    if (this.lastShowRoom > 0 && Date.now() - this.lastShowRoom < 5000) { //Ignore pos for same time after mark room
+      console.log("MapComponent::showLivePosition BLOCK Zoom to livePos # lastShowRoom");
+      zoomToPos = false;
+    }
+    console.log("MapComponent::showLivePosition  ######### " + zoomToPos);
+    return zoomToPos;
+  }
+
   public showLivePosition(livePos: Position) {
     this.mapLivePosition.showLivePosition(livePos);
+
+    if (this.allowZoomToLivePos() && livePos) {
+      this.zoomToPosition([livePos.x, livePos.y]);
+    }
+
+    this.lastPositionReceived = Date.now();
   }
 
   setFocus(): void {
@@ -220,11 +274,13 @@ export class OlmapComponent implements OnInit {
 
   showRoom(roomResult: Room) {
     console.log("OLMap::showRoom: " + JSON.stringify(roomResult));
+    this.lastShowRoom = Date.now();
     this.mapRoom.markRoomFromSearch(roomResult);
   }
 
   showRoute(from: number, to: number) {
     console.log("OlmapComponent::showRoute: " + from + " --> " + to);
+    this.lastShowRoom = Date.now();
     this.mapRoute.showRoute(from, to);
   }
 
@@ -241,7 +297,7 @@ export class OlmapComponent implements OnInit {
   zoomToPosition(position: number[]) {
     if (position && position != undefined) {
 
-      let destinationZoom = 20;
+      let destinationZoom = 21;
 
       if (destinationZoom > this.map.getView().getZoom()) {
         this.mapView.animate({
