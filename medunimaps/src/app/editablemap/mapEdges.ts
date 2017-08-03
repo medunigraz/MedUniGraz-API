@@ -20,6 +20,7 @@ export class MapEdges extends MapLayerBase {
   private selectFeatureOverlay: any = null;
 
   private isWeightMode: boolean = false;
+  private currentEdgeWeight: EdgeWeight = null;
 
   constructor(private mapService: MapService) {
     super();
@@ -38,6 +39,8 @@ export class MapEdges extends MapLayerBase {
   }
 
   public updateData(floorId: number): any {
+    this.clear();
+
     this.subscribeNewRequest(
       this.mapService.getNavigationEdges(floorId).subscribe(
         edges => this.showEdges(edges),
@@ -46,10 +49,12 @@ export class MapEdges extends MapLayerBase {
 
   public setWeightMode(weightmode: boolean) {
     console.log("MapEdges::setWeightmode -> " + weightmode);
+    this.isWeightMode = weightmode;
   }
 
   public setCurrentEdgeWeight(edgeWeight: EdgeWeight) {
     console.log("MapEdges::setCurrentEdgeWeight -> " + JSON.stringify(edgeWeight));
+    this.currentEdgeWeight = edgeWeight;
   }
 
   public setEdgeWeights(edgeWeights: EdgeWeight[]) {
@@ -103,14 +108,35 @@ export class MapEdges extends MapLayerBase {
   public updateMouseClicked(map: any) {
     //console.log("mapEdges::updateMouseClicked...")
     if (this.highlightedFeature) {
-      if (!this.selectFeatureOverlay) {
-        this.initSelectFeatureOverlay(map);
-      }
 
-      this.selectFeatureOverlay.getSource().clear();
-      this.selectFeature = this.highlightedFeature;
-      this.selectFeatureOverlay.getSource().addFeature(this.selectFeature);
-      console.log("mapEdges::updateMouseClicked Select Edge: " + this.selectFeature.getId());
+      if (this.isWeightMode) {
+        let id = this.highlightedFeature.getId();
+        let weight = this.highlightedFeature.get("category");
+
+        if (this.currentEdgeWeight) {
+          if (this.currentEdgeWeight.id != weight) {
+            console.log("mapEdges::updateMouseClicked - Change edge " + id + " to weight: " + this.currentEdgeWeight.id + "/" + this.currentEdgeWeight.name);
+            this.highlightedFeature.set("category", this.currentEdgeWeight.id);
+            //TODO SEND UPDATE
+            this.mapService.updateEdge(new ol.format.GeoJSON().writeFeature(this.highlightedFeature), this.highlightedFeature.getId()).
+              subscribe(
+              edge => this.edgeUpdated(edge),
+              error => console.log("ERROR: " + <any>error));
+
+          }
+        }
+
+      }
+      else {
+        if (!this.selectFeatureOverlay) {
+          this.initSelectFeatureOverlay(map);
+        }
+
+        this.selectFeatureOverlay.getSource().clear();
+        this.selectFeature = this.highlightedFeature;
+        this.selectFeatureOverlay.getSource().addFeature(this.selectFeature);
+        console.log("mapEdges::updateMouseClicked Select Edge: " + this.selectFeature.getId());
+      }
     }
     else {
       this.clearSelection();
@@ -240,6 +266,11 @@ export class MapEdges extends MapLayerBase {
     console.log("MapEdges::showEdges");
     this.clear();
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(features));
+  }
+
+  private edgeUpdated(edge: any) {
+    //Nothing todo
+    console.log("mapEdges::edgeUpdated!!!");
   }
 
 }

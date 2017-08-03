@@ -44,6 +44,7 @@ export class WeightselectComponent implements OnInit {
 
   private onUpdateError(error) {
     console.log("ERROR deleteNode: " + <any>error)
+    /*
     this.updateWeights([new EdgeWeight({
       "id": 1,
       "name": "Standard",
@@ -54,7 +55,7 @@ export class WeightselectComponent implements OnInit {
         "name": "Durchgang",
         "weight": "2.5"
       })]);
-
+*/
   }
 
   onSelect(weight: EdgeWeight): void {

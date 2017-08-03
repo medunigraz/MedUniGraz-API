@@ -98,7 +98,13 @@ export class MapHttpService extends MapService {
   }
 
   getEdgeWeightTypes(): Observable<EdgeWeight[]> {
-    return this.http.get(this.edgeWeightTypeUrl)
+
+    var headers = new Headers({
+      "Authorization": "Bearer " + this.oauthService.getAccessToken()
+    });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.get(this.edgeWeightTypeUrl, options)
       .map(this.extractDataEdgeWeightTypes)
       .catch(this.handleError);
   }
