@@ -114,6 +114,8 @@ export class OlmapComponent implements OnInit {
 
     this.map.on('movestart', evt => this.changeViewStart(evt));
     this.map.on('moveend', evt => this.changeViewEnd(evt));
+
+    this.mapLivePosition.setMap(this.map);
   }
 
   private changeViewStart(evt: any) {
@@ -236,25 +238,25 @@ export class OlmapComponent implements OnInit {
     //console.log("MapComponent::showLivePosition Zoom to livePos # lastMapUpdate: " + (currentTimeStamp - this.lastMapUpdate) +
     if (this.lastViewChangeEnd >= this.lastViewChangeStart && currentTimeStamp - this.lastMapUpdate < 2500) //Always zoom to pos after level change
     {
-      console.log("MapComponent::showLivePosition ALLOW  Zoom to livePos # lastMapUpdate ");
+      //console.log("MapComponent::showLivePosition ALLOW  Zoom to livePos # lastMapUpdate ");
       zoomToPos = true;
     }
     //console.log("MapComponent::showLivePosition Zoom to livePos # ?? " + (currentTimeStamp - this.lastViewChangeEnd) + "#(" + this.lastViewChangeEnd + "/" + this.lastViewChangeStart + ")");
     if (this.lastViewChangeEnd >= this.lastViewChangeStart && currentTimeStamp - this.lastViewChangeEnd > 5000) //Zoom to pos if no map drag happend in the last 5sec
     {
-      console.log("MapComponent::showLivePosition ALLOW  Zoom to livePos # lastDrag ");
+      //console.log("MapComponent::showLivePosition ALLOW  Zoom to livePos # lastDrag ");
       zoomToPos = true;
     }
     if (this.lastViewChangeEnd >= this.lastViewChangeStart && currentTimeStamp - this.lastPositionReceived > 5000 && currentTimeStamp - this.lastViewChangeEnd > 2000) {
-      console.log("MapComponent::showLivePosition ALLOW Zoom to livePos # lastPositionReceived");
+      //console.log("MapComponent::showLivePosition ALLOW Zoom to livePos # lastPositionReceived");
       zoomToPos = true;
     }
 
     if (this.lastShowRoom > 0 && Date.now() - this.lastShowRoom < 5000) { //Ignore pos for same time after mark room
-      console.log("MapComponent::showLivePosition BLOCK Zoom to livePos # lastShowRoom");
+      //console.log("MapComponent::showLivePosition BLOCK Zoom to livePos # lastShowRoom");
       zoomToPos = false;
     }
-    console.log("MapComponent::showLivePosition  ######### " + zoomToPos);
+    //console.log("MapComponent::showLivePosition  ######### " + zoomToPos);
     return zoomToPos;
   }
 

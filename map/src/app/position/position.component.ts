@@ -175,7 +175,7 @@ export class PositionComponent implements OnInit {
   }
 
   private updateLivePos(posResult: any, urlString: string) {
-    console.log("PositionComponent::updateLivePos: " + JSON.stringify(posResult));
+    //console.log("PositionComponent::updateLivePos: " + JSON.stringify(posResult));
 
     let pos: Position = undefined;
 
