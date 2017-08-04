@@ -129,7 +129,7 @@ export class MapLivePosition extends MapLayerBase {
       let elapsed = (frameState.time - this.startTime) % duration;
       let elapsedRatio = elapsed / duration;
       // radius will be 0.5 at start and 5 at end.
-      let radius = ol.easing.easeOut(elapsedRatio) * 15 + 5;
+      let radius = ol.easing.easeOut(elapsedRatio) * 50 + 15;
       let opacity = ol.easing.easeOut(1 - elapsedRatio);
 
       let style = new ol.style.Style({
@@ -137,8 +137,8 @@ export class MapLivePosition extends MapLayerBase {
           radius: radius,
           snapToPixel: false,
           stroke: new ol.style.Stroke({
-            color: 'rgba(0, 148, 255, ' + opacity + ')',
-            width: 2.25 + opacity * 5
+            color: 'rgba(81, 174, 50, ' + opacity + ')',
+            width: 8 + opacity * 8
           })
         })
       });
