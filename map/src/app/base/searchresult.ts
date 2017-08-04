@@ -19,10 +19,10 @@ export class SearchResult {
   public static createFromRestObj(obj: any): SearchResult {
 
     let type = 0;
-    if (obj["ctype"] == "geo.person") {
+    if (obj["ctype"] == "structure.person") {
       type = 1;
     }
-    else if (obj["ctype"] == "geo.org") {
+    else if (obj["ctype"] == "structure.organization") {
       type = 2;
     }
 

@@ -12,6 +12,8 @@ export class MapLivePosition extends MapLayerBase {
 
   private circle: any;
   private circleFeature: any;
+  private point: any;
+  private pointFeature: any;
 
   private positionVisible: boolean = false;
 
@@ -32,26 +34,26 @@ export class MapLivePosition extends MapLayerBase {
 
     let res = OpenlayersHelper.CreateBasicLayer(new ol.style.Style({
       fill: new ol.style.Fill({
-        color: 'rgba(0, 0, 0, 0.5)'
+        color: 'rgba(81, 174, 50, 0.5)'
       }),
       stroke: new ol.style.Stroke({
-        color: 'black',
+        color: 'rgba(81, 174, 50, 1)',
         width: 3
       })
     }));
 
-    //this.circle = new ol.geom.Circle([0, 0], 0.5);
+    this.circle = new ol.geom.Circle([0, 0], 0.5);
     //this.circle = new ol.geom.Point([1722184.2450872045, 5955256.38138703]);
-    this.circle = new ol.geom.Point([0, 0]);
     this.circleFeature = new ol.Feature(this.circle);
+
+    this.point = new ol.geom.Point([0, 0]);
+    this.pointFeature = new ol.Feature(this.point);
 
     this.layerSource = res.layerSource;
     this.layer = res.layer;
   }
 
   public setMap(map: any) {
-    //this.listenerKey = map.on('postcompose', this.animate);
-    //map.on('postcompose', evt => this.animate(evt, this));
     this.map = map;
   }
 
@@ -73,8 +75,8 @@ export class MapLivePosition extends MapLayerBase {
       if (!this.positionVisible) {
         this.AddPositionFeature();
       }
-      //this.circle.setCenter([livePos.x, livePos.y]);
-      this.circle.setCoordinates([livePos.x, livePos.y]);
+      this.circle.setCenter([livePos.x, livePos.y]);
+      this.point.setCoordinates([livePos.x, livePos.y]);
 
       if (this.startTime < 0) {
         this.startAnimation();
@@ -112,6 +114,7 @@ export class MapLivePosition extends MapLayerBase {
 
   private AddPositionFeature() {
     this.layerSource.addFeature(this.circleFeature);
+    this.layerSource.addFeature(this.pointFeature);
     this.positionVisible = true;
   }
 
@@ -123,7 +126,7 @@ export class MapLivePosition extends MapLayerBase {
 
       let vectorContext = evt.vectorContext;
       let frameState = evt.frameState;
-      let flashGeom = this.circleFeature.getGeometry().clone();
+      let flashGeom = this.pointFeature.getGeometry().clone();
 
 
       let elapsed = (frameState.time - this.startTime) % duration;
