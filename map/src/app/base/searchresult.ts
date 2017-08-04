@@ -5,6 +5,7 @@ export class SearchResult {
   text: string;
   type: number;
   level: number;
+  room_id: number;
   isStartPoint: boolean;
   lastElem: boolean;
 
@@ -27,13 +28,21 @@ export class SearchResult {
     }
 
     let result = new SearchResult(obj["id"], obj["presentation"], type);
-    result.level = obj["level"];
+    result.level = obj["level_id"];
+    result.room_id = obj["room_id"];
 
     return result;
   }
 
   public getRoom() {
-    return new Room(this.id, this.text, this.level);
+
+    if (this.type == 0) {
+      return new Room(this.id, this.text, this.level);
+    }
+    else if (this.room_id) {
+      return new Room(this.room_id, this.text, this.level);
+    }
+    return undefined;
   }
 
 }

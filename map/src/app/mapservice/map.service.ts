@@ -15,7 +15,7 @@ import 'rxjs/add/operator/map';
 export class MapService {
 
   private baseUrl = API_BASE_URL + '/v1/';
-  private searchUrl = this.baseUrl + 'geo/autocomplete/';
+  private searchUrl = this.baseUrl + 'api/autocomplete/';
   private roomUrl = this.baseUrl + 'geo/rooms/';
   private doorUrl = this.baseUrl + 'geo/doors/';
   private floorUrl = this.baseUrl + 'geo/floors/';

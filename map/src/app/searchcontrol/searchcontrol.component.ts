@@ -166,7 +166,10 @@ export class SearchcontrolComponent implements OnInit {
         this.routeClicked(this.currentResult);
       }
       else {
-        this.roomSelectedEvt.emit(this.currentResult.getRoom());
+        let room = this.currentResult.getRoom();
+        if (room) {
+          this.roomSelectedEvt.emit(room);
+        }
       }
     }
     else {
@@ -182,7 +185,10 @@ export class SearchcontrolComponent implements OnInit {
   routeClicked(destinationroom: SearchResult) {
     this.currentResult = destinationroom;
     this.showCurrentResult();
-    this.route(destinationroom.getRoom());
+    let room = destinationroom.getRoom();
+    if (room) {
+      this.route(room);
+    }
   }
 
   route(destinationroom: Room) {
@@ -201,7 +207,10 @@ export class SearchcontrolComponent implements OnInit {
     if (this.currentStartPointResult) {
       if (this.currentStartPointResult.id > 0) {
         console.log('SearchComponent::route from existing room');
-        this.routeSelectedEvt.emit(new RouteNodes(this.currentStartPointResult.getRoom(), destinationroom));
+        let room = this.currentStartPointResult.getRoom();
+        if (room) {
+          this.routeSelectedEvt.emit(new RouteNodes(room, destinationroom));
+        }
       }
       else if (this.currentStartPointResult.id == -2) //Haupteingang
       {
@@ -287,7 +296,10 @@ export class SearchcontrolComponent implements OnInit {
   private searchCurrentResultClicked() {
     if (this.currentResult != null) {
       this.showCurrentResult();
-      this.roomSelectedEvt.emit(this.currentResult.getRoom());
+      let room = this.currentResult.getRoom();
+      if (room) {
+        this.roomSelectedEvt.emit(room);
+      }
     }
   }
 
