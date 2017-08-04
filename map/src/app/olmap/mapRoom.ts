@@ -168,7 +168,7 @@ export class MapRoom extends MapLayerBase {
 
     for (let i = 0; i < olFeatures.length; i++) {
       let id = olFeatures[i].getId();
-      //console.log("MapRoom::showRoom: " + id);
+      //console.log("MapRoom::showRoom: " + id + "#" + JSON.stringify(olFeatures[i].getGeometry().getExtent()));
       olFeatures[i].setStyle(this.styleManager.getStyleForRoom(id, RoomDetail.getCategoryId(olFeatures[i]), false, false));
     }
 

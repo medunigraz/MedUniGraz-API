@@ -28,6 +28,7 @@ export class MapService {
   constructor(private http: Http) { }
 
   getRooms(layer: number): Observable<Object> {
+    //console.log("MapService::getRooms: " + layer);
     return this.http.get(this.roomUrl + '?level=' + layer)
       .map(this.extractData)
       .catch(this.handleError);
