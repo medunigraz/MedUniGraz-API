@@ -63,9 +63,13 @@ export class SignalBufferCollection {
     let bestValues: number[] = [-9999, -9999, -9999];
     let bestIDs: string[] = [undefined, undefined, undefined];
 
+    let debugString = "";
+
     for (let key in this.map) {
 
       let value = this.map[key].lastValue;
+
+      debugString += this.map[key].getDebugString();
 
       for (let i = 0; i < 3; i++)
         if (value) {
@@ -97,6 +101,8 @@ export class SignalBufferCollection {
         resultString += "name[" + bestIDs[i] + "]=" + bestValues[i];
       }
     }
+
+    //resultString += "&debug=" + debugString;
 
     return resultString;
   }

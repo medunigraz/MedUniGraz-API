@@ -4,6 +4,7 @@ export class SignalBuffer {
   name: string;
   lastValue: number;
   lastValueTimeStamp: number;
+  lastOrigValue: number;
 
   private filterValue = 0.5;
   private minValue = -90;
@@ -13,7 +14,14 @@ export class SignalBuffer {
     this.clear();
   }
 
+  public getDebugString() {
+    return this.name + "X" + this.lastValue + "X" + this.lastOrigValue + "X" + this.lastValueTimeStamp;
+  }
+
+
   public setValue(value) {
+
+    this.lastOrigValue = value;
 
     if (!value) {
       this.clear();
