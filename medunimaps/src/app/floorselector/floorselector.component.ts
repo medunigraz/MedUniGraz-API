@@ -43,6 +43,24 @@ export class FloorselectorComponent implements OnInit {
   updateFloors(floors: Floor[]) {
     this.floorList = floors;
 
+    for (let i = 0; i < this.floorList.length; i++) {
+      if (i == 0) {
+        this.floorList[i].floorAbove = -1;
+      }
+      else {
+        this.floorList[i].floorAbove = this.floorList[i - 1].id;
+      }
+
+      if (i == (this.floorList.length - 1)) {
+        this.floorList[i].floorBelow = -1;
+      }
+      else {
+        this.floorList[i].floorBelow = this.floorList[i + 1].id;
+      }
+
+      console.log("FloorselectorComponent::updateFloors Floor: " + JSON.stringify(this.floorList[i]));
+    }
+
     for (let floor of this.floorList) {
       if (floor.name.startsWith('EG')) {
         this.selectFloor(floor);

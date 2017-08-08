@@ -2,6 +2,7 @@
 export enum ApplicationModeT {
   DEFAULT,
   EDIT_NODES,
+  EDIT_MULTIFLOOR_EDGES,
   EDIT_POIS,
   EDIT_BACKGROUND,
   EDIT_BEACONS,
@@ -25,6 +26,7 @@ export class ApplicationMode {
 
 export const ApplicationModes = [
   ApplicationMode.CreateDefault(),
+  new ApplicationMode(ApplicationModeT.EDIT_MULTIFLOOR_EDGES, "Nav-Mesh Stockwerke"),
   new ApplicationMode(ApplicationModeT.EDIT_POIS, "Points of Interest"),
   new ApplicationMode(ApplicationModeT.EDIT_BEACONS, "Beacons"),
   new ApplicationMode(ApplicationModeT.EDIT_WEIGHTS, "Navigation Gewichtung")//,

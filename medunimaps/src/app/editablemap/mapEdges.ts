@@ -1,5 +1,5 @@
 import { MapService } from '../mapservice/map.service';
-import { USEHTTPSERVICE } from '../base/globalconstants';
+import { USEHTTPSERVICE, ABOVE_LEVEL_OFFSET, BELOW_LEVEL_OFFSET } from '../base/globalconstants';
 
 import { ApplicationMode } from '../base/applicationmode';
 import { ApplicationModeT } from '../base/applicationmode';
@@ -9,6 +9,8 @@ import { MapLayerBase } from './mapLayerBase';
 import { OpenlayersHelper } from './openlayershelper';
 import { MapNodesStyles } from './mapNodesStyles';
 import { MapEdgeStyles } from './mapEdgeStyles';
+
+import { Floor } from '../base/floor';
 
 declare var ol: any;
 
@@ -21,6 +23,9 @@ export class MapEdges extends MapLayerBase {
 
   private isWeightMode: boolean = false;
   private currentEdgeWeight: EdgeWeight = null;
+
+  private currentLevel: Floor = undefined;
+  private multiLevelMode: boolean = false;
 
   constructor(private mapService: MapService) {
     super();
@@ -38,11 +43,14 @@ export class MapEdges extends MapLayerBase {
     this.layer = res.layer;
   }
 
-  public updateData(floorId: number): any {
+  public updateData(floor: Floor, multiLevel: boolean): any {
     this.clear();
 
+    this.currentLevel = floor;
+    this.multiLevelMode = multiLevel;
+
     this.subscribeNewRequest(
-      this.mapService.getNavigationEdges(floorId).subscribe(
+      this.mapService.getNavigationEdges(floor.id).subscribe(
         edges => this.showEdges(edges),
         error => console.log("ERROR deleteNode: " + <any>error)));
   }
@@ -188,6 +196,21 @@ export class MapEdges extends MapLayerBase {
 
     let p1 = start.getGeometry().getCoordinates();
     let p2 = end.getGeometry().getCoordinates();
+
+    if (this.multiLevelMode && start.get('level') == this.currentLevel.floorAbove) {
+      p1[0] = p1[0] - ABOVE_LEVEL_OFFSET;
+    }
+    else if (this.multiLevelMode && start.get('level') == this.currentLevel.floorBelow) {
+      p1[0] = p1[0] - BELOW_LEVEL_OFFSET;
+    }
+
+    if (this.multiLevelMode && end.get('level') == this.currentLevel.floorAbove) {
+      p2[0] = p2[0] - ABOVE_LEVEL_OFFSET;
+    }
+    else if (this.multiLevelMode && end.get('level') == this.currentLevel.floorBelow) {
+      p2[0] = p2[0] - BELOW_LEVEL_OFFSET;
+    }
+
     let line = new ol.geom.LineString([p1, p2]);
     let distance = line.getLength();
 
@@ -228,7 +251,9 @@ export class MapEdges extends MapLayerBase {
   }
 
   private edgeAdded(edge: any): void {
-    this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(edge));
+    let ol_edge = (new ol.format.GeoJSON()).readFeature(edge);
+    ol_edge = this.getUpdatedMultiLayerEdge(ol_edge);
+    this.layerSource.addFeature(ol_edge);
   }
 
   private initHighlightFeatureOverlay(map: any) {
@@ -265,12 +290,50 @@ export class MapEdges extends MapLayerBase {
   private showEdges(features: any): void {
     console.log("MapEdges::showEdges");
     this.clear();
-    this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(features));
+
+    //TODO Add LAYER OFFSET
+    let ol_features = (new ol.format.GeoJSON()).readFeatures(features);
+
+    for (let i = 0; i < ol_features.length; i++) {
+      ol_features[i] = this.getUpdatedMultiLayerEdge(ol_features[i]);
+    }
+
+    this.layerSource.addFeatures(ol_features);
   }
 
   private edgeUpdated(edge: any) {
     //Nothing todo
     console.log("mapEdges::edgeUpdated!!!");
+  }
+
+  private getUpdatedMultiLayerEdge(edgeFeature: any) {
+
+
+    let coords = edgeFeature.getGeometry().getCoordinates();
+    let sourceLevel = edgeFeature.get("source_node").properties.level;
+    let destinationLevel = edgeFeature.get("destination_node").properties.level;
+
+    //console.log("MapEdges::showEdges oldcoords" + JSON.stringify(coords));
+
+    if (sourceLevel == this.currentLevel.floorAbove) {
+      coords[0][0] = coords[0][0] + ABOVE_LEVEL_OFFSET;
+    }
+    if (sourceLevel == this.currentLevel.floorBelow) {
+      coords[0][0] = coords[0][0] + BELOW_LEVEL_OFFSET;
+    }
+
+    if (destinationLevel == this.currentLevel.floorAbove) {
+      coords[1][0] = coords[1][0] + ABOVE_LEVEL_OFFSET;
+    }
+    if (destinationLevel == this.currentLevel.floorBelow) {
+      coords[1][0] = coords[1][0] + BELOW_LEVEL_OFFSET;
+    }
+
+    //console.log("MapEdges::showEdges newcoords " + JSON.stringify(coords));
+
+    edgeFeature.getGeometry().setCoordinates(coords);
+
+    return edgeFeature;
   }
 
 }

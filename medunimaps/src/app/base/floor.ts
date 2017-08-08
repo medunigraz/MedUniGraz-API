@@ -4,6 +4,9 @@ export class Floor {
   name: string;
   building: number;
 
+  floorAbove: number = -1;
+  floorBelow: number = -1;
+
   constructor(obj: any) {
     //console.log("Create new floor: " + JSON.stringify(obj));
     this.id = obj["id"];

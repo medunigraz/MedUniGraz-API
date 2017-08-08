@@ -3,9 +3,14 @@ import { ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
 import { MapService } from '../mapservice/map.service';
 import { MapLayerBase } from './mapLayerBase';
 
+import { Floor } from '../base/floor';
+
 declare var ol: any;
 
 export class MapRoom extends MapLayerBase {
+
+  private level: Floor = undefined;
+  private multiLevelMode: boolean = false;
 
   constructor(private mapService: MapService) {
     super();
@@ -26,10 +31,16 @@ export class MapRoom extends MapLayerBase {
     this.layer = res.layer;
   }
 
-  public updateData(floorid: number) {
+  public updateData(floor: Floor, multiLayer: boolean) {
+
+    this.level = floor;
+
     this.clear();
+
+    this.multiLevelMode = multiLayer;
+
     this.subscribeNewRequest(
-      this.mapService.getRooms(floorid).subscribe(
+      this.mapService.getRooms(this.level.id).subscribe(
         rooms => this.showRooms(rooms),
         error => console.log("ERROR deleteNode: " + <any>error)));
   }
@@ -40,6 +51,39 @@ export class MapRoom extends MapLayerBase {
 
     let olFeatures = (new ol.format.GeoJSON()).readFeatures(features);
     this.layerSource.addFeatures(olFeatures);
+
+    if (this.multiLevelMode) {
+      this.subscribeNewRequest(
+        this.mapService.getRooms(this.level.floorAbove).subscribe(
+          rooms => this.showRoomsAbove(rooms),
+          error => console.log("ERROR deleteNode: " + <any>error)));
+    }
+  }
+
+  private showRoomsAbove(features: any): void {
+    //console.log("MapRoom::showRoomsAbove");
+    let ol_features = (new ol.format.GeoJSON()).readFeatures(features);
+    for (let i = 0; i < ol_features.length; i++) {
+      //let coord = ol_features[i].getGeometry().getCoordinates();
+      //ol.coordinate.add(coord, 10, 0);
+      ol_features[i].getGeometry().translate(150, 0);
+    }
+    this.layerSource.addFeatures(ol_features);
+
+    this.subscribeNewRequest(
+      this.mapService.getRooms(this.level.floorBelow).subscribe(
+        rooms => this.showRoomsBelow(rooms),
+        error => console.log("ERROR deleteNode: " + <any>error)));
+  }
+
+  private showRoomsBelow(features: any): void {
+    let ol_features = (new ol.format.GeoJSON()).readFeatures(features);
+    for (let i = 0; i < ol_features.length; i++) {
+      //let coord = ol_features[i].getGeometry().getCoordinates();
+      //ol.coordinate.add(coord, 10, 0);
+      ol_features[i].getGeometry().translate(-150, 0);
+    }
+    this.layerSource.addFeatures(ol_features);
   }
 
   private getDummyRoom(): any {

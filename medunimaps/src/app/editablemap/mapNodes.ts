@@ -1,5 +1,5 @@
 import { MapService } from '../mapservice/map.service';
-import { USEHTTPSERVICE } from '../base/globalconstants';
+import { USEHTTPSERVICE, ABOVE_LEVEL_OFFSET, BELOW_LEVEL_OFFSET } from '../base/globalconstants';
 
 import { ApplicationMode } from '../base/applicationmode';
 import { ApplicationModeT } from '../base/applicationmode';
@@ -10,6 +10,8 @@ import { MapEdges } from './mapEdges';
 import { MapRoute } from './mapRoute';
 import { OpenlayersHelper } from './openlayershelper';
 import { MapNodesStyles } from './mapNodesStyles';
+
+import { Floor } from '../base/floor';
 
 declare var ol: any;
 
@@ -24,9 +26,11 @@ export class MapNodes extends MapLayerBase {
   private isModifying: boolean = false;
   private lastMousePostion: number[] = [0, 0];
 
-  private currentFloorId: number = -1;
+  private currentLevel: Floor = undefined;
   private ctrlPressed: boolean = false;
   private lastSelectedNode: any = null;
+
+  private multiLevelMode: boolean = false;
 
   constructor(private mapService: MapService,
     private mapEditEdges: MapEditEdges,
@@ -73,11 +77,12 @@ export class MapNodes extends MapLayerBase {
     this.modify.on('modifyend', evt => this.featureModified(evt));
   }
 
-  public updateData(floorId: number): any {
-    this.currentFloorId = floorId;
+  public updateData(floor: Floor, multiLevel: boolean): any {
+    this.multiLevelMode = multiLevel;
+    this.currentLevel = floor;
     this.clear();
     this.subscribeNewRequest(
-      this.mapService.getNavigationNodes(floorId).subscribe(nodes => this.showNodes(nodes)));
+      this.mapService.getNavigationNodes(this.currentLevel.id).subscribe(nodes => this.showNodes(nodes)));
   }
 
   public mouseMoved(position: any, worldposition: any, map: any) {
@@ -243,7 +248,8 @@ export class MapNodes extends MapLayerBase {
 
   private testSelect(layer: any) {
     if (this.testLayer(layer) &&
-      (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES)) {
+      (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES ||
+        OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_MULTIFLOOR_EDGES)) {
       return true;
     }
     return false;
@@ -262,7 +268,7 @@ export class MapNodes extends MapLayerBase {
 
   private addNewNodeOnPos(selectedFeature: any, position: number[]) {
 
-    if (this.currentFloorId < 0) {
+    if (!this.currentLevel || this.currentLevel.id < 0) {
       return;
     }
 
@@ -278,7 +284,7 @@ export class MapNodes extends MapLayerBase {
     console.log("mouseClicked Add new node: " + JSON.stringify(center) +
       "   SplitEdgeID: " + highlightedEdgeId);
     //Add edge to new Node
-    this.mapService.addNode(this.currentFloorId, center).
+    this.mapService.addNode(this.currentLevel.id, center).
       subscribe(
       node => this.updateAddNode(node, selectedFeature, highlightedEdgeId),
       error => console.log("ERROR: " + <any>error));
@@ -293,10 +299,38 @@ export class MapNodes extends MapLayerBase {
   }
 
   private showNodes(features: any): void {
-
     this.clear();
-    //console.log("showNodes! - " + JSON.stringify(features));
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(features));
+
+    if (this.multiLevelMode) {
+      this.subscribeNewRequest(
+        this.mapService.getNavigationNodes(this.currentLevel.floorAbove).subscribe(
+          nodes => this.showNodesAbove(nodes),
+          error => console.log("ERROR show Node: " + <any>error)));
+    }
+  }
+
+  private showNodesAbove(features: any): void {
+    let ol_features = (new ol.format.GeoJSON()).readFeatures(features);
+    for (let i = 0; i < ol_features.length; i++) {
+      ol_features[i].getGeometry().translate(ABOVE_LEVEL_OFFSET, 0);
+    }
+    this.layerSource.addFeatures(ol_features);
+
+    this.subscribeNewRequest(
+      this.mapService.getNavigationNodes(this.currentLevel.floorBelow).subscribe(
+        rooms => this.showNodesBelow(rooms),
+        error => console.log("ERROR show Node: " + <any>error)));
+  }
+
+  private showNodesBelow(features: any): void {
+    let ol_features = (new ol.format.GeoJSON()).readFeatures(features);
+    for (let i = 0; i < ol_features.length; i++) {
+      //let coord = ol_features[i].getGeometry().getCoordinates();
+      //ol.coordinate.add(coord, 10, 0);
+      ol_features[i].getGeometry().translate(BELOW_LEVEL_OFFSET, 0);
+    }
+    this.layerSource.addFeatures(ol_features);
   }
 
   private featureSelected(evt: any) {

@@ -75,7 +75,7 @@ export class EditablemapComponent implements OnInit {
 
   private ctlPressed: boolean = false;
 
-
+  private lastFloor: Floor = undefined;
 
 
   ngOnInit() {
@@ -148,17 +148,22 @@ export class EditablemapComponent implements OnInit {
     }
 
     this.updateLayers();
+
+    this.currentFloor = this.lastFloor;
   }
 
   @Input()
   set currentFloor(currentFloor: Floor) {
     console.log("EditAbleMapComponent::Set currentFloor - New Floor: " + JSON.stringify(currentFloor));
+
+    this.lastFloor = currentFloor;
+
     if (currentFloor && currentFloor.id >= 0) {
       this.mapFloor.updateData(currentFloor.id);
-      this.mapRooms.updateData(currentFloor.id);
+      this.mapRooms.updateData(currentFloor, OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_MULTIFLOOR_EDGES);
       this.mapDoors.updateData(currentFloor.id);
-      this.mapEdges.updateData(currentFloor.id);
-      this.mapNodes.updateData(currentFloor.id);
+      this.mapEdges.updateData(currentFloor, OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_MULTIFLOOR_EDGES);
+      this.mapNodes.updateData(currentFloor, OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_MULTIFLOOR_EDGES);
       this.mapRoute.setCurrentFloor(currentFloor.id);
       this.mapBeacons.updateData(currentFloor.id);
       this.mapPois.setCurrentFloor(currentFloor.id);
@@ -248,7 +253,10 @@ export class EditablemapComponent implements OnInit {
       this.mapNodes.ctlReleased();
     }
 
-    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES && event.keyCode == 46) //Entf Key
+    if ((OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES ||
+      OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_MULTIFLOOR_EDGES
+    )
+      && event.keyCode == 46) //Entf Key
     {
       this.mapNodes.deleteSelectedNodes();
       this.mapEdges.deleteSelectedEdges();
@@ -263,7 +271,10 @@ export class EditablemapComponent implements OnInit {
       this.mapRoute.shiftReleased();
     }
 
-    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES && event.keyCode == 88) { //x Key
+    if ((OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES ||
+      OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_MULTIFLOOR_EDGES
+    )
+      && event.keyCode == 88) { //x Key
       this.mapRoute.clear();
     }
   }
@@ -281,7 +292,8 @@ export class EditablemapComponent implements OnInit {
     //  return;
     //}
     let pixel = this.map.getEventPixel(evt.originalEvent);
-    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES) {
+    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES ||
+      OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_MULTIFLOOR_EDGES) {
       this.mapNodes.mouseMoved(pixel, evt.coordinate, this.map);
     }
     else if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_WEIGHTS) {
@@ -297,7 +309,8 @@ export class EditablemapComponent implements OnInit {
     console.log("Coord Org: " + evt.coordinate + " strg: " + evt.originalEvent.ctrlKey + " shift: " + evt.originalEvent.shiftKey);
     let pixel = this.map.getEventPixel(evt.originalEvent);
 
-    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES) {
+    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES ||
+      OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_MULTIFLOOR_EDGES) {
       this.mapNodes.mouseClicked(evt.coordinate, this.map);
     }
     else if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_POIS) {
@@ -322,7 +335,8 @@ export class EditablemapComponent implements OnInit {
 
     this.setLayerActive(this.mapBeacons, false);
 
-    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES) {
+    if (OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_NODES ||
+      OpenlayersHelper.CurrentApplicationMode.mode == ApplicationModeT.EDIT_MULTIFLOOR_EDGES) {
       this.setLayerActive(this.mapEdges, true);
       this.setLayerActive(this.mapEditEdges, true);
       this.setLayerActive(this.mapNodes, true);
