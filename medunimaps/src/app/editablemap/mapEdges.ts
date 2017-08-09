@@ -126,7 +126,16 @@ export class MapEdges extends MapLayerBase {
             console.log("mapEdges::updateMouseClicked - Change edge " + id + " to weight: " + this.currentEdgeWeight.id + "/" + this.currentEdgeWeight.name);
             this.highlightedFeature.set("category", this.currentEdgeWeight.id);
             //TODO SEND UPDATE
-            this.mapService.updateEdge(new ol.format.GeoJSON().writeFeature(this.highlightedFeature), this.highlightedFeature.getId()).
+
+            let clonedFeature = this.highlightedFeature.clone();
+            clonedFeature.setId(this.highlightedFeature.getId());
+
+
+            let line = this.getEdgeLine((new ol.format.GeoJSON().readFeature(clonedFeature.get('source_node'))),
+              (new ol.format.GeoJSON().readFeature(clonedFeature.get('destination_node'))));
+            clonedFeature.setGeometry(line);
+
+            this.mapService.updateEdge(new ol.format.GeoJSON().writeFeature(clonedFeature), this.highlightedFeature.getId()).
               subscribe(
               edge => this.edgeUpdated(edge),
               error => console.log("ERROR: " + <any>error));
@@ -194,31 +203,35 @@ export class MapEdges extends MapLayerBase {
       return;
     }
 
-    let p1 = start.getGeometry().getCoordinates();
-    let p2 = end.getGeometry().getCoordinates();
+    /*
+        let p1 = start.getGeometry().getCoordinates();
+        let p2 = end.getGeometry().getCoordinates();
 
-    if (this.multiLevelMode && start.get('level') == this.currentLevel.floorAbove) {
-      p1[0] = p1[0] - ABOVE_LEVEL_OFFSET;
-    }
-    else if (this.multiLevelMode && start.get('level') == this.currentLevel.floorBelow) {
-      p1[0] = p1[0] - BELOW_LEVEL_OFFSET;
-    }
+        if (this.multiLevelMode && start.get('level') == this.currentLevel.floorAbove) {
+          p1[0] = p1[0] - ABOVE_LEVEL_OFFSET;
+        }
+        else if (this.multiLevelMode && start.get('level') == this.currentLevel.floorBelow) {
+          p1[0] = p1[0] - BELOW_LEVEL_OFFSET;
+        }
 
-    if (this.multiLevelMode && end.get('level') == this.currentLevel.floorAbove) {
-      p2[0] = p2[0] - ABOVE_LEVEL_OFFSET;
-    }
-    else if (this.multiLevelMode && end.get('level') == this.currentLevel.floorBelow) {
-      p2[0] = p2[0] - BELOW_LEVEL_OFFSET;
-    }
+        if (this.multiLevelMode && end.get('level') == this.currentLevel.floorAbove) {
+          p2[0] = p2[0] - ABOVE_LEVEL_OFFSET;
+        }
+        else if (this.multiLevelMode && end.get('level') == this.currentLevel.floorBelow) {
+          p2[0] = p2[0] - BELOW_LEVEL_OFFSET;
+        }
 
-    let line = new ol.geom.LineString([p1, p2]);
+        let line = new ol.geom.LineString([p1, p2]);*/
+    let line = this.getEdgeLine(start, end);
     let distance = line.getLength();
 
     let path = {
       'type': 'LineString',
       'coordinates': [
-        p1,
-        p2
+        //p1,
+        //p2
+        line.getFirstCoordinate(),
+        line.getLastCoordinate()
       ]
     }
 
@@ -226,6 +239,27 @@ export class MapEdges extends MapLayerBase {
       subscribe(
       edge => this.edgeAdded(edge),
       error => console.log("ERROR: " + <any>error));
+  }
+
+  public getEdgeLine(startNode: any, endNode: any) {
+    let p1 = startNode.getGeometry().getCoordinates();
+    let p2 = endNode.getGeometry().getCoordinates();
+
+    if (this.multiLevelMode && startNode.get('level') == this.currentLevel.floorAbove) {
+      p1[0] = p1[0] - ABOVE_LEVEL_OFFSET;
+    }
+    else if (this.multiLevelMode && startNode.get('level') == this.currentLevel.floorBelow) {
+      p1[0] = p1[0] - BELOW_LEVEL_OFFSET;
+    }
+
+    if (this.multiLevelMode && endNode.get('level') == this.currentLevel.floorAbove) {
+      p2[0] = p2[0] - ABOVE_LEVEL_OFFSET;
+    }
+    else if (this.multiLevelMode && endNode.get('level') == this.currentLevel.floorBelow) {
+      p2[0] = p2[0] - BELOW_LEVEL_OFFSET;
+    }
+
+    return new ol.geom.LineString([p1, p2]);
   }
 
   public getEdgesForNode(nodeId: number): any[] {

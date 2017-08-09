@@ -16,6 +16,12 @@ export class EdgeWeight {
     else if (this.id == 2) {
       this.color = "#FF8800";
     }
+    else if (this.id == 3) {
+      this.color = "#00FFFF";
+    }
+    else if (this.id == 4) {
+      this.color = "#FF0088";
+    }
     else {
       this.color = "#AAAAAAA";
     }
