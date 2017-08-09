@@ -66,7 +66,7 @@ export class OlmapComponent implements OnInit {
     this.mapRoom = new MapRoom(this.roomPopupDiv, this.roomPopupText, this, this.mapService);
     this.mapFloor = new MapFloor(this.mapService);
     this.mapDoors = new MapDoors(this.mapService);
-    this.mapRoute = new MapRoute(this.mapService);
+    this.mapRoute = new MapRoute(this.mapService, this);
     this.mapLivePosition = new MapLivePosition(this.mapService);
 
     let interactions = ol.interaction.defaults({ altShiftDragRotate: false, pinchRotate: false });
@@ -296,10 +296,23 @@ export class OlmapComponent implements OnInit {
     this.mapRoom.closePopup();
   }
 
+  zoomToGeomtry(extent: any) {
+    if (extent) {
+      let options = {
+        padding: [1, 1, 1, 1],
+        duration: 500
+      }
+
+      if (this.mapView) {
+        this.mapView.fit(extent, options);
+      }
+    }
+  }
+
   zoomToPosition(position: number[]) {
     if (position && position != undefined) {
 
-      let destinationZoom = 21;
+      let destinationZoom = 20;
 
       if (destinationZoom > this.map.getView().getZoom()) {
         this.mapView.animate({
@@ -312,9 +325,7 @@ export class OlmapComponent implements OnInit {
         center: position,
         duration: 500
       });
-
       //this.mapView.setCenter(position);
-
     }
   }
 

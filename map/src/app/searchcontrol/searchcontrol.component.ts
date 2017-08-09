@@ -215,7 +215,7 @@ export class SearchcontrolComponent implements OnInit {
       else if (this.currentStartPointResult.id == -2) //Haupteingang
       {
         console.log('SearchComponent::route from entrance');
-        this.routeSelectedEvt.emit(new RouteNodes(new Room(602, "Haupteingang", 1), destinationroom));
+        this.routeSelectedEvt.emit(new RouteNodes(new Room(5936, "Haupteingang", 2), destinationroom));
       }
       else {
         console.log('SearchComponent::route from ' + this.currentStartPointResult.id + ' not supported!');

@@ -4,6 +4,8 @@ import { MapLayerBase } from './mapLayerBase';
 import { OpenlayersHelper } from './openlayershelper';
 import { MapRouteStyles } from './mapRouteStyles';
 
+import {OlmapComponent} from './olmap.component'
+
 declare var ol: any;
 
 export class MapRoute extends MapLayerBase {
@@ -12,7 +14,7 @@ export class MapRoute extends MapLayerBase {
   private currentLevelId: number = -1;
   private createRoute: boolean = false;
 
-  constructor(private mapService: MapService) {
+  constructor(private mapService: MapService, private mapComponent: OlmapComponent) {
     super();
     this.Initialize();
   }
@@ -68,7 +70,12 @@ export class MapRoute extends MapLayerBase {
   private updateRoute(route: any) {
     console.log("MapRoute::update Route");
     this.layerSource.clear();
-    this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(route));
+
+    let o_features = (new ol.format.GeoJSON()).readFeatures(route);
+
+    this.layerSource.addFeatures(o_features);
+
+    this.mapComponent.zoomToGeomtry(this.layerSource.getExtent());
   }
 
 }
