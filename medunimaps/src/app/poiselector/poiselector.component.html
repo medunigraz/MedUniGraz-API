@@ -1,10 +1,12 @@
 <div class="poicontrol" *ngIf="showControl">
   <button md-raised-button [mdMenuTriggerFor]="menuselectcontrol" class="poicontrolmenubutton">
-     <img class="poicontrolmenuIcon" src="{{selectedPoiType.iconurl}}" alt="{{selectedPoiType.name}}"><span class="poicontrolmenutext">{{selectedPoiType.name}}</span>
+     <!--<img class="poicontrolmenuIcon" src="{{selectedPoiType.iconurl}}" alt="{{selectedPoiType.name}}">-->
+     <div  class="poicontrolmenuIcon {{selectedPoiType.iconclass}}" [style.background-color] = "selectedPoiType.color"> </div>
+     <span class="poicontrolmenutext">{{selectedPoiType.name}}</span>
   </button>
   <md-menu #menuselectcontrol="mdMenu">
     <button md-menu-item *ngFor="let poi of pois" (click)="onSelect(poi)" class="poicontrolmenubutton">
-      <img class="poicontrolmenuIcon" src="{{poi.iconurl}}" alt="{{poi.name}}">
+      <div  class="poicontrolmenuIcon {{poi.iconclass}}" [style.background-color] = "poi.color"> </div>
       <span class="poicontrolmenutext">{{poi.name}}</span>
     </button>
   </md-menu>

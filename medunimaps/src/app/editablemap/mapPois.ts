@@ -3,8 +3,8 @@ import { MapService } from '../mapservice/map.service';
 import { USEHTTPSERVICE } from '../base/globalconstants';
 
 import { MapLayerBase } from './mapLayerBase';
-import {PoiType} from '../base/poitype'
-import {Poi} from '../base/poi'
+import { PoiType } from '../base/poitype'
+import { Poi } from '../base/poi'
 
 
 declare var ol: any;
@@ -70,7 +70,7 @@ export class MapPois extends MapLayerBase {
           anchor: [0.5, 1],
           anchorXUnits: 'fraction',
           anchorYUnits: 'fraction',
-          src: poiTypes[i].iconurl
+          src: poiTypes[i].icon
         }))
       });
 
