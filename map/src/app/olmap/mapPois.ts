@@ -1,8 +1,8 @@
 import { MapService } from '../mapservice/map.service';
 import { OpenlayersHelper } from './openlayershelper';
 import { MapLayerBase } from './mapLayerBase';
-import {PoiType} from '../base/poitype'
-import {Poi} from '../base/poi'
+import { PoiType } from '../base/poitype'
+import { Poi } from '../base/poi'
 
 declare var ol: any;
 
@@ -11,6 +11,7 @@ export class MapPois extends MapLayerBase {
   private poitypes: PoiType[] = null;
 
   private iconStyleMap: { [id: number]: any } = null;
+  private iconMarkerMap: { [id: number]: any } = null;
   private activeIconsMap: { [id: number]: boolean } = null;
 
   private poiInstances: any = null;
@@ -72,6 +73,10 @@ export class MapPois extends MapLayerBase {
 
       if (this.activeIconsMap[poiTypeId]) {
         //console.log("MapPois::updatePois Add Poi: " + id);
+        let markerfeature = this.poiInstances[i].clone();
+        markerfeature.setStyle(this.iconMarkerMap[poiTypeId]);
+        this.layerSource.addFeature(markerfeature);
+
         this.poiInstances[i].setStyle(this.iconStyleMap[poiTypeId]);
         this.layerSource.addFeature(this.poiInstances[i]);
       }
@@ -85,18 +90,46 @@ export class MapPois extends MapLayerBase {
     }
 
     this.iconStyleMap = {};
+    this.iconMarkerMap = {};
 
     for (let i = 0; i < this.poitypes.length; i++) {
+
+      //let iconStyle = new ol.style.Style({
+      //  image: new ol.style.Icon(/** @type {olx.style.IconOptions} */({
+      //    anchor: [0.5, 1],
+      //    anchorXUnits: 'fraction',
+      //    anchorYUnits: 'fraction',
+      //    src: this.poitypes[i].icon
+      //  }))
+      //});
+
       let iconStyle = new ol.style.Style({
-        image: new ol.style.Icon(/** @type {olx.style.IconOptions} */({
-          anchor: [0.5, 1],
-          anchorXUnits: 'fraction',
-          anchorYUnits: 'fraction',
-          src: this.poitypes[i].icon
-        }))
+        text: new ol.style.Text({
+          text: this.poitypes[i].fontKey,
+          font: 'normal 35px meduni',
+          textBaseline: 'Bottom',
+          offsetY: -20,
+          fill: new ol.style.Fill({
+            color: 'black',
+          })
+        })
       });
 
       this.iconStyleMap[this.poitypes[i].id] = iconStyle;
+
+      let markerStyle = new ol.style.Style({
+        text: new ol.style.Text({
+          text: 'Q',
+          font: 'normal 25px meduni',
+          textBaseline: 'Bottom',
+          offsetY: 0,
+          fill: new ol.style.Fill({
+            color: this.poitypes[i].color,
+          })
+        })
+      });
+
+      this.iconMarkerMap[this.poitypes[i].id] = markerStyle;
     }
   }
 

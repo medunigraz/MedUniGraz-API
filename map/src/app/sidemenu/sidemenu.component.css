@@ -47,12 +47,7 @@
   width: 100%;
 }
 
-/*
-  Controls
-*/
-
-.poiTable
-{
+.poiTable {
   width: 100%;
 }
 
@@ -70,28 +65,30 @@
   background-color: #51AE32;
 }
 
-.poiHeader
-{
+.poiHeader {
   padding: 0.5em;
   margin: 0;
 }
 
-.copyright
-{
+.copyright {
   padding: 0.5em;
   margin: 0;
   font-size: x-small;
 }
 
-.poiIcon
-{
-  color: #51AE32;
+.poiIcon {
+  /*background-color: #51AE32;*/
+  color: white;
   padding: 0;
   margin: 0;
+  padding-top: 0.2em;
+  font-size: 1.4em;
+  width: 1.45em;
+  text-align: center;
+  border-radius: 15%;
 }
 
-.closeSideMenuButton
-{
+.closeSideMenuButton {
   z-index: 30;
   position: absolute;
   top: 0;
