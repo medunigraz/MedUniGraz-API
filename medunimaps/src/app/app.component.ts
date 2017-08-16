@@ -1,18 +1,18 @@
 import { ViewChild, Component, Optional, OnInit } from '@angular/core';
-import {MdDialog, MdDialogRef} from '@angular/material';
+import { MdDialog, MdDialogRef } from '@angular/material';
 
 import { ApplicationMode, ApplicationModeT } from './base/applicationmode';
 import { Floor } from './base/floor';
 import { PoiType } from './base/poitype';
 import { BeaconEditMode, BeaconEditModes } from './base/beaconeditmode';
-import {Signal} from './base/signal';
+import { Signal } from './base/signal';
 import { Beacon } from './base/beacon';
 import { EdgeWeight } from './base/edgeweight';
 
 
 import { OAuthService } from 'angular-oauth2-oidc';
 
-import {BeaconinfoComponent} from './beaconinfo/beaconinfo.component'
+import { BeaconinfoComponent } from './beaconinfo/beaconinfo.component'
 
 @Component({
   selector: 'app-root',

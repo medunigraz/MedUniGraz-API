@@ -1,11 +1,11 @@
 import { Component, OnInit, EventEmitter, NgZone, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs';
-import {Subscription} from "rxjs";
-import {TimerObservable} from "rxjs/observable/TimerObservable";
+import { Subscription } from "rxjs";
+import { TimerObservable } from "rxjs/observable/TimerObservable";
 
-import {SignalBuffer} from './signalbuffer';
-import {SignalBufferCollection} from './signalbuffercollection';
-import {Signal} from '../base/signal';
+import { SignalBuffer } from './signalbuffer';
+import { SignalBufferCollection } from './signalbuffercollection';
+import { Signal } from '../base/signal';
 
 enum PositionStatus {
   InActive = 0,
@@ -123,6 +123,7 @@ export class BeaconconnectorComponent implements OnInit {
     //console.log("BeaconconnectorComponent::posUpdateEvent()");
 
     let signals = this.signalBufferCollection.getAllSignals();
+    //console.log("BeaconconnectorComponent::posUpdateEvent()" + JSON.stringify(signals));
     this.updateSignalsEvent.emit(signals);
 
     //LOG POSITION DATA
