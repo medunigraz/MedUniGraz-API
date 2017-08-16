@@ -16,8 +16,11 @@ export class MapPois extends MapLayerBase {
   private currentFloor: number = -1;
 
   private iconStyleMap: { [id: number]: any } = null;
+  private iconMarkerMap: { [id: number]: any } = null;
 
   private currentSelectedPoi: any = null;
+  private currentSelectedPoiMarker: any = null;
+
   private highlightFeaturePoint: any = null;
   private highlightFeature: any = null;
   private featureAdded: boolean = false;
@@ -63,18 +66,36 @@ export class MapPois extends MapLayerBase {
   public setPoiTypes(poiTypes: PoiType[]) {
     this.poitypes = poiTypes;
     this.iconStyleMap = {};
+    this.iconMarkerMap = {};
 
     for (let i = 0; i < poiTypes.length; i++) {
       let iconStyle = new ol.style.Style({
-        image: new ol.style.Icon(/** @type {olx.style.IconOptions} */({
-          anchor: [0.5, 1],
-          anchorXUnits: 'fraction',
-          anchorYUnits: 'fraction',
-          src: poiTypes[i].icon
-        }))
+        text: new ol.style.Text({
+          text: this.poitypes[i].fontKey,
+          font: 'normal 35px meduni',
+          textBaseline: 'Bottom',
+          offsetY: -20,
+          fill: new ol.style.Fill({
+            color: 'black',
+          })
+        })
       });
 
       this.iconStyleMap[poiTypes[i].id] = iconStyle;
+
+      let markerStyle = new ol.style.Style({
+        text: new ol.style.Text({
+          text: 'Q',
+          font: 'normal 25px meduni',
+          textBaseline: 'Bottom',
+          offsetY: 0,
+          fill: new ol.style.Fill({
+            color: this.poitypes[i].color,
+          })
+        })
+      });
+
+      this.iconMarkerMap[this.poitypes[i].id] = markerStyle;
     }
 
     if (this.currentFloor >= 0) {
@@ -136,6 +157,11 @@ export class MapPois extends MapLayerBase {
     let feature = this.layerSource.getFeatureById(poi.id);
     if (feature) {
       this.layerSource.removeFeature(feature);
+
+      if (this.currentSelectedPoiMarker) {
+        this.layerSource.removeFeature(this.currentSelectedPoiMarker);
+      }
+
       this.clearSelection();
     }
   }
@@ -146,6 +172,7 @@ export class MapPois extends MapLayerBase {
     if (this.currentSelectedPoi) {
       this.currentSelectedPoi.getGeometry().setCoordinates(position);
       this.highlightFeature.getGeometry().setCoordinates(position);
+      this.currentSelectedPoiMarker.getGeometry().setCoordinates(position);
       this.mapService.updatePoi((new ol.format.GeoJSON()).writeFeature(this.currentSelectedPoi), this.currentSelectedPoi.getId()).
         subscribe(
         poi => this.poiUpdated(poi),
@@ -166,13 +193,24 @@ export class MapPois extends MapLayerBase {
     }
 
     let feature = null;
+
+    //TODO test all features
+
     feature = map.forEachFeatureAtPixel(pixelPos, function(feature) {
-      return feature;
+      if (feature.get("poiId")) {
+        return feature;
+      }
     }, options);
 
     if (feature) {
-      this.currentSelectedPoi = feature;
-      return true;
+      if (feature.get("poiId")) {
+        this.currentSelectedPoiMarker = feature;
+        this.currentSelectedPoi = this.layerSource.getFeatureById(feature.get("poiId"));
+
+        console.log("mapPois::selectPoi: - " + feature.get("poiId") + " - " + this.currentSelectedPoi.getId());
+
+        return true;
+      }
     }
 
     return false;
@@ -205,10 +243,18 @@ export class MapPois extends MapLayerBase {
 
   private showPoisWithStyles(olFeatures: any) {
     for (let i = 0; i < olFeatures.length; i++) {
+
       let id = olFeatures[i].getId();
       let poiTypeId = olFeatures[i].get("name");
       console.log("MapPois::showPoisWithStyles: " + id + "#" + poiTypeId);
+
+      let markerfeature = olFeatures[i].clone();
+      markerfeature.setStyle(this.iconMarkerMap[poiTypeId]);
+      markerfeature.set("poiId", id);
+      this.layerSource.addFeature(markerfeature);
+
       olFeatures[i].setStyle(this.iconStyleMap[poiTypeId]);
+
     }
 
     this.layerSource.addFeatures(olFeatures);
@@ -219,7 +265,7 @@ export class MapPois extends MapLayerBase {
 
     this.showPoisWithStyles((new ol.format.GeoJSON()).readFeatures(poi));
 
-    this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(poi));
+    //this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(poi));
   }
 
   public clearSelection() {
@@ -230,6 +276,7 @@ export class MapPois extends MapLayerBase {
     }
 
     this.currentSelectedPoi = null;
+    this.currentSelectedPoiMarker = null;
   }
 
   private initHighlightFeatureOverlay(map: any) {
