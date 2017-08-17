@@ -21,8 +21,8 @@
       "prefix": "app",
       "styles": [
         "styles.css",
-		"../node_modules/openlayers/dist/ol.css",
-    "css/med-uni.css"
+    		"../node_modules/openlayers/dist/ol.css",
+        "css/med-font.css"
       ],
       "scripts": [
 		"../node_modules/openlayers/dist/ol.js",

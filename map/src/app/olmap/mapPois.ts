@@ -27,7 +27,14 @@ export class MapPois extends MapLayerBase {
     });
 
     this.layer = new ol.layer.Vector({
-      source: this.layerSource
+      source: this.layerSource,
+      renderOrder: function(f1: any, f2: any) {
+        //console.log("...." + f1.get("orderIndex") + "/" + f2.get("orderIndex"));
+        if (f1.get("orderIndex") > f2.get("orderIndex")) {
+          return 1;
+        }
+        return -1;
+      }
     });
   }
 
@@ -67,6 +74,9 @@ export class MapPois extends MapLayerBase {
     this.clear();
 
     //console.log("MapPois::updatePois: " + JSON.stringify(this.poiInstances.length));
+
+    let orderIndex = 0;
+
     for (let i = 0; i < this.poiInstances.length; i++) {
       let id = this.poiInstances[i].getId();
       let poiTypeId = this.poiInstances[i].get("name");
@@ -74,11 +84,17 @@ export class MapPois extends MapLayerBase {
       if (this.activeIconsMap[poiTypeId]) {
         //console.log("MapPois::updatePois Add Poi: " + id);
         let markerfeature = this.poiInstances[i].clone();
+
         markerfeature.setStyle(this.iconMarkerMap[poiTypeId]);
+        markerfeature.set("orderIndex", orderIndex);
+        orderIndex++;
         this.layerSource.addFeature(markerfeature);
 
         this.poiInstances[i].setStyle(this.iconStyleMap[poiTypeId]);
+        this.poiInstances[i].set("orderIndex", orderIndex);
+        orderIndex++;
         this.layerSource.addFeature(this.poiInstances[i]);
+
       }
     }
   }
@@ -106,11 +122,12 @@ export class MapPois extends MapLayerBase {
       let iconStyle = new ol.style.Style({
         text: new ol.style.Text({
           text: this.poitypes[i].fontKey,
-          font: 'normal 35px meduni',
+          font: 'normal 30px medfont',
           textBaseline: 'Bottom',
-          offsetY: -20,
+          //offsetY: -12,
+          offsetY: -8,
           fill: new ol.style.Fill({
-            color: 'black',
+            color: 'white',
           })
         })
       });
@@ -119,8 +136,10 @@ export class MapPois extends MapLayerBase {
 
       let markerStyle = new ol.style.Style({
         text: new ol.style.Text({
-          text: 'Q',
-          font: 'normal 25px meduni',
+          //text: 'l',
+          text: 'm',
+          //font: 'normal 44px medfont',
+          font: 'normal 40px medfont',
           textBaseline: 'Bottom',
           offsetY: 0,
           fill: new ol.style.Fill({

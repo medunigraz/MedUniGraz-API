@@ -18,9 +18,9 @@ export class PoiType {
     let icon = obj["icon"];
 
     if (this.name == "Infostand") {
-      this.iconclass = "icon-pfeil_oben";
+      this.iconclass = "icon-infopoint";
       this.color = '#FF0000';
-      this.fontKey = 'N';
+      this.fontKey = 'j';
     }
     else if (this.name == "Eingang") {
       this.iconclass = "icon-gehweg";
@@ -41,6 +41,10 @@ export class PoiType {
     else if (this.name == "Aufzug") {
       this.iconclass = "icon-aufzug";
       this.fontKey = 'A';
+    }
+    else if (this.name == "Portier") {
+      this.iconclass = "icon-portier";
+      this.fontKey = 'k';
     }
     else if (this.name == "Stiege A") {
       this.iconclass = "icon-treppe_a";
@@ -71,8 +75,8 @@ export class PoiType {
       this.fontKey = 'b';
     }
     else if (this.name == "Barrierefreies WC") {
-      this.iconclass = "icon-pfeil_oben";
-      this.fontKey = 'c';
+      this.iconclass = "icon-wc_barrierefrei";
+      this.fontKey = 'e';
     }
     else if (this.name == "Garderobe") {
       this.iconclass = "icon-garderobe";
@@ -96,5 +100,6 @@ export class PoiType {
     }
 
     this.isActive = obj["selected"];
+
   }
 }
