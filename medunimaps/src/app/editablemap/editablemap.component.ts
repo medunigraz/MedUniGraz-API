@@ -28,8 +28,8 @@ import { MapPois } from './mapPois';
 import { MapBeacons } from './mapBeacons';
 import { OpenlayersHelper } from './openlayershelper';
 
-import {MdDialog, MdDialogRef} from '@angular/material';
-import {BeacondialogComponent} from '../beacondialog/beacondialog.component'
+import { MdDialog, MdDialogRef } from '@angular/material';
+import { BeacondialogComponent } from '../beacondialog/beacondialog.component'
 
 declare var ol: any;
 
@@ -117,7 +117,9 @@ export class EditablemapComponent implements OnInit {
         this.mapEditEdges.getLayer(),
         this.mapEdges.getLayer(),
         this.mapRoute.getLayer(),
+        this.mapPois.getMarkerLayer(),
         this.mapPois.getLayer()
+
       ],
       overlays: [],
       target: 'map',
