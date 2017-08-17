@@ -1,14 +1,14 @@
 import { Component, OnInit, EventEmitter, NgZone, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs';
-import {Subscription} from "rxjs";
-import {TimerObservable} from "rxjs/observable/TimerObservable";
+import { Subscription } from "rxjs";
+import { TimerObservable } from "rxjs/observable/TimerObservable";
 import { MapService } from '../mapservice/map.service';
 
-import {Position} from '../base/position';
+import { Position } from '../base/position';
 
-import {PositionUpdate} from './positionupdate';
-import {SignalBuffer} from './signalbuffer';
-import {SignalBufferCollection} from './signalbuffercollection';
+import { PositionUpdate } from './positionupdate';
+import { SignalBuffer } from './signalbuffer';
+import { SignalBufferCollection } from './signalbuffercollection';
 
 enum PositionStatus {
   InActive = 0,

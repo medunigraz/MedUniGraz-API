@@ -10,15 +10,17 @@ import { MapRoute } from './mapRoute'
 import { MapBackground } from './mapBackground'
 import { MapLivePosition } from './mapLivePosition'
 
-import {MdDialog, MdDialogRef} from '@angular/material';
+import { MdDialog, MdDialogRef } from '@angular/material';
 
 import { OpenlayersHelper } from './openlayershelper';
-import {RoomDialogComponent} from '../room-dialog/room-dialog.component'
-import {Room} from '../base/room';
-import {RoomDetail} from '../base/roomDetail';
+import { RoomDialogComponent } from '../room-dialog/room-dialog.component'
+import { MAX_NUMBER_OF_ROUTELEVEL_OVERLAYS } from '../base/globalconstants'
+import { Room } from '../base/room';
+import { RoomDetail } from '../base/roomDetail';
 import { Floor } from '../base/floor';
 import { PoiType } from '../base/poitype';
-import {Position} from '../base/position';
+import { Position } from '../base/position';
+import { RouteLevelChange } from '../base/routeLevelChange';
 
 declare var ol: any;
 
@@ -32,10 +34,18 @@ export class OlmapComponent implements OnInit {
   @ViewChild('mapDiv') public mapDiv: ElementRef;
   @ViewChild('roomPopup') public roomPopupDiv: ElementRef;
   @ViewChild('roomPopupText') public roomPopupText: ElementRef;
+  @ViewChild('levelPopups') public levelPopups: ElementRef;
 
   @Output('onShowRoute') onShowRoute: EventEmitter<Room> = new EventEmitter();
 
-  constructor(private dialog: MdDialog, private mapService: MapService) { }
+  public routeLevelOverlays: number[] = null;
+
+  constructor(private dialog: MdDialog, private mapService: MapService) {
+    this.routeLevelOverlays = new Array(MAX_NUMBER_OF_ROUTELEVEL_OVERLAYS);
+    for (let i = 0; i < MAX_NUMBER_OF_ROUTELEVEL_OVERLAYS; i++) {
+      this.routeLevelOverlays[i] = i;
+    }
+  }
 
   private mapPois: MapPois = null;
   private mapRoom: MapRoom = null;
@@ -66,7 +76,7 @@ export class OlmapComponent implements OnInit {
     this.mapRoom = new MapRoom(this.roomPopupDiv, this.roomPopupText, this, this.mapService);
     this.mapFloor = new MapFloor(this.mapService);
     this.mapDoors = new MapDoors(this.mapService);
-    this.mapRoute = new MapRoute(this.mapService, this);
+    this.mapRoute = new MapRoute(this.mapService, this.levelPopups, this);
     this.mapLivePosition = new MapLivePosition(this.mapService);
 
     let interactions = ol.interaction.defaults({ altShiftDragRotate: false, pinchRotate: false });
@@ -209,6 +219,10 @@ export class OlmapComponent implements OnInit {
         });*/
   }
 
+  public addOverlay(overlay: any) {
+    this.map.addOverlay(overlay);
+  }
+
   @Input()
   set currentFloor(currentFloor: Floor) {
     console.log("MapComponent::Set currentFloor - New Floor: " + JSON.stringify(currentFloor));
@@ -286,9 +300,10 @@ export class OlmapComponent implements OnInit {
     this.mapRoute.showRoute(from, to);
   }
 
+
   clearRoute() {
     console.log("OlmapComponent::clearRoute");
-    this.mapRoute.clear();
+    this.mapRoute.clearRoute();
   }
 
   closePopup() {

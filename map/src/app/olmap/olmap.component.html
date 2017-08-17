@@ -1,30 +1,23 @@
 <div #mapDiv id="map" class="map" tabindex="0">
+
   <div #roomPopup id="roomPopup" class="ol-popup">
-
-    <!--
-
-    <button class="closePopupButton" (click)="closePopup()" md-button>
-      <span class="closePopupText">✖</span>
-    </button>
-
-  -->
-
     <div class="popup-content"><button (click)="openRoomDialog()" md-button><span #roomPopupText class="popup-content-span"></span></button></div>
-
     <button class="closePopupButton" (click)="closePopup()" md-button>
       <md-icon>close</md-icon>
     </button>
-
-    <!--
-
-    <button class="infoPopupButton" (click)="closePopup()" md-button>
-      <md-icon>info_outline</md-icon>
-    </button>
-
-    <button class="routePopupButton" (click)="closePopup()" md-button>
-      <md-icon>navigation</md-icon>
-    </button>
--->
-
   </div>
+
+
+    <div #levelPopups  class="level-ol-popups_parent">
+      <div *ngFor="let levelOverlay of routeLevelOverlays">
+        <div  class="level-ol-popup">
+          <div class="popup-content">
+            <div class="levelOverlayIcon"></div>
+            <div class="levelOverlayIconArrow icon-pfeil_oben"></div>
+            <span class="level-popup-content-span">{{levelOverlay.text}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </div>
