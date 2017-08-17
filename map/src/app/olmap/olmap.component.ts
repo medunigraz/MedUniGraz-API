@@ -14,6 +14,8 @@ import { MdDialog, MdDialogRef } from '@angular/material';
 
 import { OpenlayersHelper } from './openlayershelper';
 import { RoomDialogComponent } from '../room-dialog/room-dialog.component'
+
+import { FloorList } from '../base/floorlist';
 import { MAX_NUMBER_OF_ROUTELEVEL_OVERLAYS } from '../base/globalconstants'
 import { Room } from '../base/room';
 import { RoomDetail } from '../base/roomDetail';
@@ -129,12 +131,12 @@ export class OlmapComponent implements OnInit {
   }
 
   private changeViewStart(evt: any) {
-    console.log("MapComponent::changeView Start!!! " + Date.now());
+    //console.log("MapComponent::changeView Start!!! " + Date.now());
     this.lastViewChangeStart = Date.now();
   }
 
   private changeViewEnd(evt: any) {
-    console.log("MapComponent::changeView End!!!" + Date.now());
+    //console.log("MapComponent::changeView End!!!" + Date.now());
     this.lastViewChangeEnd = Date.now();
   }
 
@@ -237,6 +239,10 @@ export class OlmapComponent implements OnInit {
       this.mapRoute.setCurrentLevel(currentFloor.id);
       this.mapLivePosition.setCurrentLevel(currentFloor.id);
     }
+  }
+
+  public setFloorList(floorList: FloorList) {
+    this.mapRoute.setFloorList(floorList);
   }
 
   public updatePoiTypes(poitypes: PoiType[]) {

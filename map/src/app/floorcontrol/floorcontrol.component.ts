@@ -3,8 +3,9 @@ import { Observable } from 'rxjs';
 import { MapService } from '../mapservice/map.service';
 
 import { Floor } from '../base/floor';
-import {Room} from '../base/room';
-import {RouteNodes} from '../base/routeNodes';
+import { FloorList } from '../base/floorlist';
+import { Room } from '../base/room';
+import { RouteNodes } from '../base/routeNodes';
 
 @Component({
   selector: 'app-floorcontrol',
@@ -17,6 +18,7 @@ export class FloorcontrolComponent implements OnInit {
   selectedFloor: Floor = null;
 
   @Output() currentFloorEvt = new EventEmitter<Floor>();
+  @Output() floorsReceivedEvt = new EventEmitter<FloorList>();
 
   constructor(private mapService: MapService) { }
 
@@ -39,6 +41,26 @@ export class FloorcontrolComponent implements OnInit {
   updateFloors(floors: Floor[]) {
     this.floorList = floors;
 
+    for (let i = 0; i < this.floorList.length; i++) {
+      if (i == 0) {
+        this.floorList[i].floorAbove = -1;
+      }
+      else {
+        this.floorList[i].floorAbove = this.floorList[i - 1].id;
+      }
+
+      if (i == (this.floorList.length - 1)) {
+        this.floorList[i].floorBelow = -1;
+      }
+      else {
+        this.floorList[i].floorBelow = this.floorList[i + 1].id;
+      }
+
+      //console.log("FloorselectorComponent::updateFloors Floor: " + JSON.stringify(this.floorList[i]));
+    }
+
+    this.floorsReceivedEvt.emit(new FloorList(this.floorList));
+
     for (let floor of this.floorList) {
       if (floor.name.startsWith('EG')) {
         this.selectFloor(floor);
@@ -54,7 +76,7 @@ export class FloorcontrolComponent implements OnInit {
   }
 
   currentFloorFromId(floorId: number) {
-    console.log("FloorcontrolComponent::Set currentFloor - New Floor: " + JSON.stringify(floorId));
+    //console.log("FloorcontrolComponent::Set currentFloor - New Floor: " + JSON.stringify(floorId));
 
     if (this.floorList) {
       for (let floor of this.floorList) {
@@ -67,7 +89,7 @@ export class FloorcontrolComponent implements OnInit {
   }
 
   private selectFloor(floor: Floor) {
-    console.log("FloorcontrolComponent::Set currentFloor - Select floor: " + JSON.stringify(floor));
+    //console.log("FloorcontrolComponent::Set currentFloor - Select floor: " + JSON.stringify(floor));
     this.selectedFloor = floor;
     this.currentFloorEvt.emit(this.selectedFloor);
   }

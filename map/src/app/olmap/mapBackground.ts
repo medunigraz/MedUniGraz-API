@@ -24,7 +24,7 @@ export class MapBackground extends MapLayerBase {
   }
 
   public showBackground() {
-    console.log("MapRoute::showBackground...");
+    //console.log("MapRoute::showBackground...");
     this.updateBackground(this.getDummyBackground());
     /*
     this.subscribeNewRequest(
@@ -40,7 +40,7 @@ export class MapBackground extends MapLayerBase {
   }
 
   private updateBackground(background: any) {
-    console.log("MapBackground::updateBackground");
+    //console.log("MapBackground::updateBackground");
     this.layerSource.clear();
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(background));
   }
@@ -54,15 +54,15 @@ export class MapBackground extends MapLayerBase {
             "type": "Polygon",
             "coordinates": [
               [[1722058.0195873233, 5955111.3343933625],
-                [1722035.327344551, 5955120.889021898],
-                [1722154.7602012467, 5955359.754735289],
-                [1722235.9745437996, 5955412.902356518],
-                [1722265.23559369, 5955402.153399416],
-                [1722261.6526079893, 5955365.726378124],
-                [1722215.0737938778, 5955256.445314247],
-                [1722177.4524440188, 5955180.605450246],
-                [1722135.053779892, 5955151.344400356],
-                [1722075.337351544, 5955121.486186181]]
+              [1722035.327344551, 5955120.889021898],
+              [1722154.7602012467, 5955359.754735289],
+              [1722235.9745437996, 5955412.902356518],
+              [1722265.23559369, 5955402.153399416],
+              [1722261.6526079893, 5955365.726378124],
+              [1722215.0737938778, 5955256.445314247],
+              [1722177.4524440188, 5955180.605450246],
+              [1722135.053779892, 5955151.344400356],
+              [1722075.337351544, 5955121.486186181]]
             ]
           },
           "properties": {

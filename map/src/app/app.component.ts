@@ -1,16 +1,17 @@
 import { ViewChild, Component } from '@angular/core';
 import { Floor } from './base/floor';
-import {OlmapComponent} from './olmap/olmap.component'
-import {SearchcontrolComponent} from './searchcontrol/searchcontrol.component'
-import {FloorcontrolComponent} from './floorcontrol/floorcontrol.component'
+import { OlmapComponent } from './olmap/olmap.component'
+import { SearchcontrolComponent } from './searchcontrol/searchcontrol.component'
+import { FloorcontrolComponent } from './floorcontrol/floorcontrol.component'
 import { MainappService } from './mainappservice/mainapp.service';
 
-import {MdSidenav} from '@angular/material';
+import { MdSidenav } from '@angular/material';
 
-import {Room} from './base/room';
-import {RouteNodes} from './base/routeNodes';
-import {PoiType } from './base/poitype';
-import {Position} from './base/position';
+import { FloorList } from './base/floorlist';
+import { Room } from './base/room';
+import { RouteNodes } from './base/routeNodes';
+import { PoiType } from './base/poitype';
+import { Position } from './base/position';
 
 @Component({
   selector: 'app-root',
@@ -29,6 +30,8 @@ export class AppComponent {
 
   private poiTypes: PoiType[] = null;
 
+  private floors: FloorList = null;
+
   constructor(
     private mainAppService: MainappService
   ) {
@@ -37,6 +40,15 @@ export class AppComponent {
         console.log("AppComponent - Room from URL..." + room.text);
         this.searchBoxComponent.showRoomCalled(room);
       });
+  }
+
+
+  floorsReceived(floors: FloorList): void {
+    if (floors) {
+      //console.log("AppComponent --- floorsReceived: " + JSON.stringify(floors));
+      this.floors = floors;
+      this.mapComponent.setFloorList(floors);
+    }
   }
 
 

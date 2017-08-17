@@ -12,7 +12,10 @@
                       (routeSelectedEvt) = "routeSelected($event)"
                       >
   </app-searchcontrol>
-  <app-floorcontrol #floorComp (currentFloorEvt)="floorChanged($event)">
+  <app-floorcontrol #floorComp
+    (currentFloorEvt)="floorChanged($event)"
+    (floorsReceivedEvt)="floorsReceived($event)"
+    >
   </app-floorcontrol>
   <app-position (newPositionEvent)="livePositionChanged($event)">
   </app-position>

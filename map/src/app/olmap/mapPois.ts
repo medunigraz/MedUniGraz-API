@@ -40,7 +40,7 @@ export class MapPois extends MapLayerBase {
 
   public setPoiTypes(poiTypes: PoiType[]) {
 
-    console.log("MapPois::setPoiTypes...");
+    //console.log("MapPois::setPoiTypes...");
 
     this.poitypes = poiTypes;
 

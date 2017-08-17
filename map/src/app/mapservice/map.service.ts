@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Headers, RequestOptions, RequestMethod, RequestOptionsArgs } from '@angular/http';
 import { Floor } from '../base/floor';
-import {PoiType} from '../base/poiType';
-import {SearchResult} from '../base/searchresult';
-import {MAX_NUM_OF_AUTOCOMPLETE_RESULTS, API_BASE_URL} from '../base/globalconstants';
+import { PoiType } from '../base/poiType';
+import { SearchResult } from '../base/searchresult';
+import { MAX_NUM_OF_AUTOCOMPLETE_RESULTS, API_BASE_URL } from '../base/globalconstants';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
@@ -118,7 +118,7 @@ export class MapService {
     if (body.results) {
       body = body.results;
     }
-    console.log("RESPONSE DATA POITYPES: " + JSON.stringify(body));
+    //console.log("RESPONSE DATA POITYPES: " + JSON.stringify(body));
     let poitypes: PoiType[] = [];
     for (let obj of body) {
       poitypes.push(new PoiType(obj));
@@ -131,7 +131,7 @@ export class MapService {
     if (body.results) {
       body = body.results;
     }
-    console.log("RESPONSE DATA POITYPES: " + JSON.stringify(body));
+    //console.log("RESPONSE DATA POITYPES: " + JSON.stringify(body));
     let searchResults: SearchResult[] = [];
     let i = 0;
     for (let obj of body) {
