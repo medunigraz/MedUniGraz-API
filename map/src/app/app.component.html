@@ -4,6 +4,7 @@
   </md-sidenav>
 
   <app-olmap #mapComp (onShowRoute)="showRouteCalled($event)"
+                      (onHighlightRouteLevels)="highlightRouteLevelsCalled($event)"
                       [currentFloor]="currentFloor">
   </app-olmap>
   <app-searchcontrol #searchBoxComp

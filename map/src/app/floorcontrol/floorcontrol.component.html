@@ -3,6 +3,9 @@
      <md-icon class="floormenuIcon">layers</md-icon><span class="floormenutext">{{selectedFloor.name}}</span>
   </button>
   <md-menu #menufloors="mdMenu">
-    <button md-menu-item *ngFor="let floor of floorList" (click)="onSelect(floor)" class="floormenutext">{{floor.name}}</button>
+    <button md-menu-item *ngFor="let floor of floorList" (click)="onSelect(floor)"
+      [style.font-weight]="floor.fontweight"
+      [style.background-color]="floor.backgroundcolor"
+      class="floormenutext">{{floor.name}}</button>
   </md-menu>
 </div>

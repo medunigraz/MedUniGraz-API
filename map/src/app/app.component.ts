@@ -101,6 +101,11 @@ export class AppComponent {
     this.searchBoxComponent.showRouteCalled(destinationRoom);
   }
 
+  highlightRouteLevelsCalled(levels: number[]) {
+    console.log("AppComponent::highlightRouteLevels!!!");
+    this.floorControlComponent.highlightLevels(levels);
+  }
+
   poiTypesChanged(poiTypes: PoiType[]) {
     if (poiTypes) {
       //console.log("AppComponent --- poiTypesChanged: " + poiTypes.length);

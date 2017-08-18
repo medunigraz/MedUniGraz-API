@@ -91,7 +91,35 @@ export class FloorcontrolComponent implements OnInit {
   private selectFloor(floor: Floor) {
     //console.log("FloorcontrolComponent::Set currentFloor - Select floor: " + JSON.stringify(floor));
     this.selectedFloor = floor;
+
+    for (let i = 0; i < this.floorList.length; i++) {
+      if (this.floorList[i].id != this.selectedFloor.id) {
+        this.floorList[i].resetSelected();
+      }
+      else {
+        this.floorList[i].setSelected();
+      }
+    }
+
     this.currentFloorEvt.emit(this.selectedFloor);
+  }
+
+  public highlightLevels(levels) {
+
+    console.log("FloorcontrolComponent::highlightLevels! " + JSON.stringify(levels));
+
+    if (!levels) {
+      levels = [];
+    }
+
+    for (let i = 0; i < this.floorList.length; i++) {
+      if (levels.indexOf(this.floorList[i].id) < 0) {
+        this.floorList[i].resetHighlight();
+      }
+      else {
+        this.floorList[i].setHighlighted();
+      }
+    }
   }
 
   private loadDemoFloors() {

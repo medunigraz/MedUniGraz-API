@@ -80,6 +80,7 @@ export class MapRoute extends MapLayerBase {
   }
 
   public clearRoute() {
+    this.mapComponent.highlightRouteLevels([]);
     this.resetRouteOverlays();
     this.clear();
   }
@@ -135,6 +136,9 @@ export class MapRoute extends MapLayerBase {
       let lastStartLevel = -1;
       let lastCategory = -1;
 
+      let levels = [];
+      levels.push(startNode["properties"]["level"]);
+
       while (i < this.currentRoute.length) {
         currentNode = this.getNextNode(lastNode, this.currentRoute[i]);
         let category = this.currentRoute[i].get("category");
@@ -149,6 +153,9 @@ export class MapRoute extends MapLayerBase {
         else if (lastStartLevel >= 0 && startLevel == endLevel) //warte ob mehr übergänge
         {
           this.addNewMarker(lastStartLevel, startLevel, lastNode, lastCategory);
+          if (levels.indexOf(startLevel) < 0) {
+            levels.push(startLevel);
+          }
           lastStartLevel = -1;
         }
         else if (startLevel != endLevel) {  //Neuer Übergang
@@ -168,6 +175,9 @@ export class MapRoute extends MapLayerBase {
       if (lastStartLevel >= 0) {
         this.addNewMarker(lastStartLevel, lastNode["properties"]["level"], lastNode, lastCategory);
       }
+
+      console.log("MapRoute::createLevelOverlays used Levels: " + JSON.stringify(levels));
+      this.mapComponent.highlightRouteLevels(levels);
     }
   }
 

@@ -39,6 +39,7 @@ export class OlmapComponent implements OnInit {
   @ViewChild('levelPopups') public levelPopups: ElementRef;
 
   @Output('onShowRoute') onShowRoute: EventEmitter<Room> = new EventEmitter();
+  @Output('onHighlightRouteLevels') onHighlightRouteLevels: EventEmitter<number[]> = new EventEmitter();
 
   public routeLevelOverlays: number[] = null;
 
@@ -219,6 +220,11 @@ export class OlmapComponent implements OnInit {
           requestEncoding: ("REST"),
           tileGrid: tilegrid
         });*/
+  }
+
+  public highlightRouteLevels(levels: number[]) {
+
+    this.onHighlightRouteLevels.emit(levels);
   }
 
   public addOverlay(overlay: any) {
