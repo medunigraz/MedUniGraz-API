@@ -46,33 +46,37 @@ export class PoiType {
       this.iconclass = "icon-portier";
       this.fontKey = 'k';
     }
+    else if (this.name == "Stiege") {
+      this.iconclass = "icon-treppe";
+      this.fontKey = 'n';
+    }
     else if (this.name == "Stiege A") {
       this.iconclass = "icon-treppe_a";
       this.fontKey = 'W';
     }
     else if (this.name == "Stiege B") {
       this.iconclass = "icon-treppe_b";
-      this.fontKey = 'W';
+      this.fontKey = 'X';
     }
     else if (this.name == "Stiege C") {
       this.iconclass = "icon-treppe_c";
-      this.fontKey = 'X';
+      this.fontKey = 'Y';
     }
     else if (this.name == "Stiege D") {
       this.iconclass = "icon-treppe_d";
-      this.fontKey = 'Y';
+      this.fontKey = 'Z';
     }
     else if (this.name == "Stiege E") {
       this.iconclass = "icon-treppe_e";
-      this.fontKey = 'Z';
+      this.fontKey = 'a';
     }
     else if (this.name == "Stiege F") {
       this.iconclass = "icon-treppe_f";
-      this.fontKey = 'a';
+      this.fontKey = 'b';
     }
     else if (this.name == "Stiege G") {
       this.iconclass = "icon-treppe_g";
-      this.fontKey = 'b';
+      this.fontKey = 'c';
     }
     else if (this.name == "Barrierefreies WC") {
       this.iconclass = "icon-wc_barrierefrei";
@@ -93,6 +97,10 @@ export class PoiType {
     else if (this.name == "Zugang nur mit Karte") {
       this.iconclass = "icon-zugang_nur_mit_karte";
       this.fontKey = 'h';
+    }
+    else if (this.name == "Campusplatz") {
+      this.iconclass = "icon-campusplatz";
+      this.fontKey = 'i';
     }
     else {
       this.iconclass = "icon-pfeil_oben";

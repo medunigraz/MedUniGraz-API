@@ -98,7 +98,7 @@ export class SignalBufferCollection {
         if (i > 0) {
           resultString += "&";
         }
-        resultString += "name[" + bestIDs[i] + "]=" + bestValues[i];
+        resultString += "name[" + bestIDs[i] + "]=" + bestValues[i].toFixed(1);
       }
     }
 
