@@ -5,7 +5,7 @@ import { USEHTTPSERVICE } from '../base/globalconstants';
 import { ApplicationMode } from '../base/applicationmode';
 import { ApplicationModeT } from '../base/applicationmode';
 import { BeacondialogComponent } from '../beacondialog/beacondialog.component';
-import {MdDialog, MdDialogRef} from '@angular/material';
+import { MdDialog, MdDialogRef } from '@angular/material';
 import { Signal } from '../base/signal';
 import { Beacon } from '../base/beacon';
 
@@ -115,8 +115,13 @@ export class MapBeacons extends MapLayerBase {
           if (this.beaconFeatures[i].get("name") == signals[j].name) {
 
             this.beaconFeatures[i].setProperties({ signal: signals[j].value });
-            this.setBeaconOverlay(i, this.beaconFeatures[i].getGeometry().getCoordinates(), signals[j].name, signals[j].value, signals[j].origSignal);
 
+            if (signals[j].name == hSignal.name) {
+              this.setBeaconOverlay(i, this.beaconFeatures[i].getGeometry().getCoordinates(), '#' + signals[j].name + '#', signals[j].value, signals[j].origSignal);
+            }
+            else {
+              this.setBeaconOverlay(i, this.beaconFeatures[i].getGeometry().getCoordinates(), signals[j].name, signals[j].value, signals[j].origSignal);
+            }
             break;
           }
         }

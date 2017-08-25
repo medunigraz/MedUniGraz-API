@@ -102,6 +102,10 @@ export class PoiType {
       this.iconclass = "icon-campusplatz";
       this.fontKey = 'i';
     }
+    else if (this.name == "Drucker") {
+      this.iconclass = "icon-drucker";
+      this.fontKey = 'o';
+    }
     else {
       this.iconclass = "icon-pfeil_oben";
       this.fontKey = 'c';

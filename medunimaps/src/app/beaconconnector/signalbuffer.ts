@@ -27,6 +27,8 @@ export class SignalBuffer {
 
     this.lastOrigValue = value;
 
+    let timediff = (new Date().getTime()) - this.lastValueTimeStamp;
+
     if (value > 0) //error code -> Reset Timer and use old value
     {
       let milliseconds = new Date().getTime();
@@ -47,7 +49,7 @@ export class SignalBuffer {
       this.battery = battery;
     }
 
-    //console.log("SignalBuffer::setValue Set value: " + this.lastValue + "/" + this.lastValueTimeStamp);
+    console.log("SignalBuffer::setValue #" + name + "# Set value: " + this.lastOrigValue.toFixed(2) + "/" + this.lastValue.toFixed(2) + " ::: " + timediff + " ::: " + this.lastValueTimeStamp);
   }
 
   public checkClearValue() {
@@ -55,7 +57,7 @@ export class SignalBuffer {
     if (!this.lastValue || !this.lastValueTimeStamp) {
       return true;
     }
-    if (milliseconds - this.lastValueTimeStamp > 1000) {
+    if (milliseconds - this.lastValueTimeStamp > 2500) {
       return true;
     }
     return false;
@@ -65,4 +67,4 @@ export class SignalBuffer {
     this.lastValue = this.minValue;
     this.lastValueTimeStamp = undefined;
   }
-} 
+}

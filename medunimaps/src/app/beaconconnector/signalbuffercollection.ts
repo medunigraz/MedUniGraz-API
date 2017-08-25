@@ -1,12 +1,13 @@
 import { SignalBuffer } from './signalbuffer';
+import { SignalBufferFixed } from './signalbufferFixed';
 import { Observable } from 'rxjs';
 import { Subscription } from "rxjs";
 import { TimerObservable } from "rxjs/observable/TimerObservable";
 
-import {Signal} from '../base/signal';
+import { Signal } from '../base/signal';
 
 export interface ISignalMap {
-  [id: string]: SignalBuffer;
+  [id: string]: SignalBufferFixed;
 }
 
 export class SignalBufferCollection {
@@ -47,7 +48,7 @@ export class SignalBufferCollection {
 
     for (let key in this.map) {
 
-      let value = this.map[key].lastValue;
+      let value = this.map[key].getValue();
 
       if (value) {
         if (value > bestValue) {
@@ -64,7 +65,7 @@ export class SignalBufferCollection {
     let signals: Signal[] = [];
 
     for (let key in this.map) {
-      let value = this.map[key].lastValue;
+      let value = this.map[key].getValue();
       if (value) {
         signals.push(new Signal(this.map[key].mac, value, this.map[key].name, this.map[key].battery, this.map[key].lastOrigValue));
       }
@@ -85,7 +86,7 @@ export class SignalBufferCollection {
 
     for (let key in this.map) {
 
-      let value = this.map[key].lastValue;
+      let value = this.map[key].getValue();
 
       if (index > 0) {
         urlString += "&";
@@ -100,10 +101,11 @@ export class SignalBufferCollection {
 
   private addValue(mac: string, value: number, name: string, battery: number) {
     if (!this.map[name]) {
-      this.map[name] = new SignalBuffer(name);
+      this.map[name] = new SignalBufferFixed(name, mac, value, name, battery);
     }
-
-    this.map[name].setValue(mac, value, name, battery);
+    else {
+      this.map[name].setValue(mac, value, name, battery);
+    }
   }
 
   private startClearTimer() {
@@ -113,7 +115,7 @@ export class SignalBufferCollection {
       this.stopClearTimer();
     }
 
-    let timer = TimerObservable.create(666);
+    let timer = TimerObservable.create(100);
     this.clearTimerSubscription = timer.subscribe(t => {
       this.clearTimerEvent();
     });
@@ -133,7 +135,7 @@ export class SignalBufferCollection {
     let keysToDelete: string[] = [];
 
     for (let key in this.map) {
-      if (this.map[key].checkClearValue()) {
+      if (this.map[key].updateTimer()) {
         //console.log("SignalBufferCollection::clearTimerEvent() - Clear Signal: " + key);
         keysToDelete.push(key);
       }
