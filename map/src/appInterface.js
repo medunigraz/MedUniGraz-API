@@ -79,9 +79,15 @@ function dolog(data)
   return null;
 }
 
+var demoDataTimerActive = false;
+
 function startdemoData()
 {
-  setTimeout(sendDemoData, 150);
+  if(!demoDataTimerActive)
+  {
+    setTimeout(sendDemoData, 150);
+    demoDataTimerActive = true;
+  }
 }
 
 
@@ -121,6 +127,7 @@ function getData(name, val)
 
 function sendDemoData()
 {
+  console.log("#JS# LOG... ");
   //var jsondata = "{ [ {'beacon1':" + counter + "},{'beacon2':" + (counter + 100) + "} ] }";
 
   var val1 = -30 - Math.random() * 10;

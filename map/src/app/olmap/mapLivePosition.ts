@@ -2,9 +2,9 @@ import { MapLayerBase } from './mapLayerBase';
 import { OpenlayersHelper } from './openlayershelper';
 import { MapService } from '../mapservice/map.service';
 
-import {Position} from '../base/position';
+import { Position } from '../base/position';
 
-import {OlmapComponent} from './olmap.component';
+import { OlmapComponent } from './olmap.component';
 
 declare var ol: any;
 
@@ -60,7 +60,7 @@ export class MapLivePosition extends MapLayerBase {
   public setCurrentLevel(newLevel: number) {
     this.clear();
     this.currentLevelId = newLevel;
-    this.stopAnimation();
+    //this.stopAnimation();
   }
 
   public showLivePosition(livePos: Position) {
@@ -69,7 +69,7 @@ export class MapLivePosition extends MapLayerBase {
     if (!livePos || this.currentLevelId != livePos.level) {
       this.clear();
       this.positionVisible = false;
-      this.stopAnimation();
+      //this.stopAnimation();
     }
     else {
       if (!this.positionVisible) {
@@ -79,7 +79,7 @@ export class MapLivePosition extends MapLayerBase {
       this.point.setCoordinates([livePos.x, livePos.y]);
 
       if (this.startTime < 0) {
-        this.startAnimation();
+        //this.startAnimation();
       }
     }
   }
@@ -91,7 +91,7 @@ export class MapLivePosition extends MapLayerBase {
     }
 
     if (this.listenerKey) {
-      this.stopAnimation();
+      //this.stopAnimation();
     }
 
     this.listenerKey = this.map.on('postcompose', evt => this.animate(evt));
@@ -146,7 +146,7 @@ export class MapLivePosition extends MapLayerBase {
         })
       });
 
-      console.log("MapLivePosition::Animate + " + this.startTime + " Radius: " + radius + " opacity: " + opacity + " Pos: ");// + JSON.stringify(this.circleFeature.getGeometry().getCenter()));
+      //console.log("MapLivePosition::Animate + " + this.startTime + " Radius: " + radius + " opacity: " + opacity + " Pos: ");// + JSON.stringify(this.circleFeature.getGeometry().getCenter()));
 
       vectorContext.setStyle(style);
       vectorContext.drawGeometry(flashGeom);
