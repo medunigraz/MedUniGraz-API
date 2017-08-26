@@ -85,7 +85,7 @@ export class SearchcontrolComponent implements OnInit {
     console.log('SearchComponent::destinationroom: ' + destinationroom.text);
 
     this.term.setValue(destinationroom.text, { "emitEvent": false });
-    this.searchUpdateResults([]);
+    this.searchUpdateResults([], true);
     this.roomSelectedEvt.emit(destinationroom);
 
     //this.route(destinationroom);
@@ -105,11 +105,11 @@ export class SearchcontrolComponent implements OnInit {
 
     if (term.length > 0) {
       this.searchSubscription = this.mapService.search(term).subscribe(
-        results => this.searchUpdateResults(results),
+        results => this.searchUpdateResults(results, false),
         error => console.log("ERROR search: " + <any>error));
     }
     else {
-      this.searchUpdateResults([]);
+      this.searchUpdateResults([], true);
     }
   }
 
@@ -122,18 +122,23 @@ export class SearchcontrolComponent implements OnInit {
     }
 
     if (term.length == 0) {
-      this.searchUpdateResultsStartPoint(SearchDemoData.getDefaultStartPositions());
+      this.searchUpdateResultsStartPoint(SearchDemoData.getDefaultStartPositions(), false);
     }
     else {
       this.searchStartSubscription = this.mapService.search(term).subscribe(
-        results => this.searchUpdateResultsStartPoint(results),
+        results => this.searchUpdateResultsStartPoint(results, false),
         error => console.log("ERROR searchstartpoint: " + <any>error));
     }
 
   }
 
-  searchUpdateResults(items: SearchResult[]) {
+  searchUpdateResults(items: SearchResult[], clear: boolean) {
     console.log('searchResults: ');
+
+    if (items.length <= 0 && !clear) {
+      items.push(SearchDemoData.getNoResult_Obj());
+    }
+
     if (items.length > 0) {
       items[items.length - 1].lastElem = true;
     }
@@ -141,8 +146,12 @@ export class SearchcontrolComponent implements OnInit {
     this.showResultTable();
   }
 
-  searchUpdateResultsStartPoint(items: SearchResult[]) {
+  searchUpdateResultsStartPoint(items: SearchResult[], clear: boolean) {
     console.log('searchResults Start Point: ');
+
+    if (items.length <= 0 && !clear) {
+      items.push(SearchDemoData.getNoResult_Obj());
+    }
 
     for (let i = 0; i < items.length; i++) {
       items[i].lastElem = false;
@@ -196,7 +205,7 @@ export class SearchcontrolComponent implements OnInit {
     console.log('SearchComponent::route from:' + JSON.stringify(this.currentStartPointResult));
 
     this.term.setValue(destinationroom.text, { "emitEvent": false });
-    this.searchUpdateResults([]);
+    this.searchUpdateResults([], true);
 
     if (this.currentStartPointResult == null) {
       this.currentStartPointResult = DefaultStartPoint;
@@ -306,14 +315,14 @@ export class SearchcontrolComponent implements OnInit {
   private showCurrentResult() {
     if (this.currentResult != null) {
       this.term.setValue(this.currentResult.text, { "emitEvent": false });
-      this.searchUpdateResults([]);
+      this.searchUpdateResults([], true);
     }
   }
 
   private showCurrentStartResult() {
     if (this.currentStartPointResult != null) {
       this.startPointTerm.setValue(this.currentStartPointResult.text, { "emitEvent": false });
-      this.searchUpdateResultsStartPoint([]);
+      this.searchUpdateResultsStartPoint([], true);
     }
   }
 

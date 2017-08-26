@@ -35,19 +35,28 @@
       <ng-template ngFor let-result [ngForOf]="searchResults">
         <tr class="controlBoxTableResultRow" >
           <td class="controlBoxLeftResultCol">
-            <button class="controlBoxButton" (click)="select(result)" md-button>
+            <button class="controlBoxButton" (click)="select(result)"
+              [disabled]="result.notFound"
+              md-button>
               <md-icon *ngIf="result.type == 0">room</md-icon>
               <md-icon *ngIf="result.type == 1">person</md-icon>
               <md-icon *ngIf="result.type == 2">group</md-icon>
+              <md-icon *ngIf="result.type == -1">warning</md-icon>
             </button>
           </td>
           <td class="controlBoxCenterResultCol">
-            <button class="controlBoxResultButton" (click)="select(result)" md-button>
-              <span class="controlBoxResultText">{{result.text}}</span>
+            <button class="controlBoxResultButton" (click)="select(result)"
+              [disabled]="result.notFound"
+              md-button>
+                <span class="controlBoxResultText">{{result.text}}</span>
             </button>
           </td>
           <td class="controlBoxLeftResultCol">
-            <button *ngIf="result.isStartPoint == false" class="controlBoxButton" (click)="routeClicked(result)" md-button><md-icon>navigation</md-icon></button>
+            <button *ngIf="result.isStartPoint == false && result.notFound == false"
+            class="controlBoxButton"
+            (click)="routeClicked(result)" md-button>
+              <md-icon>navigation</md-icon>
+            </button>
           </td>
         </tr>
         <tr *ngIf="!result.lastElem">

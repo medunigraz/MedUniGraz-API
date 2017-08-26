@@ -6,6 +6,9 @@ export class SearchResult {
   type: number;
   level: number;
   room_id: number;
+
+  notFound: boolean;
+
   isStartPoint: boolean;
   lastElem: boolean;
 
@@ -15,6 +18,7 @@ export class SearchResult {
     this.type = type;
     this.isStartPoint = false;
     this.lastElem = false;
+    this.notFound = false;
   }
 
   public static createFromRestObj(obj: any): SearchResult {

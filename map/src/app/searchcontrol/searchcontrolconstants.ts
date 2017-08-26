@@ -11,6 +11,13 @@ export class SearchDemoData {
       DefaultStartPoint];
   }
 
+  public static getNoResult_Obj(): SearchResult {
+    let searchresult: SearchResult = new SearchResult(-3, "Keine Ergebnisse...", -1);
+    searchresult.notFound = true;
+
+    return searchresult;
+  }
+
   public static getSearchDemoData(term: string): Observable<SearchResult[]> {
     console.log('SearchComponent::search:' + term);
     if (term.length == 0) {
