@@ -32,6 +32,10 @@ export class RoomDetail {
     return new Room(this.id, Room.GetRoomTxtSearch(this.title, this.code), this.level);
   }
 
+  public getRoomMarkerText() {
+    return '<b>' + this.title + '</b>' + '<br />(' + this.code + ')' + '<br />' + this.coOrganization;
+  }
+
   private readCO(co: any) {
     if (co) {
       this.text = Room.GetRoomTxt(co['title'], co['name_full']);

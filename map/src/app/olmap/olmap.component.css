@@ -134,7 +134,13 @@
   white-space: normal;
   display: inline-block;
   line-height: 2.0em;
-  font-size: medium;
+  font-size: small;
+}
+
+.popup-button
+{
+    padding: 0;
+    padding-right: 0.2em;
 }
 
 .popup-content-span {
@@ -143,7 +149,7 @@
   white-space: normal;
   display: inline-block;
   line-height: 1.5em;
-  font-size: medium;
+  font-size: small;
 }
 
 .infoPopupButton {

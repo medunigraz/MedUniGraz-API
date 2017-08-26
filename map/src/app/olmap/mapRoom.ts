@@ -89,7 +89,7 @@ export class MapRoom extends MapLayerBase {
     console.log("MapRoom::Mark room: " + room.id + " category: " + room.coCategory);
 
     this.currentMarkedRoom = room;
-    this.currentOverlayText = room.text;
+    this.currentOverlayText = room.getRoomMarkerText();
     this.roomContentSpan.nativeElement.innerHTML = this.currentOverlayText;
     this.currentOverlayPosition = (room.marker);
     this.overlay.setPosition(this.currentOverlayPosition);
