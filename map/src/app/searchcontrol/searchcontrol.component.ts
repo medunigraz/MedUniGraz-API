@@ -93,6 +93,9 @@ export class SearchcontrolComponent implements OnInit {
 
   showRouteCalled(destinationroom: Room) {
     //console.log('SearchComponent::showRouteCalled: ' + result.text);
+
+    this.currentResult = SearchResult.CreateFromRoom(destinationroom);
+
     this.route(destinationroom);
   }
 

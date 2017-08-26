@@ -38,6 +38,12 @@ export class SearchResult {
     return result;
   }
 
+  public static CreateFromRoom(room: Room) {
+    let result = new SearchResult(room.id, room.text, 0);
+    result.level = room.level;
+    return result;
+  }
+
   public getRoom() {
 
     if (this.type == 0) {
