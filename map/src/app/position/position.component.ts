@@ -151,7 +151,7 @@ export class PositionComponent implements OnInit {
       urlparams += urlString;
 
       this.subscribeNewRequest(
-        this.mapService.getRouteForPos(urlparams).
+        this.mapService.getLivePos(urlparams).
           subscribe(
           livePos => this.updateLivePos(livePos, urlparams),
           error => console.log("ERROR: " + <any>error)));

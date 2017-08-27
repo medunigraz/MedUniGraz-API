@@ -82,7 +82,7 @@ export class MapService {
       .catch(this.handleError);
   }
 
-  getRouteForPos(urlString: string): Observable<Object> {
+  getLivePos(urlString: string): Observable<Object> {
 
     return this.http.get(this.livePosUrl + '?' + urlString)
       .map(this.extractData)
