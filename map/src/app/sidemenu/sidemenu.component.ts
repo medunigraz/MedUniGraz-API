@@ -27,11 +27,11 @@ export class SidemenuComponent implements OnInit {
       error => console.log("ERROR deleteNode: " + <any>error));
   }
 
-
-
   updatePOIs(poiTypeList: PoiType[]) {
     if (poiTypeList) {
       this.pois = poiTypeList;
+      this.groupPois();
+      this.ungroupPois(); //Set Active State to group master
       this.poiTypesChangedEvt.emit(this.pois);
     }
     //console.log("SidemenuComponent::updatePOIs() " + JSON.stringify(this.pois));
@@ -39,6 +39,7 @@ export class SidemenuComponent implements OnInit {
 
   selectedChanged() {
     if (this.pois) {
+      this.ungroupPois();
       this.poiTypesChangedEvt.emit(this.pois);
     }
     //console.log("SidemenuComponent::selectedChanged() " + JSON.stringify(this.pois));
@@ -46,5 +47,33 @@ export class SidemenuComponent implements OnInit {
 
   close() {
     console.log("SidemenuComponent::close()");
+  }
+
+  private groupPois() {
+
+    let stairIndex = -1;
+
+    for (let i = 0; i < this.pois.length; i++) {
+      if (this.pois[i].name == 'Stiege') {
+        stairIndex = i;
+      }
+    }
+
+    if (stairIndex >= 0) {
+      for (let i = 0; i < this.pois.length; i++) {
+        if (i != stairIndex && this.pois[i].name.startsWith('Stiege')) {
+          this.pois[i].isVisible = false;
+          this.pois[i].groupIndex = stairIndex;
+        }
+      }
+    }
+  }
+
+  private ungroupPois() {
+    for (let i = 0; i < this.pois.length; i++) {
+      if (this.pois[i].groupIndex >= 0 && this.pois[i].groupIndex) {
+        this.pois[i].isActive = this.pois[this.pois[i].groupIndex].isActive;
+      }
+    }
   }
 }

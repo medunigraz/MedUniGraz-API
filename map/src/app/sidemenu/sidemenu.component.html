@@ -23,26 +23,23 @@
               </td>
             </tr>
             <ng-template ngFor let-poi [ngForOf]="pois">
-            <tr>
-              <td>
-
-                <md-checkbox [(ngModel)]="poi.isActive" (change)="selectedChanged()"></md-checkbox>
-
-              </td>
-              <td>
-                <!--<img class="poiIcon" src = "{{poi.icon}}" alt = "{{poi.icon}}">-->
-                 <div  class="poiIcon {{poi.iconclass}}" [style.background-color] = "poi.color"> </div>
-              </td>
-              <td>
-                <span>{{poi.name}}</span>
-              </td>
-            </tr>
-
-            <tr>
-              <td colspan="3">
-                <div class="poiTableRowSpacer"></div>
-              </td>
-            </tr>
+                <tr *ngIf="poi.isVisible">
+                  <td>
+                    <md-checkbox [(ngModel)]="poi.isActive" (change)="selectedChanged()"></md-checkbox>
+                  </td>
+                  <td>
+                    <!--<img class="poiIcon" src = "{{poi.icon}}" alt = "{{poi.icon}}">-->
+                     <div  class="poiIcon {{poi.iconclass}}" [style.background-color] = "poi.color"> </div>
+                  </td>
+                  <td>
+                    <span>{{poi.name}}</span>
+                  </td>
+                </tr>
+                <tr *ngIf="poi.isVisible">
+                  <td colspan="3">
+                    <div class="poiTableRowSpacer"></div>
+                  </td>
+                </tr>
           </ng-template>
 
           </tbody>

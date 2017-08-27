@@ -9,11 +9,17 @@ export class PoiType {
   public fontKey: string;
   public isActive: boolean;
 
+  public isVisible: boolean;
+  public groupIndex: number;
+
   constructor(obj: any) {
     this.id = obj["id"];
     this.name = obj["name"];
     this.icon = API_BASE_URL + obj["icon"];
     this.color = '#007b3c';
+
+    this.isVisible = true;
+    this.groupIndex = -1;
 
     let icon = obj["icon"];
 
