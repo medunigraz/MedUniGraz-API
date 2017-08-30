@@ -201,7 +201,7 @@ export class MapRoute extends MapLayerBase {
     if (this.floorList) {
       let pos = endNode["geometry"]["coordinates"];
 
-      let iconstring = 'icon-treppe_a';
+      let iconstring = 'icon-treppe';
       if (category == 3) {
         iconstring = 'icon-aufzug';
       }
