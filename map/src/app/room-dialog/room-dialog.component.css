@@ -1,5 +1,6 @@
 .dialogDiv {
   position: relative;
+  min-width: 12em;
 }
 
 .closeDialogButton {

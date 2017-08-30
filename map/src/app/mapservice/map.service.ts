@@ -24,6 +24,7 @@ export class MapService {
   private poiTypeUrl = this.baseUrl + 'geo/pointofinterest/';
   private poiInstanceUrl = this.baseUrl + 'geo/pointofinterestinstance/';
   private livePosUrl = this.baseUrl + 'positioning/locate/';
+  private orgUnitUrl = this.baseUrl + 'structure/organization/';
 
   constructor(private http: Http) { }
 
@@ -85,6 +86,12 @@ export class MapService {
   getLivePos(urlString: string): Observable<Object> {
 
     return this.http.get(this.livePosUrl + '?' + urlString)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  getOrgUnits(): Observable<Object> {
+    return this.http.get(this.orgUnitUrl)
       .map(this.extractData)
       .catch(this.handleError);
   }

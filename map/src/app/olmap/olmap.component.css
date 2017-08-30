@@ -17,7 +17,7 @@
   border: 1px solid #cccccc;
   bottom: 12px;
   left: -50px;
-  min-width: 10em;
+  /*min-width: 10em;*/
   max-width: 20em;
   padding-right: 2em;
 }
@@ -137,10 +137,9 @@
   font-size: small;
 }
 
-.popup-button
-{
-    padding: 0;
-    padding-right: 0.2em;
+.popup-button {
+  padding: 0;
+  padding-right: 0.2em;
 }
 
 .popup-content-span {

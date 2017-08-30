@@ -10,6 +10,8 @@ import { MapRoute } from './mapRoute'
 import { MapBackground } from './mapBackground'
 import { MapLivePosition } from './mapLivePosition'
 
+import { OrgUnitHandler } from './orgunithandler'
+
 import { MdDialog, MdDialogRef } from '@angular/material';
 
 import { OpenlayersHelper } from './openlayershelper';
@@ -50,6 +52,8 @@ export class OlmapComponent implements OnInit {
     }
   }
 
+  private orgUnitHandler: OrgUnitHandler = null;
+
   private mapPois: MapPois = null;
   private mapRoom: MapRoom = null;
   private mapFloor: MapFloor = null;
@@ -81,6 +85,8 @@ export class OlmapComponent implements OnInit {
     this.mapDoors = new MapDoors(this.mapService);
     this.mapRoute = new MapRoute(this.mapService, this.levelPopups, this);
     this.mapLivePosition = new MapLivePosition(this.mapService);
+
+    this.orgUnitHandler = new OrgUnitHandler(this.mapService, this.mapRoom);
 
     let interactions = ol.interaction.defaults({ altShiftDragRotate: false, pinchRotate: false });
 

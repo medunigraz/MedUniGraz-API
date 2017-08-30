@@ -1,4 +1,4 @@
-import {Room} from '../base/room';
+import { Room } from '../base/room';
 
 export class RoomDetail {
   public id: number = -1;
@@ -14,6 +14,9 @@ export class RoomDetail {
   public coId: number = -1;
   public coArea: number = 0;
   public coCategory: number = -1;
+
+  public orgId: string = '';
+  public coOrgId: string = '';
   public coOrganization: string = '';
 
   public level: number = -1;
@@ -22,6 +25,7 @@ export class RoomDetail {
     this.level = level;
     this.id = roomFeature.getId();
     this.floorId = roomFeature.get('floor');
+    this.orgId = roomFeature.get('organization');
 
     this.readCO(roomFeature.get('campusonline'));
     this.readMarker(roomFeature.get('marker'));
@@ -47,7 +51,7 @@ export class RoomDetail {
       }
       this.medonlineurl = 'https://online.medunigraz.at/mug_online/wbRaum.editRaum?pRaumNr=' + this.coId;
       this.coArea = co['area'];
-      this.coOrganization = co['organization'];
+      this.coOrgId = co['organization'];
     }
   }
 
