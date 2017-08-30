@@ -11,14 +11,20 @@ export class OrgUnit {
   private highlightStyle: any = undefined;
   private selectedStyle: any = undefined;;
 
+  private defaultStyle = new ol.style.Style({
+    fill: new ol.style.Fill({
+      color: 'rgba(255,128,128,1)'
+    })
+  });
+
   constructor(id: string, obj: any) {
     this.id = id;
 
     let colorobj = obj["color"];
     if (colorobj) {
-      this.color = obj["color"];
-      this.lightercolor = obj["lighter"];
-      this.darkercolor = obj["darker"];
+      this.color = '#' + colorobj["base"];
+      this.lightercolor = '#' + colorobj["lighter"];
+      this.darkercolor = '#' + colorobj["darker"];
     }
 
     if (obj["campusonline"]) {
@@ -43,6 +49,8 @@ export class OrgUnit {
 
     this.createHighlightStyle();
     this.createSelectedStyle();
+
+    //console.log("OrgUnit::createMapStyles " + this.name + "###" + JSON.stringify(this.style));
   }
 
   private createHighlightStyle() {
@@ -61,6 +69,18 @@ export class OrgUnit {
     });
     strokeStyle.setColor(this.darkercolor);
     this.selectedStyle.setStroke(strokeStyle);
+  }
+
+  public getStyleForRoom(orgId: number, isHighlighted: boolean, isSelected: boolean): any {
+    //console.log("OrgUnit::getStyleForRoom " + this.name + "###" + JSON.stringify(this.style));
+
+    if (isSelected) {
+      return this.selectedStyle;
+    }
+    else if (isHighlighted) {
+      return this.highlightStyle;
+    }
+    return this.style;
   }
 
 }

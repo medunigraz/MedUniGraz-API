@@ -1,7 +1,6 @@
 import { OpenlayersHelper } from './openlayershelper';
 import { ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
 import { MapService } from '../mapservice/map.service';
-import { MapRoomStyles } from './mapRoomStyles'
 import { MapLayerBase } from './mapLayerBase';
 
 import { OlmapComponent } from './olmap.component'
@@ -19,10 +18,14 @@ export class MapRoom extends MapLayerBase {
 
   private overlay: any;
 
+  private defaultStyle = new ol.style.Style({
+    fill: new ol.style.Fill({
+      color: 'rgba(128,128,128,1)'
+    })
+  });
+
   private currentOverlayText: string = "";
   private currentOverlayPosition: number[];
-
-  private styleManager = new MapRoomStyles();
 
   private currentHighlightedRoom: any = null;
   private currentSelectedRoom: any = null;
@@ -32,6 +35,7 @@ export class MapRoom extends MapLayerBase {
 
   private roomToHighlight: Room = null;
 
+  private roomFeatures: any = undefined;
   private orgUnits: OrgUnitList = undefined;
 
   constructor(public roomPopupDiv: ElementRef, public roomContentSpan: ElementRef, private mapComponent: OlmapComponent, private mapService: MapService) {
@@ -61,15 +65,19 @@ export class MapRoom extends MapLayerBase {
   public showFloor(floorid: number) {
     this.clear();
     this.closePopup();
+    this.roomFeatures = undefined;
     this.currentLevel = floorid;
     this.subscribeNewRequest(
       this.mapService.getRooms(floorid).subscribe(
-        rooms => this.showRooms(rooms),
+        rooms => this.roomsReceived(rooms),
         error => console.log("ERROR deleteNode: " + <any>error)));
   }
 
   public orgUnitsReceived(orgUnits: OrgUnitList) {
     this.orgUnits = orgUnits;
+    if (this.roomFeatures) {
+      this.showRooms(this.roomFeatures);
+    }
   }
 
   public markRoomDummyRoom() {
@@ -117,7 +125,7 @@ export class MapRoom extends MapLayerBase {
   public setHighlightedRoom(roomFeature: any) {
     if (this.currentHighlightedRoom) {
       if (!this.isRoomSelected(this.currentHighlightedRoom)) {
-        this.currentHighlightedRoom.setStyle(this.styleManager.getStyleForRoom(this.currentHighlightedRoom.getId(), RoomDetail.getCategoryId(this.currentHighlightedRoom), false, false));
+        this.currentHighlightedRoom.setStyle(this.getStyleForRoom(RoomDetail.getOrgId(this.currentHighlightedRoom), RoomDetail.getCategoryId(this.currentHighlightedRoom), false, false));
       }
     }
 
@@ -130,14 +138,14 @@ export class MapRoom extends MapLayerBase {
 
     if (this.currentHighlightedRoom) {
       if (!this.isRoomSelected(this.currentHighlightedRoom)) {
-        this.currentHighlightedRoom.setStyle(this.styleManager.getStyleForRoom(this.currentHighlightedRoom.getId(), RoomDetail.getCategoryId(this.currentHighlightedRoom), true, false));
+        this.currentHighlightedRoom.setStyle(this.getStyleForRoom(RoomDetail.getOrgId(this.currentHighlightedRoom), RoomDetail.getCategoryId(this.currentHighlightedRoom), true, false));
       }
     }
   }
 
   public setSelectedRoom(roomFeature: any) {
     if (this.currentSelectedRoom) {
-      this.currentSelectedRoom.setStyle(this.styleManager.getStyleForRoom(this.currentSelectedRoom.getId(), RoomDetail.getCategoryId(this.currentSelectedRoom), false, false));
+      this.currentSelectedRoom.setStyle(this.getStyleForRoom(RoomDetail.getOrgId(this.currentSelectedRoom), RoomDetail.getCategoryId(this.currentSelectedRoom), false, false));
     }
 
     if (RoomDetail.isRoomFeatureSelectAble(roomFeature)) {
@@ -148,7 +156,7 @@ export class MapRoom extends MapLayerBase {
     }
 
     if (this.currentSelectedRoom) {
-      this.currentSelectedRoom.setStyle(this.styleManager.getStyleForRoom(this.currentSelectedRoom.getId(), RoomDetail.getCategoryId(this.currentSelectedRoom), false, true));
+      this.currentSelectedRoom.setStyle(this.getStyleForRoom(RoomDetail.getOrgId(this.currentSelectedRoom), RoomDetail.getCategoryId(this.currentSelectedRoom), false, true));
       let roomDetail = new RoomDetail(this.currentSelectedRoom, this.currentLevel);
       if (this.orgUnits) {
         roomDetail.coOrganization = this.orgUnits.getName(roomDetail.orgId);
@@ -173,6 +181,13 @@ export class MapRoom extends MapLayerBase {
     return false;
   }
 
+  private roomsReceived(features: any): void {
+    this.roomFeatures = features;
+    if (this.orgUnits) {
+      this.showRooms(features);
+    }
+  }
+
   private showRooms(features: any): void {
     //console.log("MapRoom::showRooms");
     this.clear();
@@ -183,7 +198,7 @@ export class MapRoom extends MapLayerBase {
     for (let i = 0; i < olFeatures.length; i++) {
       let id = olFeatures[i].getId();
       //console.log("MapRoom::showRoom: " + id + "#" + JSON.stringify(olFeatures[i].getGeometry().getExtent()));
-      olFeatures[i].setStyle(this.styleManager.getStyleForRoom(id, RoomDetail.getCategoryId(olFeatures[i]), false, false));
+      olFeatures[i].setStyle(this.getStyleForRoom(RoomDetail.getOrgId(olFeatures[i]), RoomDetail.getCategoryId(olFeatures[i]), false, false));
     }
 
     this.layerSource.addFeatures(olFeatures);
@@ -191,6 +206,13 @@ export class MapRoom extends MapLayerBase {
     if (this.roomToHighlight) {
       this.markRoomFromSearch(this.roomToHighlight);
     }
+  }
+
+  private getStyleForRoom(orgId: number, categoryId: number, isHighlighted: boolean, isSelected: boolean): any {
+    if (this.orgUnits) {
+      return this.orgUnits.getStyleForRoom(orgId, categoryId, isHighlighted, isSelected);
+    }
+    return this.defaultStyle;
   }
 
   private getDummyRoom(): any {

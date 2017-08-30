@@ -79,6 +79,10 @@ export class RoomDetail {
     return category['id'];
   }
 
+  public static getOrgId(featureRoom: any): number {
+    return featureRoom.get('organization');
+  }
+
   public static isRoomFeatureSelectAble(featureRoom: any): boolean {
 
     if (!featureRoom) {

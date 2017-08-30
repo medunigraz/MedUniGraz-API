@@ -11,12 +11,13 @@ export class OrgUnitList {
   private map: IOrgUnitMap = {};
 
   private defaultStyle = new ol.style.Style({
-    /*stroke: new ol.style.Stroke({
-      color: 'red',
-      width: 0
-    }),*/
     fill: new ol.style.Fill({
-      color: 'rgba(255,0,0,1)'
+      color: 'rgba(128,128,128,1)'
+    })
+  });
+  private wayStyle = new ol.style.Style({
+    fill: new ol.style.Fill({
+      color: 'rgba(242,239,233,1)'
     })
   });
 
@@ -32,7 +33,7 @@ export class OrgUnitList {
       this.map[id].createMapStyles();
     }
 
-    console.log("OrgUnitList::Create: " + JSON.stringify(this.map));
+    //console.log("OrgUnitList::Create: " + JSON.stringify(this.map));
   }
 
   public getName(orgUnitId: string) {
@@ -44,4 +45,19 @@ export class OrgUnitList {
   }
 
 
+  public getStyleForRoom(orgId: number, categoryId: number, isHighlighted: boolean, isSelected: boolean): any {
+
+    //console.log("OrgUnitList::getStyleForRoom: " + orgId);
+
+    if (categoryId == 18) { //Way
+      return this.wayStyle;
+    }
+
+    let orgunit = this.map[orgId];
+    if (orgunit) {
+      return orgunit.getStyleForRoom(orgId, isHighlighted, isSelected);
+    }
+
+    return this.defaultStyle;
+  }
 }
