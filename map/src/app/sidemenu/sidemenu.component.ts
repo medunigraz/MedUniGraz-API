@@ -17,6 +17,8 @@ export class SidemenuComponent implements OnInit {
 
   constructor(private mapService: MapService) { }
 
+  public isOpened = false;
+
   ngOnInit() {
     this.updateData();
   }
@@ -47,6 +49,12 @@ export class SidemenuComponent implements OnInit {
 
   close() {
     console.log("SidemenuComponent::close()");
+    this.isOpened = false;
+  }
+
+  open() {
+    console.log("SidemenuComponent::open()");
+    this.isOpened = true;
   }
 
   private groupPois() {

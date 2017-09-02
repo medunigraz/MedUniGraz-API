@@ -1,24 +1,21 @@
-<md-sidenav-container class="mainSideNavContainer">
-  <md-sidenav #sidenav mode="over" opened="false" (close)="sideNavClosed()">
-    <app-sidemenu (poiTypesChangedEvt)="poiTypesChanged($event)"></app-sidemenu>
-  </md-sidenav>
+<app-olmap #mapComp (onShowRoute)="showRouteCalled($event)"
+                    (onHighlightRouteLevels)="highlightRouteLevelsCalled($event)"
+                    [currentFloor]="currentFloor">
+</app-olmap>
+<app-searchcontrol #searchBoxComp
+                    (openSideMenuEvt)="openSideMenu($event)"
+                    (roomSelectedEvt) = "roomSelected($event)"
+                    (routeSelectedEvt) = "routeSelected($event)"
+                    >
+</app-searchcontrol>
+<app-floorcontrol #floorComp
+  (currentFloorEvt)="floorChanged($event)"
+  (floorsReceivedEvt)="floorsReceived($event)"
+  >
+</app-floorcontrol>
+<app-position (newPositionEvent)="livePositionChanged($event)">
+</app-position>
 
-  <app-olmap #mapComp (onShowRoute)="showRouteCalled($event)"
-                      (onHighlightRouteLevels)="highlightRouteLevelsCalled($event)"
-                      [currentFloor]="currentFloor">
-  </app-olmap>
-  <app-searchcontrol #searchBoxComp
-                      (openSideMenuEvt)="openSideMenu($event)"
-                      (roomSelectedEvt) = "roomSelected($event)"
-                      (routeSelectedEvt) = "routeSelected($event)"
-                      >
-  </app-searchcontrol>
-  <app-floorcontrol #floorComp
-    (currentFloorEvt)="floorChanged($event)"
-    (floorsReceivedEvt)="floorsReceived($event)"
-    >
-  </app-floorcontrol>
-  <app-position (newPositionEvent)="livePositionChanged($event)">
-  </app-position>
-</md-sidenav-container>
+<app-sidemenu #sidenav (poiTypesChangedEvt)="poiTypesChanged($event)"></app-sidemenu>
+
 <!--<router-outlet></router-outlet>-->

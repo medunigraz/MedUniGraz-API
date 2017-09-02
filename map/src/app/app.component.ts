@@ -4,8 +4,7 @@ import { OlmapComponent } from './olmap/olmap.component'
 import { SearchcontrolComponent } from './searchcontrol/searchcontrol.component'
 import { FloorcontrolComponent } from './floorcontrol/floorcontrol.component'
 import { MainappService } from './mainappservice/mainapp.service';
-
-import { MdSidenav } from '@angular/material';
+import { SidemenuComponent } from './sidemenu/sidemenu.component'
 
 import { FloorList } from './base/floorlist';
 import { Room } from './base/room';
@@ -20,7 +19,7 @@ import { Position } from './base/position';
 })
 export class AppComponent {
 
-  @ViewChild('sidenav') public sideNav: MdSidenav;
+  @ViewChild('sidenav') public sideNav: SidemenuComponent;
   @ViewChild('mapComp') public mapComponent: OlmapComponent;
   @ViewChild('searchBoxComp') public searchBoxComponent: SearchcontrolComponent;
   @ViewChild('floorComp') public floorControlComponent: FloorcontrolComponent;

@@ -1,4 +1,4 @@
-<div id="sideMenuDiv">
+<div *ngIf="isOpened" id="sideMenuDiv">
 
   <section class="sideMenuHeaderSection">
     <div class="sideMenuRowContent">
@@ -32,7 +32,7 @@
                      <div  class="poiIcon {{poi.iconclass}}" [style.background-color] = "poi.color"> </div>
                   </td>
                   <td>
-                    <span>{{poi.name}}</span>
+                    <span class="poiName">{{poi.name}}</span>
                   </td>
                 </tr>
                 <tr *ngIf="poi.isVisible">
@@ -52,4 +52,6 @@
       <p class="copyright">© 2017 Medizinische Universität Graz</p>
     </div>
   </section>
+</div>
+<div *ngIf="isOpened" class = "clickOverlay" (click)="close()">
 </div>
