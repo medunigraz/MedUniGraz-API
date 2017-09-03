@@ -106,7 +106,7 @@ export class FloorcontrolComponent implements OnInit {
 
   public highlightLevels(levels) {
 
-    console.log("FloorcontrolComponent::highlightLevels! " + JSON.stringify(levels));
+    //console.log("FloorcontrolComponent::highlightLevels! " + JSON.stringify(levels));
 
     if (!levels) {
       levels = [];

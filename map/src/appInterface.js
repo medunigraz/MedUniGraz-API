@@ -127,7 +127,7 @@ function getData(name, val)
 
 function sendDemoData()
 {
-  console.log("#JS# LOG... ");
+  //console.log("#JS# LOG... ");
   //var jsondata = "{ [ {'beacon1':" + counter + "},{'beacon2':" + (counter + 100) + "} ] }";
 
   var val1 = -30 - Math.random() * 10;
@@ -143,35 +143,36 @@ function sendDemoData()
   }
 
   jsondata += ']';
-/*
+
   jsondata = '[' +
-  getData("E3:F0:37:DA:11:32", val2) +', ' +
-  getData("E8:AA:53:47:4A:67", val3) +', ' +
-    getData("FA:7F:B8:61:24:31", val1) + ', ' +
-    getData("E3:DE:B3:CD:C5:A8", val4) +', ' +
-    getData("F1:61:75:80:F5:AC", val3) +
+    getData("xsfY", val1)/* +', ' +
+    getData("1iJd", val4) +', ' +
+    getData("aaaaa", val1) + ', ' +
+    getData("bbbbb", val4) +', ' +
+    getData("eeee", val3)*/ +
     ']';
-*/
 
-jsondata = '[' +
-  getData("8bVP", val1)/* +', ' +
-  getData("1iJd", val4) +', ' +
-  getData("aaaaa", val1) + ', ' +
-  getData("bbbbb", val4) +', ' +
-  getData("eeee", val3)*/ +
-  ']';
 
-  //jsondata = '[' + getData("FA:7F:B8:61:24:31", val1) + ']';
 
+  var beaconNames = ['ETj5', '4u7i', '9ggN', 'M4SX', 'JO7Q', 'TphX', 'Vj64', 'JMFu', 'gyQl'];
+  var index = counter / 10;
+  if(index >= beaconNames.length)
+  {
+    counter = 0;
+    index = 0;
+  }
+  jsondata = '[' + getData(beaconNames[index], val1) +']';
   counter++;
+
   updatesignals(jsondata);
   //console.log("#JS# sendDemoData: " + jsondata + "#" + counter);
-
+  setTimeout(sendDemoData, 300);
+  /*
   if(counter % 10 == 0)
   {
     setTimeout(sendDemoData, 1000);
   }
   else {
-    setTimeout(sendDemoData, 1000);
-  }
+    setTimeout(sendDemoData, 10000);
+  }*/
 }

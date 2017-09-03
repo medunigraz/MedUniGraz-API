@@ -6,7 +6,6 @@ import { MapService } from '../mapservice/map.service';
 
 import { Position } from '../base/position';
 
-import { PositionUpdate } from './positionupdate';
 import { SignalBuffer } from './signalbuffer';
 import { SignalBufferCollection } from './signalbuffercollection';
 
@@ -16,7 +15,7 @@ enum PositionStatus {
   Active = 2
 }
 
-const demoMode: boolean = false;
+const demoMode: boolean = true;
 
 declare var appInterfaceObject: any;
 
@@ -28,6 +27,7 @@ declare var appInterfaceObject: any;
 export class PositionComponent implements OnInit {
 
   @Output() newPositionEvent = new EventEmitter<Position>();
+  @Output() livePosActive = new EventEmitter<boolean>();
 
   public isActive: boolean = demoMode;
   private positionStatus: PositionStatus = PositionStatus.InActive;
@@ -39,8 +39,6 @@ export class PositionComponent implements OnInit {
   private positioningStarted: boolean = false;
 
   private signalBufferCollection: SignalBufferCollection = new SignalBufferCollection();
-
-  private positionUpdate: PositionUpdate = new PositionUpdate();
 
 
   constructor(private zone: NgZone, private mapService: MapService) {
@@ -62,6 +60,18 @@ export class PositionComponent implements OnInit {
 
   ngAfterViewInit(): void {
     this.startCheckTimer();
+  }
+
+  public startLivePositioning() {
+    this.positioningStarted = true;
+    this.updatePositionStatus();
+    this.startScan();
+  }
+
+  public stopLivePositioning() {
+    this.positioningStarted = false;
+    this.updatePositionStatus();
+    this.stopScan();
   }
 
   showPosition() {
@@ -182,15 +192,13 @@ export class PositionComponent implements OnInit {
     try {
       if (posResult) {
         //constructor(x: number, y: number, level: number, urlString: string, feature: any) {
-        let coords = posResult.geometry.coordinates;
-        let prop = posResult.properties;
         //console.log("PositionComponent::updateLivePos: " + JSON.stringify(coords));
-        pos = new Position(coords[0], coords[1], prop.level, urlString, posResult);
+        pos = new Position(urlString, posResult);
         //console.log("PositionComponent::updateLivePos: " + JSON.stringify(pos));
       }
 
     } catch (e) {
-      console.log("PositionComponent::updateLivePos: " + JSON.stringify(e));
+      console.log("PositionComponent::updateLivePos Error: " + JSON.stringify(e));
     }
 
     //console.log("PositionComponent::updateLivePos: LEVEL: " + JSON.stringify(pos.level));
@@ -249,6 +257,14 @@ export class PositionComponent implements OnInit {
         this.positionStatus = PositionStatus.Paused;
       }
     }
+
+    if (this.positionStatus == PositionStatus.InActive) {
+      this.livePosActive.emit(false);
+    }
+    else {
+      this.livePosActive.emit(true);
+    }
+
   }
 
 

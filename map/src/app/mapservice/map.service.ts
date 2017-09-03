@@ -78,7 +78,10 @@ export class MapService {
   }
 
   getRoute(sourceNodeId: number, destinationNodeId: number): Observable<Object> {
-    return this.http.get(this.routeUrl + '?from=' + sourceNodeId + '&to=' + destinationNodeId)
+    let url = this.routeUrl + '?from=' + sourceNodeId + '&to=' + destinationNodeId;
+    console.log("MapService::getRoute " + url)
+
+    return this.http.get(url)
       .map(this.extractData)
       .catch(this.handleError);
   }

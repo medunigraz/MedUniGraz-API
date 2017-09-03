@@ -267,7 +267,7 @@ export class OlmapComponent implements OnInit {
   public allowZoomToLivePos() {
     let zoomToPos: boolean = false;
     let currentTimeStamp: number = Date.now();
-    //console.log("MapComponent::showLivePosition Zoom to livePos # lastMapUpdate: " + (currentTimeStamp - this.lastMapUpdate) +
+    //console.log("MapComponent::showLivePosition Zoom to livePos # lastMapUpdate: " + (currentTimeStamp - this.lastMapUpdate));
     if (this.lastViewChangeEnd >= this.lastViewChangeStart && currentTimeStamp - this.lastMapUpdate < 2500) //Always zoom to pos after level change
     {
       //console.log("MapComponent::showLivePosition ALLOW  Zoom to livePos # lastMapUpdate ");
@@ -302,6 +302,14 @@ export class OlmapComponent implements OnInit {
     this.lastPositionReceived = Date.now();
   }
 
+  public showLivePosOnRoute(livePos: Position) {
+    if (this.allowZoomToLivePos() && livePos) {
+      this.zoomToPosition([livePos.x, livePos.y]);
+    }
+
+    this.lastPositionReceived = Date.now();
+  }
+
   setFocus(): void {
     this.mapDiv.nativeElement.focus();
   }
@@ -312,10 +320,12 @@ export class OlmapComponent implements OnInit {
     this.mapRoom.markRoomFromSearch(roomResult);
   }
 
-  showRoute(from: number, to: number) {
-    console.log("OlmapComponent::showRoute: " + from + " --> " + to);
-    this.lastShowRoom = Date.now();
-    this.mapRoute.showRoute(from, to);
+  showRoute(from: number, to: number, livePos: Position) {
+    //console.log("OlmapComponent::showRoute: " + from + " --> " + to);
+    if (!livePos) {
+      this.lastShowRoom = Date.now();
+    }
+    this.mapRoute.showRoute(from, to, livePos);
   }
 
 

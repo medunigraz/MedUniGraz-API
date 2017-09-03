@@ -5,6 +5,7 @@ import { SearchcontrolComponent } from './searchcontrol/searchcontrol.component'
 import { FloorcontrolComponent } from './floorcontrol/floorcontrol.component'
 import { MainappService } from './mainappservice/mainapp.service';
 import { SidemenuComponent } from './sidemenu/sidemenu.component'
+import { PositionComponent } from './position/position.component'
 
 import { FloorList } from './base/floorlist';
 import { Room } from './base/room';
@@ -23,13 +24,16 @@ export class AppComponent {
   @ViewChild('mapComp') public mapComponent: OlmapComponent;
   @ViewChild('searchBoxComp') public searchBoxComponent: SearchcontrolComponent;
   @ViewChild('floorComp') public floorControlComponent: FloorcontrolComponent;
+  @ViewChild('positionComp') public positionComponent: PositionComponent;
 
   private isSideMenuOpenend: boolean = false;
   currentFloor: Floor = Floor.getDefaultFloor();
-
   private poiTypes: PoiType[] = null;
-
   private floors: FloorList = null;
+
+  private livePosStatus = false;
+
+  private liveRoute: RouteNodes = undefined;
 
   constructor(
     private mainAppService: MainappService
@@ -71,17 +75,29 @@ export class AppComponent {
   routeSelected(route: RouteNodes): void {
     console.log("AppComponent --- routeSelected: " + JSON.stringify(route) + "###Floor: " + JSON.stringify(this.currentFloor));
 
-    if (route) {
-      if (this.currentFloor.id != route.start.level) {
-        this.floorControlComponent.currentFloorFromId(route.start.level);
-      }
+    this.liveRoute = undefined;
 
-      this.mapComponent.showRoute(route.start.id, route.end.id);
+    if (route) {
+      if (route.start) {
+        this.positionComponent.stopLivePositioning();
+
+        if (this.currentFloor.id != route.start.level) {
+          this.floorControlComponent.currentFloorFromId(route.start.level);
+        }
+
+        this.mapComponent.showRoute(route.start.id, route.end.id, undefined);
+      }
+      else {
+        this.positionComponent.startLivePositioning();
+        this.liveRoute = route;
+      }
     }
     else {
+      this.positionComponent.stopLivePositioning();
       this.mapComponent.clearRoute();
     }
   }
+
 
   openSideMenu(open: boolean): void {
 
@@ -101,7 +117,7 @@ export class AppComponent {
   }
 
   highlightRouteLevelsCalled(levels: number[]) {
-    console.log("AppComponent::highlightRouteLevels!!!");
+    //console.log("AppComponent::highlightRouteLevels!!!");
     this.floorControlComponent.highlightLevels(levels);
   }
 
@@ -113,10 +129,14 @@ export class AppComponent {
     }
   }
 
+  livePosStatusChanged(status: boolean) {
+    //console.log("AppComponent --- livePosStatusChanged: " + status);
+    this.livePosStatus = status;
+    this.searchBoxComponent.setLivePosAvailable(this.livePosStatus);
+  }
+
   livePositionChanged(livePos: Position) {
-    //console.log("AppComponent --- livePositionChanged: " + JSON.stringify(livePos));
-
-
+    console.log("AppComponent --- livePositionChanged: " + JSON.stringify(livePos));
 
     if (livePos && this.mapComponent.allowZoomToLivePos()) {
       if (livePos.level != this.currentFloor.id) {
@@ -124,7 +144,12 @@ export class AppComponent {
       }
     }
 
-    this.mapComponent.showLivePosition(livePos);
+    if (this.liveRoute) {
+      this.mapComponent.showRoute(undefined, this.liveRoute.end.id, livePos);
+    }
+    else {
+      this.mapComponent.showLivePosition(livePos);
+    }
   }
 
 }

@@ -134,7 +134,8 @@
   white-space: normal;
   display: inline-block;
   line-height: 2.0em;
-  font-size: small;
+  /*
+  font-size: small;*/
 }
 
 .popup-button {

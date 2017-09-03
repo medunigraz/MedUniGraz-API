@@ -13,7 +13,7 @@ export class PoiType {
 
   constructor(obj: any) {
 
-    console.log("PoiType::constructor: " + JSON.stringify(obj));
+    //console.log("PoiType::constructor: " + JSON.stringify(obj));
 
     this.id = obj["id"];
     this.name = obj["name"];

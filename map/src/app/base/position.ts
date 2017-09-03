@@ -3,13 +3,26 @@ export class Position {
   public y: number;
   public level: number;
   public urlString: string;
-  public feature: any;
+  //public feature: any;
 
-  constructor(x: number, y: number, level: number, urlString: string, feature: any) {
-    this.x = x;
-    this.y = y;
-    this.level = level;
+  public nodeid: number;
+  public edgeid: number;
+  public edgecoords: number[][];
+
+
+  constructor(urlString: string, feature: any) {
+
+    let coords = feature.geometry.coordinates;
+    let prop = feature.properties;
+
+    this.x = coords[0];
+    this.y = coords[1];
+    this.level = prop.level;
     this.urlString = urlString;
-    this.feature = feature;
+    //this.feature = feature;
+
+    this.nodeid = feature.properties.node;
+    this.edgeid = feature.properties.edge;
+    this.edgecoords = feature.properties.path.geometry.coordinates;
   }
 }

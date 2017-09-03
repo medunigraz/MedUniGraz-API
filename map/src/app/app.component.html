@@ -13,7 +13,10 @@
   (floorsReceivedEvt)="floorsReceived($event)"
   >
 </app-floorcontrol>
-<app-position (newPositionEvent)="livePositionChanged($event)">
+<app-position #positionComp
+  (newPositionEvent)="livePositionChanged($event)"
+  (livePosActive)="livePosStatusChanged($event)"
+  >
 </app-position>
 
 <app-sidemenu #sidenav (poiTypesChangedEvt)="poiTypesChanged($event)"></app-sidemenu>

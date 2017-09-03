@@ -52,9 +52,11 @@ export class SearchcontrolComponent implements OnInit {
   private searchStartSubscription: Subscription = null;
 
   @Output() openSideMenuEvt = new EventEmitter<boolean>();
-
   @Output() roomSelectedEvt = new EventEmitter<Room>();
   @Output() routeSelectedEvt = new EventEmitter<RouteNodes>();
+
+  private isLivePosRoutingAvailable = false;
+  @Output() aktiveLivePosRouting = new EventEmitter<boolean>();
 
   constructor(private mapService: MapService) { }
 
@@ -93,10 +95,12 @@ export class SearchcontrolComponent implements OnInit {
 
   showRouteCalled(destinationroom: Room) {
     //console.log('SearchComponent::showRouteCalled: ' + result.text);
-
     this.currentResult = SearchResult.CreateFromRoom(destinationroom);
-
     this.route(destinationroom);
+  }
+
+  public setLivePosAvailable(isAvailable: boolean) {
+    this.isLivePosRoutingAvailable = isAvailable;
   }
 
   search(term: string) {
@@ -125,7 +129,7 @@ export class SearchcontrolComponent implements OnInit {
     }
 
     if (term.length == 0) {
-      this.searchUpdateResultsStartPoint(SearchDemoData.getDefaultStartPositions(), false);
+      this.searchUpdateResultsStartPoint(SearchDemoData.getDefaultStartPositions(this.isLivePosRoutingAvailable), false);
     }
     else {
       this.searchStartSubscription = this.mapService.search(term).subscribe(
@@ -211,7 +215,7 @@ export class SearchcontrolComponent implements OnInit {
     this.searchUpdateResults([], true);
 
     if (this.currentStartPointResult == null) {
-      this.currentStartPointResult = DefaultStartPoint;
+      this.currentStartPointResult = SearchDemoData.getDefaultStartPoint(this.isLivePosRoutingAvailable);
     }
     this.showCurrentStartResult();
     this.isRoutingSearchBox = true;
@@ -228,6 +232,11 @@ export class SearchcontrolComponent implements OnInit {
       {
         console.log('SearchComponent::route from entrance');
         this.routeSelectedEvt.emit(new RouteNodes(new Room(5936, "Haupteingang", 2), destinationroom));
+      }
+      else if (this.currentStartPointResult.id == -1) //Liverouting
+      {
+        console.log('SearchComponent::route from liveposition');
+        this.routeSelectedEvt.emit(new RouteNodes(undefined, destinationroom));
       }
       else {
         console.log('SearchComponent::route from ' + this.currentStartPointResult.id + ' not supported!');

@@ -117,7 +117,7 @@ export class SignalBufferCollection {
       }
     }
 
-    resultString += "&debug=" + counter + "YYYYYY" + debugString;
+    //resultString += "&debug=" + counter + "YYYYYY" + debugString;
     //resultString += "&debug=" + counter;
 
     this.deleteObsoleteBeacons(keysToDelete);

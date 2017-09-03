@@ -6,9 +6,19 @@ export const DefaultStartPoint: SearchResult = new SearchResult(-2, "Haupteingan
 
 export class SearchDemoData {
 
-  public static getDefaultStartPositions(): SearchResult[] {
-    return [DefaultStartPointWithPos,
-      DefaultStartPoint];
+  public static getDefaultStartPoint(isLivePosRoutingAvailable: boolean): SearchResult {
+    if (isLivePosRoutingAvailable) {
+      return DefaultStartPointWithPos
+    }
+    return DefaultStartPoint;
+  }
+
+  public static getDefaultStartPositions(isLivePosRoutingAvailable: boolean): SearchResult[] {
+    if (isLivePosRoutingAvailable) {
+      return [DefaultStartPointWithPos,
+        DefaultStartPoint];
+    }
+    return [DefaultStartPoint];
   }
 
   public static getNoResult_Obj(): SearchResult {
@@ -37,7 +47,7 @@ export class SearchDemoData {
   public static getSearchStartPointDemoData(term: string): Observable<SearchResult[]> {
     console.log('SearchComponent::searchStartPoint:' + term);
     if (term.length == 0) {
-      return Observable.of(this.getDefaultStartPositions());
+      return Observable.of(this.getDefaultStartPositions(true));
     };
     if (term.length == 1) {
       return Observable.of([DefaultStartPointWithPos,

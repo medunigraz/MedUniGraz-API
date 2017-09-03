@@ -19,10 +19,9 @@ import { SearchcontrolComponent } from './searchcontrol/searchcontrol.component'
 import { FloorcontrolComponent } from './floorcontrol/floorcontrol.component';
 import { SidemenuComponent } from './sidemenu/sidemenu.component';
 import { RoomDialogComponent } from './room-dialog/room-dialog.component';
-import { RouteCompComponent } from './route-comp/route-comp.component';
 import { PositionComponent } from './position/position.component';
 
-import {MdButtonModule, MdCheckboxModule, MdButtonToggleModule, MdCoreModule, MdDialogModule, MdIconModule, MdInputModule, MdSelectModule, MdSidenavModule, MdMenuModule} from '@angular/material';
+import {MdButtonModule, MdCheckboxModule, MdButtonToggleModule, MdCoreModule, MdDialogModule, MdIconModule, MdInputModule, MdSelectModule, MdMenuModule} from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -32,7 +31,6 @@ import {MdButtonModule, MdCheckboxModule, MdButtonToggleModule, MdCoreModule, Md
     FloorcontrolComponent,
     SidemenuComponent,
     RoomDialogComponent,
-    RouteCompComponent,
     PositionComponent
   ],
   imports: [
@@ -43,7 +41,7 @@ import {MdButtonModule, MdCheckboxModule, MdButtonToggleModule, MdCoreModule, Md
     BrowserAnimationsModule,
     //RouterModule.forRoot(routes),
     //MaterialModule.forRoot()
-    MdButtonModule, MdCheckboxModule, MdButtonToggleModule, MdCoreModule, MdDialogModule, MdIconModule, MdInputModule, MdSelectModule, MdSidenavModule, MdMenuModule
+    MdButtonModule, MdCheckboxModule, MdButtonToggleModule, MdCoreModule, MdDialogModule, MdIconModule, MdInputModule, MdSelectModule, MdMenuModule
 
   ],
   providers: [MapService, MainappService],
