@@ -136,7 +136,7 @@ export class AppComponent {
   }
 
   livePositionChanged(livePos: Position) {
-    console.log("AppComponent --- livePositionChanged: " + JSON.stringify(livePos));
+    //console.log("AppComponent --- livePositionChanged: " + JSON.stringify(livePos));
 
     if (livePos && this.mapComponent.allowZoomToLivePos()) {
       if (livePos.level != this.currentFloor.id) {

@@ -42,7 +42,7 @@ export class MapLivePosition extends MapLayerBase {
       })
     }));
 
-    this.circle = new ol.geom.Circle([0, 0], 0.5);
+    this.circle = new ol.geom.Circle([0, 0], 1);
     //this.circle = new ol.geom.Point([1722184.2450872045, 5955256.38138703]);
     this.circleFeature = new ol.Feature(this.circle);
 

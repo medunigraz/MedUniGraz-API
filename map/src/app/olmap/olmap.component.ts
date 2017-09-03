@@ -1,6 +1,9 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
 import { ViewChild, ElementRef, AfterViewInit, Input, Output } from '@angular/core';
 import { MapService } from '../mapservice/map.service';
+import { Observable } from 'rxjs';
+import {Subscription} from "rxjs";
+import {TimerObservable} from "rxjs/observable/TimerObservable";
 
 import { MapPois } from './mapPois';
 import { MapRoom } from './mapRoom';
@@ -51,6 +54,8 @@ export class OlmapComponent implements OnInit {
       this.routeLevelOverlays[i] = i;
     }
   }
+
+  private zoomToLivePosTimerSubscription: Subscription;
 
   private orgUnitHandler: OrgUnitHandler = null;
 
@@ -274,15 +279,15 @@ export class OlmapComponent implements OnInit {
       zoomToPos = true;
     }
     //console.log("MapComponent::showLivePosition Zoom to livePos # ?? " + (currentTimeStamp - this.lastViewChangeEnd) + "#(" + this.lastViewChangeEnd + "/" + this.lastViewChangeStart + ")");
-    if (this.lastViewChangeEnd >= this.lastViewChangeStart && currentTimeStamp - this.lastViewChangeEnd > 5000) //Zoom to pos if no map drag happend in the last 5sec
+    if (this.lastViewChangeEnd >= this.lastViewChangeStart && currentTimeStamp - this.lastViewChangeEnd > 1000) //Zoom to pos if no map drag happend in the last 1sec
     {
       //console.log("MapComponent::showLivePosition ALLOW  Zoom to livePos # lastDrag ");
       zoomToPos = true;
-    }
+    }/*
     if (this.lastViewChangeEnd >= this.lastViewChangeStart && currentTimeStamp - this.lastPositionReceived > 5000 && currentTimeStamp - this.lastViewChangeEnd > 2000) {
       //console.log("MapComponent::showLivePosition ALLOW Zoom to livePos # lastPositionReceived");
       zoomToPos = true;
-    }
+    }*/
 
     if (this.lastShowRoom > 0 && Date.now() - this.lastShowRoom < 5000) { //Ignore pos for same time after mark room
       //console.log("MapComponent::showLivePosition BLOCK Zoom to livePos # lastShowRoom");
@@ -340,7 +345,20 @@ export class OlmapComponent implements OnInit {
   }
 
   zoomToGeomtry(extent: any) {
-    if (extent) {
+    let timer = TimerObservable.create(250);
+
+    if (this.zoomToLivePosTimerSubscription != null) {
+      this.zoomToLivePosTimerSubscription.unsubscribe();
+      this.zoomToLivePosTimerSubscription = null;
+    }
+
+    this.zoomToLivePosTimerSubscription = timer.subscribe(t => {
+      this.zoomToGeometryEvt(extent);
+    });
+  }
+
+  zoomToGeometryEvt(extent: any) {
+    if (extent && this.allowZoomToLivePos()) {
       let options = {
         padding: [1, 1, 1, 1],
         duration: 500
@@ -353,21 +371,36 @@ export class OlmapComponent implements OnInit {
   }
 
   zoomToPosition(position: number[]) {
-    if (position && position != undefined) {
+    let timer = TimerObservable.create(250);
+
+    if (this.zoomToLivePosTimerSubscription != null) {
+      this.zoomToLivePosTimerSubscription.unsubscribe();
+      this.zoomToLivePosTimerSubscription = null;
+    }
+
+    this.zoomToLivePosTimerSubscription = timer.subscribe(t => {
+      this.zoomToPositionEvt(position);
+    });
+  }
+
+  zoomToPositionEvt(position: number[]) {
+    if (position && position != undefined && this.allowZoomToLivePos()) {
 
       let destinationZoom = 20;
 
       if (destinationZoom > this.map.getView().getZoom()) {
         this.mapView.animate({
           zoom: destinationZoom,
+          center: position,
           duration: 500
         });
       }
-
-      this.mapView.animate({
-        center: position,
-        duration: 500
-      });
+      else {
+        this.mapView.animate({
+          center: position,
+          duration: 500
+        });
+      }
       //this.mapView.setCenter(position);
     }
   }

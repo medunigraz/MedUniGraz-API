@@ -84,8 +84,7 @@ export class MapRoute extends MapLayerBase {
       }
     }
     else {
-      //if (livePos.nodeid != this.lastLivePosStartNode)
-      {
+      if (livePos.nodeid != this.lastLivePosStartNode) {
         this.lastLivePosStartNode = livePos.nodeid;
         this.subscribeNewRequest(
           this.mapService.getRoute(this.lastLivePosStartNode, destinationNodeId).
