@@ -31,6 +31,9 @@ export class MapRoute extends MapLayerBase {
 
   private lastLivePosStartNode = -1;
 
+  private line: any;
+  private lineFeature: any;
+
   constructor(private mapService: MapService, private levelPopUpBaseElem: ElementRef, private mapComponent: OlmapComponent) {
     super();
     this.Initialize();
@@ -41,11 +44,18 @@ export class MapRoute extends MapLayerBase {
     let styleFunction = function(feature, currentFloor) {
       let style: any = null;
       try {
-        let source = feature.get("source_node").properties.level;
-        let destination = feature.get("destination_node").properties.level;
 
-        if (source == currentFloor || destination == currentFloor) {
+        if (feature.get("firstline")) {
           style = MapRouteStyles.routeCurrentFloor;
+        }
+        else {
+
+          let source = feature.get("source_node").properties.level;
+          let destination = feature.get("destination_node").properties.level;
+
+          if (source == currentFloor || destination == currentFloor) {
+            style = MapRouteStyles.routeCurrentFloor;
+          }
         }
       }
       catch (e) {
@@ -61,6 +71,10 @@ export class MapRoute extends MapLayerBase {
     let res = OpenlayersHelper.CreateBasicLayer(feature => styleFunction(feature, this.currentLevelId));
     this.layerSource = res.layerSource;
     this.layer = res.layer;
+
+    this.line = new ol.geom.LineString([[0, 0], [0, 0]]);
+    this.lineFeature = new ol.Feature(this.line);
+    this.lineFeature.set("firstline", true);
   }
 
   public setFloorList(floorList: FloorList) {
@@ -119,6 +133,8 @@ export class MapRoute extends MapLayerBase {
     this.createLevelOverlays();
 
     if (livePos) {
+      this.line.setCoordinates(livePos.edgecoords);
+      this.layerSource.addFeature(this.lineFeature);
       this.mapComponent.showLivePosOnRoute(livePos);
     }
     else if (this.currentRoute.length > 1) {

@@ -308,6 +308,8 @@ export class OlmapComponent implements OnInit {
   }
 
   public showLivePosOnRoute(livePos: Position) {
+    this.mapLivePosition.showLivePosition(livePos);
+
     if (this.allowZoomToLivePos() && livePos) {
       this.zoomToPosition([livePos.x, livePos.y]);
     }

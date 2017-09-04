@@ -154,7 +154,7 @@ function sendDemoData()
 
 
 
-  var beaconNames = ['ETj5', '4u7i', '9ggN', 'M4SX', 'JO7Q', 'TphX', 'Vj64', 'JMFu', 'gyQl'];
+  var beaconNames = ['ETj5', '4u7i', '9ggN', 'M4SX', 'JO7Q', 'TphX', 'Vj64', 'JMFu', 'gyQl', 'u5WK', 'DtKO', 'FiBO', '27Nq'];
   var index = counter / 10;
   if(index >= beaconNames.length)
   {

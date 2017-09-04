@@ -34,10 +34,10 @@ export class MapLivePosition extends MapLayerBase {
 
     let res = OpenlayersHelper.CreateBasicLayer(new ol.style.Style({
       fill: new ol.style.Fill({
-        color: 'rgba(81, 174, 50, 0.5)'
+        color: 'rgba(255, 119, 0, 0.5)'
       }),
       stroke: new ol.style.Stroke({
-        color: 'rgba(81, 174, 50, 1)',
+        color: 'rgba(255, 119, 0, 1)',
         width: 3
       })
     }));
@@ -59,12 +59,13 @@ export class MapLivePosition extends MapLayerBase {
 
   public setCurrentLevel(newLevel: number) {
     this.clear();
+    this.positionVisible = false;
     this.currentLevelId = newLevel;
     //this.stopAnimation();
   }
 
   public showLivePosition(livePos: Position) {
-    //console.log("MapLivePosition::showLivePosition..." + JSON.stringify(livePos));
+    //console.log("MapLivePosition::showLivePosition..." + this.currentLevelId + "###" + JSON.stringify(livePos));
 
     if (!livePos || this.currentLevelId != livePos.level) {
       this.clear();
@@ -72,6 +73,7 @@ export class MapLivePosition extends MapLayerBase {
       //this.stopAnimation();
     }
     else {
+      console.log("MapLivePosition::showLivePosition: " + this.positionVisible);
       if (!this.positionVisible) {
         this.AddPositionFeature();
       }
