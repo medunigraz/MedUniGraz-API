@@ -60,12 +60,11 @@ export class MapRoute extends MapLayerBase {
       }
       catch (e) {
       }
-      if (style) {
-        return style;
+      if (!style) {
+        style = MapRouteStyles.routeHiddenFloor;
       }
-      else {
-        return MapRouteStyles.routeHiddenFloor;
-      }
+      //console.log("MapRoute::Stylefunction: " + style.getStroke().getColor());
+      return style;
     };
 
     let res = OpenlayersHelper.CreateBasicLayer(feature => styleFunction(feature, this.currentLevelId));
