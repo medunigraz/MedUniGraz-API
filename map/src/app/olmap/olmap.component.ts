@@ -2,8 +2,9 @@ import { Component, OnInit, EventEmitter } from '@angular/core';
 import { ViewChild, ElementRef, AfterViewInit, Input, Output } from '@angular/core';
 import { MapService } from '../mapservice/map.service';
 import { Observable } from 'rxjs';
-import {Subscription} from "rxjs";
-import {TimerObservable} from "rxjs/observable/TimerObservable";
+import { Subscription } from "rxjs";
+import { TimerObservable } from "rxjs/observable/TimerObservable";
+import { Ng2DeviceService } from 'ng2-device-detector';
 
 import { MapPois } from './mapPois';
 import { MapRoom } from './mapRoom';
@@ -48,7 +49,7 @@ export class OlmapComponent implements OnInit {
 
   public routeLevelOverlays: number[] = null;
 
-  constructor(private dialog: MdDialog, private mapService: MapService) {
+  constructor(private dialog: MdDialog, private mapService: MapService, private deviceService: Ng2DeviceService) {
     this.routeLevelOverlays = new Array(MAX_NUMBER_OF_ROUTELEVEL_OVERLAYS);
     for (let i = 0; i < MAX_NUMBER_OF_ROUTELEVEL_OVERLAYS; i++) {
       this.routeLevelOverlays[i] = i;
@@ -134,7 +135,12 @@ export class OlmapComponent implements OnInit {
     this.mapBackground.showBackground();
 
     this.map.on('click', evt => this.mapClicked(evt));
-    this.map.on('pointermove', evt => this.mapMouseMoved(evt));
+
+    if (this.deviceService.isMobile() || this.deviceService.isTablet()) {
+    }
+    else {
+      this.map.on('pointermove', evt => this.mapMouseMoved(evt));
+    }
 
     this.map.on('movestart', evt => this.changeViewStart(evt));
     this.map.on('moveend', evt => this.changeViewEnd(evt));
