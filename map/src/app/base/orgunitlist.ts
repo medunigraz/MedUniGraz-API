@@ -49,9 +49,17 @@ export class OrgUnitList {
 
     //console.log("OrgUnitList::getStyleForRoom: " + orgId);
 
-    if (categoryId == 18) { //Way
+    if (categoryId == 18 //Verkehrsfläche
+      || categoryId == 13 //Balkon
+      || categoryId == 26 //Garage
+    ) {
       return this.wayStyle;
     }
+    /*
+        if (categoryId == 17 //Haustechnik
+        ) {
+          return this.defaultStyle;
+        }*/
 
     let orgunit = this.map[orgId];
     if (orgunit) {

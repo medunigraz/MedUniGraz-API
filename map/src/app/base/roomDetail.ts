@@ -90,7 +90,10 @@ export class RoomDetail {
     }
     if (!featureRoom.get('campusonline')) {
       return false;
-    }
+    }/*
+    if (featureRoom.get('campusonline')['category']['id'] == 17) {  //Haustechnik
+      return false;
+    }*/
     if (!featureRoom.get('marker') || !featureRoom.get('marker')['coordinates']) {
       return false;
     }
