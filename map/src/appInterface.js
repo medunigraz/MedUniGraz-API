@@ -37,10 +37,13 @@ function updatesignals(data)
     //JSInterface.logrt("" + new Date().getTime() + ";" + data);
   }
 
-  if(window["angularComponentRef"])
-  {
-    window['angularComponentRef'].zone.run(() => {window['angularComponentRef'].component.signalDataChanged(data);})
-  }
+  window['angularComponentRef'].component.signalDataChanged(data);
+
+/*
+    if(window["angularComponentRef"])
+    {
+        window['angularComponentRef'].zone.run(() => {window['angularComponentRef'].component.signalDataChanged(data);})
+    }*/
 }
 
 function startscan()
