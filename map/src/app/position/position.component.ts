@@ -6,7 +6,6 @@ import { MapService } from '../mapservice/map.service';
 
 import { Position } from '../base/position';
 
-import { SignalBuffer } from './signalbuffer';
 import { SignalBufferCollection } from './signalbuffercollection';
 
 enum PositionStatus {

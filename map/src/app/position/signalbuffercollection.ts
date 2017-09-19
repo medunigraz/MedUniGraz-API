@@ -1,5 +1,3 @@
-import { SignalBuffer } from './signalbuffer';
-import { SignalBufferFixed } from './signalbufferFixed';
 import { SignalBufferTimed } from './signalbuffertimed';
 import { Observable } from 'rxjs';
 import { Subscription } from "rxjs";

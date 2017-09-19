@@ -329,16 +329,20 @@ export class OlmapComponent implements OnInit {
 
   showRoom(roomResult: Room) {
     console.log("OLMap::showRoom: " + JSON.stringify(roomResult));
-    this.lastShowRoom = Date.now();
+    this.lastShowRoom = -1;
     this.mapRoom.markRoomFromSearch(roomResult);
+    this.lastShowRoom = Date.now();
   }
 
   showRoute(from: number, to: number, livePos: Position) {
     //console.log("OlmapComponent::showRoute: " + from + " --> " + to);
     if (!livePos) {
-      this.lastShowRoom = Date.now();
+      this.lastShowRoom = -1;
     }
     this.mapRoute.showRoute(from, to, livePos);
+    if (!livePos) {
+      this.lastShowRoom = Date.now();
+    }
   }
 
 
@@ -360,13 +364,15 @@ export class OlmapComponent implements OnInit {
       this.zoomToLivePosTimerSubscription = null;
     }
 
-    this.zoomToLivePosTimerSubscription = timer.subscribe(t => {
-      this.zoomToGeometryEvt(extent);
-    });
+    if (this.allowZoomToLivePos()) {
+      this.zoomToLivePosTimerSubscription = timer.subscribe(t => {
+        this.zoomToGeometryEvt(extent);
+      });
+    }
   }
 
   zoomToGeometryEvt(extent: any) {
-    if (extent && this.allowZoomToLivePos()) {
+    if (extent) {
       let options = {
         padding: [1, 1, 1, 1],
         duration: 500
@@ -386,13 +392,15 @@ export class OlmapComponent implements OnInit {
       this.zoomToLivePosTimerSubscription = null;
     }
 
-    this.zoomToLivePosTimerSubscription = timer.subscribe(t => {
-      this.zoomToPositionEvt(position);
-    });
+    if (this.allowZoomToLivePos()) {
+      this.zoomToLivePosTimerSubscription = timer.subscribe(t => {
+        this.zoomToPositionEvt(position);
+      });
+    }
   }
 
   zoomToPositionEvt(position: number[]) {
-    if (position && position != undefined && this.allowZoomToLivePos()) {
+    if (position && position != undefined) {
 
       let destinationZoom = 20;
 

@@ -15,7 +15,7 @@ export class SignalBufferTimed {
   currentIndex: number = 0;
   lastValidValuesCounter: number = 0;
 
-  private minValue = -90;
+  private minValue = -85;
 
   constructor(name, value) {
 
