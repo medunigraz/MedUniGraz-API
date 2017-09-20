@@ -37,7 +37,13 @@ function updatesignals(data)
     //JSInterface.logrt("" + new Date().getTime() + ";" + data);
   }
 
-  window['angularComponentRef'].component.signalDataChanged(data);
+  if(window['angularComponentRef'])
+  {
+    if(window['angularComponentRef'].component)
+    {
+      window['angularComponentRef'].component.signalDataChanged(data);
+    }
+  }
 
 /*
     if(window["angularComponentRef"])
