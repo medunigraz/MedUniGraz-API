@@ -3,7 +3,7 @@ import { ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
 import { MapService } from '../mapservice/map.service';
 import { MapLayerBase } from './mapLayerBase';
 
-import {OlmapComponent} from './olmap.component'
+import { OlmapComponent } from './olmap.component'
 
 declare var ol: any;
 
@@ -36,7 +36,7 @@ export class MapFloor extends MapLayerBase {
   }
 
   private showFloors(features: any) {
-    console.log("MapFloor::showBuildings");
+    //console.log("MapFloor::showBuildings");
     this.clear();
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(features));
   }

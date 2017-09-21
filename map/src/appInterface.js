@@ -185,3 +185,21 @@ function sendDemoData()
     setTimeout(sendDemoData, 10000);
   }*/
 }
+
+var globalURLParamRoomID = undefined;
+
+function GetUrlParameter( url ) {
+  var obj = {};
+  str = url.split('?');
+  if(str && str.length >= 1 && str[1])
+  {
+    str[1].replace(/([^=&]+)=([^&]*)/g, function(m, key, value) {
+        obj[decodeURIComponent(key)] = decodeURIComponent(value);
+    });
+    //return obj;
+    globalURLParamRoomID = obj.roomId;
+  }
+  console.log("JS::RoomID = " + globalURLParamRoomID);
+}
+
+var tmp = GetUrlParameter(window.location.href);

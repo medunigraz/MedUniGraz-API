@@ -100,6 +100,12 @@ export class MapRoom extends MapLayerBase {
       if (feature) {
         this.setSelectedRoom(feature);
       }
+      /*
+      else
+      {
+        console.log("MapRoom::Mark room from Search; Wait for receive rooms... " + JSON.stringify(room));
+        this.roomToHighlight = room;
+      }*/
     }
   }
 

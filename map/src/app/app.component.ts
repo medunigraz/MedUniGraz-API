@@ -1,4 +1,4 @@
-import { ViewChild, Component } from '@angular/core';
+import { ViewChild, Component, OnInit } from '@angular/core';
 import { Floor } from './base/floor';
 import { OlmapComponent } from './olmap/olmap.component'
 import { SearchcontrolComponent } from './searchcontrol/searchcontrol.component'
@@ -6,6 +6,7 @@ import { FloorcontrolComponent } from './floorcontrol/floorcontrol.component'
 import { MainappService } from './mainappservice/mainapp.service';
 import { SidemenuComponent } from './sidemenu/sidemenu.component'
 import { PositionComponent } from './position/position.component'
+import { MapService } from './mapservice/map.service';
 
 import { FloorList } from './base/floorlist';
 import { Room } from './base/room';
@@ -13,12 +14,14 @@ import { RouteNodes } from './base/routeNodes';
 import { PoiType } from './base/poitype';
 import { Position } from './base/position';
 
+declare var globalURLParamRoomID: any;
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   @ViewChild('sidenav') public sideNav: SidemenuComponent;
   @ViewChild('mapComp') public mapComponent: OlmapComponent;
@@ -36,7 +39,7 @@ export class AppComponent {
   private liveRoute: RouteNodes = undefined;
 
   constructor(
-    private mainAppService: MainappService
+    private mainAppService: MainappService, private mapService: MapService
   ) {
     mainAppService.changeEmitted$.subscribe(
       room => {
@@ -45,6 +48,30 @@ export class AppComponent {
       });
   }
 
+  ngOnInit(): void {
+
+  }
+
+  ngAfterViewInit(): void {
+    if (globalURLParamRoomID) {
+      console.log("AppComponent::ngOnInit init - " + globalURLParamRoomID);
+      this.mapService.getRoomByID(globalURLParamRoomID).subscribe(
+        rooms => this.roomRecieved(rooms),
+        error => console.log("ERROR getRoomByID: " + <any>error));
+    }
+  }
+
+  roomRecieved(roomFeatures: any) {
+    console.log("AppComponent::roomsRecieved - " + JSON.stringify(roomFeatures));
+    if (roomFeatures.features) {
+      if (roomFeatures.features.length > 0) {
+        let roomFeature = roomFeatures.features[0];
+        //console.log("RouteCompComponent::roomRecieved - " + JSON.stringify(roomFeature));
+        let room = Room.createFromRestObj(roomFeature);
+        this.searchBoxComponent.showRoomCalled(room);
+      }
+    }
+  }
 
   floorsReceived(floors: FloorList): void {
     if (floors) {

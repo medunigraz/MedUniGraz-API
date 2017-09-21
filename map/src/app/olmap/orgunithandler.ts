@@ -32,7 +32,7 @@ export class OrgUnitHandler extends MapLayerBase {
   }
 
   private updateData(features: any): void {
-    console.log("OrgUnitHandler::updateData");
+    //console.log("OrgUnitHandler::updateData");
     this.orgUnitList = new OrgUnitList(features);
     this.mapRoom.orgUnitsReceived(this.orgUnitList);
   }

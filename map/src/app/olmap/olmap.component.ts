@@ -295,11 +295,11 @@ export class OlmapComponent implements OnInit {
       zoomToPos = true;
     }*/
 
-    if (this.lastShowRoom > 0 && Date.now() - this.lastShowRoom < 5000) { //Ignore pos for same time after mark room
-      //console.log("MapComponent::showLivePosition BLOCK Zoom to livePos # lastShowRoom");
+    if (this.lastShowRoom > 0 && Date.now() - this.lastShowRoom < 2000) { //Ignore pos for same time after mark room
+      console.log("MapComponent::showLivePosition BLOCK Zoom to livePos # lastShowRoom" + this.lastShowRoom);
       zoomToPos = false;
     }
-    //console.log("MapComponent::showLivePosition  ######### " + zoomToPos);
+    console.log("MapComponent::showLivePosition  ######### " + zoomToPos);
     return zoomToPos;
   }
 
@@ -329,16 +329,12 @@ export class OlmapComponent implements OnInit {
 
   showRoom(roomResult: Room) {
     console.log("OLMap::showRoom: " + JSON.stringify(roomResult));
-    this.lastShowRoom = -1;
     this.mapRoom.markRoomFromSearch(roomResult);
     this.lastShowRoom = Date.now();
   }
 
   showRoute(from: number, to: number, livePos: Position) {
     //console.log("OlmapComponent::showRoute: " + from + " --> " + to);
-    if (!livePos) {
-      this.lastShowRoom = -1;
-    }
     this.mapRoute.showRoute(from, to, livePos);
     if (!livePos) {
       this.lastShowRoom = Date.now();
@@ -364,17 +360,15 @@ export class OlmapComponent implements OnInit {
       this.zoomToLivePosTimerSubscription = null;
     }
 
-    if (this.allowZoomToLivePos()) {
-      this.zoomToLivePosTimerSubscription = timer.subscribe(t => {
-        this.zoomToGeometryEvt(extent);
-      });
-    }
+    this.zoomToLivePosTimerSubscription = timer.subscribe(t => {
+      this.zoomToGeometryEvt(extent);
+    });
   }
 
   zoomToGeometryEvt(extent: any) {
     if (extent) {
       let options = {
-        padding: [1, 1, 1, 1],
+        padding: [40, 10, 10, 10],
         duration: 500
       }
 
@@ -385,6 +379,7 @@ export class OlmapComponent implements OnInit {
   }
 
   zoomToPosition(position: number[]) {
+    console.log("OlmapComponent::zoomToPosition");
     let timer = TimerObservable.create(250);
 
     if (this.zoomToLivePosTimerSubscription != null) {
@@ -392,14 +387,15 @@ export class OlmapComponent implements OnInit {
       this.zoomToLivePosTimerSubscription = null;
     }
 
-    if (this.allowZoomToLivePos()) {
-      this.zoomToLivePosTimerSubscription = timer.subscribe(t => {
-        this.zoomToPositionEvt(position);
-      });
-    }
+    this.zoomToLivePosTimerSubscription = timer.subscribe(t => {
+      this.zoomToPositionEvt(position);
+    });
+
+    console.log("OlmapComponent::zoomToPosition END");
   }
 
   zoomToPositionEvt(position: number[]) {
+    console.log("OlmapComponent::zoomToPosition EVENT");
     if (position && position != undefined) {
 
       let destinationZoom = 20;
@@ -455,9 +451,18 @@ export class OlmapComponent implements OnInit {
     console.log("Coord Org: " + evt.coordinate + " Pixel: " + pixel);
 
     let roomFeature = this.getRoomForPos(pixel);
+    if (roomFeature) {
+      console.log("OlmapComponent::mapClicked: Room Clicked: " + roomFeature.getId());
+    }
     this.mapRoom.setSelectedRoom(roomFeature);
 
-    let view = this.map.getView();
+
+    let doorFeature = this.getDoorForPos(pixel);
+    if (doorFeature) {
+      console.log("OlmapComponent::mapClicked: Door Clicked: " + doorFeature.getId());
+    }
+
+    //let view = this.map.getView();
     //console.log("OlmapComponent::mapClicked: CurrentResolution: " + view.getResolution());
   }
 
@@ -478,6 +483,21 @@ export class OlmapComponent implements OnInit {
 
   private testLayerRooms(layer: any) {
     return this.mapRoom.getLayer() === layer;
+  }
+
+  private getDoorForPos(posPixel: any) {
+    let options = {
+      layerFilter: (layer => this.testLayerDoors(layer))
+    }
+    let feature = this.map.forEachFeatureAtPixel(posPixel, function(feature) {
+      return feature;
+    }, options);
+
+    return feature;
+  }
+
+  private testLayerDoors(layer: any) {
+    return this.mapDoors.getLayer() === layer;
   }
 
 }
