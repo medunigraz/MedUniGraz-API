@@ -3,10 +3,17 @@ export class Room {
   text: string;
   level: number;
 
+  virtualAddress: boolean;
+
   constructor(id: number, text: string, level: number) {
     this.id = id;
     this.text = text;
     this.level = level;
+    this.virtualAddress = false;
+  }
+
+  public setvirtualAdress() {
+    this.virtualAddress = true;
   }
 
   public static GetRoomTxt(title: string, fullname: string): string {

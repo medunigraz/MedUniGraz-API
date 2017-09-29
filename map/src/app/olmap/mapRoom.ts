@@ -100,6 +100,10 @@ export class MapRoom extends MapLayerBase {
       if (feature) {
         this.setSelectedRoom(feature);
       }
+      else if (room.virtualAddress) {
+        this.setSelectedRoom(null);
+        this.markRoom(RoomDetail.CreateFromVirtualAddress(room));
+      }
       /*
       else
       {
@@ -110,14 +114,18 @@ export class MapRoom extends MapLayerBase {
   }
 
   public markRoom(room: RoomDetail) {
-    console.log("MapRoom::Mark room: " + room.id + " category: " + room.coCategory);
 
-    this.currentMarkedRoom = room;
-    this.currentOverlayText = room.getRoomMarkerText();
-    this.roomContentSpan.nativeElement.innerHTML = this.currentOverlayText;
-    this.currentOverlayPosition = (room.marker);
-    this.overlay.setPosition(this.currentOverlayPosition);
-    this.mapComponent.zoomToPosition(room.center);
+    if (room) {
+
+      console.log("MapRoom::Mark room: " + room.id + " category: " + room.coCategory);
+
+      this.currentMarkedRoom = room;
+      this.currentOverlayText = room.getRoomMarkerText();
+      this.roomContentSpan.nativeElement.innerHTML = this.currentOverlayText;
+      this.currentOverlayPosition = (room.marker);
+      this.overlay.setPosition(this.currentOverlayPosition);
+      this.mapComponent.zoomToPosition(room.center);
+    }
   }
 
   public getMarkedRoom(): RoomDetail {

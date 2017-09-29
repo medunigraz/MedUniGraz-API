@@ -92,7 +92,7 @@ export class AppComponent implements OnInit {
   roomSelected(room: Room): void {
     console.log("AppComponent --- roomSelected: " + JSON.stringify(room) + "###Floor: " + JSON.stringify(this.currentFloor));
 
-    if (this.currentFloor.id != room.level) {
+    if (room.level >= 0 && this.currentFloor.id != room.level) {
       this.floorControlComponent.currentFloorFromId(room.level);
     }
 

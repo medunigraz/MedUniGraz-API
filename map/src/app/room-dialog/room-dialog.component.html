@@ -1,4 +1,4 @@
-<div class="dialogDiv">
+<div *ngIf="currentRoom" class="dialogDiv">
   <input type="hidden" tabindex="0" autofocus/>
 
   <div *ngIf="currentRoom">
@@ -8,17 +8,17 @@
     <p>
       {{currentRoom.code}}
     </p>
-    <p>
+    <p *ngIf="!currentRoom.virtualAddress">
       Organistation:<br/>{{currentRoom.coOrganization}}
     </p>
-    <a href="{{currentRoom.medonlineurl}}" target="_blank">MedOnline</a>
+    <a  *ngIf="!currentRoom.virtualAddress" href="{{currentRoom.medonlineurl}}" target="_blank">MedOnline</a>
   </div>
 
   <button class='closeDialogButton' (click)="closeDialog()" md-button>
     <md-icon>close</md-icon>
   </button>
 
-  <button class='NavigateButton' (click)="navigateTo()" md-button>
+  <button *ngIf="!currentRoom.virtualAddress" class='NavigateButton' (click)="navigateTo()" md-button>
     <span>Zeige Route</span>
     <md-icon>navigation</md-icon>
   </button>

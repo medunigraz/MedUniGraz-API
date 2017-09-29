@@ -1,4 +1,4 @@
-import {Room} from '../base/room';
+import { Room } from '../base/room';
 
 export class SearchResult {
   id: number;
@@ -35,6 +35,8 @@ export class SearchResult {
     result.level = obj["level_id"];
     result.room_id = obj["room_id"];
 
+    //console.log("SearchResult::createFromRestObj " + JSON.stringify(obj));
+
     return result;
   }
 
@@ -45,12 +47,16 @@ export class SearchResult {
   }
 
   public getRoom() {
-
     if (this.type == 0) {
       return new Room(this.id, this.text, this.level);
     }
     else if (this.room_id) {
       return new Room(this.room_id, this.text, this.level);
+    }
+    else if (this.type == 2 && !this.room_id) {
+      let r = new Room(-1, this.text, 2);
+      r.setvirtualAdress();
+      return r;
     }
     return undefined;
   }

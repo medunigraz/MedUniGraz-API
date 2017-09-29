@@ -1,4 +1,5 @@
 import { Room } from '../base/room';
+import { AddressPosMapping } from '../base/addressposmapping';
 
 export class RoomDetail {
   public id: number = -1;
@@ -21,23 +22,60 @@ export class RoomDetail {
 
   public level: number = -1;
 
-  constructor(roomFeature: any, level: number) {
-    this.level = level;
-    this.id = roomFeature.getId();
-    this.floorId = roomFeature.get('floor');
-    this.orgId = roomFeature.get('organization');
+  public virtualAddress: boolean = false;
 
-    this.readCO(roomFeature.get('campusonline'));
-    this.readMarker(roomFeature.get('marker'));
-    this.readCenter(roomFeature.get('center'));
+  constructor(roomFeature: any, level: number) {
+    if (roomFeature) {
+      this.level = level;
+      this.id = roomFeature.getId();
+      this.floorId = roomFeature.get('floor');
+      this.orgId = roomFeature.get('organization');
+
+      this.readCO(roomFeature.get('campusonline'));
+      this.readMarker(roomFeature.get('marker'));
+      this.readCenter(roomFeature.get('center'));
+    }
   }
+
+
+  public static CreateFromVirtualAddress(room: Room) {
+
+    let txt: string = room.text;
+    let worldPos = AddressPosMapping.getPosForTitle(room.text);
+
+    if (worldPos) {
+
+      let roomdetail = new RoomDetail(undefined, undefined);
+      roomdetail.level = room.level;
+      roomdetail.virtualAddress = true;
+
+      let pos = txt.indexOf(",");
+      if (pos > 0) {
+        roomdetail.title = txt.substring(0, pos);
+        roomdetail.code = txt.substring(pos + 1);
+        roomdetail.marker = worldPos;
+        roomdetail.center = worldPos;
+
+        return roomdetail;
+      }
+
+    }
+
+    return undefined;
+  }
+
 
   public getSimpleRoom(): Room {
     return new Room(this.id, Room.GetRoomTxtSearch(this.title, this.code), this.level);
   }
 
   public getRoomMarkerText() {
-    return '<b>' + this.title + '</b>' + '<br />(' + this.code + ')' + '<br />' + this.coOrganization;
+    if (this.virtualAddress) {
+      return '<b>' + this.title + '</b>' + '<br />' + this.code;
+    }
+    else {
+      return '<b>' + this.title + '</b>' + '<br />(' + this.code + ')' + '<br />' + this.coOrganization;
+    }
   }
 
   private readCO(co: any) {
