@@ -36,7 +36,7 @@ export class AddressPosMapping {
     { name: "Auenbruggerplatz 1", pos: [1721599.3205197728, 5955034.167011404] }
   ]
 
-  public static getPosForTitle(title: string) {
+  public static getPosForTitle(title: string): number[] {
 
     //console.log("AddressPosMapping::GetMapping for title: " + title);
 
@@ -50,6 +50,17 @@ export class AddressPosMapping {
     }
 
     return undefined;
+  }
+
+  public static testValidAddress(title: string): boolean {
+    let mapping = AddressPosMapping.mapping;
+
+    for (let i = 0; i < mapping.length; i++) {
+      if (title.indexOf(mapping[i].name) >= 0) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

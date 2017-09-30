@@ -12,7 +12,7 @@ export class OrgUnitList {
 
   private defaultStyle = new ol.style.Style({
     fill: new ol.style.Fill({
-      color: 'rgba(128,128,128,1)'
+      color: 'rgba(156,156,156,1)'
     })
   });
   private wayStyle = new ol.style.Style({

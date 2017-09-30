@@ -21,8 +21,8 @@
 
         </td>
         <td class="controlBoxRightCol">
-          <button *ngIf="!isRoutingSearchBox" class="controlBoxButton" (click)="searchCurrentResultClicked()" md-button><md-icon>search</md-icon></button>
-          <button *ngIf="isRoutingSearchBox" class="controlBoxButton" (click)="closeBtnClicked()" md-button><md-icon>close</md-icon></button>
+          <button *ngIf="!showCloseDeleteButton" class="controlBoxButton" (click)="searchCurrentResultClicked()" md-button><md-icon>search</md-icon></button>
+          <button *ngIf="showCloseDeleteButton" class="controlBoxButton" (click)="closeBtnClicked()" md-button><md-icon>close</md-icon></button>
         </td>
       </tr>
 

@@ -30,6 +30,7 @@ export class SearchcontrolComponent implements OnInit {
   @ViewChild('searchInput') public searchInputRef: ElementRef;
 
   isRoutingSearchBox: boolean = false;
+  showCloseDeleteButton: boolean = false;
 
   public searchResults: SearchResult[];
   private searchResultsFrom: SearchResult[];
@@ -111,11 +112,19 @@ export class SearchcontrolComponent implements OnInit {
     }
 
     if (term.length > 0) {
+
+      this.showCloseDeleteButton = true;
+
       this.searchSubscription = this.mapService.search(term).subscribe(
         results => this.searchUpdateResults(results, false),
         error => console.log("ERROR search: " + <any>error));
     }
     else {
+
+      if (this.startPointTerm.value.length <= 0) {
+        this.showCloseDeleteButton = false;
+      }
+
       this.searchUpdateResults([], true);
     }
   }
@@ -219,6 +228,7 @@ export class SearchcontrolComponent implements OnInit {
     }
     this.showCurrentStartResult();
     this.isRoutingSearchBox = true;
+    this.showCloseDeleteButton = true;
 
     if (this.currentStartPointResult) {
       if (this.currentStartPointResult.id > 0) {
@@ -298,6 +308,7 @@ export class SearchcontrolComponent implements OnInit {
     this.term.setValue("");
     this.startPointTerm.setValue("");
     this.isRoutingSearchBox = false;
+    this.showCloseDeleteButton = false;
     this.routeSelectedEvt.emit(null);
     //this.roomSelectedEvt.emit(null);
   }
@@ -327,6 +338,9 @@ export class SearchcontrolComponent implements OnInit {
   private showCurrentResult() {
     if (this.currentResult != null) {
       this.term.setValue(this.currentResult.text, { "emitEvent": false });
+      if (this.currentResult.text.length > 0) {
+        this.showCloseDeleteButton = true;
+      }
       this.searchUpdateResults([], true);
     }
   }

@@ -1,4 +1,5 @@
 import { Room } from '../base/room';
+import { AddressPosMapping } from '../base/addressposmapping';
 
 export class SearchResult {
   id: number;
@@ -53,7 +54,7 @@ export class SearchResult {
     else if (this.room_id) {
       return new Room(this.room_id, this.text, this.level);
     }
-    else if (this.type == 2 && !this.room_id) {
+    else if (this.type == 2 && !this.room_id && AddressPosMapping.testValidAddress(this.text)) {
       let r = new Room(-1, this.text, 2);
       r.setvirtualAdress();
       return r;
