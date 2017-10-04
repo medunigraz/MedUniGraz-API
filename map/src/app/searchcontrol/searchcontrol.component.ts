@@ -1,16 +1,16 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { ViewChild, ElementRef } from '@angular/core';
-import { FormControl }       from '@angular/forms';
-import { Subject }           from 'rxjs/Subject';
+import { FormControl } from '@angular/forms';
+import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs';
-import {Subscription} from "rxjs";
-import {TimerObservable} from "rxjs/observable/TimerObservable";
+import { Subscription } from "rxjs";
+import { TimerObservable } from "rxjs/observable/TimerObservable";
 import { MapService } from '../mapservice/map.service';
 
-import {SearchResult} from '../base/searchresult';
-import {Room} from '../base/room';
-import {RouteNodes} from '../base/routeNodes';
-import {DefaultStartPointWithPos, DefaultStartPoint, SearchDemoData} from './searchcontrolconstants';
+import { SearchResult } from '../base/searchresult';
+import { Room } from '../base/room';
+import { RouteNodes } from '../base/routeNodes';
+import { DefaultStartPointWithPos, DefaultStartPoint, SearchDemoData } from './searchcontrolconstants';
 
 
 export enum FocusStatus {
@@ -111,7 +111,7 @@ export class SearchcontrolComponent implements OnInit {
       this.searchSubscription = null;
     }
 
-    if (term.length > 0) {
+    if (term && term.length > 0) {
 
       this.showCloseDeleteButton = true;
 
@@ -121,7 +121,7 @@ export class SearchcontrolComponent implements OnInit {
     }
     else {
 
-      if (this.startPointTerm.value.length <= 0) {
+      if (!this.startPointTerm || !this.startPointTerm.value || this.startPointTerm.value.length <= 0) {
         this.showCloseDeleteButton = false;
       }
 
@@ -137,7 +137,7 @@ export class SearchcontrolComponent implements OnInit {
       this.searchStartSubscription = null;
     }
 
-    if (term.length == 0) {
+    if (term && term.length == 0) {
       this.searchUpdateResultsStartPoint(SearchDemoData.getDefaultStartPositions(this.isLivePosRoutingAvailable), false);
     }
     else {
@@ -336,7 +336,7 @@ export class SearchcontrolComponent implements OnInit {
   }
 
   private showCurrentResult() {
-    if (this.currentResult != null) {
+    if (this.currentResult != null && this.currentResult.text) {
       this.term.setValue(this.currentResult.text, { "emitEvent": false });
       if (this.currentResult.text.length > 0) {
         this.showCloseDeleteButton = true;
