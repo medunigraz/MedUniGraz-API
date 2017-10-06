@@ -7,6 +7,8 @@ import { FloorList } from '../base/floorlist';
 import { Room } from '../base/room';
 import { RouteNodes } from '../base/routeNodes';
 
+import { Logger } from '../base/logger';
+
 @Component({
   selector: 'app-floorcontrol',
   templateUrl: './floorcontrol.component.html',
@@ -30,12 +32,12 @@ export class FloorcontrolComponent implements OnInit {
 
     this.mapService.getFloorNames().subscribe(
       floors => this.updateFloors(floors),
-      error => console.log("ERROR deleteNode: " + <any>error));
+      error => Logger.log("ERROR deleteNode: " + <any>error));
   }
 
   onSelect(floor: Floor): void {
     this.selectFloor(floor);
-    //console.log("Floor: " + JSON.stringify(floor));
+    //Logger.log("Floor: " + JSON.stringify(floor));
   }
 
   updateFloors(floors: Floor[]) {
@@ -56,7 +58,7 @@ export class FloorcontrolComponent implements OnInit {
         this.floorList[i].floorBelow = this.floorList[i + 1].id;
       }
 
-      //console.log("FloorselectorComponent::updateFloors Floor: " + JSON.stringify(this.floorList[i]));
+      //Logger.log("FloorselectorComponent::updateFloors Floor: " + JSON.stringify(this.floorList[i]));
     }
 
     this.floorsReceivedEvt.emit(new FloorList(this.floorList));
@@ -64,19 +66,19 @@ export class FloorcontrolComponent implements OnInit {
     for (let floor of this.floorList) {
       if (floor.name.startsWith('EG')) {
         this.selectFloor(floor);
-        //console.log("FloorselectorComponent::updateFloors Select Floor: " + JSON.stringify(floor));
+        //Logger.log("FloorselectorComponent::updateFloors Select Floor: " + JSON.stringify(floor));
         return;
       }
     }
 
     if (this.floorList.length > 0) {
       this.selectFloor(this.floorList[0]);
-      //console.log("FloorselectorComponent::updateFloors Select Floor: " + JSON.stringify(this.selectedFloor));
+      //Logger.log("FloorselectorComponent::updateFloors Select Floor: " + JSON.stringify(this.selectedFloor));
     }
   }
 
   currentFloorFromId(floorId: number) {
-    //console.log("FloorcontrolComponent::Set currentFloor - New Floor: " + JSON.stringify(floorId));
+    //Logger.log("FloorcontrolComponent::Set currentFloor - New Floor: " + JSON.stringify(floorId));
 
     if (this.floorList) {
       for (let floor of this.floorList) {
@@ -89,7 +91,7 @@ export class FloorcontrolComponent implements OnInit {
   }
 
   private selectFloor(floor: Floor) {
-    //console.log("FloorcontrolComponent::Set currentFloor - Select floor: " + JSON.stringify(floor));
+    //Logger.log("FloorcontrolComponent::Set currentFloor - Select floor: " + JSON.stringify(floor));
     this.selectedFloor = floor;
 
     for (let i = 0; i < this.floorList.length; i++) {
@@ -106,7 +108,7 @@ export class FloorcontrolComponent implements OnInit {
 
   public highlightLevels(levels) {
 
-    //console.log("FloorcontrolComponent::highlightLevels! " + JSON.stringify(levels));
+    //Logger.log("FloorcontrolComponent::highlightLevels! " + JSON.stringify(levels));
 
     if (!levels) {
       levels = [];
@@ -146,7 +148,7 @@ export class FloorcontrolComponent implements OnInit {
       })
     ]).subscribe(
       floors => this.updateFloors(floors),
-      error => console.log("ERROR deleteNode: " + <any>error));
+      error => Logger.log("ERROR deleteNode: " + <any>error));
   }
 
 }

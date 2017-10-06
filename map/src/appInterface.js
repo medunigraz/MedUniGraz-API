@@ -54,26 +54,26 @@ function updatesignals(data)
 
 function startscan()
 {
-  console.log("#JS# startscan()");
+  //console.log("#JS# startscan()");
   if(typeof JSInterface !== "undefined")
   {
     JSInterface.startscan();
   }
   else {
-    console.log("#JS# JSInterface not defined!");
+    //console.log("#JS# JSInterface not defined!");
   }
 }
 
 
 function stopscan()
 {
-  console.log("#JS# stopscan()");
+  //console.log("#JS# stopscan()");
   if(typeof JSInterface !== "undefined")
   {
     JSInterface.stopscan();
   }
   else {
-    console.log("#JS# JSInterface not defined!");
+    //console.log("#JS# JSInterface not defined!");
   }
 }
 
@@ -199,7 +199,7 @@ function GetUrlParameter( url ) {
     //return obj;
     globalURLParamRoomID = obj.roomId;
   }
-  console.log("JS::RoomID = " + globalURLParamRoomID);
+  //console.log("JS::RoomID = " + globalURLParamRoomID);
 }
 
 var tmp = GetUrlParameter(window.location.href);

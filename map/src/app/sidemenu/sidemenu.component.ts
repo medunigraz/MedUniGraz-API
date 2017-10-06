@@ -1,8 +1,10 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
-import { ViewChild, ElementRef, AfterViewInit} from '@angular/core';
+import { ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { MapService } from '../mapservice/map.service';
 
-import {PoiType} from '../base/poiType';
+import { PoiType } from '../base/poiType';
+
+import { Logger } from '../base/logger';
 
 @Component({
   selector: 'app-sidemenu',
@@ -26,7 +28,7 @@ export class SidemenuComponent implements OnInit {
   public updateData(): any {
     this.mapService.getPoiTypes().subscribe(
       poiTypes => this.updatePOIs(poiTypes),
-      error => console.log("ERROR deleteNode: " + <any>error));
+      error => Logger.log("ERROR deleteNode: " + <any>error));
   }
 
   updatePOIs(poiTypeList: PoiType[]) {
@@ -36,7 +38,7 @@ export class SidemenuComponent implements OnInit {
       this.ungroupPois(); //Set Active State to group master
       this.poiTypesChangedEvt.emit(this.pois);
     }
-    //console.log("SidemenuComponent::updatePOIs() " + JSON.stringify(this.pois));
+    //Logger.log("SidemenuComponent::updatePOIs() " + JSON.stringify(this.pois));
   }
 
   selectedChanged() {
@@ -44,16 +46,16 @@ export class SidemenuComponent implements OnInit {
       this.ungroupPois();
       this.poiTypesChangedEvt.emit(this.pois);
     }
-    //console.log("SidemenuComponent::selectedChanged() " + JSON.stringify(this.pois));
+    //Logger.log("SidemenuComponent::selectedChanged() " + JSON.stringify(this.pois));
   }
 
   close() {
-    console.log("SidemenuComponent::close()");
+    Logger.log("SidemenuComponent::close()");
     this.isOpened = false;
   }
 
   open() {
-    console.log("SidemenuComponent::open()");
+    Logger.log("SidemenuComponent::open()");
     this.isOpened = true;
   }
 

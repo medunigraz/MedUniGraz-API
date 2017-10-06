@@ -29,8 +29,8 @@ export class Room {
     let co = prop["campusonline"];
     let room = new Room(obj["id"], Room.GetRoomTxtSearch(co["title"], co["name_full"]), prop["level"]);
 
-    //console.log("Room created LEvel: " + prop["level"]);
-    //console.log("Room created: " + JSON.stringify(room));
+    //Logger.log("Room created LEvel: " + prop["level"]);
+    //Logger.log("Room created: " + JSON.stringify(room));
     return room;
   }
 }

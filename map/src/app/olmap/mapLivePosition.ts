@@ -6,6 +6,8 @@ import { Position } from '../base/position';
 
 import { OlmapComponent } from './olmap.component';
 
+import { Logger } from '../base/logger';
+
 declare var ol: any;
 
 export class MapLivePosition extends MapLayerBase {
@@ -65,7 +67,7 @@ export class MapLivePosition extends MapLayerBase {
   }
 
   public showLivePosition(livePos: Position) {
-    //console.log("MapLivePosition::showLivePosition..." + this.currentLevelId + "###" + JSON.stringify(livePos));
+    //Logger.log("MapLivePosition::showLivePosition..." + this.currentLevelId + "###" + JSON.stringify(livePos));
 
     if (!livePos || this.currentLevelId != livePos.level) {
       this.clear();
@@ -73,7 +75,7 @@ export class MapLivePosition extends MapLayerBase {
       //this.stopAnimation();
     }
     else {
-      console.log("MapLivePosition::showLivePosition: " + this.positionVisible);
+      Logger.log("MapLivePosition::showLivePosition: " + this.positionVisible);
       if (!this.positionVisible) {
         this.AddPositionFeature();
       }
@@ -111,7 +113,7 @@ export class MapLivePosition extends MapLayerBase {
   }
 
   private updateRoute(route: any) {
-    console.log("MapLivePosition::update Route");
+    Logger.log("MapLivePosition::update Route");
   }
 
   private AddPositionFeature() {
@@ -148,7 +150,7 @@ export class MapLivePosition extends MapLayerBase {
         })
       });
 
-      //console.log("MapLivePosition::Animate + " + this.startTime + " Radius: " + radius + " opacity: " + opacity + " Pos: ");// + JSON.stringify(this.circleFeature.getGeometry().getCenter()));
+      //Logger.log("MapLivePosition::Animate + " + this.startTime + " Radius: " + radius + " opacity: " + opacity + " Pos: ");// + JSON.stringify(this.circleFeature.getGeometry().getCenter()));
 
       vectorContext.setStyle(style);
       vectorContext.drawGeometry(flashGeom);

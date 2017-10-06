@@ -14,6 +14,8 @@ import { RouteNodes } from './base/routeNodes';
 import { PoiType } from './base/poitype';
 import { Position } from './base/position';
 
+import { Logger } from './base/logger';
+
 declare var globalURLParamRoomID: any;
 
 @Component({
@@ -43,7 +45,7 @@ export class AppComponent implements OnInit {
   ) {
     mainAppService.changeEmitted$.subscribe(
       room => {
-        console.log("AppComponent - Room from URL..." + room.text);
+        Logger.log("AppComponent - Room from URL..." + room.text);
         this.searchBoxComponent.showRoomCalled(room);
       });
   }
@@ -54,19 +56,19 @@ export class AppComponent implements OnInit {
 
   ngAfterViewInit(): void {
     if (globalURLParamRoomID) {
-      console.log("AppComponent::ngOnInit init - " + globalURLParamRoomID);
+      Logger.log("AppComponent::ngOnInit init - " + globalURLParamRoomID);
       this.mapService.getRoomByID(globalURLParamRoomID).subscribe(
         rooms => this.roomRecieved(rooms),
-        error => console.log("ERROR getRoomByID: " + <any>error));
+        error => Logger.log("ERROR getRoomByID: " + <any>error));
     }
   }
 
   roomRecieved(roomFeatures: any) {
-    console.log("AppComponent::roomsRecieved - " + JSON.stringify(roomFeatures));
+    Logger.log("AppComponent::roomsRecieved - " + JSON.stringify(roomFeatures));
     if (roomFeatures.features) {
       if (roomFeatures.features.length > 0) {
         let roomFeature = roomFeatures.features[0];
-        //console.log("RouteCompComponent::roomRecieved - " + JSON.stringify(roomFeature));
+        //Logger.log("RouteCompComponent::roomRecieved - " + JSON.stringify(roomFeature));
         let room = Room.createFromRestObj(roomFeature);
         this.searchBoxComponent.showRoomCalled(room);
       }
@@ -75,7 +77,7 @@ export class AppComponent implements OnInit {
 
   floorsReceived(floors: FloorList): void {
     if (floors) {
-      //console.log("AppComponent --- floorsReceived: " + JSON.stringify(floors));
+      //Logger.log("AppComponent --- floorsReceived: " + JSON.stringify(floors));
       this.floors = floors;
       this.mapComponent.setFloorList(floors);
     }
@@ -84,13 +86,13 @@ export class AppComponent implements OnInit {
 
   floorChanged(floor: Floor): void {
     if (floor) {
-      console.log("AppComponent --- floorChanged: " + floor.name);
+      Logger.log("AppComponent --- floorChanged: " + floor.name);
       this.currentFloor = floor;
     }
   }
 
   roomSelected(room: Room): void {
-    console.log("AppComponent --- roomSelected: " + JSON.stringify(room) + "###Floor: " + JSON.stringify(this.currentFloor));
+    Logger.log("AppComponent --- roomSelected: " + JSON.stringify(room) + "###Floor: " + JSON.stringify(this.currentFloor));
 
     if (room.level >= 0 && this.currentFloor.id != room.level) {
       this.floorControlComponent.currentFloorFromId(room.level);
@@ -100,7 +102,7 @@ export class AppComponent implements OnInit {
   }
 
   routeSelected(route: RouteNodes): void {
-    console.log("AppComponent --- routeSelected: " + JSON.stringify(route) + "###Floor: " + JSON.stringify(this.currentFloor));
+    Logger.log("AppComponent --- routeSelected: " + JSON.stringify(route) + "###Floor: " + JSON.stringify(this.currentFloor));
 
     this.liveRoute = undefined;
 
@@ -128,42 +130,42 @@ export class AppComponent implements OnInit {
 
   openSideMenu(open: boolean): void {
 
-    console.log("AppComponent --- open Side Menu..." + open);
+    Logger.log("AppComponent --- open Side Menu..." + open);
     this.isSideMenuOpenend = open;
     this.sideNav.open();
   }
 
   sideNavClosed() {
-    console.log("AppComponent --- Side Nav closed");
+    Logger.log("AppComponent --- Side Nav closed");
     this.mapComponent.setFocus();
   }
 
   showRouteCalled(destinationRoom: Room) {
-    //console.log('AppComponent::showRouteCalled: ' + result.text);
+    //Logger.log('AppComponent::showRouteCalled: ' + result.text);
     this.searchBoxComponent.showRouteCalled(destinationRoom);
   }
 
   highlightRouteLevelsCalled(levels: number[]) {
-    //console.log("AppComponent::highlightRouteLevels!!!");
+    //Logger.log("AppComponent::highlightRouteLevels!!!");
     this.floorControlComponent.highlightLevels(levels);
   }
 
   poiTypesChanged(poiTypes: PoiType[]) {
     if (poiTypes) {
-      //console.log("AppComponent --- poiTypesChanged: " + poiTypes.length);
+      //Logger.log("AppComponent --- poiTypesChanged: " + poiTypes.length);
       this.poiTypes = poiTypes;
       this.mapComponent.updatePoiTypes(this.poiTypes);
     }
   }
 
   livePosStatusChanged(status: boolean) {
-    //console.log("AppComponent --- livePosStatusChanged: " + status);
+    //Logger.log("AppComponent --- livePosStatusChanged: " + status);
     this.livePosStatus = status;
     this.searchBoxComponent.setLivePosAvailable(this.livePosStatus);
   }
 
   livePositionChanged(livePos: Position) {
-    //console.log("AppComponent --- livePositionChanged: " + JSON.stringify(livePos));
+    //Logger.log("AppComponent --- livePositionChanged: " + JSON.stringify(livePos));
 
     if (livePos && this.mapComponent.allowZoomToLivePos()) {
       if (livePos.level != this.currentFloor.id) {

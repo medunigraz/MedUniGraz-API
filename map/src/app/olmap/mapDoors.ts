@@ -3,8 +3,9 @@ import { ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
 import { MapService } from '../mapservice/map.service';
 import { MapLayerBase } from './mapLayerBase';
 
+import { Logger } from '../base/logger';
 
-import {OlmapComponent} from './olmap.component'
+import { OlmapComponent } from './olmap.component'
 
 declare var ol: any;
 
@@ -27,18 +28,18 @@ export class MapDoors extends MapLayerBase {
   }
 
   public showFloor(floorId: number) {
-    //console.log("MapDoors::showFloor - " + floorId);
+    //Logger.log("MapDoors::showFloor - " + floorId);
     //this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(this.getDummyDoors()));
 
     this.clear();
     this.subscribeNewRequest(
       this.mapService.getDoors(floorId).subscribe(
         doors => this.showDoors(doors),
-        error => console.log("ERROR deleteNode: " + <any>error)));
+        error => Logger.log("ERROR deleteNode: " + <any>error)));
   }
 
   private showDoors(features: any) {
-    //console.log("MapDoors::showDoors");
+    //Logger.log("MapDoors::showDoors");
     this.clear();
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(features));
   }

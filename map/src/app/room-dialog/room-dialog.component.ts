@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
 
-import {RoomDetail} from '../base/roomDetail';
+import { RoomDetail } from '../base/roomDetail';
+
+import { Logger } from '../base/logger';
 
 @Component({
   selector: 'app-room-dialog',
@@ -18,13 +20,13 @@ export class RoomDialogComponent implements OnInit {
   }
 
   closeDialog() {
-    console.log("RoomDialogComponent::closeDialog - " + JSON.stringify(this.currentRoom));
+    Logger.log("RoomDialogComponent::closeDialog - " + JSON.stringify(this.currentRoom));
     this.currentRoom = null;
     this.dialogRef.close('Closed...')
   }
 
   navigateTo() {
-    //console.log("RoomDialogComponent::closeDialog - " + JSON.stringify(this.currentRoom));
+    //Logger.log("RoomDialogComponent::closeDialog - " + JSON.stringify(this.currentRoom));
     this.currentRoom = null;
     this.dialogRef.close('Navigate...')
   }

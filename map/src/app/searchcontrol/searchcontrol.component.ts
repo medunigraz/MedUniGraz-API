@@ -12,6 +12,7 @@ import { Room } from '../base/room';
 import { RouteNodes } from '../base/routeNodes';
 import { DefaultStartPointWithPos, DefaultStartPoint, SearchDemoData } from './searchcontrolconstants';
 
+import { Logger } from '../base/logger';
 
 export enum FocusStatus {
   NONE = 1,
@@ -85,7 +86,7 @@ export class SearchcontrolComponent implements OnInit {
   }
 
   showRoomCalled(destinationroom: Room) {
-    console.log('SearchComponent::destinationroom: ' + destinationroom.text);
+    Logger.log('SearchComponent::destinationroom: ' + destinationroom.text);
 
     this.term.setValue(destinationroom.text, { "emitEvent": false });
     this.searchUpdateResults([], true);
@@ -95,7 +96,7 @@ export class SearchcontrolComponent implements OnInit {
   }
 
   showRouteCalled(destinationroom: Room) {
-    //console.log('SearchComponent::showRouteCalled: ' + result.text);
+    //Logger.log('SearchComponent::showRouteCalled: ' + result.text);
     this.currentResult = SearchResult.CreateFromRoom(destinationroom);
     this.route(destinationroom);
   }
@@ -105,7 +106,7 @@ export class SearchcontrolComponent implements OnInit {
   }
 
   search(term: string) {
-    console.log('SearchComponent::search:' + term);
+    Logger.log('SearchComponent::search:' + term);
     if (this.searchSubscription) {
       this.searchSubscription.unsubscribe();
       this.searchSubscription = null;
@@ -117,7 +118,7 @@ export class SearchcontrolComponent implements OnInit {
 
       this.searchSubscription = this.mapService.search(term).subscribe(
         results => this.searchUpdateResults(results, false),
-        error => console.log("ERROR search: " + <any>error));
+        error => Logger.log("ERROR search: " + <any>error));
     }
     else {
 
@@ -130,7 +131,7 @@ export class SearchcontrolComponent implements OnInit {
   }
 
   searchStartPoint(term: string) {
-    console.log('SearchComponent::searchStartPoint:' + term);
+    Logger.log('SearchComponent::searchStartPoint:' + term);
 
     if (this.searchStartSubscription) {
       this.searchStartSubscription.unsubscribe();
@@ -143,13 +144,13 @@ export class SearchcontrolComponent implements OnInit {
     else {
       this.searchStartSubscription = this.mapService.search(term).subscribe(
         results => this.searchUpdateResultsStartPoint(results, false),
-        error => console.log("ERROR searchstartpoint: " + <any>error));
+        error => Logger.log("ERROR searchstartpoint: " + <any>error));
     }
 
   }
 
   searchUpdateResults(items: SearchResult[], clear: boolean) {
-    console.log('searchResults: ');
+    Logger.log('searchResults: ');
 
     if (items.length <= 0 && !clear) {
       items.push(SearchDemoData.getNoResult_Obj());
@@ -163,7 +164,7 @@ export class SearchcontrolComponent implements OnInit {
   }
 
   searchUpdateResultsStartPoint(items: SearchResult[], clear: boolean) {
-    console.log('searchResults Start Point: ');
+    Logger.log('searchResults Start Point: ');
 
     if (items.length <= 0 && !clear) {
       items.push(SearchDemoData.getNoResult_Obj());
@@ -182,10 +183,10 @@ export class SearchcontrolComponent implements OnInit {
   }
 
   select(selected: SearchResult) {
-    console.log('SearchComponent::select:' + selected.text + " Start?=" + selected.isStartPoint);
+    Logger.log('SearchComponent::select:' + selected.text + " Start?=" + selected.isStartPoint);
     if (!selected.isStartPoint) {
       this.currentResult = selected;
-      console.log('SearchComponent::Select new Destination:' + JSON.stringify(this.currentResult));
+      Logger.log('SearchComponent::Select new Destination:' + JSON.stringify(this.currentResult));
       this.showCurrentResult();
       if (this.isRoutingSearchBox && this.currentStartPointResult) {
         this.routeClicked(this.currentResult);
@@ -200,7 +201,7 @@ export class SearchcontrolComponent implements OnInit {
     else {
       this.currentStartPointResult = selected;
       this.showCurrentStartResult();
-      console.log('SearchComponent::Select new Startpoint - For Destination:' + JSON.stringify(this.currentResult));
+      Logger.log('SearchComponent::Select new Startpoint - For Destination:' + JSON.stringify(this.currentResult));
       if (this.currentResult) {
         this.routeClicked(this.currentResult);
       }
@@ -217,8 +218,8 @@ export class SearchcontrolComponent implements OnInit {
   }
 
   route(destinationroom: Room) {
-    console.log('SearchComponent::route:' + JSON.stringify(destinationroom));
-    console.log('SearchComponent::route from:' + JSON.stringify(this.currentStartPointResult));
+    Logger.log('SearchComponent::route:' + JSON.stringify(destinationroom));
+    Logger.log('SearchComponent::route from:' + JSON.stringify(this.currentStartPointResult));
 
     this.term.setValue(destinationroom.text, { "emitEvent": false });
     this.searchUpdateResults([], true);
@@ -232,7 +233,7 @@ export class SearchcontrolComponent implements OnInit {
 
     if (this.currentStartPointResult) {
       if (this.currentStartPointResult.id > 0) {
-        console.log('SearchComponent::route from existing room');
+        Logger.log('SearchComponent::route from existing room');
         let room = this.currentStartPointResult.getRoom();
         if (room) {
           this.routeSelectedEvt.emit(new RouteNodes(room, destinationroom));
@@ -240,22 +241,22 @@ export class SearchcontrolComponent implements OnInit {
       }
       else if (this.currentStartPointResult.id == -2) //Haupteingang
       {
-        console.log('SearchComponent::route from entrance');
+        Logger.log('SearchComponent::route from entrance');
         this.routeSelectedEvt.emit(new RouteNodes(new Room(5936, "Haupteingang", 2), destinationroom));
       }
       else if (this.currentStartPointResult.id == -1) //Liverouting
       {
-        console.log('SearchComponent::route from liveposition');
+        Logger.log('SearchComponent::route from liveposition');
         this.routeSelectedEvt.emit(new RouteNodes(undefined, destinationroom));
       }
       else {
-        console.log('SearchComponent::route from ' + this.currentStartPointResult.id + ' not supported!');
+        Logger.log('SearchComponent::route from ' + this.currentStartPointResult.id + ' not supported!');
       }
     }
   }
 
   searchFocus() {
-    console.log("SearchcontrolComponent::searchFocus()");
+    Logger.log("SearchcontrolComponent::searchFocus()");
     this.stopUnFocusTimer();
     this.currentFocusStatus = FocusStatus.SEARCH;
 
@@ -265,13 +266,13 @@ export class SearchcontrolComponent implements OnInit {
   }
 
   searchFocusOut() {
-    console.log("SearchcontrolComponent::searchFocusOut()");
+    Logger.log("SearchcontrolComponent::searchFocusOut()");
     this.currentFocusStatus = FocusStatus.NONE;
     this.startUnFocusTimer();
   }
 
   startFocus() {
-    console.log("SearchcontrolComponent::startFocus()");
+    Logger.log("SearchcontrolComponent::startFocus()");
     this.stopUnFocusTimer();
     this.currentFocusStatus = FocusStatus.START;
 
@@ -289,13 +290,13 @@ export class SearchcontrolComponent implements OnInit {
   }
 
   startFocusOut() {
-    console.log("SearchcontrolComponent::startFocusOut()")
+    Logger.log("SearchcontrolComponent::startFocusOut()")
     this.currentFocusStatus = FocusStatus.NONE;
     this.startUnFocusTimer();
   }
 
   openSideMenu() {
-    console.log("SearchcontrolComponent::openSideMenu()")
+    Logger.log("SearchcontrolComponent::openSideMenu()")
     this.openSideMenuEvt.emit(true);
   }
 
@@ -361,7 +362,7 @@ export class SearchcontrolComponent implements OnInit {
 
   private startUnFocusTimer() {
 
-    console.log("SearchcontrolComponent::startUnFocusTimer()");
+    Logger.log("SearchcontrolComponent::startUnFocusTimer()");
 
     if (this.unFocusTimerSubscription != null) {
       this.stopUnFocusTimer();
@@ -374,7 +375,7 @@ export class SearchcontrolComponent implements OnInit {
   }
 
   private stopUnFocusTimer() {
-    console.log("SearchcontrolComponent::stopUnFocusTimer()");
+    Logger.log("SearchcontrolComponent::stopUnFocusTimer()");
 
     if (this.unFocusTimerSubscription != null) {
 
@@ -384,7 +385,7 @@ export class SearchcontrolComponent implements OnInit {
   }
 
   private unFocusTimerEvent() {
-    console.log("SearchcontrolComponent::unFocusTimerEvent()");
+    Logger.log("SearchcontrolComponent::unFocusTimerEvent()");
 
     this.stopUnFocusTimer();
     this.showResultTable();

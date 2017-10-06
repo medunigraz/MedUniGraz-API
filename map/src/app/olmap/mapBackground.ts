@@ -24,14 +24,14 @@ export class MapBackground extends MapLayerBase {
   }
 
   public showBackground() {
-    //console.log("MapRoute::showBackground...");
+    //Logger.log("MapRoute::showBackground...");
     this.updateBackground(this.getDummyBackground());
     /*
     this.subscribeNewRequest(
       this.mapService.getBackground().
         subscribe(
         background => this.updateBackground(background),
-        error => console.log("ERROR: " + <any>error)));
+        error => Logger.log("ERROR: " + <any>error)));
         */
   }
 
@@ -40,7 +40,7 @@ export class MapBackground extends MapLayerBase {
   }
 
   private updateBackground(background: any) {
-    //console.log("MapBackground::updateBackground");
+    //Logger.log("MapBackground::updateBackground");
     this.layerSource.clear();
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(background));
   }

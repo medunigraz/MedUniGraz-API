@@ -12,7 +12,7 @@ export class Floor {
 
 
   constructor(obj: any) {
-    //console.log("Create new floor: " + JSON.stringify(obj));
+    //Logger.log("Create new floor: " + JSON.stringify(obj));
     this.id = obj["id"];
     this.name = obj["name"];
     this.building = obj["building"];

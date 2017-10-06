@@ -23,17 +23,17 @@ export class OrgUnitList {
 
 
   constructor(obj: any) {
-    //console.log("OrgUnitList::Create: " + JSON.stringify(obj));
+    //Logger.log("OrgUnitList::Create: " + JSON.stringify(obj));
 
     for (let i = 0; i < obj.length; i++) {
       let id: string = obj[i]["id"];
 
-      //console.log("OrgUnitList::Create OrgUnit: " + id + ":::" + JSON.stringify(obj[i]));
+      //Logger.log("OrgUnitList::Create OrgUnit: " + id + ":::" + JSON.stringify(obj[i]));
       this.map[id] = new OrgUnit(id, obj[i]);
       this.map[id].createMapStyles();
     }
 
-    //console.log("OrgUnitList::Create: " + JSON.stringify(this.map));
+    //Logger.log("OrgUnitList::Create: " + JSON.stringify(this.map));
   }
 
   public getName(orgUnitId: string) {
@@ -47,7 +47,7 @@ export class OrgUnitList {
 
   public getStyleForRoom(orgId: number, categoryId: number, isHighlighted: boolean, isSelected: boolean): any {
 
-    //console.log("OrgUnitList::getStyleForRoom: " + orgId);
+    //Logger.log("OrgUnitList::getStyleForRoom: " + orgId);
 
     if (categoryId == 18 //Verkehrsfläche
       || categoryId == 13 //Balkon

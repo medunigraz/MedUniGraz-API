@@ -5,6 +5,8 @@ import { MapLayerBase } from './mapLayerBase';
 
 import { OlmapComponent } from './olmap.component'
 
+import { Logger } from '../base/logger';
+
 declare var ol: any;
 
 export class MapFloor extends MapLayerBase {
@@ -30,13 +32,13 @@ export class MapFloor extends MapLayerBase {
     this.subscribeNewRequest(
       this.mapService.getFloors(floorid).subscribe(
         buildings => this.showFloors(buildings),
-        error => console.log("ERROR deleteNode: " + <any>error)));
+        error => Logger.log("ERROR deleteNode: " + <any>error)));
 
     //this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(this.getDummyFloor()));
   }
 
   private showFloors(features: any) {
-    //console.log("MapFloor::showBuildings");
+    //Logger.log("MapFloor::showBuildings");
     this.clear();
     this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(features));
   }

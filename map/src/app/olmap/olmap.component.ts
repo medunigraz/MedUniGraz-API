@@ -30,6 +30,8 @@ import { PoiType } from '../base/poitype';
 import { Position } from '../base/position';
 import { RouteLevelChange } from '../base/routeLevelChange';
 
+import { Logger } from '../base/logger';
+
 declare var ol: any;
 
 @Component({
@@ -149,12 +151,12 @@ export class OlmapComponent implements OnInit {
   }
 
   private changeViewStart(evt: any) {
-    //console.log("MapComponent::changeView Start!!! " + Date.now());
+    //Logger.log("MapComponent::changeView Start!!! " + Date.now());
     this.lastViewChangeStart = Date.now();
   }
 
   private changeViewEnd(evt: any) {
-    //console.log("MapComponent::changeView End!!!" + Date.now());
+    //Logger.log("MapComponent::changeView End!!!" + Date.now());
     this.lastViewChangeEnd = Date.now();
   }
 
@@ -250,7 +252,8 @@ export class OlmapComponent implements OnInit {
 
   @Input()
   set currentFloor(currentFloor: Floor) {
-    console.log("MapComponent::Set currentFloor - New Floor: " + JSON.stringify(currentFloor));
+
+    Logger.log("MapComponent::Set currentFloor - New Floor: " + JSON.stringify(currentFloor));
 
     if (currentFloor && currentFloor.id >= 0) {
       this.lastMapUpdate = Date.now();
@@ -270,7 +273,7 @@ export class OlmapComponent implements OnInit {
 
   public updatePoiTypes(poitypes: PoiType[]) {
     if (poitypes) {
-      //console.log("MapComponent::Set poiTypes: " + JSON.stringify(poitypes));
+      //Logger.log("MapComponent::Set poiTypes: " + JSON.stringify(poitypes));
       this.mapPois.setPoiTypes(poitypes);
     }
   }
@@ -278,28 +281,28 @@ export class OlmapComponent implements OnInit {
   public allowZoomToLivePos() {
     let zoomToPos: boolean = false;
     let currentTimeStamp: number = Date.now();
-    //console.log("MapComponent::showLivePosition Zoom to livePos # lastMapUpdate: " + (currentTimeStamp - this.lastMapUpdate));
+    //Logger.log("MapComponent::showLivePosition Zoom to livePos # lastMapUpdate: " + (currentTimeStamp - this.lastMapUpdate));
     if (this.lastViewChangeEnd >= this.lastViewChangeStart && currentTimeStamp - this.lastMapUpdate < 2500) //Always zoom to pos after level change
     {
-      //console.log("MapComponent::showLivePosition ALLOW  Zoom to livePos # lastMapUpdate ");
+      //Logger.log("MapComponent::showLivePosition ALLOW  Zoom to livePos # lastMapUpdate ");
       zoomToPos = true;
     }
-    //console.log("MapComponent::showLivePosition Zoom to livePos # ?? " + (currentTimeStamp - this.lastViewChangeEnd) + "#(" + this.lastViewChangeEnd + "/" + this.lastViewChangeStart + ")");
+    //Logger.log("MapComponent::showLivePosition Zoom to livePos # ?? " + (currentTimeStamp - this.lastViewChangeEnd) + "#(" + this.lastViewChangeEnd + "/" + this.lastViewChangeStart + ")");
     if (this.lastViewChangeEnd >= this.lastViewChangeStart && currentTimeStamp - this.lastViewChangeEnd > 1000) //Zoom to pos if no map drag happend in the last 1sec
     {
-      //console.log("MapComponent::showLivePosition ALLOW  Zoom to livePos # lastDrag ");
+      //Logger.log("MapComponent::showLivePosition ALLOW  Zoom to livePos # lastDrag ");
       zoomToPos = true;
     }/*
     if (this.lastViewChangeEnd >= this.lastViewChangeStart && currentTimeStamp - this.lastPositionReceived > 5000 && currentTimeStamp - this.lastViewChangeEnd > 2000) {
-      //console.log("MapComponent::showLivePosition ALLOW Zoom to livePos # lastPositionReceived");
+      //Logger.log("MapComponent::showLivePosition ALLOW Zoom to livePos # lastPositionReceived");
       zoomToPos = true;
     }*/
 
     if (this.lastShowRoom > 0 && Date.now() - this.lastShowRoom < 2000) { //Ignore pos for same time after mark room
-      console.log("MapComponent::showLivePosition BLOCK Zoom to livePos # lastShowRoom" + this.lastShowRoom);
+      Logger.log("MapComponent::showLivePosition BLOCK Zoom to livePos # lastShowRoom" + this.lastShowRoom);
       zoomToPos = false;
     }
-    console.log("MapComponent::showLivePosition  ######### " + zoomToPos);
+    Logger.log("MapComponent::showLivePosition  ######### " + zoomToPos);
     return zoomToPos;
   }
 
@@ -328,13 +331,13 @@ export class OlmapComponent implements OnInit {
   }
 
   showRoom(roomResult: Room) {
-    console.log("OLMap::showRoom: " + JSON.stringify(roomResult));
+    Logger.log("OLMap::showRoom: " + JSON.stringify(roomResult));
     this.mapRoom.markRoomFromSearch(roomResult);
     this.lastShowRoom = Date.now();
   }
 
   showRoute(from: number, to: number, livePos: Position) {
-    //console.log("OlmapComponent::showRoute: " + from + " --> " + to);
+    //Logger.log("OlmapComponent::showRoute: " + from + " --> " + to);
     this.mapRoute.showRoute(from, to, livePos);
     if (!livePos) {
       this.lastShowRoom = Date.now();
@@ -343,12 +346,12 @@ export class OlmapComponent implements OnInit {
 
 
   clearRoute() {
-    console.log("OlmapComponent::clearRoute");
+    Logger.log("OlmapComponent::clearRoute");
     this.mapRoute.clearRoute();
   }
 
   closePopup() {
-    //console.log("OlmapComponent::closePopup");
+    //Logger.log("OlmapComponent::closePopup");
     this.mapRoom.closePopup();
   }
 
@@ -379,7 +382,7 @@ export class OlmapComponent implements OnInit {
   }
 
   zoomToPosition(position: number[]) {
-    console.log("OlmapComponent::zoomToPosition");
+    Logger.log("OlmapComponent::zoomToPosition");
     let timer = TimerObservable.create(250);
 
     if (this.zoomToLivePosTimerSubscription != null) {
@@ -391,11 +394,11 @@ export class OlmapComponent implements OnInit {
       this.zoomToPositionEvt(position);
     });
 
-    console.log("OlmapComponent::zoomToPosition END");
+    Logger.log("OlmapComponent::zoomToPosition END");
   }
 
   zoomToPositionEvt(position: number[]) {
-    console.log("OlmapComponent::zoomToPosition EVENT");
+    Logger.log("OlmapComponent::zoomToPosition EVENT");
     if (position && position != undefined) {
 
       let destinationZoom = 20;
@@ -418,7 +421,7 @@ export class OlmapComponent implements OnInit {
   }
 
   openRoomDialog() {
-    //console.log("OlmapComponent::openRoomDialog");
+    //Logger.log("OlmapComponent::openRoomDialog");
 
     let dialogRef: MdDialogRef<RoomDialogComponent>;
     let room = this.mapRoom.getMarkedRoom();
@@ -432,10 +435,10 @@ export class OlmapComponent implements OnInit {
   }
 
   roomDialogClosed(res: any) {
-    console.log("OlmapComponent::openRoomDialogClosed: " + JSON.stringify(res));
+    Logger.log("OlmapComponent::openRoomDialogClosed: " + JSON.stringify(res));
     let currentMarkedRoom = this.mapRoom.getMarkedRoom();
     if (currentMarkedRoom != null && res == "Navigate...") {
-      console.log("OlmapComponent::openRoomDialogClosed Emit Navigation Event!");
+      Logger.log("OlmapComponent::openRoomDialogClosed Emit Navigation Event!");
       this.onShowRoute.emit(currentMarkedRoom.getSimpleRoom());
     }
   }
@@ -448,22 +451,22 @@ export class OlmapComponent implements OnInit {
 
   private mapClicked(evt): void {
     let pixel = this.map.getEventPixel(evt.originalEvent);
-    console.log("Coord Org: " + evt.coordinate + " Pixel: " + pixel);
+    Logger.log("Coord Org: " + evt.coordinate + " Pixel: " + pixel);
 
     let roomFeature = this.getRoomForPos(pixel);
     if (roomFeature) {
-      console.log("OlmapComponent::mapClicked: Room Clicked: " + roomFeature.getId());
+      Logger.log("OlmapComponent::mapClicked: Room Clicked: " + roomFeature.getId());
     }
     this.mapRoom.setSelectedRoom(roomFeature);
 
 
     let doorFeature = this.getDoorForPos(pixel);
     if (doorFeature) {
-      console.log("OlmapComponent::mapClicked: Door Clicked: " + doorFeature.getId());
+      Logger.log("OlmapComponent::mapClicked: Door Clicked: " + doorFeature.getId());
     }
 
     //let view = this.map.getView();
-    //console.log("OlmapComponent::mapClicked: CurrentResolution: " + view.getResolution());
+    //Logger.log("OlmapComponent::mapClicked: CurrentResolution: " + view.getResolution());
   }
 
   private getRoomForPos(posPixel: any) {
@@ -475,7 +478,7 @@ export class OlmapComponent implements OnInit {
     }, options);
 
     //if (feature != null) {
-    //  console.log("Found room: " + feature.getId());
+    //  Logger.log("Found room: " + feature.getId());
     //}
 
     return feature;

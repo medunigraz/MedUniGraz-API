@@ -4,6 +4,8 @@ import { MapLayerBase } from './mapLayerBase';
 import { PoiType } from '../base/poitype'
 import { Poi } from '../base/poi'
 
+import { Logger } from '../base/logger';
+
 declare var ol: any;
 
 export class MapPois extends MapLayerBase {
@@ -29,7 +31,7 @@ export class MapPois extends MapLayerBase {
     this.layer = new ol.layer.Vector({
       source: this.layerSource,
       renderOrder: function(f1: any, f2: any) {
-        //console.log("...." + f1.get("orderIndex") + "/" + f2.get("orderIndex"));
+        //Logger.log("...." + f1.get("orderIndex") + "/" + f2.get("orderIndex"));
         if (f1.get("orderIndex") > f2.get("orderIndex")) {
           return 1;
         }
@@ -40,7 +42,7 @@ export class MapPois extends MapLayerBase {
 
   public setPoiTypes(poiTypes: PoiType[]) {
 
-    //console.log("MapPois::setPoiTypes...");
+    //Logger.log("MapPois::setPoiTypes...");
 
     this.poitypes = poiTypes;
 
@@ -52,16 +54,16 @@ export class MapPois extends MapLayerBase {
   }
 
   public showFloor(currentFloor: number): any {
-    //console.log("MapPois::showFloor: " + JSON.stringify(currentFloor));
+    //Logger.log("MapPois::showFloor: " + JSON.stringify(currentFloor));
     this.clear();
     this.subscribeNewRequest(
       this.mapService.getPoiInstances(currentFloor).subscribe(
         poiinstances => this.poisReceived(poiinstances),
-        error => console.log("ERROR deleteNode: " + <any>error)));
+        error => Logger.log("ERROR deleteNode: " + <any>error)));
   }
 
   public poisReceived(features: any) {
-    //console.log("MapPois::poisReceived: " + JSON.stringify(features));
+    //Logger.log("MapPois::poisReceived: " + JSON.stringify(features));
     this.poiInstances = (new ol.format.GeoJSON()).readFeatures(features);
     this.updatePois();
   }
@@ -73,7 +75,7 @@ export class MapPois extends MapLayerBase {
 
     this.clear();
 
-    //console.log("MapPois::updatePois: " + JSON.stringify(this.poiInstances.length));
+    //Logger.log("MapPois::updatePois: " + JSON.stringify(this.poiInstances.length));
 
     let orderIndex = 0;
 
@@ -82,7 +84,7 @@ export class MapPois extends MapLayerBase {
       let poiTypeId = this.poiInstances[i].get("name");
 
       if (this.activeIconsMap[poiTypeId]) {
-        //console.log("MapPois::updatePois Add Poi: " + id);
+        //Logger.log("MapPois::updatePois Add Poi: " + id);
         let markerfeature = this.poiInstances[i].clone();
 
         markerfeature.setStyle(this.iconMarkerMap[poiTypeId]);

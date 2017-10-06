@@ -38,13 +38,13 @@ export class AddressPosMapping {
 
   public static getPosForTitle(title: string): number[] {
 
-    //console.log("AddressPosMapping::GetMapping for title: " + title);
+    //Logger.log("AddressPosMapping::GetMapping for title: " + title);
 
     let mapping = AddressPosMapping.mapping;
 
     for (let i = 0; i < mapping.length; i++) {
       if (title.indexOf(mapping[i].name) >= 0) {
-        //console.log("AddressPosMapping::GetMapping FOUND: " + mapping[i].name);
+        //Logger.log("AddressPosMapping::GetMapping FOUND: " + mapping[i].name);
         return mapping[i].pos;
       }
     }

@@ -6,6 +6,8 @@ import { OrgUnitList } from '../base/orgunitlist';
 
 import { MapRoom } from './mapRoom';
 
+import { Logger } from '../base/logger';
+
 export class OrgUnitHandler extends MapLayerBase {
 
   private mapRoom: MapRoom = undefined;
@@ -24,7 +26,7 @@ export class OrgUnitHandler extends MapLayerBase {
     this.subscribeNewRequest(
       this.mapService.getOrgUnits().subscribe(
         rooms => this.updateData(rooms),
-        error => console.log("ERROR get Org Units: " + <any>error)));
+        error => Logger.log("ERROR get Org Units: " + <any>error)));
   }
 
   public getName(orgUnitId: string) {
@@ -32,7 +34,7 @@ export class OrgUnitHandler extends MapLayerBase {
   }
 
   private updateData(features: any): void {
-    //console.log("OrgUnitHandler::updateData");
+    //Logger.log("OrgUnitHandler::updateData");
     this.orgUnitList = new OrgUnitList(features);
     this.mapRoom.orgUnitsReceived(this.orgUnitList);
   }

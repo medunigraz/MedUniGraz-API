@@ -31,14 +31,14 @@ export class SignalBufferCollection {
       let data = JSON.parse(valuestring);
 
       for (let signal of data) {
-        //console.log('set signal: ' + JSON.stringify(signal));
+        //Logger.log('set signal: ' + JSON.stringify(signal));
         this.addValue(signal["Name"], signal["Value"]);
       }
     }
   }
 
   public getNearestBeacon(): string {
-    //console.log("SignalBufferCollection::getNearestBeacon() - " + JSON.stringify(this.map));
+    //Logger.log("SignalBufferCollection::getNearestBeacon() - " + JSON.stringify(this.map));
 
     let bestValue = -9999;
     let bestID: string = undefined;
@@ -145,7 +145,7 @@ export class SignalBufferCollection {
 
   /*
   private startClearTimer() {
-  //console.log("SignalBufferCollection::startClearTimer()");
+  //Logger.log("SignalBufferCollection::startClearTimer()");
 
   if (this.clearTimerSubscription != null) {
     this.stopClearTimer();
@@ -158,7 +158,7 @@ export class SignalBufferCollection {
 }
 
   private stopClearTimer() {
-  //console.log("SignalBufferCollection::stopClearTimer()");
+  //Logger.log("SignalBufferCollection::stopClearTimer()");
   if (this.clearTimerSubscription != null) {
     this.clearTimerSubscription.unsubscribe();
     this.clearTimerSubscription = null;
@@ -166,13 +166,13 @@ export class SignalBufferCollection {
 }
 
   private clearTimerEvent() {
-  console.log("SignalBufferCollection::updateBufferTimerEvent()");
+  Logger.log("SignalBufferCollection::updateBufferTimerEvent()");
 
   let keysToDelete: string[] = [];
 
   for (let key in this.map) {
     if (this.map[key].updateTimer()) {
-      //console.log("SignalBufferCollection::clearTimerEvent() - Clear Signal: " + key);
+      //Logger.log("SignalBufferCollection::clearTimerEvent() - Clear Signal: " + key);
       keysToDelete.push(key);
     }
   }
@@ -182,7 +182,7 @@ export class SignalBufferCollection {
   }
 
   //this.startClearTimer();
-  //console.log("SignalBufferCollection::clearTimerEvent() - END: " + JSON.stringify(this.map));
+  //Logger.log("SignalBufferCollection::clearTimerEvent() - END: " + JSON.stringify(this.map));
 }*/
 
 }

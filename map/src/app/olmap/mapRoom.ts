@@ -11,6 +11,8 @@ import { RoomDetail } from '../base/roomDetail';
 import { OrgUnit } from '../base/orgunit';
 import { OrgUnitList } from '../base/orgunitlist';
 
+import { Logger } from '../base/logger';
+
 
 declare var ol: any;
 
@@ -70,7 +72,7 @@ export class MapRoom extends MapLayerBase {
     this.subscribeNewRequest(
       this.mapService.getRooms(floorid).subscribe(
         rooms => this.roomsReceived(rooms),
-        error => console.log("ERROR deleteNode: " + <any>error)));
+        error => Logger.log("ERROR deleteNode: " + <any>error)));
   }
 
   public orgUnitsReceived(orgUnits: OrgUnitList) {
@@ -88,14 +90,14 @@ export class MapRoom extends MapLayerBase {
   }
 
   public markRoomFromSearch(room: Room) {
-    console.log("MapRoom::Mark room from Search: " + JSON.stringify(room));
+    Logger.log("MapRoom::Mark room from Search: " + JSON.stringify(room));
     this.roomToHighlight = null;
     if (room.level != this.currentLevel) {
-      console.log("MapRoom::Mark room from Search; Wait for Level change... " + JSON.stringify(room));
+      Logger.log("MapRoom::Mark room from Search; Wait for Level change... " + JSON.stringify(room));
       this.roomToHighlight = room;
     }
     else {
-      console.log("MapRoom::Mark room from Search -> correct Level " + JSON.stringify(room));
+      Logger.log("MapRoom::Mark room from Search -> correct Level " + JSON.stringify(room));
       let feature = this.layerSource.getFeatureById(room.id);
       if (feature) {
         this.setSelectedRoom(feature);
@@ -107,7 +109,7 @@ export class MapRoom extends MapLayerBase {
       /*
       else
       {
-        console.log("MapRoom::Mark room from Search; Wait for receive rooms... " + JSON.stringify(room));
+        Logger.log("MapRoom::Mark room from Search; Wait for receive rooms... " + JSON.stringify(room));
         this.roomToHighlight = room;
       }*/
     }
@@ -117,7 +119,7 @@ export class MapRoom extends MapLayerBase {
 
     if (room) {
 
-      console.log("MapRoom::Mark room: " + room.id + " category: " + room.coCategory);
+      Logger.log("MapRoom::Mark room: " + room.id + " category: " + room.coCategory);
 
       this.currentMarkedRoom = room;
       this.currentOverlayText = room.getRoomMarkerText();
@@ -203,7 +205,7 @@ export class MapRoom extends MapLayerBase {
   }
 
   private showRooms(features: any): void {
-    //console.log("MapRoom::showRooms");
+    //Logger.log("MapRoom::showRooms");
     this.clear();
     this.closePopup();
 
@@ -211,7 +213,7 @@ export class MapRoom extends MapLayerBase {
 
     for (let i = 0; i < olFeatures.length; i++) {
       let id = olFeatures[i].getId();
-      //console.log("MapRoom::showRoom: " + id + "#" + JSON.stringify(olFeatures[i].getGeometry().getExtent()));
+      //Logger.log("MapRoom::showRoom: " + id + "#" + JSON.stringify(olFeatures[i].getGeometry().getExtent()));
       olFeatures[i].setStyle(this.getStyleForRoom(RoomDetail.getOrgId(olFeatures[i]), RoomDetail.getCategoryId(olFeatures[i]), false, false));
     }
 

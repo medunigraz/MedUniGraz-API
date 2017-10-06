@@ -11,6 +11,8 @@ import { Position } from '../base/position';
 
 import { OlmapComponent } from './olmap.component'
 
+import { Logger } from '../base/logger';
+
 declare var ol: any;
 
 export class MapRoute extends MapLayerBase {
@@ -63,7 +65,7 @@ export class MapRoute extends MapLayerBase {
       if (!style) {
         style = MapRouteStyles.routeHiddenFloor;
       }
-      //console.log("MapRoute::Stylefunction: " + style.getStroke().getColor());
+      //Logger.log("MapRoute::Stylefunction: " + style.getStroke().getColor());
       return style;
     };
 
@@ -78,7 +80,7 @@ export class MapRoute extends MapLayerBase {
 
   public setFloorList(floorList: FloorList) {
     if (floorList) {
-      console.log("MapRoute::setFloorList num of floors: " + floorList.getLength());
+      Logger.log("MapRoute::setFloorList num of floors: " + floorList.getLength());
       this.floorList = floorList;
     }
   }
@@ -87,13 +89,13 @@ export class MapRoute extends MapLayerBase {
     if (!livePos) {
       this.lastLivePosStartNode = -1;
       if (sourceNodeId >= 0 && destinationNodeId >= 0) {
-        console.log("MapRoute::generateRoute From: " + sourceNodeId + " to " + destinationNodeId);
+        Logger.log("MapRoute::generateRoute From: " + sourceNodeId + " to " + destinationNodeId);
 
         this.subscribeNewRequest(
           this.mapService.getRoute(sourceNodeId, destinationNodeId).
             subscribe(
             route => this.updateRoute(route, undefined),
-            error => console.log("ERROR: " + <any>error)));
+            error => Logger.log("ERROR: " + <any>error)));
       }
     }
     else {
@@ -103,7 +105,7 @@ export class MapRoute extends MapLayerBase {
           this.mapService.getRoute(this.lastLivePosStartNode, destinationNodeId).
             subscribe(
             route => this.updateRoute(route, livePos),
-            error => console.log("ERROR: " + <any>error)));
+            error => Logger.log("ERROR: " + <any>error)));
       }
     }
   }
@@ -121,7 +123,7 @@ export class MapRoute extends MapLayerBase {
   }
 
   private updateRoute(route: any, livePos: Position) {
-    console.log("MapRoute::update Route");
+    Logger.log("MapRoute::update Route");
     this.layerSource.clear();
 
     let o_features = (new ol.format.GeoJSON()).readFeatures(route);
@@ -143,13 +145,13 @@ export class MapRoute extends MapLayerBase {
   }
 
   private createLevelOverlays() {
-    //console.log("MapRoute::createLevelOverlays...");
+    //Logger.log("MapRoute::createLevelOverlays...");
 
     if (!this.levelOverlays) {
       this.initRouteOverlays();
     }
 
-    //console.log("MapRoute::createLevelOverlays. ");
+    //Logger.log("MapRoute::createLevelOverlays. ");
 
     if (this.currentRoute && this.currentRoute.length > 1) {
 
@@ -158,13 +160,13 @@ export class MapRoute extends MapLayerBase {
       let node2SourceId = this.currentRoute[1].get("source");
       let node2DestinationId = this.currentRoute[1].get("destination");
 
-      //console.log("MapRoute::createLevelOverlays!" + node1SourceId + "-" + node1DestinationId + "   " + node2SourceId + "-" + node2DestinationId);
+      //Logger.log("MapRoute::createLevelOverlays!" + node1SourceId + "-" + node1DestinationId + "   " + node2SourceId + "-" + node2DestinationId);
 
       let startNode = this.currentRoute[0].get("source_node");
       if (node1SourceId == node2SourceId || node1SourceId == node2DestinationId) {
         startNode = this.currentRoute[0].get("destination_node");
       }
-      //console.log("MapRoute::createLevelOverlays!");
+      //Logger.log("MapRoute::createLevelOverlays!");
 
       this.resetRouteOverlays();
 
@@ -205,7 +207,7 @@ export class MapRoute extends MapLayerBase {
           lastStartLevel = -1;
         }
 
-        //console.log("MapRoute::createLevelOverlays - cat: " + category + " source: " + startLevel + " destination: " + endLevel + " i" + i);
+        //Logger.log("MapRoute::createLevelOverlays - cat: " + category + " source: " + startLevel + " destination: " + endLevel + " i" + i);
 
         lastNode = currentNode;
         i++;
@@ -215,7 +217,7 @@ export class MapRoute extends MapLayerBase {
         this.addNewMarker(lastStartLevel, lastNode["properties"]["level"], lastNode, lastCategory);
       }
 
-      //console.log("MapRoute::createLevelOverlays used Levels: " + JSON.stringify(levels));
+      //Logger.log("MapRoute::createLevelOverlays used Levels: " + JSON.stringify(levels));
       this.mapComponent.highlightRouteLevels(levels);
     }
   }
@@ -236,7 +238,7 @@ export class MapRoute extends MapLayerBase {
   private addNewMarker(startLevel: number, endLevel: number, endNode: any, category: number) {
 
 
-    //console.log("MapRoute::addNewMarker Level: " + startLevel + " --> " + endLevel + " # " + JSON.stringify(endNode));
+    //Logger.log("MapRoute::addNewMarker Level: " + startLevel + " --> " + endLevel + " # " + JSON.stringify(endNode));
     if (this.floorList) {
       let pos = endNode["geometry"]["coordinates"];
 
@@ -258,10 +260,10 @@ export class MapRoute extends MapLayerBase {
 
   private addLevelOverlay(position: number[], text: string, icon: string, arrow: string) {
 
-    //console.log("MapRoute::addLevelOverlay " + text + " - " + icon + " # " + JSON.stringify(position));
+    //Logger.log("MapRoute::addLevelOverlay " + text + " - " + icon + " # " + JSON.stringify(position));
 
     if (this.lastOverlaysUsed < this.levelOverlays.length) {
-      //console.log("MapRoute::addLevelOverlay -> " + this.lastOverlaysUsed);
+      //Logger.log("MapRoute::addLevelOverlay -> " + this.lastOverlaysUsed);
       this.levelOverlays[this.lastOverlaysUsed].setPosition(position);
       this.levelTextFields[this.lastOverlaysUsed].innerHTML = text;
       this.levelIconFields[this.lastOverlaysUsed].className = 'levelOverlayIcon ' + icon;
@@ -287,10 +289,10 @@ export class MapRoute extends MapLayerBase {
   private initRouteOverlays() {
 
     let base = this.levelPopUpBaseElem.nativeElement;
-    //console.log("MapBeacons::initBeaconOverlays: " + JSON.stringify(this.beaconPopUpBaseElem.nativeElement));
+    //Logger.log("MapBeacons::initBeaconOverlays: " + JSON.stringify(this.beaconPopUpBaseElem.nativeElement));
     let childs = base.children;
     let elemCount = childs.length;
-    console.log("MapRoute::initLevelOverlays: " + elemCount);
+    Logger.log("MapRoute::initLevelOverlays: " + elemCount);
     this.levelOverlays = new Array(elemCount);
     this.levelTextFields = new Array(elemCount);
     this.levelArrowFields = new Array(elemCount);
@@ -302,14 +304,14 @@ export class MapRoute extends MapLayerBase {
 
       let OverlayDiv = childs[i].children[0];
       overlayDivs.push(OverlayDiv);
-      //console.log("MapRoute::initLevelOverlays: NEW OVERLAY " + i + "#" + OverlayDiv.className + "#");
-      //console.log("MapRoute::initLevelOverlays: " + JSON.stringify(OverlayDiv));
+      //Logger.log("MapRoute::initLevelOverlays: NEW OVERLAY " + i + "#" + OverlayDiv.className + "#");
+      //Logger.log("MapRoute::initLevelOverlays: " + JSON.stringify(OverlayDiv));
       let innerDiv = OverlayDiv.children[0];
-      //console.log("MapRoute::initLevelOverlays: " + JSON.stringify(innerDiv));
+      //Logger.log("MapRoute::initLevelOverlays: " + JSON.stringify(innerDiv));
       this.levelIconFields[i] = innerDiv.children[0];
       this.levelArrowFields[i] = innerDiv.children[1];
       let span = innerDiv.children[2];
-      //console.log("MapRoute::initLevelOverlays: " + innerDiv.children.length);
+      //Logger.log("MapRoute::initLevelOverlays: " + innerDiv.children.length);
       this.levelTextFields[i] = span;
     }
 

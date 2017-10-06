@@ -7,6 +7,8 @@ import { PoiType } from '../base/poiType';
 import { SearchResult } from '../base/searchresult';
 import { MAX_NUM_OF_AUTOCOMPLETE_RESULTS, API_BASE_URL } from '../base/globalconstants';
 
+import { Logger } from '../base/logger';
+
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -29,7 +31,7 @@ export class MapService {
   constructor(private http: Http) { }
 
   getRooms(layer: number): Observable<Object> {
-    //console.log("MapService::getRooms: " + layer);
+    //Logger.log("MapService::getRooms: " + layer);
     return this.http.get(this.roomUrl + '?level=' + layer)
       .map(this.extractData)
       .catch(this.handleError);
@@ -79,7 +81,7 @@ export class MapService {
 
   getRoute(sourceNodeId: number, destinationNodeId: number): Observable<Object> {
     let url = this.routeUrl + '?from=' + sourceNodeId + '&to=' + destinationNodeId;
-    console.log("MapService::getRoute " + url)
+    Logger.log("MapService::getRoute " + url)
 
     return this.http.get(url)
       .map(this.extractData)
@@ -100,10 +102,10 @@ export class MapService {
   }
 
   private extractData(res: Response) {
-    //console.log("RESPONSE DATA...");
+    //Logger.log("RESPONSE DATA...");
     let body = res.json();
 
-    //console.log("RESPONSE DATA: " + JSON.stringify(body));
+    //Logger.log("RESPONSE DATA: " + JSON.stringify(body));
 
     if (body.results) {             //For multiple pages
       return body.results || {};
@@ -128,7 +130,7 @@ export class MapService {
     if (body.results) {
       body = body.results;
     }
-    //console.log("RESPONSE DATA POITYPES: " + JSON.stringify(body));
+    //Logger.log("RESPONSE DATA POITYPES: " + JSON.stringify(body));
     let poitypes: PoiType[] = [];
     for (let obj of body) {
       poitypes.push(new PoiType(obj));
@@ -141,7 +143,7 @@ export class MapService {
     if (body.results) {
       body = body.results;
     }
-    //console.log("RESPONSE DATA POITYPES: " + JSON.stringify(body));
+    //Logger.log("RESPONSE DATA POITYPES: " + JSON.stringify(body));
     let searchResults: SearchResult[] = [];
     let i = 0;
     for (let obj of body) {

@@ -19,7 +19,7 @@ export class SignalBufferTimed {
 
   constructor(name, value) {
 
-    //console.log("SignalBufferCollection::SignalBufferFixed() - Create new Beacon: " + name + " value: " + value);
+    //Logger.log("SignalBufferCollection::SignalBufferFixed() - Create new Beacon: " + name + " value: " + value);
     this.name = name;
 
     this.currentIndex = -1;
@@ -37,7 +37,7 @@ export class SignalBufferTimed {
   public setValue(value) {
     if (value && value >= MIN_VALUE && value <= 0) {
       this.incCurrentIndex();
-      //console.log("SignalBufferCollection::SignalBufferFixed() " + this.name + "Set value " + value + " to: " + this.currentIndex);
+      //Logger.log("SignalBufferCollection::SignalBufferFixed() " + this.name + "Set value " + value + " to: " + this.currentIndex);
       this.valueAr[this.currentIndex] = value;
       this.timeStampAr[this.currentIndex] = new Date().getTime();
     }
@@ -45,7 +45,7 @@ export class SignalBufferTimed {
 
   public getValue() {
     if (!this.valueAr || this.valueAr.length <= 0) {
-      //console.log("SignalBufferCollection::SignalBufferFixed() - getValues(): UNDEFINED");
+      //Logger.log("SignalBufferCollection::SignalBufferFixed() - getValues(): UNDEFINED");
       return undefined;
     }
 
@@ -55,7 +55,7 @@ export class SignalBufferTimed {
 
 
     for (let i = this.currentIndex; i >= 0 && this.lastValidValuesCounter < MAX_NUM_OF_VALID_VALUES; i--) {
-      //console.log("SignalBufferCollection::SignalBufferFixed() #" + i + " time: " + (milliseconds - this.timeStampAr[i]));
+      //Logger.log("SignalBufferCollection::SignalBufferFixed() #" + i + " time: " + (milliseconds - this.timeStampAr[i]));
       if (this.valueAr[i] && (milliseconds - this.timeStampAr[i]) < MAX_TIME_DIFF) {
         sum += this.valueAr[i];
         this.lastValidValuesCounter++;
@@ -63,7 +63,7 @@ export class SignalBufferTimed {
 
     }
     for (let i = MAX_NUM_OF_ENTRIES; i > this.currentIndex && this.lastValidValuesCounter < MAX_NUM_OF_VALID_VALUES; i--) {
-      //console.log("SignalBufferCollection::SignalBufferFixed() #" + i + " time: " + (milliseconds - this.timeStampAr[i]));
+      //Logger.log("SignalBufferCollection::SignalBufferFixed() #" + i + " time: " + (milliseconds - this.timeStampAr[i]));
       if (this.valueAr[i] && (milliseconds - this.timeStampAr[i]) < MAX_TIME_DIFF) {
         sum += this.valueAr[i];
         this.lastValidValuesCounter++;
@@ -75,7 +75,7 @@ export class SignalBufferTimed {
       result = sum / this.lastValidValuesCounter;
     }
 
-    //console.log("SignalBufferCollection::SignalBufferFixed() #" + this.name + "# getValues(): " + result + " # " + this.lastValidValuesCounter);
+    //Logger.log("SignalBufferCollection::SignalBufferFixed() #" + this.name + "# getValues(): " + result + " # " + this.lastValidValuesCounter);
     return result;
   }
 

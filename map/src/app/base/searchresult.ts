@@ -36,7 +36,7 @@ export class SearchResult {
     result.level = obj["level_id"];
     result.room_id = obj["room_id"];
 
-    //console.log("SearchResult::createFromRestObj " + JSON.stringify(obj));
+    //Logger.log("SearchResult::createFromRestObj " + JSON.stringify(obj));
 
     return result;
   }

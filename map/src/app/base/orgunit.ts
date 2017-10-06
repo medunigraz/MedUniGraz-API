@@ -34,7 +34,7 @@ export class OrgUnit {
       this.name = obj["name"];
     }
 
-    //console.log("OrgUnit::constructor " + this.id + "/" + this.name + "/" + this.color + "###" + JSON.stringify(obj));
+    //Logger.log("OrgUnit::constructor " + this.id + "/" + this.name + "/" + this.color + "###" + JSON.stringify(obj));
   }
 
   public createMapStyles() {
@@ -50,7 +50,7 @@ export class OrgUnit {
     this.createHighlightStyle();
     this.createSelectedStyle();
 
-    //console.log("OrgUnit::createMapStyles " + this.name + "###" + JSON.stringify(this.style));
+    //Logger.log("OrgUnit::createMapStyles " + this.name + "###" + JSON.stringify(this.style));
   }
 
   private createHighlightStyle() {
@@ -72,7 +72,7 @@ export class OrgUnit {
   }
 
   public getStyleForRoom(orgId: number, isHighlighted: boolean, isSelected: boolean): any {
-    //console.log("OrgUnit::getStyleForRoom " + this.name + "###" + JSON.stringify(this.style));
+    //Logger.log("OrgUnit::getStyleForRoom " + this.name + "###" + JSON.stringify(this.style));
 
     if (isSelected) {
       return this.selectedStyle;

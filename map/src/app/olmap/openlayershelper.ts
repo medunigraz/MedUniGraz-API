@@ -17,7 +17,7 @@ export class OpenlayersHelper {
       'features': []
     };
 
-    //console.log('Create Wall layer source!');
+    //Logger.log('Create Wall layer source!');
     let layerSource = new ol.source.Vector({
       features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
     });

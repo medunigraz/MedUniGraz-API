@@ -8,6 +8,8 @@ import { Position } from '../base/position';
 
 import { SignalBufferCollection } from './signalbuffercollection';
 
+import { Logger } from '../base/logger';
+
 enum PositionStatus {
   InActive = 0,
   Paused = 1,
@@ -74,7 +76,7 @@ export class PositionComponent implements OnInit {
   }
 
   showPosition() {
-    console.log("PositionComponent::showPosition()");
+    Logger.log("PositionComponent::showPosition()");
     this.positioningStarted = !this.positioningStarted;
     this.updatePositionStatus();
 
@@ -88,7 +90,7 @@ export class PositionComponent implements OnInit {
 
   signalDataChanged(value: string) {
     if (this.positionStatus == PositionStatus.Active) {
-      //console.log("PositionComponent::signalDataChanged() - " + JSON.stringify(value));
+      //Logger.log("PositionComponent::signalDataChanged() - " + JSON.stringify(value));
       this.signalBufferCollection.addValues(value);
     }
   }
@@ -115,7 +117,7 @@ export class PositionComponent implements OnInit {
   **********************************************************/
 
   private startPosUpdateTimer() {
-    //console.log("PositionComponent::startPosUpdateTimer()");
+    //Logger.log("PositionComponent::startPosUpdateTimer()");
 
     if (this.posUpdateTimerSubscription != null) {
       this.stopPosUpdateTimer();
@@ -128,7 +130,7 @@ export class PositionComponent implements OnInit {
   }
 
   private stopPosUpdateTimer() {
-    //console.log("PositionComponent::stopPosUpdateTimer()");
+    //Logger.log("PositionComponent::stopPosUpdateTimer()");
     if (this.posUpdateTimerSubscription != null) {
       this.posUpdateTimerSubscription.unsubscribe();
       this.posUpdateTimerSubscription = null;
@@ -136,7 +138,7 @@ export class PositionComponent implements OnInit {
   }
 
   private posUpdateEvent() {
-    //console.log("PositionComponent::posUpdateEvent()");
+    //Logger.log("PositionComponent::posUpdateEvent()");
 
     let urlString = this.signalBufferCollection.getPosUrlString();
 
@@ -163,7 +165,7 @@ export class PositionComponent implements OnInit {
         this.mapService.getLivePos(urlparams).
           subscribe(
           livePos => this.updateLivePos(livePos, urlparams),
-          error => console.log("ERROR: " + <any>error)));
+          error => Logger.log("ERROR: " + <any>error)));
     }
     else {
       this.updateLivePos(undefined, '');
@@ -184,23 +186,23 @@ export class PositionComponent implements OnInit {
   }
 
   private updateLivePos(posResult: any, urlString: string) {
-    //console.log("PositionComponent::updateLivePos: " + JSON.stringify(posResult));
+    //Logger.log("PositionComponent::updateLivePos: " + JSON.stringify(posResult));
 
     let pos: Position = undefined;
 
     try {
       if (posResult) {
         //constructor(x: number, y: number, level: number, urlString: string, feature: any) {
-        //console.log("PositionComponent::updateLivePos: " + JSON.stringify(coords));
+        //Logger.log("PositionComponent::updateLivePos: " + JSON.stringify(coords));
         pos = new Position(urlString, posResult);
-        //console.log("PositionComponent::updateLivePos: " + JSON.stringify(pos));
+        //Logger.log("PositionComponent::updateLivePos: " + JSON.stringify(pos));
       }
 
     } catch (e) {
-      console.log("PositionComponent::updateLivePos Error: " + JSON.stringify(e));
+      Logger.log("PositionComponent::updateLivePos Error: " + JSON.stringify(e));
     }
 
-    //console.log("PositionComponent::updateLivePos: LEVEL: " + JSON.stringify(pos.level));
+    //Logger.log("PositionComponent::updateLivePos: LEVEL: " + JSON.stringify(pos.level));
 
     this.newPositionEvent.emit(pos);
   }
@@ -211,7 +213,7 @@ export class PositionComponent implements OnInit {
   **********************************************************/
 
   private startCheckTimer() {
-    //console.log("PositionComponent::startCheckTimer()");
+    //Logger.log("PositionComponent::startCheckTimer()");
 
     if (this.checkTimerSubscription != null) {
       this.stopCheckTimer();
@@ -224,7 +226,7 @@ export class PositionComponent implements OnInit {
   }
 
   private stopCheckTimer() {
-    //console.log("PositionComponent::stopCheckTimer()");
+    //Logger.log("PositionComponent::stopCheckTimer()");
     if (this.checkTimerSubscription != null) {
       this.checkTimerSubscription.unsubscribe();
       this.checkTimerSubscription = null;
@@ -232,7 +234,7 @@ export class PositionComponent implements OnInit {
   }
 
   private checkTimerEvent() {
-    //console.log("PositionComponent::checkTimerEvent()");
+    //Logger.log("PositionComponent::checkTimerEvent()");
     this.updatePositionStatus();
 
     this.stopCheckTimer();
@@ -243,7 +245,7 @@ export class PositionComponent implements OnInit {
 
   private updatePositionStatus() {
 
-    //console.log("PositionComponent::updatePositionStatus()" + appInterfaceObject.check());
+    //Logger.log("PositionComponent::updatePositionStatus()" + appInterfaceObject.check());
 
     if (appInterfaceObject.check() != 0 && !demoMode) {
       this.positionStatus = PositionStatus.InActive;
