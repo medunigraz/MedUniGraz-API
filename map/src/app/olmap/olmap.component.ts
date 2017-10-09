@@ -161,7 +161,12 @@ export class OlmapComponent implements OnInit {
   }
 
   private getTileSource(): any {
-    return new ol.source.OSM();
+
+    let options = {
+      url: 'https://map.medunigraz.at/tiles/openstreetmap/{z}/{x}/{y}.png'
+    };
+
+    return new ol.source.OSM(options);
 
     /*
         let tilegrid = new ol.tilegrid.WMTS({
