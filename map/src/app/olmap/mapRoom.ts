@@ -40,6 +40,8 @@ export class MapRoom extends MapLayerBase {
   private roomFeatures: any = undefined;
   private orgUnits: OrgUnitList = undefined;
 
+  private waitForRooms: boolean = false;
+
   constructor(public roomPopupDiv: ElementRef, public roomContentSpan: ElementRef, private mapComponent: OlmapComponent, private mapService: MapService) {
     super();
     this.Initialize();
@@ -69,6 +71,8 @@ export class MapRoom extends MapLayerBase {
     this.closePopup();
     this.roomFeatures = undefined;
     this.currentLevel = floorid;
+    this.waitForRooms = true;
+
     this.subscribeNewRequest(
       this.mapService.getRooms(floorid).subscribe(
         rooms => this.roomsReceived(rooms),
@@ -92,14 +96,16 @@ export class MapRoom extends MapLayerBase {
   public markRoomFromSearch(room: Room) {
     Logger.log("MapRoom::Mark room from Search: " + JSON.stringify(room));
     this.roomToHighlight = null;
-    if (room.level != this.currentLevel) {
+    if (room.level != this.currentLevel || this.waitForRooms) {
       Logger.log("MapRoom::Mark room from Search; Wait for Level change... " + JSON.stringify(room));
       this.roomToHighlight = room;
     }
     else {
       Logger.log("MapRoom::Mark room from Search -> correct Level " + JSON.stringify(room));
+      Logger.log("MapRoom::Mark room from Search -> find feature " + room.id);
       let feature = this.layerSource.getFeatureById(room.id);
       if (feature) {
+        Logger.log("MapRoom::Mark room from Search -> found feature " + room.id);
         this.setSelectedRoom(feature);
       }
       else if (room.virtualAddress) {
@@ -218,6 +224,7 @@ export class MapRoom extends MapLayerBase {
     }
 
     this.layerSource.addFeatures(olFeatures);
+    this.waitForRooms = false;
 
     if (this.roomToHighlight) {
       this.markRoomFromSearch(this.roomToHighlight);

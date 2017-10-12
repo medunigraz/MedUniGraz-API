@@ -89,6 +89,7 @@ export class SearchcontrolComponent implements OnInit {
     Logger.log('SearchComponent::destinationroom: ' + destinationroom.text);
 
     this.term.setValue(destinationroom.text, { "emitEvent": false });
+    this.showCloseDeleteButton = true;
     this.searchUpdateResults([], true);
     this.roomSelectedEvt.emit(destinationroom);
 
