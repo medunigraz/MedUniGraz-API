@@ -21,7 +21,7 @@ export class Room {
   }
 
   public static GetRoomTxtSearch(title: string, fullname: string): string {
-    return title + ' (' + fullname + ')';
+    return fullname + ': ' + title;
   }
 
   public static createFromRestObj(obj: any) {
