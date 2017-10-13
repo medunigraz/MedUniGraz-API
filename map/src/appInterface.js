@@ -210,7 +210,7 @@ function GetUrlParameter( url ) {
         obj[decodeURIComponent(key)] = decodeURIComponent(value);
     });
     //return obj;
-    globalURLParamRoomID = obj.roomId;
+    globalURLParamRoomID = obj.raum;
   }
   //console.log("JS::RoomID = " + globalURLParamRoomID);
 }
