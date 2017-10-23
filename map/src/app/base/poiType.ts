@@ -26,6 +26,17 @@ export class PoiType {
     this.color = '#' + obj["color"];
     this.fontKey = obj["font_key"];
 
+    /*
+        if (this.name == 'Garderobe') {
+          this.iconclass = 'icon-imbiss3';
+          this.fontKey = 'p';
+        }
+        else if (this.name == 'Aufzug') {
+          this.iconclass = 'icon-automat';
+          this.fontKey = 'q';
+        }
+    */
+
     this.isActive = obj["selected"];
 
   }
