@@ -8,6 +8,9 @@ import { Logger } from '../base/logger';
 
 declare var ol: any;
 
+//http://openlayers.org/en/latest/examples/icon.html
+//new Version!
+
 export class MapPois extends MapLayerBase {
 
   private poitypes: PoiType[] = null;

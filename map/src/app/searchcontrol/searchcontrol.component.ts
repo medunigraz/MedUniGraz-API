@@ -14,6 +14,9 @@ import { DefaultStartPointWithPos, DefaultStartPoint, SearchDemoData } from './s
 
 import { Logger } from '../base/logger';
 
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/map';
+
 export enum FocusStatus {
   NONE = 1,
   SEARCH = 2,
