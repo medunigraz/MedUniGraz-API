@@ -73,11 +73,21 @@ export class MapService {
       .catch(this.handleError);
   }
 
-  search(term: string): Observable<SearchResult[]> {
-    return this.http.get(this.searchUrl + '?q=' + term)
+  search(term: string, limit: number): Observable<SearchResult[]> {
+    let url = this.searchUrl + '?limit=' + limit + '&q=' + term;
+    Logger.log("MapService::search " + url);
+    return this.http.get(url)
       .map(this.extractDataSearch)
       .catch(this.handleError);
   }
+
+  searchFromUrl(url: string): Observable<SearchResult[]> {
+    Logger.log("MapService::search " + url);
+    return this.http.get(url)
+      .map(this.extractDataSearch)
+      .catch(this.handleError);
+  }
+
 
   getRoute(sourceNodeId: number, destinationNodeId: number): Observable<Object> {
     let url = this.routeUrl + '?from=' + sourceNodeId + '&to=' + destinationNodeId;
@@ -140,6 +150,7 @@ export class MapService {
 
   private extractDataSearch(res: Response) {
     let body = res.json();
+    let nextUrl = body.next;
     if (body.results) {
       body = body.results;
     }
@@ -153,7 +164,12 @@ export class MapService {
         break;
       }
     }
-    return searchResults;
+    let obj =
+      {
+        data: searchResults,
+        nexturl: nextUrl
+      }
+    return obj;
   }
 
   private handleError(error: Response | any) {

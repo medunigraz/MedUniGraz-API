@@ -13,6 +13,7 @@ import { RouteNodes } from '../base/routeNodes';
 import { DefaultStartPointWithPos, DefaultStartPoint, SearchDemoData } from './searchcontrolconstants';
 
 import { Logger } from '../base/logger';
+import { MAX_NUM_OF_AUTOCOMPLETE_RESULTS } from '../base/globalconstants';
 
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
@@ -32,6 +33,7 @@ export class SearchcontrolComponent implements OnInit {
 
   @ViewChild('searchStartInput') public searchStartInputRef: ElementRef;
   @ViewChild('searchInput') public searchInputRef: ElementRef;
+  @ViewChild('resultScrollDiv') public resultScrollDiv: ElementRef;
 
   isRoutingSearchBox: boolean = false;
   showCloseDeleteButton: boolean = false;
@@ -55,6 +57,9 @@ export class SearchcontrolComponent implements OnInit {
 
   private searchSubscription: Subscription = null;
   private searchStartSubscription: Subscription = null;
+
+  private searchToNextUrl: string = undefined;
+  private searchStartNextUrl: string = undefined;
 
   @Output() openSideMenuEvt = new EventEmitter<boolean>();
   @Output() roomSelectedEvt = new EventEmitter<Room>();
@@ -93,7 +98,7 @@ export class SearchcontrolComponent implements OnInit {
 
     this.term.setValue(destinationroom.text, { "emitEvent": false });
     this.showCloseDeleteButton = true;
-    this.searchUpdateResults([], true);
+    this.searchUpdateResults([], true, false);
     this.roomSelectedEvt.emit(destinationroom);
 
     //this.route(destinationroom);
@@ -116,12 +121,10 @@ export class SearchcontrolComponent implements OnInit {
       this.searchSubscription = null;
     }
 
-    if (term && term.length > 0) {
-
+    if (term.length > 0) {
       this.showCloseDeleteButton = true;
-
-      this.searchSubscription = this.mapService.search(term).subscribe(
-        results => this.searchUpdateResults(results, false),
+      this.searchSubscription = this.mapService.search(term, MAX_NUM_OF_AUTOCOMPLETE_RESULTS).subscribe(
+        results => this.searchResultsReceived(results, false, false),
         error => Logger.log("ERROR search: " + <any>error));
     }
     else {
@@ -130,45 +133,78 @@ export class SearchcontrolComponent implements OnInit {
         this.showCloseDeleteButton = false;
       }
 
-      this.searchUpdateResults([], true);
+      this.searchUpdateResults([], true, false);
     }
   }
 
   searchStartPoint(term: string) {
-    Logger.log('SearchComponent::searchStartPoint:' + term);
+    Logger.log('SearchComponent::searchStartPoint:#' + term + '#' + term.length);
 
     if (this.searchStartSubscription) {
       this.searchStartSubscription.unsubscribe();
       this.searchStartSubscription = null;
     }
 
-    if (term && term.length == 0) {
-      this.searchUpdateResultsStartPoint(SearchDemoData.getDefaultStartPositions(this.isLivePosRoutingAvailable), false);
+    if (term.length <= 0) {
+      this.searchUpdateResultsStartPoint(SearchDemoData.getDefaultStartPositions(this.isLivePosRoutingAvailable), false, false);
     }
     else {
-      this.searchStartSubscription = this.mapService.search(term).subscribe(
-        results => this.searchUpdateResultsStartPoint(results, false),
+      this.searchStartSubscription = this.mapService.search(term, MAX_NUM_OF_AUTOCOMPLETE_RESULTS).subscribe(
+        results => this.searchStartResultsReceived(results, false, false),
         error => Logger.log("ERROR searchstartpoint: " + <any>error));
     }
 
   }
 
-  searchUpdateResults(items: SearchResult[], clear: boolean) {
+  searchResultsReceived(items: any, clear: boolean, extendCurrent: boolean) {
+    this.searchToNextUrl = items.nexturl;
+    Logger.log('searchResults To Point - Next URL: ' + this.searchToNextUrl);
+    this.searchUpdateResults(items.data, clear, extendCurrent);
+  }
+
+  searchUpdateResults(items: SearchResult[], clear: boolean, extendCurrent: boolean) {
     Logger.log('searchResults: ');
 
-    if (items.length <= 0 && !clear) {
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
+      this.searchSubscription = null;
+    }
+
+    if (items.length <= 0 && !clear && !extendCurrent) {
       items.push(SearchDemoData.getNoResult_Obj());
     }
 
     if (items.length > 0) {
       items[items.length - 1].lastElem = true;
     }
-    this.searchResultsTo = items;
+    if (extendCurrent) {
+      if (this.searchResultsTo.length > 0) {
+        this.searchResultsTo[this.searchResultsTo.length - 1].lastElem = false;
+      }
+      this.searchResultsTo = this.searchResultsTo.concat(items);
+    }
+    else {
+      if (this.resultScrollDiv) {
+        this.resultScrollDiv.nativeElement.scrollTop = 0;
+      }
+      this.searchResultsTo = items;
+    }
     this.showResultTable();
   }
 
-  searchUpdateResultsStartPoint(items: SearchResult[], clear: boolean) {
+  searchStartResultsReceived(items: any, clear: boolean, extendCurrent: boolean) {
+    this.searchStartNextUrl = items.nexturl;
+    Logger.log('searchResults Start Point - Next URL: ' + this.searchStartNextUrl);
+    this.searchUpdateResultsStartPoint(items.data, clear, extendCurrent);
+  }
+
+  searchUpdateResultsStartPoint(items: SearchResult[], clear: boolean, extendCurrent: boolean) {
     Logger.log('searchResults Start Point: ');
+
+    if (this.searchStartSubscription) {
+      this.searchStartSubscription.unsubscribe();
+      this.searchStartSubscription = null;
+    }
 
     if (items.length <= 0 && !clear) {
       items.push(SearchDemoData.getNoResult_Obj());
@@ -182,7 +218,18 @@ export class SearchcontrolComponent implements OnInit {
     if (items.length > 0) {
       items[items.length - 1].lastElem = true;
     }
-    this.searchResultsFrom = items;
+    if (extendCurrent) {
+      if (this.searchResultsFrom.length > 0) {
+        this.searchResultsFrom[this.searchResultsFrom.length - 1].lastElem = false;
+      }
+      this.searchResultsFrom = this.searchResultsFrom.concat(items);
+    }
+    else {
+      if (this.resultScrollDiv) {
+        this.resultScrollDiv.nativeElement.scrollTop = 0;
+      }
+      this.searchResultsFrom = items;
+    }
     this.showResultTable();
   }
 
@@ -226,7 +273,7 @@ export class SearchcontrolComponent implements OnInit {
     Logger.log('SearchComponent::route from:' + JSON.stringify(this.currentStartPointResult));
 
     this.term.setValue(destinationroom.text, { "emitEvent": false });
-    this.searchUpdateResults([], true);
+    this.searchUpdateResults([], true, false);
 
     if (this.currentStartPointResult == null) {
       this.currentStartPointResult = SearchDemoData.getDefaultStartPoint(this.isLivePosRoutingAvailable);
@@ -346,14 +393,14 @@ export class SearchcontrolComponent implements OnInit {
       if (this.currentResult.text.length > 0) {
         this.showCloseDeleteButton = true;
       }
-      this.searchUpdateResults([], true);
+      this.searchUpdateResults([], true, false);
     }
   }
 
   private showCurrentStartResult() {
     if (this.currentStartPointResult != null) {
       this.startPointTerm.setValue(this.currentStartPointResult.text, { "emitEvent": false });
-      this.searchUpdateResultsStartPoint([], true);
+      this.searchUpdateResultsStartPoint([], true, false);
     }
   }
 
@@ -395,4 +442,35 @@ export class SearchcontrolComponent implements OnInit {
     this.showResultTable();
   }
 
+  public resultBoxScrolled() {
+
+    if (this.resultScrollDiv) {
+      let theight = this.resultScrollDiv.nativeElement.clientHeight;
+      let h = this.resultScrollDiv.nativeElement.scrollHeight - theight;
+      let hd = this.resultScrollDiv.nativeElement.scrollTop;
+
+      let percent = (hd * 100) / h;
+
+      //Logger.log("SearchcontrolComponent::resultBoxScrolled() " + theight + " " + h + " " + hd + " percent: " + percent);
+
+      if (percent > 90) {
+        if (this.currentFocusStatus == FocusStatus.SEARCH) {
+          if (!this.searchSubscription && this.searchToNextUrl) {
+            Logger.log("SearchcontrolComponent::resultBoxScrolled() LOAD SEARCH " + this.searchToNextUrl);
+            this.searchSubscription = this.mapService.searchFromUrl(this.searchToNextUrl).subscribe(
+              results => this.searchResultsReceived(results, false, true),
+              error => Logger.log("ERROR search: " + <any>error));
+          }
+        }
+        else if (this.currentFocusStatus == FocusStatus.START) {
+          if (!this.searchStartSubscription && this.searchStartNextUrl) {
+            Logger.log("SearchcontrolComponent::resultBoxScrolled() LOAD START SEARCH " + this.searchStartNextUrl);
+            this.searchStartSubscription = this.mapService.searchFromUrl(this.searchStartNextUrl).subscribe(
+              results => this.searchStartResultsReceived(results, false, true),
+              error => Logger.log("ERROR search: " + <any>error));
+          }
+        }
+      }
+    }
+  }
 }

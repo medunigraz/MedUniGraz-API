@@ -10,7 +10,7 @@ import { Ng2DeviceDetectorModule } from 'ng2-device-detector';
 
 //import { MaterialModule } from '@angular/material'; TODO
 
-//import { routes } from './app.routes'; 
+//import { routes } from './app.routes';
 
 import { MapService } from './mapservice/map.service';
 import { MainappService } from './mainappservice/mainapp.service';
