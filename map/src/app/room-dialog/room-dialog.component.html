@@ -11,7 +11,14 @@
     <p *ngIf="!currentRoom.virtualAddress">
       Organistation:<br/>{{currentRoom.coOrganization}}
     </p>
-    <a  *ngIf="!currentRoom.virtualAddress" href="{{currentRoom.medonlineurl}}" target="_blank">MedOnline</a>
+    <p *ngIf="!currentRoom.virtualAddress && !inAppMode">
+      <a   href="{{currentRoom.mapUrl}}" target="_blank"
+            title="Verwenden Sie diesen Link wenn Sie die Position des Raumes weiterschicken möchten.">Link teilen</a>
+    </p>
+    <p *ngIf="!currentRoom.virtualAddress">
+      <a href="{{currentRoom.medonlineurl}}" target="_blank"
+        title="Öffnet die Raum-Detailansicht in MEDonline">MEDonline</a>
+    </p>
   </div>
 
   <button class='closeDialogButton' (click)="closeDialog()" md-button>

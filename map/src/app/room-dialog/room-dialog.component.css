@@ -17,6 +17,8 @@
   bottom: -22px;
   right: -22px;
   padding: 0 0;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
   min-width: 3em;
   color: #51AE32;
 }

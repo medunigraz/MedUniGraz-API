@@ -7,6 +7,7 @@ export class RoomDetail {
   public title: string = '';
   public code: string = '';
   public medonlineurl: string = '';
+  public mapUrl: string = '';
   public floorId: number = -1;
 
   public center: number[] = null;
@@ -84,6 +85,7 @@ export class RoomDetail {
       this.title = co['title'];     //Titel
       this.code = co['name_full'];  //room code
       this.coId = co['id'];
+      this.mapUrl = 'https://map.medunigraz.at/?raum=' + this.coId;
       if (co['category']) {
         this.coCategory = co['category']['id'];
       }
