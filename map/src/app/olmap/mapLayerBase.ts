@@ -1,5 +1,7 @@
 import { Observable } from 'rxjs';
-import {Subscription} from "rxjs";
+import { Subscription } from "rxjs";
+
+import { Logger } from '../base/logger';
 
 declare var ol: any;
 
@@ -10,6 +12,7 @@ export class MapLayerBase {
   protected subscription: Subscription = null;
 
   public getLayer(): any {
+    //Logger.log("MapLayerBase::getLayer() " + JSON.stringify(this.layer));
     return this.layer;
   }
 

@@ -73,7 +73,7 @@ export class MapService {
       .catch(this.handleError);
   }
 
-  search(term: string, limit: number): Observable<SearchResult[]> {
+  search(term: string, limit: number): Observable<{ data: SearchResult[]; nexturl: string; }> {
     let url = this.searchUrl + '?limit=' + limit + '&q=' + term;
     Logger.log("MapService::search " + url);
     return this.http.get(url)
@@ -81,7 +81,7 @@ export class MapService {
       .catch(this.handleError);
   }
 
-  searchFromUrl(url: string): Observable<SearchResult[]> {
+  searchFromUrl(url: string): Observable<{ data: SearchResult[]; nexturl: string; }> {
     Logger.log("MapService::search " + url);
     return this.http.get(url)
       .map(this.extractDataSearch)

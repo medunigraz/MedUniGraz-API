@@ -3,7 +3,7 @@
     <tbody id="controlBoxTableBody">
       <tr class="controlBoxTableSearchRow">
         <td class="controlBoxLeftCol">
-          <button class="controlBoxButton" (click)="openSideMenu()" md-button><md-icon>more_vert</md-icon></button>
+          <button class="controlBoxButton" (click)="openSideMenu()" mat-button><mat-icon>more_vert</mat-icon></button>
         </td>
         <td class="controlBoxCenterCol">
 
@@ -12,17 +12,21 @@
           </div>
 
           <div class="controlBoxCenterColHorizontalSearch">
-            <input *ngIf="isRoutingSearchBox" #searchStartInput class="searchInput" autocomplete="off" placeholder="Startpunkt..." mdInput [formControl]="startPointTerm" (focus)="startFocus()" (focusout)="startFocusOut()">
+            <input *ngIf="isRoutingSearchBox" #searchStartInput class="searchInput" autocomplete="off" placeholder="Startpunkt..." matInput [formControl]="startPointTerm" (focus)="startFocus()" (focusout)="startFocusOut()">
             <div *ngIf="isRoutingSearchBox" class="controlBoxRouteSpacer"></div>
 
-            <input class="searchInput"  #searchInput [ngClass]="{'searchInputRoutingSource': isRoutingSearchBox }" autocomplete="off" placeholder="Suche Räume, Personen, Institute, ..." mdInput [formControl]="term" (focus)="searchFocus()" (focusout)="searchFocusOut()">
+
+            <input class="searchInput"  #searchInput [ngClass]="{'searchInputRoutingSource': isRoutingSearchBox }" autocomplete="off" placeholder="Suche Räume, Personen, Institute, ..." matInput [formControl]="term" (focus)="searchFocus()" (focusout)="searchFocusOut()">
+            <!--
+            <input class="searchInput"  #searchInput [ngClass]="{'searchInputRoutingSource': isRoutingSearchBox }" autocomplete="off" placeholder="Test ..." matInput [formControl]="term" (focus)="searchFocus()" (focusout)="searchFocusOut()">
+-->
             <div class="controlBoxRouteSpacer"></div>
           </div>
 
         </td>
         <td class="controlBoxRightCol">
-          <button *ngIf="!showCloseDeleteButton" class="controlBoxButton" (click)="searchCurrentResultClicked()" md-button><md-icon>search</md-icon></button>
-          <button *ngIf="showCloseDeleteButton" class="controlBoxButton" (click)="closeBtnClicked()" md-button><md-icon>close</md-icon></button>
+          <button *ngIf="!showCloseDeleteButton" class="controlBoxButton" (click)="searchCurrentResultClicked()" mat-button><mat-icon>search</mat-icon></button>
+          <button *ngIf="showCloseDeleteButton" class="controlBoxButton" (click)="closeBtnClicked()" mat-button><mat-icon>close</mat-icon></button>
         </td>
       </tr>
 
@@ -42,25 +46,25 @@
             <td class="controlBoxLeftResultCol">
               <button class="controlBoxButton" (click)="select(result)"
                 [disabled]="result.notFound"
-                md-button>
-                <md-icon *ngIf="result.type == 0">room</md-icon>
-                <md-icon *ngIf="result.type == 1">person</md-icon>
-                <md-icon *ngIf="result.type == 2">group</md-icon>
-                <md-icon *ngIf="result.type == -1">warning</md-icon>
+                mat-button>
+                <mat-icon *ngIf="result.type == 0">room</mat-icon>
+                <mat-icon *ngIf="result.type == 1">person</mat-icon>
+                <mat-icon *ngIf="result.type == 2">group</mat-icon>
+                <mat-icon *ngIf="result.type == -1">warning</mat-icon>
               </button>
             </td>
             <td class="controlBoxCenterResultCol">
               <button class="controlBoxResultButton" (click)="select(result)"
                 [disabled]="result.notFound"
-                md-button>
+                mat-button>
                   <span class="controlBoxResultText">{{result.text}}</span>
               </button>
             </td>
             <td class="controlBoxLeftResultCol">
               <button *ngIf="result.isStartPoint == false && result.notFound == false"
               class="controlBoxButton"
-              (click)="routeClicked(result)" md-button>
-                <md-icon>navigation</md-icon>
+              (click)="routeClicked(result)" mat-button>
+                <mat-icon>navigation</mat-icon>
               </button>
             </td>
           </tr>

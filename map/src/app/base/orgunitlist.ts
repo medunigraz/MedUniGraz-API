@@ -1,5 +1,8 @@
 declare var ol: any;
 
+import ol_style_Style from 'ol/style/Style';
+import ol_style_Fill from 'ol/style/Fill';
+
 import { OrgUnit } from '../base/orgunit';
 
 export interface IOrgUnitMap {
@@ -10,13 +13,13 @@ export class OrgUnitList {
 
   private map: IOrgUnitMap = {};
 
-  private defaultStyle = new ol.style.Style({
-    fill: new ol.style.Fill({
+  private defaultStyle = new ol_style_Style({
+    fill: new ol_style_Fill({
       color: 'rgba(156,156,156,1)'
     })
   });
-  private wayStyle = new ol.style.Style({
-    fill: new ol.style.Fill({
+  private wayStyle = new ol_style_Style({
+    fill: new ol_style_Fill({
       color: 'rgba(242,239,233,1)'
     })
   });

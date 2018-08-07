@@ -13,6 +13,12 @@ import { OrgUnitList } from '../base/orgunitlist';
 
 import { Logger } from '../base/logger';
 
+import ol_style_Style from 'ol/style/Style';
+import ol_style_Fill from 'ol/style/Fill';
+
+import ol_format_GeoJSON from 'ol/format/GeoJSON';
+
+import ol_Overlay from 'ol/Overlay';
 
 declare var ol: any;
 
@@ -20,8 +26,8 @@ export class MapRoom extends MapLayerBase {
 
   private overlay: any;
 
-  private defaultStyle = new ol.style.Style({
-    fill: new ol.style.Fill({
+  private defaultStyle = new ol_style_Style({
+    fill: new ol_style_Fill({
       color: 'rgba(128,128,128,1)'
     })
   });
@@ -48,17 +54,17 @@ export class MapRoom extends MapLayerBase {
   }
 
   private Initialize(): void {
-    this.overlay = new ol.Overlay(/** @type {olx.OverlayOptions} */({
+    this.overlay = new ol_Overlay(/** @type {olx.OverlayOptions} */({
       element: this.roomPopupDiv.nativeElement,
       autoPan: false
     }));
 
-    let res = OpenlayersHelper.CreateBasicLayer(new ol.style.Style({
+    let res = OpenlayersHelper.CreateBasicLayer(new ol_style_Style({
       /*stroke: new ol.style.Stroke({
         color: 'red',
         width: 0
       }),*/
-      fill: new ol.style.Fill({
+      fill: new ol_style_Fill({
         color: 'rgba(0,0,0,1)'
       })
     }));
@@ -215,7 +221,7 @@ export class MapRoom extends MapLayerBase {
     this.clear();
     this.closePopup();
 
-    let olFeatures = (new ol.format.GeoJSON()).readFeatures(features);
+    let olFeatures = (new ol_format_GeoJSON()).readFeatures(features);
 
     for (let i = 0; i < olFeatures.length; i++) {
       let id = olFeatures[i].getId();

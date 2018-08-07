@@ -1,6 +1,9 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs';
+import { of } from 'rxjs';
+
 import { MapService } from '../mapservice/map.service';
+
 
 import { Floor } from '../base/floor';
 import { FloorList } from '../base/floorlist';
@@ -125,7 +128,7 @@ export class FloorcontrolComponent implements OnInit {
   }
 
   private loadDemoFloors() {
-    Observable.of([
+    of([
       new Floor({
         "id": 1,
         "name": "OG3",

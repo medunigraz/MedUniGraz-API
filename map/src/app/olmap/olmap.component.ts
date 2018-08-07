@@ -4,7 +4,7 @@ import { MapService } from '../mapservice/map.service';
 import { Observable } from 'rxjs';
 import { Subscription } from "rxjs";
 import { TimerObservable } from "rxjs/observable/TimerObservable";
-import { Ng2DeviceService } from 'ng2-device-detector';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 import { MapPois } from './mapPois';
 import { MapRoom } from './mapRoom';
@@ -16,7 +16,7 @@ import { MapLivePosition } from './mapLivePosition'
 
 import { OrgUnitHandler } from './orgunithandler'
 
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 
 import { OpenlayersHelper } from './openlayershelper';
 import { RoomDialogComponent } from '../room-dialog/room-dialog.component'
@@ -31,6 +31,15 @@ import { Position } from '../base/position';
 import { RouteLevelChange } from '../base/routeLevelChange';
 
 import { Logger } from '../base/logger';
+
+import ol_View from 'ol/View';
+import ol_Map from 'ol/Map';
+import ol_layer_Tile from 'ol/layer/Tile';
+import ol_source_OSM from 'ol/source/OSM';
+
+import { defaults as defaultControls } from 'ol/control';
+import { defaults as defaultInteractions } from 'ol/interaction';
+import { fromLonLat as ol_proj_fromLonLat } from 'ol/proj';
 
 declare var ol: any;
 
@@ -51,7 +60,7 @@ export class OlmapComponent implements OnInit {
 
   public routeLevelOverlays: number[] = null;
 
-  constructor(private dialog: MdDialog, private mapService: MapService, private deviceService: Ng2DeviceService) {
+  constructor(private dialog: MatDialog, private mapService: MapService, private deviceService: DeviceDetectorService) {
     this.routeLevelOverlays = new Array(MAX_NUMBER_OF_ROUTELEVEL_OVERLAYS);
     for (let i = 0; i < MAX_NUMBER_OF_ROUTELEVEL_OVERLAYS; i++) {
       this.routeLevelOverlays[i] = i;
@@ -96,19 +105,19 @@ export class OlmapComponent implements OnInit {
 
     this.orgUnitHandler = new OrgUnitHandler(this.mapService, this.mapRoom);
 
-    let interactions = ol.interaction.defaults({ altShiftDragRotate: false, pinchRotate: false });
+    let interactions = defaultInteractions({ altShiftDragRotate: false, pinchRotate: false });
 
-    this.mapView = new ol.View({
+    this.mapView = new ol_View({
       projection: 'EPSG:900913',
-      center: ol.proj.fromLonLat([15.47, 47.0805]),
+      center: ol_proj_fromLonLat([15.47, 47.0805]),
       //center: ol.extent.getCenter(extent),
       zoom: 18,
       maxZoom: 24,
       minZoom: 16//16
     });
 
-    this.map = new ol.Map({
-      controls: ol.control.defaults({
+    this.map = new ol_Map({
+      controls: defaultControls({
         attributionOptions: ({
           collapsible: true,
         }),
@@ -118,10 +127,10 @@ export class OlmapComponent implements OnInit {
       //interactions: ol.interaction.defaults().extend([this.select, this.modify]),
       //controls: [],
       layers: [
-        new ol.layer.Tile({
+        new ol_layer_Tile({
           source: this.getTileSource()
         }),
-        this.mapBackground.getLayer(),
+        //this.mapBackground.getLayer(), //TODO
         this.mapFloor.getLayer(),
         this.mapRoom.getLayer(),
         this.mapDoors.getLayer(),
@@ -166,7 +175,7 @@ export class OlmapComponent implements OnInit {
       url: 'https://map.medunigraz.at/tiles/openstreetmap/{z}/{x}/{y}.png'
     };
 
-    return new ol.source.OSM(options);
+    return new ol_source_OSM(options);
 
     /*
         let tilegrid = new ol.tilegrid.WMTS({
@@ -428,7 +437,7 @@ export class OlmapComponent implements OnInit {
   openRoomDialog() {
     //Logger.log("OlmapComponent::openRoomDialog");
 
-    let dialogRef: MdDialogRef<RoomDialogComponent>;
+    let dialogRef: MatDialogRef<RoomDialogComponent>;
     let room = this.mapRoom.getMarkedRoom();
 
     if (room) {

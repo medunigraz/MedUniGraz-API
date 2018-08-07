@@ -1,3 +1,7 @@
+import ol_source_Vector from 'ol/source/Vector';
+import ol_layer_Vector from 'ol/layer/Vector';
+import ol_format_GeoJSON from 'ol/format/GeoJSON';
+
 declare var ol: any;
 
 export class OpenlayersHelper {
@@ -18,11 +22,11 @@ export class OpenlayersHelper {
     };
 
     //Logger.log('Create Wall layer source!');
-    let layerSource = new ol.source.Vector({
-      features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
+    let layerSource = new ol_source_Vector({
+      features: (new ol_format_GeoJSON()).readFeatures(geojsonObject)
     });
 
-    let layer = new ol.layer.Vector({
+    let layer = new ol_layer_Vector({
       source: layerSource,
       style: style
     });

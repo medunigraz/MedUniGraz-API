@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { Ng2DeviceDetectorModule } from 'ng2-device-detector';
+import { DeviceDetectorModule  } from 'ngx-device-detector';
 
 //import { MaterialModule } from '@angular/material'; TODO
 
@@ -23,7 +23,7 @@ import { SidemenuComponent } from './sidemenu/sidemenu.component';
 import { RoomDialogComponent } from './room-dialog/room-dialog.component';
 import { PositionComponent } from './position/position.component';
 
-import { MdButtonModule, MdCheckboxModule, MdButtonToggleModule, MdCoreModule, MdDialogModule, MdIconModule, MdInputModule, MdSelectModule, MdMenuModule } from '@angular/material';
+import { MatButtonModule, MatCheckboxModule, MatButtonToggleModule, MatDialogModule, MatIconModule, MatInputModule, MatSelectModule, MatMenuModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -41,10 +41,10 @@ import { MdButtonModule, MdCheckboxModule, MdButtonToggleModule, MdCoreModule, M
     HttpModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    Ng2DeviceDetectorModule.forRoot(),
+    DeviceDetectorModule.forRoot(),
     //RouterModule.forRoot(routes),
     //MaterialModule.forRoot()
-    MdButtonModule, MdCheckboxModule, MdButtonToggleModule, MdCoreModule, MdDialogModule, MdIconModule, MdInputModule, MdSelectModule, MdMenuModule
+    MatButtonModule, MatCheckboxModule, MatButtonToggleModule, MatDialogModule, MatIconModule, MatInputModule, MatSelectModule, MatMenuModule
 
   ],
   providers: [MapService, MainappService],

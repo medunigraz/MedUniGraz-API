@@ -3,7 +3,16 @@ import { MapService } from '../mapservice/map.service';
 import { MapLayerBase } from './mapLayerBase';
 import { OpenlayersHelper } from './openlayershelper';
 
+import { Logger } from '../base/logger';
+
 declare var ol: any;
+
+import ol_style_Style from 'ol/style/Style';
+import ol_style_Stroke from 'ol/style/Stroke';
+import ol_style_Fill from 'ol/style/Fill';
+
+import ol_format_GeoJSON from 'ol/format/GeoJSON';
+
 
 export class MapBackground extends MapLayerBase {
 
@@ -14,8 +23,8 @@ export class MapBackground extends MapLayerBase {
 
   private Initialize(): void {
 
-    let res = OpenlayersHelper.CreateBasicLayer(new ol.style.Style({
-      fill: new ol.style.Fill({
+    let res = OpenlayersHelper.CreateBasicLayer(new ol_style_Style({
+      fill: new ol_style_Fill({
         color: 'rgba(199, 199, 180,1.0)'
       })
     }));
@@ -42,7 +51,7 @@ export class MapBackground extends MapLayerBase {
   private updateBackground(background: any) {
     //Logger.log("MapBackground::updateBackground");
     this.layerSource.clear();
-    this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(background));
+    this.layerSource.addFeatures((new ol_format_GeoJSON()).readFeatures(background));
   }
 
   private getDummyBackground(): any {

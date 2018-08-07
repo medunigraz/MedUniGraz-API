@@ -5,8 +5,8 @@
       <img src="assets/HeaderLogo.jpg" alt="logo">
       <div class="poiTableHeaderSpacer"></div>
       <!--
-      <button class="closeSideMenuButton" (click)="close()" md-button>
-        <md-icon>first_page</md-icon>
+      <button class="closeSideMenuButton" (click)="close()" mat-button>
+        <mat-icon>first_page</mat-icon>
       </button>
     -->
       <p class="poiHeader">Interessante Punkte</p>
@@ -25,7 +25,7 @@
             <ng-template ngFor let-poi [ngForOf]="pois">
                 <tr *ngIf="poi.isVisible">
                   <td>
-                    <md-checkbox [(ngModel)]="poi.isActive" (change)="selectedChanged()"></md-checkbox>
+                    <mat-checkbox [(ngModel)]="poi.isActive" (change)="selectedChanged()"></mat-checkbox>
                   </td>
                   <td>
                     <!--<img class="poiIcon" src = "{{poi.icon}}" alt = "{{poi.icon}}">-->

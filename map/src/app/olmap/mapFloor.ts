@@ -9,6 +9,11 @@ import { Logger } from '../base/logger';
 
 declare var ol: any;
 
+import ol_style_Style from 'ol/style/Style';
+import ol_style_Fill from 'ol/style/Fill';
+
+import ol_format_GeoJSON from 'ol/format/GeoJSON';
+
 export class MapFloor extends MapLayerBase {
 
   constructor(private mapService: MapService) {
@@ -17,8 +22,8 @@ export class MapFloor extends MapLayerBase {
   }
 
   private Initialize(): void {
-    let res = OpenlayersHelper.CreateBasicLayer(new ol.style.Style({
-      fill: new ol.style.Fill({
+    let res = OpenlayersHelper.CreateBasicLayer(new ol_style_Style({
+      fill: new ol_style_Fill({
         color: 'rgba(64,64,64,1.0)'
       })
     }));
@@ -40,7 +45,7 @@ export class MapFloor extends MapLayerBase {
   private showFloors(features: any) {
     //Logger.log("MapFloor::showBuildings");
     this.clear();
-    this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(features));
+    this.layerSource.addFeatures((new ol_format_GeoJSON()).readFeatures(features));
   }
 
   private getDummyFloor(): any {

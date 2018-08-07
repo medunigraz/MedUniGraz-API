@@ -1,4 +1,10 @@
+import ol_style_Style from 'ol/style/Style';
+import ol_style_Stroke from 'ol/style/Stroke';
+import ol_style_Fill from 'ol/style/Fill';
+
+
 declare var ol: any;
+
 
 export class OrgUnit {
   id: string;
@@ -11,8 +17,8 @@ export class OrgUnit {
   private highlightStyle: any = undefined;
   private selectedStyle: any = undefined;;
 
-  private defaultStyle = new ol.style.Style({
-    fill: new ol.style.Fill({
+  private defaultStyle = new ol_style_Style({
+    fill: new ol_style_Fill({
       color: 'rgba(255,128,128,1)'
     })
   });
@@ -39,11 +45,11 @@ export class OrgUnit {
 
   public createMapStyles() {
 
-    this.style = new ol.style.Style();
-    this.highlightStyle = new ol.style.Style();
-    this.selectedStyle = new ol.style.Style();
+    this.style = new ol_style_Style();
+    this.highlightStyle = new ol_style_Style();
+    this.selectedStyle = new ol_style_Style();
 
-    let fillStyle = new ol.style.Fill();
+    let fillStyle = new ol_style_Fill();
     fillStyle.setColor(this.color);
     this.style.setFill(fillStyle);
 
@@ -54,16 +60,16 @@ export class OrgUnit {
   }
 
   private createHighlightStyle() {
-    let fillStyle = new ol.style.Fill();
+    let fillStyle = new ol_style_Fill();
     fillStyle.setColor(this.lightercolor);
     this.highlightStyle.setFill(fillStyle);
   }
 
   private createSelectedStyle() {
-    let fillStyle = new ol.style.Fill();
+    let fillStyle = new ol_style_Fill();
     fillStyle.setColor(this.lightercolor);
     this.selectedStyle.setFill(fillStyle);
-    let strokeStyle = new ol.style.Stroke({
+    let strokeStyle = new ol_style_Stroke({
       color: 'black',
       width: 5
     });

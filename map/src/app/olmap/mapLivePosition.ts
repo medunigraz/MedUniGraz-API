@@ -8,6 +8,14 @@ import { OlmapComponent } from './olmap.component';
 
 import { Logger } from '../base/logger';
 
+import ol_style_Style from 'ol/style/Style';
+import ol_style_Stroke from 'ol/style/Stroke';
+import ol_style_Fill from 'ol/style/Fill';
+
+import ol_geom_Circle from 'ol/geom/Circle';
+import ol_Feature from 'ol/Feature';
+import ol_geom_Point from 'ol/geom/Point';
+
 declare var ol: any;
 
 export class MapLivePosition extends MapLayerBase {
@@ -34,22 +42,22 @@ export class MapLivePosition extends MapLayerBase {
 
   private Initialize(): void {
 
-    let res = OpenlayersHelper.CreateBasicLayer(new ol.style.Style({
-      fill: new ol.style.Fill({
+    let res = OpenlayersHelper.CreateBasicLayer(new ol_style_Style({
+      fill: new ol_style_Fill({
         color: 'rgba(255, 119, 0, 0.5)'
       }),
-      stroke: new ol.style.Stroke({
+      stroke: new ol_style_Stroke({
         color: 'rgba(255, 119, 0, 1)',
         width: 3
       })
     }));
 
-    this.circle = new ol.geom.Circle([0, 0], 1);
+    this.circle = new ol_geom_Circle([0, 0], 1);
     //this.circle = new ol.geom.Point([1722184.2450872045, 5955256.38138703]);
-    this.circleFeature = new ol.Feature(this.circle);
+    this.circleFeature = new ol_Feature(this.circle);
 
-    this.point = new ol.geom.Point([0, 0]);
-    this.pointFeature = new ol.Feature(this.point);
+    this.point = new ol_geom_Point([0, 0]);
+    this.pointFeature = new ol_Feature(this.point);
 
     this.layerSource = res.layerSource;
     this.layer = res.layer;
@@ -139,11 +147,11 @@ export class MapLivePosition extends MapLayerBase {
       let radius = ol.easing.easeOut(elapsedRatio) * 50 + 15;
       let opacity = ol.easing.easeOut(1 - elapsedRatio);
 
-      let style = new ol.style.Style({
-        image: new ol.style.Circle({
+      let style = new ol_style_Style({
+        image: new ol_geom_Circle({
           radius: radius,
           snapToPixel: false,
-          stroke: new ol.style.Stroke({
+          stroke: new ol_style_Stroke({
             color: 'rgba(81, 174, 50, ' + opacity + ')',
             width: 8 + opacity * 8
           })

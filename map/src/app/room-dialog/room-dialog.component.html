@@ -21,12 +21,12 @@
     </p>
   </div>
 
-  <button class='closeDialogButton' (click)="closeDialog()" md-button>
-    <md-icon>close</md-icon>
+  <button class='closeDialogButton' (click)="closeDialog()" mat-button>
+    <mat-icon>close</mat-icon>
   </button>
 
-  <button *ngIf="!currentRoom.virtualAddress" class='NavigateButton' (click)="navigateTo()" md-button>
+  <button *ngIf="!currentRoom.virtualAddress" class='NavigateButton' (click)="navigateTo()" mat-button>
     <span>Zeige Route</span>
-    <md-icon>navigation</md-icon>
+    <mat-icon>navigation</mat-icon>
   </button>
 </div>

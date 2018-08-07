@@ -6,6 +6,21 @@ import { Poi } from '../base/poi'
 
 import { Logger } from '../base/logger';
 
+
+import ol_style_Style from 'ol/style/Style';
+import ol_style_Fill from 'ol/style/Fill';
+import ol_style_Text from 'ol/style/Text';
+
+import ol_format_GeoJSON from 'ol/format/GeoJSON';
+
+import ol_source_Vector from 'ol/source/Vector';
+import ol_layer_Vector from 'ol/layer/Vector';
+
+import ol_Feature from 'ol/Feature';
+import ol_geom_Point from 'ol/geom/Point';
+import ol_geom_Circle from 'ol/geom/Circle';
+import ol_style_Stroke from 'ol/style/Stroke';
+
 declare var ol: any;
 
 //http://openlayers.org/en/latest/examples/icon.html
@@ -27,13 +42,15 @@ export class MapPois extends MapLayerBase {
   }
 
   private Initialize(): void {
-    this.layerSource = new ol.source.Vector({
+
+    this.layerSource = new ol_source_Vector({
       features: []
     });
 
-    this.layer = new ol.layer.Vector({
+    this.layer = new ol_layer_Vector({
       source: this.layerSource,
       renderOrder: function(f1: any, f2: any) {
+
         //Logger.log("...." + f1.get("orderIndex") + "/" + f2.get("orderIndex"));
         if (f1.get("orderIndex") > f2.get("orderIndex")) {
           return 1;
@@ -45,7 +62,7 @@ export class MapPois extends MapLayerBase {
 
   public setPoiTypes(poiTypes: PoiType[]) {
 
-    //Logger.log("MapPois::setPoiTypes...");
+    Logger.log("MapPois::setPoiTypes...");
 
     this.poitypes = poiTypes;
 
@@ -54,10 +71,12 @@ export class MapPois extends MapLayerBase {
     }
     this.updateActivePois();
     this.updatePois();
+
   }
 
   public showFloor(currentFloor: number): any {
     //Logger.log("MapPois::showFloor: " + JSON.stringify(currentFloor));
+
     this.clear();
     this.subscribeNewRequest(
       this.mapService.getPoiInstances(currentFloor).subscribe(
@@ -67,18 +86,20 @@ export class MapPois extends MapLayerBase {
 
   public poisReceived(features: any) {
     //Logger.log("MapPois::poisReceived: " + JSON.stringify(features));
-    this.poiInstances = (new ol.format.GeoJSON()).readFeatures(features);
+    this.poiInstances = (new ol_format_GeoJSON()).readFeatures(features);
     this.updatePois();
   }
 
   private updatePois() {
     if (!this.poiInstances || !this.iconStyleMap || !this.activeIconsMap) {
+      Logger.log("MapPois::updatePois: ... No POIS... ");
       return;
     }
 
     this.clear();
 
-    //Logger.log("MapPois::updatePois: " + JSON.stringify(this.poiInstances.length));
+    Logger.log("MapPois::updatePois: " + JSON.stringify(this.poiInstances.length));
+
 
     let orderIndex = 0;
 
@@ -86,8 +107,10 @@ export class MapPois extends MapLayerBase {
       let id = this.poiInstances[i].getId();
       let poiTypeId = this.poiInstances[i].get("name");
 
+
       if (this.activeIconsMap[poiTypeId]) {
         //Logger.log("MapPois::updatePois Add Poi: " + id);
+        //Logger.log("        MapPois::updatePois Add Poi: " + JSON.stringify(this.iconMarkerMap[poiTypeId]));
         let markerfeature = this.poiInstances[i].clone();
 
         markerfeature.setStyle(this.iconMarkerMap[poiTypeId]);
@@ -124,14 +147,14 @@ export class MapPois extends MapLayerBase {
       //  }))
       //});
 
-      let iconStyle = new ol.style.Style({
-        text: new ol.style.Text({
+      let iconStyle = new ol_style_Style({
+        text: new ol_style_Text({
           text: this.poitypes[i].fontKey,
           font: 'normal 30px medfont',
-          textBaseline: 'Bottom',
+          textBaseline: 'bottom',
           //offsetY: -12,
           offsetY: -8,
-          fill: new ol.style.Fill({
+          fill: new ol_style_Fill({
             color: 'white',
           })
         })
@@ -139,15 +162,15 @@ export class MapPois extends MapLayerBase {
 
       this.iconStyleMap[this.poitypes[i].id] = iconStyle;
 
-      let markerStyle = new ol.style.Style({
-        text: new ol.style.Text({
+      let markerStyle = new ol_style_Style({
+        text: new ol_style_Text({
           //text: 'l',
           text: 'm',
           //font: 'normal 44px medfont',
           font: 'normal 40px medfont',
-          textBaseline: 'Bottom',
+          textBaseline: 'bottom',
           offsetY: 0,
-          fill: new ol.style.Fill({
+          fill: new ol_style_Fill({
             color: this.poitypes[i].color,
           })
         })

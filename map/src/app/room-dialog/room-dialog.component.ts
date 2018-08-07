@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MdDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 
 import { RoomDetail } from '../base/roomDetail';
 
@@ -18,7 +18,7 @@ export class RoomDialogComponent implements OnInit {
 
   public inAppMode: boolean = false;
 
-  constructor(public dialogRef: MdDialogRef<RoomDialogComponent>) { }
+  constructor(public dialogRef: MatDialogRef<RoomDialogComponent>) { }
 
   ngOnInit() {
     this.inAppMode = appInterfaceObject.testapp();

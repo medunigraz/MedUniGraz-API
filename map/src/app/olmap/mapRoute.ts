@@ -13,6 +13,11 @@ import { OlmapComponent } from './olmap.component'
 
 import { Logger } from '../base/logger';
 
+import ol_geom_LineString from 'ol/geom/LineString';
+import ol_Feature from 'ol/Feature';
+import ol_format_GeoJSON from 'ol/format/GeoJSON';
+import ol_Overlay from 'ol/Overlay';
+
 declare var ol: any;
 
 export class MapRoute extends MapLayerBase {
@@ -73,8 +78,8 @@ export class MapRoute extends MapLayerBase {
     this.layerSource = res.layerSource;
     this.layer = res.layer;
 
-    this.line = new ol.geom.LineString([[0, 0], [0, 0]]);
-    this.lineFeature = new ol.Feature(this.line);
+    this.line = new ol_geom_LineString([[0, 0], [0, 0]]);
+    this.lineFeature = new ol_Feature(this.line);
     this.lineFeature.set("firstline", true);
   }
 
@@ -126,7 +131,7 @@ export class MapRoute extends MapLayerBase {
     Logger.log("MapRoute::update Route");
     this.layerSource.clear();
 
-    let o_features = (new ol.format.GeoJSON()).readFeatures(route);
+    let o_features = (new ol_format_GeoJSON()).readFeatures(route);
     this.currentRoute = o_features;
 
     this.layerSource.addFeatures(o_features);
@@ -317,7 +322,7 @@ export class MapRoute extends MapLayerBase {
 
     for (let i = 0; i < overlayDivs.length; i++) {
       //new ol.Overlay(/** @type {olx.OverlayOptions} */({
-      this.levelOverlays[i] = new ol.Overlay(({
+      this.levelOverlays[i] = new ol_Overlay(({
         element: overlayDivs[i],
         autoPan: false
       }));
