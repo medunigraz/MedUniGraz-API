@@ -1,0 +1,27 @@
+{
+  "/v1/geo/positioning/": {
+    "target": "https://api.medunigraz.at:8088",
+    "changeOrigin": true,
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/v1/*": {
+    "target": "https://api.medunigraz.at:8088",
+    "changeOrigin": true,
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/icon/*": {
+    "target": "https://api.medunigraz.at:8088",
+    "changeOrigin": true,
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/oauth2/*": {
+    "target": "http://api.medunigraz.at:8088",
+    "changeOrigin": true,
+    "secure": false,
+    "logLevel": "debug"
+  }
+
+}

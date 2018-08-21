@@ -3,7 +3,9 @@ import { ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
 import { MapService } from '../mapservice/map.service';
 import { MapLayerBase } from './mapLayerBase';
 
-declare var ol: any;
+import ol_style_Style from 'ol/style/Style';
+import ol_format_GeoJSON from 'ol/format/GeoJSON';
+import ol_style_Fill from 'ol/style/Fill';
 
 export class MapDoors extends MapLayerBase {
 
@@ -13,8 +15,8 @@ export class MapDoors extends MapLayerBase {
   }
 
   private Initialize(): void {
-    let res = OpenlayersHelper.CreateBasicLayer(new ol.style.Style({
-      fill: new ol.style.Fill({
+    let res = OpenlayersHelper.CreateBasicLayer(new ol_style_Style({
+      fill: new ol_style_Fill({
         color: 'rgba(212, 209, 203,1.0)'
       })
     }));
@@ -40,7 +42,7 @@ export class MapDoors extends MapLayerBase {
   private showDoors(features: any) {
     console.log("MapDoors::showDoors");
     this.clear();
-    this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(features));
+    this.layerSource.addFeatures((new ol_format_GeoJSON()).readFeatures(features));
   }
 
   private getDummyDoors(): any {

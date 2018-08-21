@@ -28,10 +28,16 @@ import { MapPois } from './mapPois';
 import { MapBeacons } from './mapBeacons';
 import { OpenlayersHelper } from './openlayershelper';
 
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { BeacondialogComponent } from '../beacondialog/beacondialog.component'
 
-declare var ol: any;
+import ol_Map from 'ol/Map';
+import ol_layer_Tile from 'ol/layer/Tile';
+import ol_source_OSM from 'ol/source/OSM';
+import ol_View from 'ol/View';
+
+import { defaults as defaultControls } from 'ol/control';
+import { fromLonLat as ol_proj_fromLonLat } from 'ol/proj';
 
 const maxNumberOfBeaconOverlays: number = 100;
 
@@ -50,7 +56,7 @@ export class EditablemapComponent implements OnInit {
 
   public beaconOverlays: number[] = null;
 
-  constructor(private dialog: MdDialog,
+  constructor(private dialog: MatDialog,
     private mapServiceHttp: MapHttpService,
     private mapService: MapService) {
     this.beaconOverlays = new Array(maxNumberOfBeaconOverlays);
@@ -96,8 +102,8 @@ export class EditablemapComponent implements OnInit {
     this.mapPois = new MapPois(this.mapService);
     this.mapBeacons = new MapBeacons(this.dialog, this.mapService, this.beaconPopUps, this);
 
-    this.map = new ol.Map({
-      controls: ol.control.defaults({
+    this.map = new ol_Map({
+      controls: defaultControls({
         attributionOptions: ({
           collapsible: true,
         }),
@@ -106,8 +112,8 @@ export class EditablemapComponent implements OnInit {
       //interactions: ol.interaction.defaults().extend([this.select, this.modify]),
       //controls: [],
       layers: [
-        new ol.layer.Tile({
-          source: new ol.source.OSM()
+        new ol_layer_Tile({
+          source: new ol_source_OSM()
         }),
         this.mapFloor.getLayer(),
         this.mapRooms.getLayer(),
@@ -123,9 +129,9 @@ export class EditablemapComponent implements OnInit {
       ],
       overlays: [],
       target: 'map',
-      view: new ol.View({
+      view: new ol_View({
         projection: 'EPSG:900913',
-        center: ol.proj.fromLonLat([15.47, 47.0805]),
+        center: ol_proj_fromLonLat([15.47, 47.0805]),
         //center: ol.extent.getCenter(extent),
         zoom: 18,
         maxZoom: 24,
@@ -248,7 +254,7 @@ export class EditablemapComponent implements OnInit {
 
   @HostListener('window:keyup', ['$event'])
   keyboardKeyUp(event: KeyboardEvent) {
-    //console.log("KEYUP: " + event.keyCode);
+    console.log("KEYUP: " + event.keyCode);
 
     if (event.keyCode == 17) {
       this.ctlPressed = false;
@@ -260,6 +266,7 @@ export class EditablemapComponent implements OnInit {
     )
       && event.keyCode == 46) //Entf Key
     {
+      console.log("Delete selected Edges and Nodes...");
       this.mapNodes.deleteSelectedNodes();
       this.mapEdges.deleteSelectedEdges();
     }

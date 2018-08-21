@@ -2,7 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule, XSRFStrategy, CookieXSRFStrategy } from '@angular/http';
+//import { HttpModule, XSRFStrategy, CookieXSRFStrategy } from '@angular/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
 //import { MaterialModule } from '@angular/material';
@@ -22,7 +23,7 @@ import { BeaconconnectorComponent } from './beaconconnector/beaconconnector.comp
 
 import { OAuthModule } from 'angular-oauth2-oidc';
 
-import {MdButtonModule, MdCheckboxModule, MdButtonToggleModule, MdCoreModule, MdDialogModule, MdIconModule, MdInputModule, MdSelectModule, MdSidenavModule, MdMenuModule} from '@angular/material';
+import { MatButtonModule, MatCheckboxModule, MatButtonToggleModule, /*MatCoreModule,*/ MatDialogModule, MatIconModule, MatInputModule, MatSelectModule, MatSidenavModule, MatMenuModule } from '@angular/material';
 import { BeaconinfoComponent } from './beaconinfo/beaconinfo.component';
 import { WeightselectComponent } from './weightselect/weightselect.component';
 
@@ -44,12 +45,13 @@ import { WeightselectComponent } from './weightselect/weightselect.component';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
+    //HttpModule,
+    HttpClientModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     //MaterialModule.forRoot(),
     OAuthModule.forRoot(),
-    MdButtonModule, MdCheckboxModule, MdButtonToggleModule, MdCoreModule, MdDialogModule, MdIconModule, MdInputModule, MdSelectModule, MdSidenavModule, MdMenuModule
+    MatButtonModule, MatCheckboxModule, MatButtonToggleModule, /*MatCoreModule,*/ MatDialogModule, MatIconModule, MatInputModule, MatSelectModule, MatSidenavModule, MatMenuModule
   ],
   providers: [MapService, MapcontrollerserviceService, MapHttpService
   ],

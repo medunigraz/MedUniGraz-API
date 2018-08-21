@@ -13,7 +13,19 @@ import { MapNodesStyles } from './mapNodesStyles';
 
 import { Floor } from '../base/floor';
 
-declare var ol: any;
+import ol_layer_Vector from 'ol/layer/Vector';
+import ol_source_Vector from 'ol/source/Vector';
+import ol_format_GeoJSON from 'ol/format/GeoJSON';
+
+import ol_style_Style from 'ol/style/Style';
+import ol_style_Fill from 'ol/style/Fill';
+import ol_style_Stroke from 'ol/style/Stroke';
+import ol_style_Circle from 'ol/style/Circle';
+
+import ol_interaction_Select from 'ol/interaction/Select';
+import ol_interaction_Modify from 'ol/interaction/Modify';
+
+import { never as eventnevercondition } from 'ol/events/condition';
 
 export class MapNodes extends MapLayerBase {
   private highlightedFeature: any;
@@ -42,6 +54,7 @@ export class MapNodes extends MapLayerBase {
 
   private Initialize(): void {
     let styleFunction = function(feature) {
+
       if (feature.get('ctype') == 'node') {
         return MapNodesStyles.VirtualNodeStyle;
       }
@@ -51,21 +64,22 @@ export class MapNodes extends MapLayerBase {
       return MapNodesStyles.DefaultNodeStyle;
     };
 
+
     let res = OpenlayersHelper.CreateBasicLayer(styleFunction);
     this.layerSource = res.layerSource;
     this.layer = res.layer;
   }
 
   public extendMap(map: any): void {
-    this.select = new ol.interaction.Select({
+    this.select = new ol_interaction_Select({
       wrapX: false,
       layers: (layer => this.testSelect(layer)),
-      toggleCondition: ol.events.condition.never
+      toggleCondition: eventnevercondition
     });
 
     map.addInteraction(this.select);
 
-    this.modify = new ol.interaction.Modify({
+    this.modify = new ol_interaction_Modify({
       features: this.select.getFeatures(),
       condition: (evt => this.testModify(evt))
     });
@@ -171,7 +185,7 @@ export class MapNodes extends MapLayerBase {
   private updateAddNode(node: any, selectedStartNodeFeature: any,
     edgeToSplitId: number) {
     console.log("updateAddNode! - " + JSON.stringify(node));
-    this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(node));
+    this.layerSource.addFeatures((new ol_format_GeoJSON()).readFeatures(node));
     let endNode = this.layerSource.getFeatureById(node.id);
 
     this.selectNewNode(endNode);
@@ -291,8 +305,8 @@ export class MapNodes extends MapLayerBase {
   }
 
   private initHighlightFeatureOverlay(map: any) {
-    this.highlightFeatureOverlay = new ol.layer.Vector({
-      source: new ol.source.Vector(),
+    this.highlightFeatureOverlay = new ol_layer_Vector({
+      source: new ol_source_Vector(),
       map: map,
       style: MapNodesStyles.higlightStyle
     });
@@ -300,7 +314,7 @@ export class MapNodes extends MapLayerBase {
 
   private showNodes(features: any): void {
     this.clear();
-    this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(features));
+    this.layerSource.addFeatures((new ol_format_GeoJSON()).readFeatures(features));
 
     if (this.multiLevelMode) {
       this.subscribeNewRequest(
@@ -311,7 +325,7 @@ export class MapNodes extends MapLayerBase {
   }
 
   private showNodesAbove(features: any): void {
-    let ol_features = (new ol.format.GeoJSON()).readFeatures(features);
+    let ol_features = (new ol_format_GeoJSON()).readFeatures(features);
     for (let i = 0; i < ol_features.length; i++) {
       ol_features[i].getGeometry().translate(ABOVE_LEVEL_OFFSET, 0);
     }
@@ -324,7 +338,7 @@ export class MapNodes extends MapLayerBase {
   }
 
   private showNodesBelow(features: any): void {
-    let ol_features = (new ol.format.GeoJSON()).readFeatures(features);
+    let ol_features = (new ol_format_GeoJSON()).readFeatures(features);
     for (let i = 0; i < ol_features.length; i++) {
       //let coord = ol_features[i].getGeometry().getCoordinates();
       //ol.coordinate.add(coord, 10, 0);
@@ -352,7 +366,7 @@ export class MapNodes extends MapLayerBase {
     let features = evt.features.getArray();
     for (let feature of features) {
       console.log("Feature " + feature.getId() + " modified!");
-      this.mapService.updateNode((new ol.format.GeoJSON()).writeFeature(feature), feature.getId()).
+      this.mapService.updateNode((new ol_format_GeoJSON()).writeFeature(feature), feature.getId()).
         subscribe(
         node => this.nodeUpdated(node),
         error => console.log("ERROR: " + <any>error));

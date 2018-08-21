@@ -6,8 +6,18 @@ import { MapLayerBase } from './mapLayerBase';
 import { PoiType } from '../base/poitype'
 import { Poi } from '../base/poi'
 
+import ol_style_Style from 'ol/style/Style';
+import ol_style_Stroke from 'ol/style/Stroke';
+import ol_style_Fill from 'ol/style/Fill';
+import ol_style_Circle from 'ol/style/Circle';
+import ol_style_Text from 'ol/style/Text';
+import ol_geom_Point from 'ol/geom/Point';
 
-declare var ol: any;
+import ol_layer_Vector from 'ol/layer/Vector';
+import ol_source_Vector from 'ol/source/Vector';
+import ol_format_GeoJSON from 'ol/format/GeoJSON';
+import ol_Feature from 'ol/Feature';
+
 
 export class MapPois extends MapLayerBase {
 
@@ -30,13 +40,13 @@ export class MapPois extends MapLayerBase {
 
 
 
-  private static higlightObject: any = new ol.style.Circle({
+  private static higlightObject: any = new ol_style_Circle({
     radius: 7,
     fill: null,
-    stroke: new ol.style.Stroke({ color: 'red', width: 6 })
+    stroke: new ol_style_Stroke({ color: 'red', width: 6 })
   });
 
-  public static higlightStyle: any = new ol.style.Style({
+  public static higlightStyle: any = new ol_style_Style({
     image: MapPois.higlightObject
   })
 
@@ -48,20 +58,20 @@ export class MapPois extends MapLayerBase {
 
   private Initialize(): void {
 
-    this.layerSource = new ol.source.Vector({
+    this.layerSource = new ol_source_Vector({
       features: []
     });
 
-    this.layer = new ol.layer.Vector({
+    this.layer = new ol_layer_Vector({
       source: this.layerSource
     });
 
 
-    this.markerlayerSource = new ol.source.Vector({
+    this.markerlayerSource = new ol_source_Vector({
       features: []
     });
 
-    this.markerlayer = new ol.layer.Vector({
+    this.markerlayer = new ol_layer_Vector({
       source: this.markerlayerSource
     });
   }
@@ -87,14 +97,14 @@ export class MapPois extends MapLayerBase {
     this.iconMarkerMap = {};
 
     for (let i = 0; i < poiTypes.length; i++) {
-      let iconStyle = new ol.style.Style({
-        text: new ol.style.Text({
+      let iconStyle = new ol_style_Style({
+        text: new ol_style_Text({
           text: this.poitypes[i].fontKey,
           font: 'normal 30px medfont',
-          textBaseline: 'Bottom',
+          textBaseline: 'bottom',
           //offsetY: -12,
           offsetY: -8,
-          fill: new ol.style.Fill({
+          fill: new ol_style_Fill({
             color: 'white',
           })
         })
@@ -102,15 +112,15 @@ export class MapPois extends MapLayerBase {
 
       this.iconStyleMap[poiTypes[i].id] = iconStyle;
 
-      let markerStyle = new ol.style.Style({
-        text: new ol.style.Text({
+      let markerStyle = new ol_style_Style({
+        text: new ol_style_Text({
           //text: 'l',
           text: 'm',
           //font: 'normal 44px medfont',
           font: 'normal 40px medfont',
-          textBaseline: 'Bottom',
+          textBaseline: 'bottom',
           offsetY: 0,
-          fill: new ol.style.Fill({
+          fill: new ol_style_Fill({
             color: this.poitypes[i].color,
           })
         })
@@ -194,7 +204,7 @@ export class MapPois extends MapLayerBase {
       this.currentSelectedPoi.getGeometry().setCoordinates(position);
       this.highlightFeature.getGeometry().setCoordinates(position);
       this.currentSelectedPoiMarker.getGeometry().setCoordinates(position);
-      this.mapService.updatePoi((new ol.format.GeoJSON()).writeFeature(this.currentSelectedPoi), this.currentSelectedPoi.getId()).
+      this.mapService.updatePoi((new ol_format_GeoJSON()).writeFeature(this.currentSelectedPoi), this.currentSelectedPoi.getId()).
         subscribe(
         poi => this.poiUpdated(poi),
         error => console.log("ERROR: " + <any>error));
@@ -259,7 +269,7 @@ export class MapPois extends MapLayerBase {
     this.clearMarkerLayer();
     this.clear();
 
-    this.showPoisWithStyles((new ol.format.GeoJSON()).readFeatures(features));
+    this.showPoisWithStyles((new ol_format_GeoJSON()).readFeatures(features));
 
     //this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(features));
   }
@@ -286,7 +296,7 @@ export class MapPois extends MapLayerBase {
   private updateAddPoi(poi: any) {
     console.log("MapPois::updateAddNode! - " + JSON.stringify(poi));
 
-    this.showPoisWithStyles((new ol.format.GeoJSON()).readFeatures(poi));
+    this.showPoisWithStyles((new ol_format_GeoJSON()).readFeatures(poi));
 
     //this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(poi));
   }
@@ -308,9 +318,9 @@ export class MapPois extends MapLayerBase {
 
   private initHighlightFeatureOverlay(map: any) {
 
-    this.highlightFeaturePoint = new ol.geom.Point([0, 0]);
+    this.highlightFeaturePoint = new ol_geom_Point([0, 0]);
 
-    this.highlightFeature = new ol.Feature({
+    this.highlightFeature = new ol_Feature({
       geometry: this.highlightFeaturePoint,
       name: 'SelectedPoi'
     });

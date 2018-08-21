@@ -12,7 +12,16 @@ import { MapEdgeStyles } from './mapEdgeStyles';
 
 import { Floor } from '../base/floor';
 
-declare var ol: any;
+import ol_style_Style from 'ol/style/Style';
+import ol_style_Stroke from 'ol/style/Stroke';
+
+import ol_format_GeoJSON from 'ol/format/GeoJSON';
+
+import ol_geom_LineString from 'ol/geom/LineString';
+
+import ol_layer_Vector from 'ol/layer/Vector';
+import ol_source_Vector from 'ol/source/Vector';
+
 
 export class MapEdges extends MapLayerBase {
   private highlightedFeature: any = null;
@@ -131,11 +140,11 @@ export class MapEdges extends MapLayerBase {
             clonedFeature.setId(this.highlightedFeature.getId());
 
 
-            let line = this.getEdgeLine((new ol.format.GeoJSON().readFeature(clonedFeature.get('source_node'))),
-              (new ol.format.GeoJSON().readFeature(clonedFeature.get('destination_node'))));
+            let line = this.getEdgeLine((new ol_format_GeoJSON().readFeature(clonedFeature.get('source_node'))),
+              (new ol_format_GeoJSON().readFeature(clonedFeature.get('destination_node'))));
             clonedFeature.setGeometry(line);
 
-            this.mapService.updateEdge(new ol.format.GeoJSON().writeFeature(clonedFeature), this.highlightedFeature.getId()).
+            this.mapService.updateEdge(new ol_format_GeoJSON().writeFeature(clonedFeature), this.highlightedFeature.getId()).
               subscribe(
               edge => this.edgeUpdated(edge),
               error => console.log("ERROR: " + <any>error));
@@ -259,7 +268,7 @@ export class MapEdges extends MapLayerBase {
       p2[0] = p2[0] - BELOW_LEVEL_OFFSET;
     }
 
-    return new ol.geom.LineString([p1, p2]);
+    return new ol_geom_LineString([p1, p2]);
   }
 
   public getEdgesForNode(nodeId: number): any[] {
@@ -285,17 +294,17 @@ export class MapEdges extends MapLayerBase {
   }
 
   private edgeAdded(edge: any): void {
-    let ol_edge = (new ol.format.GeoJSON()).readFeature(edge);
+    let ol_edge = (new ol_format_GeoJSON()).readFeature(edge);
     ol_edge = this.getUpdatedMultiLayerEdge(ol_edge);
     this.layerSource.addFeature(ol_edge);
   }
 
   private initHighlightFeatureOverlay(map: any) {
-    this.highlightFeatureOverlay = new ol.layer.Vector({
-      source: new ol.source.Vector(),
+    this.highlightFeatureOverlay = new ol_layer_Vector({
+      source: new ol_source_Vector(),
       map: map,
-      style: new ol.style.Style({
-        stroke: new ol.style.Stroke({
+      style: new ol_style_Style({
+        stroke: new ol_style_Stroke({
           color: 'red',
           width: 4
         })
@@ -305,11 +314,11 @@ export class MapEdges extends MapLayerBase {
 
   private initSelectFeatureOverlay(map: any) {
     console.log("mapEdges::initSelectFeatureOverlay...")
-    this.selectFeatureOverlay = new ol.layer.Vector({
-      source: new ol.source.Vector(),
+    this.selectFeatureOverlay = new ol_layer_Vector({
+      source: new ol_source_Vector(),
       map: map,
-      style: new ol.style.Style({
-        stroke: new ol.style.Stroke({
+      style: new ol_style_Style({
+        stroke: new ol_style_Stroke({
           color: 'rgba(0,190,255,0.8)',
           width: 6
         })
@@ -326,7 +335,7 @@ export class MapEdges extends MapLayerBase {
     this.clear();
 
     //TODO Add LAYER OFFSET
-    let ol_features = (new ol.format.GeoJSON()).readFeatures(features);
+    let ol_features = (new ol_format_GeoJSON()).readFeatures(features);
 
     for (let i = 0; i < ol_features.length; i++) {
       ol_features[i] = this.getUpdatedMultiLayerEdge(ol_features[i]);

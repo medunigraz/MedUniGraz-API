@@ -1,9 +1,9 @@
 <div class="floorselector" *ngIf="selectedFloor">
 
-  <button md-raised-button [mdMenuTriggerFor]="menufloors" class="floormenu">
-     <md-icon class="floormenuIcon">layers</md-icon><span>{{selectedFloor.name}}</span>
+  <button mat-raised-button [matMenuTriggerFor]="menufloors" class="floormenu">
+     <mat-icon class="floormenuIcon">layers</mat-icon><span>{{selectedFloor.name}}</span>
   </button>
-  <md-menu #menufloors="mdMenu">
-    <button md-menu-item *ngFor="let floor of floorList" (click)="onSelect(floor)" class="floormenutext">{{floor.name}}</button>
-  </md-menu>
+  <mat-menu #menufloors="matMenu">
+    <button mat-menu-item *ngFor="let floor of floorList" (click)="onSelect(floor)" class="floormenutext">{{floor.name}}</button>
+  </mat-menu>
 </div>

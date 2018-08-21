@@ -1,21 +1,21 @@
 <div class="modeselector">
   <!--
-  <md-button-toggle-group #group="mdButtonToggleGroup" (change)="modechanged()">
+  <mat-button-toggle-group #group="mdButtonToggleGroup" (change)="modechanged()">
     <table>
       <tr *ngFor="let mode of modes">
         <td>
-          <md-button-toggle (change)="modechanged(mode)">
+          <mat-button-toggle (change)="modechanged(mode)">
             {{mode.name}}
-          </md-button-toggle>
+          </mat-button-toggle>
         </td>
       </tr>
   </table>
-</md-button-toggle-group>
+</mat-button-toggle-group>
 -->
-  <button md-raised-button [mdMenuTriggerFor]="menuApplicationmodes" class="modemenu">
-     <md-icon>more_vert</md-icon><span>{{currentAppMode.name}}</span>
+  <button mat-raised-button [matMenuTriggerFor]="menuApplicationmodes" class="modemenu">
+     <mat-icon>more_vert</mat-icon><span>{{currentAppMode.name}}</span>
   </button>
-  <md-menu #menuApplicationmodes="mdMenu">
-       <button md-menu-item  *ngFor="let mode of modes" (click)="modechanged(mode)">{{mode.name}}</button>
-  </md-menu>
+  <mat-menu #menuApplicationmodes="matMenu">
+       <button mat-menu-item  *ngFor="let mode of modes" (click)="modechanged(mode)">{{mode.name}}</button>
+  </mat-menu>
 </div>

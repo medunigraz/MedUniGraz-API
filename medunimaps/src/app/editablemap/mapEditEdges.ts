@@ -9,7 +9,13 @@ import { MapLayerBase } from './mapLayerBase';
 import { OpenlayersHelper } from './openlayershelper';
 import { MapNodesStyles } from './mapNodesStyles';
 
-declare var ol: any;
+import ol_style_Style from 'ol/style/Style';
+import ol_style_Stroke from 'ol/style/Stroke';
+
+import ol_Feature from 'ol/Feature';
+import ol_geom_MultiLineString from 'ol/geom/MultiLineString';
+
+import ol_format_GeoJSON from 'ol/format/GeoJSON';
 
 export class MapEditEdges extends MapLayerBase {
 
@@ -25,8 +31,8 @@ export class MapEditEdges extends MapLayerBase {
   }
 
   private Initialize(): void {
-    let res = OpenlayersHelper.CreateBasicLayer(new ol.style.Style({
-      stroke: new ol.style.Stroke({
+    let res = OpenlayersHelper.CreateBasicLayer(new ol_style_Style({
+      stroke: new ol_style_Stroke({
         color: 'gray',
         width: 3
       })
@@ -35,9 +41,9 @@ export class MapEditEdges extends MapLayerBase {
     this.layer = res.layer;
 
     this.lineAr = [];
-    this.multiLineString = new ol.geom.MultiLineString(this.lineAr);
+    this.multiLineString = new ol_geom_MultiLineString(this.lineAr);
 
-    this.multiLineFeature = new ol.Feature({
+    this.multiLineFeature = new ol_Feature({
       geometry: this.multiLineString,
       name: 'Lines'
     });
@@ -106,7 +112,7 @@ export class MapEditEdges extends MapLayerBase {
         geo[geo.length - 1] = coord;
       }
       edge.getGeometry().setCoordinates(geo);
-      this.mapService.updateEdge(new ol.format.GeoJSON().writeFeature(edge), edge.getId()).
+      this.mapService.updateEdge(new ol_format_GeoJSON().writeFeature(edge), edge.getId()).
         subscribe(
         node => this.edgeUpdated(node),
         error => console.log("ERROR: " + <any>error));

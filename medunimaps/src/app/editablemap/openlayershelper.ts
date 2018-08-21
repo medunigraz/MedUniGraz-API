@@ -1,4 +1,7 @@
-declare var ol: any;
+import ol_layer_Vector from 'ol/layer/Vector';
+import ol_source_Vector from 'ol/source/Vector';
+
+import ol_format_GeoJSON from 'ol/format/GeoJSON';
 
 import { ApplicationMode } from '../base/applicationmode';
 import { ApplicationModeT } from '../base/applicationmode';
@@ -23,11 +26,11 @@ export class OpenlayersHelper {
     };
 
     //console.log('Create layer source!');
-    let layerSource = new ol.source.Vector({
-      features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
+    let layerSource = new ol_source_Vector({
+      features: (new ol_format_GeoJSON()).readFeatures(geojsonObject)
     });
 
-    let layer = new ol.layer.Vector({
+    let layer = new ol_layer_Vector({
       source: layerSource,
       style: style
     });

@@ -1,5 +1,5 @@
 import { ViewChild, Component, Optional, OnInit } from '@angular/core';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 
 import { ApplicationMode, ApplicationModeT } from './base/applicationmode';
 import { Floor } from './base/floor';
@@ -10,9 +10,11 @@ import { Beacon } from './base/beacon';
 import { EdgeWeight } from './base/edgeweight';
 
 
-import { OAuthService } from 'angular-oauth2-oidc';
+import { OAuthService, NullValidationHandler, JwksValidationHandler } from 'angular-oauth2-oidc';
 
 import { BeaconinfoComponent } from './beaconinfo/beaconinfo.component'
+
+import { auth } from "../environments/environment";
 
 @Component({
   selector: 'app-root',
@@ -41,20 +43,23 @@ export class AppComponent {
 
   @ViewChild('beaconInfoComp') public beaconInfoComponent: BeaconinfoComponent;
 
-  constructor(private _dialog: MdDialog, private oauthService: OAuthService) {
+  constructor(private _dialog: MatDialog, private oauthService: OAuthService) {
 
     // Login-Url
     //this.oauthService.loginUrl = "https://api.medunigraz.at/oauth2/authorize/"; //Id-Provider?
-    this.oauthService.loginUrl = "https://api.medunigraz.at/oauth2/authorize/";
+    //this.oauthService.loginUrl = "https://api.medunigraz.at/oauth2/authorize/";
+    //this.oauthService.loginUrl = "https://api.medunigraz.at:8088/oauth2/authorize/";
 
     // URL of the SPA to redirect the user to after login
     //this.oauthService.redirectUri = window.location.origin + "/mapeditor/";
 
-    this.oauthService.redirectUri = window.location.href;
+    //this.oauthService.redirectUri = window.location.href;
     //this.oauthService.redirectUri = window.location.origin + "/editor/";
     //if (window.location.origin.indexOf('localhost') >= 0) {
     //  this.oauthService.redirectUri = window.location.origin;
     //}
+
+    /*
     console.log("AppComponent::constructor " + this.oauthService.redirectUri);
 
 
@@ -81,7 +86,18 @@ export class AppComponent {
 
     if (!this.oauthService.hasValidAccessToken()) {
       this.oauthService.initImplicitFlow();
+    }*/
+
+    this.oauthService.configure(auth);
+    this.oauthService.tokenValidationHandler = new NullValidationHandler();
+    //this.oauthService.tokenValidationHandler = new JwksValidationHandler();
+    this.oauthService.tryLogin({
+    });
+
+    if (!this.oauthService.hasValidAccessToken()) {
+      this.oauthService.initImplicitFlow();
     }
+
   }
 
   ngOnInit(): void {
@@ -191,9 +207,9 @@ export class AppComponent {
         <input #dialogInput>
       </label>
     </p>
-    <p> <button md-button (click)="dialogRef.close(dialogInput.value)">CLOSE</button> </p>
+    <p> <button mat-button (click)="dialogRef.close(dialogInput.value)">CLOSE</button> </p>
   `,
 })
 export class DialogContent {
-  constructor( @Optional() public dialogRef: MdDialogRef<DialogContent>) { }
+  constructor( @Optional() public dialogRef: MatDialogRef<DialogContent>) { }
 }

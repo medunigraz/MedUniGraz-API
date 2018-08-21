@@ -1,9 +1,10 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
-import { FormControl }       from '@angular/forms';
-import { Subject }           from 'rxjs/Subject';
-import { MdDialogRef } from '@angular/material';
+import { FormControl } from '@angular/forms';
+import { Subject } from 'rxjs/Subject';
+import { MatDialogRef } from '@angular/material';
 import { Observable } from 'rxjs';
 import { Subscription } from "rxjs";
+import { debounceTime } from 'rxjs/operators';
 import { Signal } from '../base/signal';
 
 @Component({
@@ -17,7 +18,7 @@ export class BeacondialogComponent implements OnInit {
   public nameInputVal = new FormControl();
   public batteryOutputVal = new FormControl();
 
-  constructor(public dialogRef: MdDialogRef<BeacondialogComponent>) { }
+  constructor(public dialogRef: MatDialogRef<BeacondialogComponent>) { }
 
   public mac: string = "";
   public name: string = "";
@@ -27,11 +28,21 @@ export class BeacondialogComponent implements OnInit {
   public nearestSignal: Signal = undefined;
 
   ngOnInit() {
+
+    let debouncedVal = this.macInputVal.valueChanges.pipe(debounceTime(400));
+    debouncedVal.subscribe(term => this.updateOkButtonEnabled());
+
+    let debouncedNameVal = this.nameInputVal.valueChanges.pipe(debounceTime(400));
+    debouncedNameVal.subscribe(term => this.updateOkButtonEnabled());
+
+    //TODO TEST!!!!!!
+    /*
     this.macInputVal.valueChanges
       .debounceTime(400).subscribe(term => this.updateOkButtonEnabled());
 
     this.nameInputVal.valueChanges
       .debounceTime(400).subscribe(term => this.updateOkButtonEnabled());
+      */
   }
 
   scan() {

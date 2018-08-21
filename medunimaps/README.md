@@ -1,18 +1,22 @@
-# Medunimaps
+# editor
 
-Intall:
-git clone https://github.com/medunigraz/MedUniGraz-API.git
-cd c:\safe\OpenLayers\repo\MedUniGraz-API\medunimaps
-npm install
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
 
-# Editor
+# Icons
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.2.6.
+https://mapicons.mapsmarker.com/
+
+# Atom Plugins
+
+  atom-typescript
+  atom-beautify
+
 
 ## Development server
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 ng serve --host 0.0.0.0 --port 4201
 ng serve --host 0.0.0.0 --port 4201 --proxy-config proxyconfigAPI.json
+ng serve --host 0.0.0.0 --port 4201 --proxy-config proxyconfigAPIDev.json
 
 ## Code scaffolding
 
@@ -31,7 +35,22 @@ Available options
     --target: string, default development, environment to use
     --watch: boolean, default false, watch files for changes and rebuild when a change is detected
 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ng build --target=production
+ng build --prod --no-build-optimizer
+
+## Development server
+
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+
+## Code scaffolding
+
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+
+## Build
+
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
 ## Running unit tests
 
@@ -40,7 +59,6 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 ## Running end-to-end tests
 
 Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
 
 ## Further help
 

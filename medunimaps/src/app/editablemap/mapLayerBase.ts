@@ -1,7 +1,5 @@
 import { Observable } from 'rxjs';
-import {Subscription} from "rxjs";
-
-declare var ol: any;
+import { Subscription } from "rxjs";
 
 export class MapLayerBase {
   protected layer: any;

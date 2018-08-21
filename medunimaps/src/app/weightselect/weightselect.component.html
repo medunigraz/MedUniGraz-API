@@ -1,11 +1,11 @@
 <div class="weightcontrol" *ngIf="showControl">
-  <button md-raised-button [mdMenuTriggerFor]="menuselectcontrol" class="weightcontrolIcon">
-     <md-icon class="weightcontrolIcon" [style.color]="selectedWeight.color">add_circle</md-icon><span class="weightcontrolmenutext">{{selectedWeight.name}}</span>
+  <button mat-raised-button [matMenuTriggerFor]="menuselectcontrol" class="weightcontrolIcon">
+     <mat-icon class="weightcontrolIcon" [style.color]="selectedWeight.color">add_circle</mat-icon><span class="weightcontrolmenutext">{{selectedWeight.name}}</span>
   </button>
-  <md-menu #menuselectcontrol="mdMenu">
-    <button md-menu-item *ngFor="let weight of weights" (click)="onSelect(weight)" class="weightcontrolmenubutton">
-      <md-icon class="weightcontrolIcon" [style.color]="weight.color">add_circle</md-icon>
+  <mat-menu #menuselectcontrol="matMenu">
+    <button mat-menu-item *ngFor="let weight of weights" (click)="onSelect(weight)" class="weightcontrolmenubutton">
+      <mat-icon class="weightcontrolIcon" [style.color]="weight.color">add_circle</mat-icon>
       <span class="weightcontrolmenutext">{{weight.name}}</span>
     </button>
-  </md-menu>
+  </mat-menu>
 </div>

@@ -5,16 +5,16 @@
     <h2>
       Beacon
     </h2>
-    <input class="idInput" autocomplete="off" placeholder="Id..." mdInput [formControl]="macInputVal" readonly>
+    <input class="idInput" autocomplete="off" placeholder="Id..." matInput [formControl]="macInputVal" readonly>
 
-    <input class="nameInput" autocomplete="off" placeholder="Name..." mdInput [formControl]="nameInputVal">
+    <input class="nameInput" autocomplete="off" placeholder="Name..." matInput [formControl]="nameInputVal">
 
-    <input class="batteryOutput" autocomplete="off" placeholder="battery..." mdInput [formControl]="batteryOutputVal" readonly>
+    <input class="batteryOutput" autocomplete="off" placeholder="battery..." matInput [formControl]="batteryOutputVal" readonly>
 
   </div>
 
   <div class='navigateDiv'>
-    <button class='ScanButton' (click)="scan()" md-button>
+    <button class='ScanButton' (click)="scan()" mat-button>
       <span>Scan...</span>
     </button>
   </div>
@@ -22,7 +22,7 @@
   <table class="controlButtonTable">
     <tr>
       <td>
-        <button class='NavigateButton' (click)="closeDialog()" md-button>
+        <button class='NavigateButton' (click)="closeDialog()" mat-button>
           <span>Cancel</span>
         </button>
       </td>
@@ -31,14 +31,14 @@
         </div>
       </td>
       <td>
-        <button class='NavigateButton' (click)="save()" [disabled]="okButtonDisabled" md-button>
+        <button class='NavigateButton' (click)="save()" [disabled]="okButtonDisabled" mat-button>
           <span>Ok</span>
         </button>
       </td>
     </tr>
   </table>
 
-  <button class='closeDialogButton' (click)="closeDialog()" md-button>
-    <md-icon>close</md-icon>
+  <button class='closeDialogButton' (click)="closeDialog()" mat-button>
+    <mat-icon>close</mat-icon>
   </button>
 </div>

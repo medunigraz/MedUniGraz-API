@@ -6,7 +6,7 @@ import { MapLayerBase } from './mapLayerBase';
 import { OpenlayersHelper } from './openlayershelper';
 import { MapRouteStyles } from './mapRouteStyles';
 
-declare var ol: any;
+import ol_format_GeoJSON from 'ol/format/GeoJSON';
 
 export class MapRoute extends MapLayerBase {
 
@@ -86,7 +86,7 @@ export class MapRoute extends MapLayerBase {
   private updateRoute(route: any) {
     console.log("MapRoute::update Route");
     this.layerSource.clear();
-    this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(route));
+    this.layerSource.addFeatures((new ol_format_GeoJSON()).readFeatures(route));
   }
 
 }

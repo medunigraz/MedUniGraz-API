@@ -32,7 +32,7 @@ export class FloorselectorComponent implements OnInit {
 
     this.mapService.getFloorNames().subscribe(
       floors => this.updateFloors(floors),
-      error => console.log("ERROR deleteNode: " + <any>error));
+      error => console.log("ERROR getFloorNames: " + <any>error));
   }
 
   onSelect(floor: Floor): void {
@@ -42,6 +42,9 @@ export class FloorselectorComponent implements OnInit {
 
   updateFloors(floors: Floor[]) {
     this.floorList = floors;
+
+    console.log("FloorselectorComponent::updateFloors Floors: " + JSON.stringify(this.floorList));
+    console.log("FloorselectorComponent::updateFloors Floors: COUNT: " + this.floorList.length);
 
     for (let i = 0; i < this.floorList.length; i++) {
       if (i == 0) {
@@ -58,7 +61,8 @@ export class FloorselectorComponent implements OnInit {
         this.floorList[i].floorBelow = this.floorList[i + 1].id;
       }
 
-      console.log("FloorselectorComponent::updateFloors Floor: " + JSON.stringify(this.floorList[i]));
+      console.log("FloorselectorComponent::updateFloors Floor: " + this.floorList[i].name);
+      console.log("   FloorselectorComponent::updateFloors Floor: " + JSON.stringify(this.floorList[i]));
     }
 
     for (let floor of this.floorList) {

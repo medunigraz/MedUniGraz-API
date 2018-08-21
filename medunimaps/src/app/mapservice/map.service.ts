@@ -2,16 +2,17 @@ import { Injectable } from '@angular/core';
 import { BASEMAP } from './mock-basemap02';
 import { BASEMAP_1 } from './mock-basemap01';
 import { FLOORS } from './mock-floors';
-import {ROOMS} from './mock-rooms';
-import {DEMOROUTE} from './mock-route';
-import {ROOMS_MAP} from './mock-roomGeoInformation'
-import {NAVIGATIONEDGES_DEMO} from './mock-navigationedges'
+import { ROOMS } from './mock-rooms';
+import { DEMOROUTE } from './mock-route';
+import { ROOMS_MAP } from './mock-roomGeoInformation'
+import { NAVIGATIONEDGES_DEMO } from './mock-navigationedges'
 
-import {Room} from '../base/room';
+import { Room } from '../base/room';
 import { Floor } from '../base/floor';
 import { PoiType } from '../base/poitype';
 import { EdgeWeight } from '../base/edgeweight';
 import { Observable } from 'rxjs';
+import { of } from 'rxjs';
 
 @Injectable()
 export class MapService {
@@ -32,7 +33,7 @@ export class MapService {
   }
 
   getFloorNames(): Observable<Floor[]> {
-    return Observable.of(FLOORS);
+    return of(FLOORS);
   }
 
   getRooms(layer: number): Observable<Object> {
@@ -52,12 +53,12 @@ export class MapService {
   }
 
   getNavigationEdgesIntern(layer: number): Observable<Object> {
-    return Observable.of(NAVIGATIONEDGES_DEMO);
+    return of(NAVIGATIONEDGES_DEMO);
   }
 
   getRoute(sourceNodeId: number, destinationNodeId: number): Observable<Object> {
     console.log("Get Route Local!");
-    return Observable.of(DEMOROUTE);
+    return of(DEMOROUTE);
   }
 
   getPoiTypes(): Observable<PoiType[]> {
@@ -83,7 +84,7 @@ export class MapService {
     //console.log('searchRoom...');
 
     if (term.length == 0) {
-      return Observable.of(rooms);
+      return of(rooms);
     }
 
     for (var i = 0; i < ROOMS.length; i++) {
@@ -92,11 +93,11 @@ export class MapService {
       }
     }
 
-    return Observable.of(rooms);
+    return of(rooms);
   }
 
   getNavigationNodes(layer: number): Observable<Object> {
-    return Observable.of({
+    return of({
       'geojson': {
         'type': 'FeatureCollection',
         'crs': {

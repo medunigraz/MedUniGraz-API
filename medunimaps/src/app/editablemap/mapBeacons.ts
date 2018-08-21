@@ -5,7 +5,7 @@ import { USEHTTPSERVICE } from '../base/globalconstants';
 import { ApplicationMode } from '../base/applicationmode';
 import { ApplicationModeT } from '../base/applicationmode';
 import { BeacondialogComponent } from '../beacondialog/beacondialog.component';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { Signal } from '../base/signal';
 import { Beacon } from '../base/beacon';
 
@@ -15,8 +15,13 @@ import { OpenlayersHelper } from './openlayershelper';
 import { MapBeaconStyles } from './mapBeaconStyles';
 import { EditablemapComponent } from './editablemap.component'
 
-
-declare var ol: any;
+import ol_style_Circle from 'ol/style/Circle';
+import ol_style_Style from 'ol/style/Style';
+import ol_style_Stroke from 'ol/style/Stroke';
+import ol_Feature from 'ol/Feature';
+import ol_geom_Point from 'ol/geom/Point';
+import ol_Overlay from 'ol/Overlay';
+import ol_format_GeoJSON from 'ol/format/GeoJSON';
 
 export class MapBeacons extends MapLayerBase {
 
@@ -24,7 +29,7 @@ export class MapBeacons extends MapLayerBase {
   private lastMouseClickPosition: number[] = null;
 
   private editMode: BeaconEditMode = BeaconEditMode.CreateDefault();
-  private dialogRef: MdDialogRef<BeacondialogComponent> = null;
+  private dialogRef: MatDialogRef<BeacondialogComponent> = null;
 
   private currentSelectedBeacon: any = null;
   private highlightFeaturePoint: any = null;
@@ -37,17 +42,17 @@ export class MapBeacons extends MapLayerBase {
   private beaconOverlays: any[] = null;
   private beaconTextFields: any[] = null;
 
-  private static higlightObject: any = new ol.style.Circle({
+  private static higlightObject: any = new ol_style_Circle({
     radius: 8,
     fill: null,
-    stroke: new ol.style.Stroke({ color: 'red', width: 6 })
+    stroke: new ol_style_Stroke({ color: 'red', width: 6 })
   });
 
-  public static higlightStyle: any = new ol.style.Style({
+  public static higlightStyle: any = new ol_style_Style({
     image: MapBeacons.higlightObject
   })
 
-  constructor(private dialog: MdDialog, private mapService: MapService, private beaconPopUpBaseElem: ElementRef, private mapComponent: EditablemapComponent) {
+  constructor(private dialog: MatDialog, private mapService: MapService, private beaconPopUpBaseElem: ElementRef, private mapComponent: EditablemapComponent) {
     super();
     this.Initialize();
   }
@@ -205,7 +210,7 @@ export class MapBeacons extends MapLayerBase {
 
     for (let i = 0; i < overlayDivs.length; i++) {
       //new ol.Overlay(/** @type {olx.OverlayOptions} */({
-      this.beaconOverlays[i] = new ol.Overlay(({
+      this.beaconOverlays[i] = new ol_Overlay(({
         element: overlayDivs[i],
         autoPan: false
       }));
@@ -316,7 +321,7 @@ export class MapBeacons extends MapLayerBase {
       this.currentSelectedBeacon.getGeometry().setCoordinates(position);
       this.highlightFeature.getGeometry().setCoordinates(position);
 
-      this.mapService.updateBeacon((new ol.format.GeoJSON()).writeFeature(this.currentSelectedBeacon), this.currentSelectedBeacon.getId()).
+      this.mapService.updateBeacon((new ol_format_GeoJSON()).writeFeature(this.currentSelectedBeacon), this.currentSelectedBeacon.getId()).
         subscribe(
         poi => this.beaconUpdated(poi),
         error => console.log("ERROR: " + <any>error));
@@ -325,9 +330,9 @@ export class MapBeacons extends MapLayerBase {
 
   private initHighlightFeatureOverlay(map: any) {
 
-    this.highlightFeaturePoint = new ol.geom.Point([0, 0]);
+    this.highlightFeaturePoint = new ol_geom_Point([0, 0]);
 
-    this.highlightFeature = new ol.Feature({
+    this.highlightFeature = new ol_Feature({
       geometry: this.highlightFeaturePoint,
       name: 'SelectedPoi'
     });
@@ -354,7 +359,7 @@ export class MapBeacons extends MapLayerBase {
               { "id": 2, "type": "Feature", "geometry": { "type": "Point", "coordinates": [1722094.6153389667, 5955238.592188362] }, "properties": { "mac": "00-00-00-00-00-02", "name": "namexyz", "deployed": "2017-06-29T10:22:07.677524Z", "seen": "2017-06-29T10:22:07.677560Z", "active": false, "charge": "0.00", "level": 2 } }]
           };
     */
-    this.beaconFeatures = (new ol.format.GeoJSON()).readFeatures(features);
+    this.beaconFeatures = (new ol_format_GeoJSON()).readFeatures(features);
 
     //this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(features));
     this.layerSource.addFeatures(this.beaconFeatures);
@@ -407,7 +412,7 @@ export class MapBeacons extends MapLayerBase {
 
   private updateAddBeacon(beacon: any) {
     console.log("updateAddBeacon! - " + JSON.stringify(beacon));
-    this.layerSource.addFeatures((new ol.format.GeoJSON()).readFeatures(beacon));
+    this.layerSource.addFeatures((new ol_format_GeoJSON()).readFeatures(beacon));
   }
 
 

@@ -5,7 +5,10 @@ import { MapLayerBase } from './mapLayerBase';
 
 import { Floor } from '../base/floor';
 
-declare var ol: any;
+import ol_style_Style from 'ol/style/Style';
+import ol_style_Fill from 'ol/style/Fill';
+
+import ol_format_GeoJSON from 'ol/format/GeoJSON';
 
 export class MapRoom extends MapLayerBase {
 
@@ -18,12 +21,12 @@ export class MapRoom extends MapLayerBase {
   }
 
   private Initialize(): void {
-    let res = OpenlayersHelper.CreateBasicLayer(new ol.style.Style({
+    let res = OpenlayersHelper.CreateBasicLayer(new ol_style_Style({
       /*stroke: new ol.style.Stroke({
         color: 'red',
         width: 0
       }),*/
-      fill: new ol.style.Fill({
+      fill: new ol_style_Fill({
         color: 'rgba(96,96,255,1)'
       })
     }));
@@ -49,7 +52,7 @@ export class MapRoom extends MapLayerBase {
     //console.log("MapRoom::showRooms");
     this.clear();
 
-    let olFeatures = (new ol.format.GeoJSON()).readFeatures(features);
+    let olFeatures = (new ol_format_GeoJSON()).readFeatures(features);
     this.layerSource.addFeatures(olFeatures);
 
     if (this.multiLevelMode) {
@@ -62,7 +65,7 @@ export class MapRoom extends MapLayerBase {
 
   private showRoomsAbove(features: any): void {
     //console.log("MapRoom::showRoomsAbove");
-    let ol_features = (new ol.format.GeoJSON()).readFeatures(features);
+    let ol_features = (new ol_format_GeoJSON()).readFeatures(features);
     for (let i = 0; i < ol_features.length; i++) {
       //let coord = ol_features[i].getGeometry().getCoordinates();
       //ol.coordinate.add(coord, 10, 0);
@@ -77,7 +80,7 @@ export class MapRoom extends MapLayerBase {
   }
 
   private showRoomsBelow(features: any): void {
-    let ol_features = (new ol.format.GeoJSON()).readFeatures(features);
+    let ol_features = (new ol_format_GeoJSON()).readFeatures(features);
     for (let i = 0; i < ol_features.length; i++) {
       //let coord = ol_features[i].getGeometry().getCoordinates();
       //ol.coordinate.add(coord, 10, 0);
@@ -95,8 +98,8 @@ export class MapRoom extends MapLayerBase {
             "type": "Polygon",
             "coordinates": [
               [[1722195.294385298, 5955266.126823761], [1722204.811691066, 5955261.3495094925],
-                [1722202.1244517902, 5955255.975030941], [1722192.6071460224, 5955260.90163628],
-                [1722195.294385298, 5955266.126823761]]
+              [1722202.1244517902, 5955255.975030941], [1722192.6071460224, 5955260.90163628],
+              [1722195.294385298, 5955266.126823761]]
             ]
           },
           "properties": {
