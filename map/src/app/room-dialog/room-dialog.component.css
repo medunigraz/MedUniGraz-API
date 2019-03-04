@@ -22,3 +22,11 @@
   min-width: 3em;
   color: #51AE32;
 }
+
+.ng-star-inserted a {
+  color: #51AE32;
+  text-decoration: none;
+}
+.ng-star-inserted a:hover {
+  text-decoration: underline;
+}
