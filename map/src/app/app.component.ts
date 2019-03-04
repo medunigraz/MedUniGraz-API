@@ -68,6 +68,14 @@ export class AppComponent implements OnInit {
     if (roomFeatures.features) {
       if (roomFeatures.features.length > 0) {
         let roomFeature = roomFeatures.features[0];
+
+        for (let i = 1; i < roomFeatures.features.length; i++) {
+          let room = Room.createFromRestObj(roomFeatures.features[i]);
+          if (room.level == 2) { //EG //TODO Use - https://api.medunigraz.at/v1/geo/level/ ORDER Flag!!!
+            roomFeature = roomFeatures.features[i];
+          }
+        }
+
         //Logger.log("RouteCompComponent::roomRecieved - " + JSON.stringify(roomFeature));
         let room = Room.createFromRestObj(roomFeature);
         this.searchBoxComponent.showRoomCalled(room);
