@@ -93,7 +93,7 @@ export class FloorcontrolComponent implements OnInit {
     }
   }
 
-  private selectFloor(floor: Floor) {
+  selectFloor(floor: Floor) {
     //Logger.log("FloorcontrolComponent::Set currentFloor - Select floor: " + JSON.stringify(floor));
     this.selectedFloor = floor;
 

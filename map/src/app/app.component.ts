@@ -153,6 +153,10 @@ export class AppComponent implements OnInit {
     this.searchBoxComponent.showRouteCalled(destinationRoom);
   }
 
+  currentFloorObject(floor) {
+    this.floorControlComponent.selectFloor(floor);
+  }
+
   highlightRouteLevelsCalled(levels: number[]) {
     //Logger.log("AppComponent::highlightRouteLevels!!!");
     this.floorControlComponent.highlightLevels(levels);

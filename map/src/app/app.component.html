@@ -1,5 +1,6 @@
 <app-olmap #mapComp (onShowRoute)="showRouteCalled($event)"
                     (onHighlightRouteLevels)="highlightRouteLevelsCalled($event)"
+                    (onCurrentFloorObject) = "currentFloorObject($event)"
                     [currentFloor]="currentFloor">
 </app-olmap>
 <app-searchcontrol #searchBoxComp

@@ -57,6 +57,7 @@ export class OlmapComponent implements OnInit {
 
   @Output('onShowRoute') onShowRoute: EventEmitter<Room> = new EventEmitter();
   @Output('onHighlightRouteLevels') onHighlightRouteLevels: EventEmitter<number[]> = new EventEmitter();
+  @Output('onCurrentFloorObject') onCurrentFloorObject: EventEmitter<Floor> = new EventEmitter();
 
   public routeLevelOverlays: number[] = null;
 
@@ -511,6 +512,12 @@ export class OlmapComponent implements OnInit {
     }, options);
 
     return feature;
+  }
+
+  onSelectFloor(floor: Floor) {
+    this.currentFloor = floor;
+    this.onCurrentFloorObject.emit(floor);
+
   }
 
   private testLayerDoors(layer: any) {

@@ -258,24 +258,30 @@ export class MapRoute extends MapLayerBase {
       }
 
       let text = this.floorList.getFloorbyId(endLevel).name;
+      let floorObject = this.floorList.getFloorbyId(endLevel);
 
-      this.addLevelOverlay(pos, text, iconstring, arrowstring);
+      this.addLevelOverlay(pos, text, iconstring, arrowstring, floorObject);
     }
   }
 
-  private addLevelOverlay(position: number[], text: string, icon: string, arrow: string) {
+  private addLevelOverlay(position: number[], text: string, icon: string, arrow: string, floorObject) {
 
     //Logger.log("MapRoute::addLevelOverlay " + text + " - " + icon + " # " + JSON.stringify(position));
 
     if (this.lastOverlaysUsed < this.levelOverlays.length) {
       //Logger.log("MapRoute::addLevelOverlay -> " + this.lastOverlaysUsed);
       this.levelOverlays[this.lastOverlaysUsed].setPosition(position);
+      this.levelTextFields[this.lastOverlaysUsed].addEventListener('click', (evt) => this.onSelect(floorObject));
       this.levelTextFields[this.lastOverlaysUsed].innerHTML = text;
       this.levelIconFields[this.lastOverlaysUsed].className = 'levelOverlayIcon ' + icon;
       this.levelArrowFields[this.lastOverlaysUsed].className = 'levelOverlayIconArrow ' + arrow;
 
       this.lastOverlaysUsed++;
     }
+  }
+
+  onSelect(floorObject) {
+    this.mapComponent.onSelectFloor(floorObject);
   }
 
   private resetRouteOverlays() {

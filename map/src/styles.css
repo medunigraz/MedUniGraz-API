@@ -14,3 +14,8 @@ html, body {
   padding: 0;
   height: 100%;
 }
+
+.level-popup-content-span[_ngcontent-c1]:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
