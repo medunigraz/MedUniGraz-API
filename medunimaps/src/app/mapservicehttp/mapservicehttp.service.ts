@@ -5,13 +5,8 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
-import { EMPTY } from 'rxjs'
-import { map, filter } from 'rxjs/operators';
-import 'rxjs/add/operator/catch';
-//import 'rxjs/add/operator/map';
-import { of } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { Observable ,  EMPTY ,  of } from 'rxjs';
+import { map, filter ,  catchError, retry } from 'rxjs/operators';
 
 import { MapService } from '../mapservice/map.service';
 import { Floor } from '../base/floor';

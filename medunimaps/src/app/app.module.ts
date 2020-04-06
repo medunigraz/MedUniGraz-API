@@ -23,7 +23,16 @@ import { BeaconconnectorComponent } from './beaconconnector/beaconconnector.comp
 
 import { OAuthModule } from 'angular-oauth2-oidc';
 
-import { MatButtonModule, MatCheckboxModule, MatButtonToggleModule, /*MatCoreModule,*/ MatDialogModule, MatIconModule, MatInputModule, MatSelectModule, MatSidenavModule, MatMenuModule } from '@angular/material';
+//import { MatButtonModule, MatCheckboxModule, MatButtonToggleModule, /*MatCoreModule,*/ MatDialogModule, MatIconModule, MatInputModule, MatSelectModule, MatSidenavModule, MatMenuModule } from '@angular/material';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatIconModule} from '@angular/material/icon';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatSidenavModule} from '@angular/material/sidenav';
 import { BeaconinfoComponent } from './beaconinfo/beaconinfo.component';
 import { WeightselectComponent } from './weightselect/weightselect.component';
 

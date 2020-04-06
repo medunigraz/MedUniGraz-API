@@ -1,7 +1,5 @@
 import { Component, OnInit, EventEmitter, NgZone, Input, Output } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Subscription } from "rxjs";
-import { TimerObservable } from "rxjs/observable/TimerObservable";
+import { Observable ,  Subscription, timer } from 'rxjs';
 
 import { SignalBuffer } from './signalbuffer';
 import { SignalBufferCollection } from './signalbuffercollection';
@@ -105,8 +103,8 @@ export class BeaconconnectorComponent implements OnInit {
       this.stopPosUpdateTimer();
     }
 
-    let timer = TimerObservable.create(1000);
-    this.posUpdateTimerSubscription = timer.subscribe(t => {
+    let timerO = timer(1000);
+    this.posUpdateTimerSubscription = timerO.subscribe(t => {
       this.posUpdateEvent();
     });
   }
@@ -146,8 +144,8 @@ export class BeaconconnectorComponent implements OnInit {
       this.stopCheckTimer();
     }
 
-    let timer = TimerObservable.create(2500);
-    this.checkTimerSubscription = timer.subscribe(t => {
+    let timerO = timer(2500);
+    this.checkTimerSubscription = timerO.subscribe(t => {
       this.checkTimerEvent();
     });
   }

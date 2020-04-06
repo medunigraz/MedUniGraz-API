@@ -11,8 +11,7 @@ import { Room } from '../base/room';
 import { Floor } from '../base/floor';
 import { PoiType } from '../base/poitype';
 import { EdgeWeight } from '../base/edgeweight';
-import { Observable } from 'rxjs';
-import { of } from 'rxjs';
+import { Observable ,  of } from 'rxjs';
 
 @Injectable()
 export class MapService {

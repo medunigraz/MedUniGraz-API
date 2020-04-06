@@ -4,7 +4,7 @@
 
 import { AuthConfig } from "angular-oauth2-oidc";
 
-const baseURL = "https://api.medunigraz.at:8088/";
+const baseURL = "https://api-test.medunigraz.at/";
 //const baseURL = "http://localhost:4201/";
 
 export const environment = {
@@ -21,7 +21,7 @@ export const environment = {
 
 export const auth: AuthConfig = {
   clientId: "o5AMvJLFuKNhKzBltNK1d0DDyP53h5Ng2gxVBT7p",
-  redirectUri: "http://localhost:4201/",
+  redirectUri: "https://localhost:4201/",
   loginUrl: baseURL + "oauth2/authorize/",
   postLogoutRedirectUri: "",
   scope: "editor",
@@ -34,7 +34,7 @@ export const auth: AuthConfig = {
   tokenEndpoint: baseURL + "oauth2/token/",
   responseType: "token",
   showDebugInformation: true,
-  silentRefreshRedirectUri: "http://localhost:4201/silent-refresh.html",
+  silentRefreshRedirectUri: "https://localhost:4201/silent-refresh.html",
   silentRefreshMessagePrefix: "",
   silentRefreshShowIFrame: false,
   silentRefreshTimeout: 20000,

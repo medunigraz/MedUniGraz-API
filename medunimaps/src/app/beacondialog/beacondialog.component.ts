@@ -1,9 +1,7 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Subject } from 'rxjs/Subject';
-import { MatDialogRef } from '@angular/material';
-import { Observable } from 'rxjs';
-import { Subscription } from "rxjs";
+import { Subject ,  Observable ,  Subscription } from 'rxjs';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { debounceTime } from 'rxjs/operators';
 import { Signal } from '../base/signal';
 

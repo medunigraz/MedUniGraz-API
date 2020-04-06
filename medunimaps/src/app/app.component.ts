@@ -1,5 +1,5 @@
 import { ViewChild, Component, Optional, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 import { ApplicationMode, ApplicationModeT } from './base/applicationmode';
 import { Floor } from './base/floor';

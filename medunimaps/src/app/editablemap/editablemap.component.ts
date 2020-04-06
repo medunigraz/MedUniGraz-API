@@ -28,7 +28,7 @@ import { MapPois } from './mapPois';
 import { MapBeacons } from './mapBeacons';
 import { OpenlayersHelper } from './openlayershelper';
 
-import { MatDialog, MatDialogRef } from '@angular/material';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { BeacondialogComponent } from '../beacondialog/beacondialog.component'
 
 import ol_Map from 'ol/Map';

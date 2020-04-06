@@ -3,7 +3,7 @@ export const USEHTTPSERVICE = true;
 export const MODIFY_EDGE_MINSTARTPOINT_DISTANCE = 1.0;
 
 //export const API_BASE_URL = 'https://api.medunigraz.at';
-export const API_BASE_URL = 'https://api.medunigraz.at:8088';
+export const API_BASE_URL = 'https://api-test.medunigraz.at';
 //export const API_BASE_URL = 'http://localhost:4201';
 
 

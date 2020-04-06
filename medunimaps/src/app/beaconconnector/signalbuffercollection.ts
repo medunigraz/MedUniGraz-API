@@ -1,8 +1,6 @@
 import { SignalBuffer } from './signalbuffer';
 import { SignalBufferFixed } from './signalbufferFixed';
-import { Observable } from 'rxjs';
-import { Subscription } from "rxjs";
-import { TimerObservable } from "rxjs/observable/TimerObservable";
+import { Observable ,  Subscription, timer } from 'rxjs';
 
 import { Signal } from '../base/signal';
 
@@ -115,8 +113,8 @@ export class SignalBufferCollection {
       this.stopClearTimer();
     }
 
-    let timer = TimerObservable.create(100);
-    this.clearTimerSubscription = timer.subscribe(t => {
+    let timerO = timer(100);
+    this.clearTimerSubscription = timerO.subscribe(t => {
       this.clearTimerEvent();
     });
   }

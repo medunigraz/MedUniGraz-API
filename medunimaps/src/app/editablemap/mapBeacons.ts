@@ -5,7 +5,7 @@ import { USEHTTPSERVICE } from '../base/globalconstants';
 import { ApplicationMode } from '../base/applicationmode';
 import { ApplicationModeT } from '../base/applicationmode';
 import { BeacondialogComponent } from '../beacondialog/beacondialog.component';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Signal } from '../base/signal';
 import { Beacon } from '../base/beacon';
 
