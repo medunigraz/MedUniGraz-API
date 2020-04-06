@@ -25,11 +25,11 @@ declare var globalURLParamRoomID: any;
 })
 export class AppComponent implements OnInit {
 
-  @ViewChild('sidenav') public sideNav: SidemenuComponent;
-  @ViewChild('mapComp') public mapComponent: OlmapComponent;
-  @ViewChild('searchBoxComp') public searchBoxComponent: SearchcontrolComponent;
-  @ViewChild('floorComp') public floorControlComponent: FloorcontrolComponent;
-  @ViewChild('positionComp') public positionComponent: PositionComponent;
+  @ViewChild('sidenav', { static: true }) public sideNav: SidemenuComponent;
+  @ViewChild('mapComp', { static: true }) public mapComponent: OlmapComponent;
+  @ViewChild('searchBoxComp', { static: true }) public searchBoxComponent: SearchcontrolComponent;
+  @ViewChild('floorComp', { static: true }) public floorControlComponent: FloorcontrolComponent;
+  @ViewChild('positionComp', { static: true }) public positionComponent: PositionComponent;
 
   private isSideMenuOpenend: boolean = false;
   currentFloor: Floor = Floor.getDefaultFloor();

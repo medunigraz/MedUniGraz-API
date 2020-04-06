@@ -1,6 +1,5 @@
 import { SearchResult } from '../base/searchresult';
-import { Observable } from 'rxjs';
-import { of } from 'rxjs';
+import { Observable ,  of } from 'rxjs';
 
 import { Logger } from '../base/logger';
 

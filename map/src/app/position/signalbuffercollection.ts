@@ -1,8 +1,5 @@
 import { SignalBufferTimed } from './signalbuffertimed';
-import { Observable } from 'rxjs';
-import { Subscription } from "rxjs";
-import { TimerObservable } from "rxjs/observable/TimerObservable";
-
+import { Observable ,  Subscription ,  timer } from 'rxjs';
 export interface ISignalMap {
   [id: string]: SignalBufferTimed;
 }

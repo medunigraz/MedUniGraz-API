@@ -3,7 +3,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
+//import { HttpModule } from '@angular/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { DeviceDetectorModule  } from 'ngx-device-detector';
@@ -22,8 +23,15 @@ import { FloorcontrolComponent } from './floorcontrol/floorcontrol.component';
 import { SidemenuComponent } from './sidemenu/sidemenu.component';
 import { RoomDialogComponent } from './room-dialog/room-dialog.component';
 import { PositionComponent } from './position/position.component';
-
-import { MatButtonModule, MatCheckboxModule, MatButtonToggleModule, MatDialogModule, MatIconModule, MatInputModule, MatSelectModule, MatMenuModule } from '@angular/material';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatIconModule} from '@angular/material/icon';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatMenuModule} from '@angular/material/menu';
+//import { MatButtonModule, MatCheckboxModule, MatButtonToggleModule, MatDialogModule, MatIconModule, MatInputModule, MatSelectModule, MatMenuModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -38,7 +46,7 @@ import { MatButtonModule, MatCheckboxModule, MatButtonToggleModule, MatDialogMod
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
+    HttpClientModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     DeviceDetectorModule.forRoot(),

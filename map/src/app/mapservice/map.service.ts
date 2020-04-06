@@ -1,7 +1,11 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
+
+import {catchError, map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 
-import { Http, Response } from '@angular/http';
-import { Headers, RequestOptions, RequestMethod, RequestOptionsArgs } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
+//import { Headers, RequestOptions, RequestMethod, RequestOptionsArgs } from '@angular/http';
 import { Floor } from '../base/floor';
 import { PoiType } from '../base/poiType';
 import { SearchResult } from '../base/searchresult';
@@ -9,9 +13,7 @@ import { MAX_NUM_OF_AUTOCOMPLETE_RESULTS, API_BASE_URL } from '../base/globalcon
 
 import { Logger } from '../base/logger';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
+
 
 @Injectable()
 export class MapService {
@@ -28,64 +30,64 @@ export class MapService {
   private livePosUrl = this.baseUrl + 'positioning/locate/';
   private orgUnitUrl = this.baseUrl + 'structure/organization/';
 
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient) { }
 
   getRooms(layer: number): Observable<Object> {
     //Logger.log("MapService::getRooms: " + layer);
-    return this.http.get(this.roomUrl + '?level=' + layer)
-      .map(this.extractData)
-      .catch(this.handleError);
+    return this.http.get(this.roomUrl + '?level=' + layer).pipe(
+      map(this.extractData),
+      catchError(this.handleError),);
   }
 
   getRoomByID(id: number): Observable<Object> {
-    return this.http.get(this.roomUrl + '?campusonline=' + id)
-      .map(this.extractData)
-      .catch(this.handleError);
+    return this.http.get(this.roomUrl + '?campusonline=' + id).pipe(
+      map(this.extractData),
+      catchError(this.handleError),);
   }
 
   getFloors(layer: number): Observable<Object> {
-    return this.http.get(this.floorUrl + '?level=' + layer)
-      .map(this.extractData)
-      .catch(this.handleError);
+    return this.http.get(this.floorUrl + '?level=' + layer).pipe(
+      map(this.extractData),
+      catchError(this.handleError),);
   }
 
   getDoors(layer: number): Observable<Object> {
-    return this.http.get(this.doorUrl + '?level=' + layer)
-      .map(this.extractData)
-      .catch(this.handleError);
+    return this.http.get(this.doorUrl + '?level=' + layer).pipe(
+      map(this.extractData),
+      catchError(this.handleError),);
   }
 
   getFloorNames(): Observable<Floor[]> {
-    return this.http.get(this.levelUrl)
-      .map(this.extractDataLevels)
-      .catch(this.handleError);
+    return this.http.get(this.levelUrl).pipe(
+      map(this.extractDataLevels),
+      catchError(this.handleError),);
   }
 
   getPoiTypes(): Observable<PoiType[]> {
-    return this.http.get(this.poiTypeUrl)
-      .map(this.extractDataPoiTypes)
-      .catch(this.handleError);
+    return this.http.get(this.poiTypeUrl).pipe(
+      map(this.extractDataPoiTypes),
+      catchError(this.handleError),);
   }
 
   getPoiInstances(layer: number): Observable<Object> {
-    return this.http.get(this.poiInstanceUrl + '?level=' + layer)
-      .map(this.extractData)
-      .catch(this.handleError);
+    return this.http.get(this.poiInstanceUrl + '?level=' + layer).pipe(
+      map(this.extractData),
+      catchError(this.handleError),);
   }
 
   search(term: string, limit: number): Observable<{ data: SearchResult[]; nexturl: string; }> {
     let url = this.searchUrl + '?limit=' + limit + '&q=' + term;
     Logger.log("MapService::search " + url);
-    return this.http.get(url)
-      .map(this.extractDataSearch)
-      .catch(this.handleError);
+    return this.http.get(url).pipe(
+      map(this.extractDataSearch),
+      catchError(this.handleError),);
   }
 
   searchFromUrl(url: string): Observable<{ data: SearchResult[]; nexturl: string; }> {
     Logger.log("MapService::search " + url);
-    return this.http.get(url)
-      .map(this.extractDataSearch)
-      .catch(this.handleError);
+    return this.http.get(url).pipe(
+      map(this.extractDataSearch),
+      catchError(this.handleError),);
   }
 
 
@@ -93,27 +95,27 @@ export class MapService {
     let url = this.routeUrl + '?from=' + sourceNodeId + '&to=' + destinationNodeId;
     Logger.log("MapService::getRoute " + url)
 
-    return this.http.get(url)
-      .map(this.extractData)
-      .catch(this.handleError);
+    return this.http.get(url).pipe(
+      map(this.extractData),
+      catchError(this.handleError),);
   }
 
   getLivePos(urlString: string): Observable<Object> {
 
-    return this.http.get(this.livePosUrl + '?' + urlString)
-      .map(this.extractData)
-      .catch(this.handleError);
+    return this.http.get(this.livePosUrl + '?' + urlString).pipe(
+      map(this.extractData),
+      catchError(this.handleError),);
   }
 
   getOrgUnits(): Observable<Object> {
-    return this.http.get(this.orgUnitUrl)
-      .map(this.extractData)
-      .catch(this.handleError);
+    return this.http.get(this.orgUnitUrl).pipe(
+      map(this.extractData),
+      catchError(this.handleError),);
   }
 
-  private extractData(res: Response) {
+  private extractData(res: any) {
     //Logger.log("RESPONSE DATA...");
-    let body = res.json();
+    let body = res;
 
     //Logger.log("RESPONSE DATA: " + JSON.stringify(body));
 
@@ -123,8 +125,8 @@ export class MapService {
     return body || {};
   }
 
-  private extractDataLevels(res: Response) {
-    let body = res.json();
+  private extractDataLevels(res: any) {
+    let body = res;
     if (body.results) {
       body = body.results;
     }
@@ -135,8 +137,8 @@ export class MapService {
     return floors;
   }
 
-  private extractDataPoiTypes(res: Response) {
-    let body = res.json();
+  private extractDataPoiTypes(res: any) {
+    let body = res;
     if (body.results) {
       body = body.results;
     }
@@ -148,8 +150,8 @@ export class MapService {
     return poitypes;
   }
 
-  private extractDataSearch(res: Response) {
-    let body = res.json();
+  private extractDataSearch(res: any) {
+    let body = res;
     let nextUrl = body.next;
     if (body.results) {
       body = body.results;
@@ -172,9 +174,11 @@ export class MapService {
     return obj;
   }
 
-  private handleError(error: Response | any) {
+  private handleError(error: any) {
     // In a real world app, we might use a remote logging infrastructure
     let errMsg: string;
+    errMsg = error.message ? error.message : error.toString();
+    /*
     if (error instanceof Response) {
       const body = error.json() || '';
       const err = body.error || JSON.stringify(body);
@@ -182,8 +186,9 @@ export class MapService {
     } else {
       errMsg = error.message ? error.message : error.toString();
     }
+    */
     console.error("handleError: " + errMsg);
-    return Observable.throw(errMsg);
+    return observableThrowError(errMsg);
   }
 
 }

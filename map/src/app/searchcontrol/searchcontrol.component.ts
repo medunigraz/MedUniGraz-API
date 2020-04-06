@@ -1,12 +1,11 @@
+
+import {debounceTime} from 'rxjs/operators';
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { ViewChild, ElementRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs';
-import { Subscription } from "rxjs";
-import { TimerObservable } from "rxjs/observable/TimerObservable";
+import { Subject ,  Observable ,  Subscription ,  timer } from 'rxjs';
 import { MapService } from '../mapservice/map.service';
-
+import {MatIconRegistry} from '@angular/material/icon';
 import { SearchResult } from '../base/searchresult';
 import { Room } from '../base/room';
 import { RouteNodes } from '../base/routeNodes';
@@ -15,8 +14,8 @@ import { DefaultStartPointWithPos, DefaultStartPoint, SearchDemoData } from './s
 import { Logger } from '../base/logger';
 import { MAX_NUM_OF_AUTOCOMPLETE_RESULTS } from '../base/globalconstants';
 
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/map';
+
+
 
 export enum FocusStatus {
   NONE = 1,
@@ -32,7 +31,7 @@ export enum FocusStatus {
 export class SearchcontrolComponent implements OnInit {
 
   @ViewChild('searchStartInput') public searchStartInputRef: ElementRef;
-  @ViewChild('searchInput') public searchInputRef: ElementRef;
+  @ViewChild('searchInput', { static: true }) public searchInputRef: ElementRef;
   @ViewChild('resultScrollDiv') public resultScrollDiv: ElementRef;
 
   isRoutingSearchBox: boolean = false;
@@ -72,11 +71,11 @@ export class SearchcontrolComponent implements OnInit {
 
   ngOnInit() {
 
-    this.term.valueChanges
-      .debounceTime(400).subscribe(term => this.search(term));
+    this.term.valueChanges.pipe(
+      debounceTime(400)).subscribe(term => this.search(term));
 
-    this.startPointTerm.valueChanges
-      .debounceTime(400).subscribe(term => this.searchStartPoint(term));
+    this.startPointTerm.valueChanges.pipe(
+      debounceTime(400)).subscribe(term => this.searchStartPoint(term));
 
     /*
         this.term.valueChanges
@@ -418,9 +417,8 @@ export class SearchcontrolComponent implements OnInit {
     if (this.unFocusTimerSubscription != null) {
       this.stopUnFocusTimer();
     }
-
-    let timer = TimerObservable.create(250);
-    this.unFocusTimerSubscription = timer.subscribe(t => {
+    let timerO = timer(250);
+    this.unFocusTimerSubscription = timerO.subscribe(t => {
       this.unFocusTimerEvent();
     });
   }

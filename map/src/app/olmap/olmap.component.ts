@@ -1,9 +1,7 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
 import { ViewChild, ElementRef, AfterViewInit, Input, Output } from '@angular/core';
 import { MapService } from '../mapservice/map.service';
-import { Observable } from 'rxjs';
-import { Subscription } from "rxjs";
-import { TimerObservable } from "rxjs/observable/TimerObservable";
+import { Observable ,  Subscription ,  timer } from 'rxjs';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 import { MapPois } from './mapPois';
@@ -16,8 +14,11 @@ import { MapLivePosition } from './mapLivePosition'
 
 import { OrgUnitHandler } from './orgunithandler'
 
-import { MatDialog, MatDialogRef } from '@angular/material';
 
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+
+
+import {MatIconRegistry} from '@angular/material/icon';
 import { OpenlayersHelper } from './openlayershelper';
 import { RoomDialogComponent } from '../room-dialog/room-dialog.component'
 
@@ -50,10 +51,10 @@ declare var ol: any;
 })
 export class OlmapComponent implements OnInit {
 
-  @ViewChild('mapDiv') public mapDiv: ElementRef;
-  @ViewChild('roomPopup') public roomPopupDiv: ElementRef;
-  @ViewChild('roomPopupText') public roomPopupText: ElementRef;
-  @ViewChild('levelPopups') public levelPopups: ElementRef;
+  @ViewChild('mapDiv', { static: true }) public mapDiv: ElementRef;
+  @ViewChild('roomPopup', { static: true }) public roomPopupDiv: ElementRef;
+  @ViewChild('roomPopupText', { static: true }) public roomPopupText: ElementRef;
+  @ViewChild('levelPopups', { static: true }) public levelPopups: ElementRef;
 
   @Output('onShowRoute') onShowRoute: EventEmitter<Room> = new EventEmitter();
   @Output('onHighlightRouteLevels') onHighlightRouteLevels: EventEmitter<number[]> = new EventEmitter();
@@ -62,6 +63,7 @@ export class OlmapComponent implements OnInit {
   public routeLevelOverlays: number[] = null;
 
   constructor(private dialog: MatDialog, private mapService: MapService, private deviceService: DeviceDetectorService) {
+
     this.routeLevelOverlays = new Array(MAX_NUMBER_OF_ROUTELEVEL_OVERLAYS);
     for (let i = 0; i < MAX_NUMBER_OF_ROUTELEVEL_OVERLAYS; i++) {
       this.routeLevelOverlays[i] = i;
@@ -371,14 +373,14 @@ export class OlmapComponent implements OnInit {
   }
 
   zoomToGeomtry(extent: any) {
-    let timer = TimerObservable.create(250);
+    let timerO = timer(250);
 
     if (this.zoomToLivePosTimerSubscription != null) {
       this.zoomToLivePosTimerSubscription.unsubscribe();
       this.zoomToLivePosTimerSubscription = null;
     }
 
-    this.zoomToLivePosTimerSubscription = timer.subscribe(t => {
+    this.zoomToLivePosTimerSubscription = timerO.subscribe(t => {
       this.zoomToGeometryEvt(extent);
     });
   }
@@ -398,14 +400,14 @@ export class OlmapComponent implements OnInit {
 
   zoomToPosition(position: number[]) {
     Logger.log("OlmapComponent::zoomToPosition");
-    let timer = TimerObservable.create(250);
+    let timerO = timer(250);
 
     if (this.zoomToLivePosTimerSubscription != null) {
       this.zoomToLivePosTimerSubscription.unsubscribe();
       this.zoomToLivePosTimerSubscription = null;
     }
 
-    this.zoomToLivePosTimerSubscription = timer.subscribe(t => {
+    this.zoomToLivePosTimerSubscription = timerO.subscribe(t => {
       this.zoomToPositionEvt(position);
     });
 

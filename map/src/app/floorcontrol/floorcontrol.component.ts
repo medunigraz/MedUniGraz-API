@@ -1,6 +1,5 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
-import { Observable } from 'rxjs';
-import { of } from 'rxjs';
+import { Observable ,  of } from 'rxjs';
 
 import { MapService } from '../mapservice/map.service';
 
