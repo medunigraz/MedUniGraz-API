@@ -389,7 +389,8 @@ export class OlmapComponent implements OnInit {
     if (extent) {
       let options = {
         padding: [40, 10, 10, 10],
-        duration: 500
+        duration: 500,
+        maxZoom: this.mapView.getZoom()
       }
 
       if (this.mapView) {
