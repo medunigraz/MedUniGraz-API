@@ -116,6 +116,7 @@ export class OlmapComponent implements OnInit {
       //center: ol.extent.getCenter(extent),
       zoom: 18,
       maxZoom: 24,
+      constrainResolution: true,
       minZoom: 16//16
     });
 
@@ -389,8 +390,7 @@ export class OlmapComponent implements OnInit {
     if (extent) {
       let options = {
         padding: [40, 10, 10, 10],
-        duration: 500,
-        maxZoom: this.mapView.getZoom()
+        duration: 500
       }
 
       if (this.mapView) {
