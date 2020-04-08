@@ -135,7 +135,8 @@ export class EditablemapComponent implements OnInit {
         //center: ol.extent.getCenter(extent),
         zoom: 18,
         maxZoom: 24,
-        minZoom: 1//16
+        minZoom: 1,//16
+        constrainResolution: true
       })
     });
 
