@@ -36,8 +36,9 @@ Available options
 
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-ng build --target=production
-ng build --prod --no-build-optimizer
+(ng build --target=production)
+(ng build --prod --no-build-optimizer)
+ng build --prod
 
 ## Development server
 
