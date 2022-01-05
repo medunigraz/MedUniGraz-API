@@ -29,7 +29,7 @@ export class MapService {
   private poiInstanceUrl = this.baseUrl + 'geo/pointofinterestinstance/';
   private livePosUrl = this.baseUrl + 'positioning/locate/';
   private orgUnitUrl = this.baseUrl + 'structure/organization/';
-
+  private additionalBuildingUrl = this.baseUrl + 'geo/buildings/';
   constructor(private http: HttpClient) { }
 
   getRooms(layer: number): Observable<Object> {
@@ -47,6 +47,18 @@ export class MapService {
 
   getFloors(layer: number): Observable<Object> {
     return this.http.get(this.floorUrl + '?level=' + layer).pipe(
+      map(this.extractData),
+      catchError(this.handleError),);
+  }
+
+  getAdditionalBuildings(): Observable<Object> {
+    return this.http.get(this.additionalBuildingUrl).pipe(
+      map(this.extractData),
+      catchError(this.handleError),);
+  }
+
+  getAdditionalBuildingById(id: number): Observable<Object> {
+    return this.http.get(this.additionalBuildingUrl + '?campusonline=' + id).pipe(
       map(this.extractData),
       catchError(this.handleError),);
   }

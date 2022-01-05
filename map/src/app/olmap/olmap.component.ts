@@ -6,6 +6,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 
 import { MapPois } from './mapPois';
 import { MapRoom } from './mapRoom';
+import { MapAdditionalBuilding } from './mapAdditionalBuildings';
 import { MapFloor } from './mapFloor'
 import { MapDoors } from './mapDoors'
 import { MapRoute } from './mapRoute'
@@ -27,7 +28,7 @@ import { MAX_NUMBER_OF_ROUTELEVEL_OVERLAYS } from '../base/globalconstants'
 import { Room } from '../base/room';
 import { RoomDetail } from '../base/roomDetail';
 import { Floor } from '../base/floor';
-import { PoiType } from '../base/poitype';
+import { PoiType } from '../base/poiType';
 import { Position } from '../base/position';
 import { RouteLevelChange } from '../base/routeLevelChange';
 
@@ -53,9 +54,10 @@ export class OlmapComponent implements OnInit {
 
   @ViewChild('mapDiv', { static: true }) public mapDiv: ElementRef;
   @ViewChild('roomPopup', { static: true }) public roomPopupDiv: ElementRef;
+  @ViewChild('additionalBuildingPopup', { static: true }) public additionalBuildingPopupDiv: ElementRef;
   @ViewChild('roomPopupText', { static: true }) public roomPopupText: ElementRef;
+  @ViewChild('additionalBuildingPopupText', { static: true }) public additionalBuildingPopupText: ElementRef;
   @ViewChild('levelPopups', { static: true }) public levelPopups: ElementRef;
-
   @Output('onShowRoute') onShowRoute: EventEmitter<Room> = new EventEmitter();
   @Output('onHighlightRouteLevels') onHighlightRouteLevels: EventEmitter<number[]> = new EventEmitter();
   @Output('onCurrentFloorObject') onCurrentFloorObject: EventEmitter<Floor> = new EventEmitter();
@@ -71,9 +73,9 @@ export class OlmapComponent implements OnInit {
   }
 
   private zoomToLivePosTimerSubscription: Subscription;
-
+  public UrlToBuilding;
   private orgUnitHandler: OrgUnitHandler = null;
-
+  private mapAdditionalBuilding: MapAdditionalBuilding = null;
   private mapPois: MapPois = null;
   private mapRoom: MapRoom = null;
   private mapFloor: MapFloor = null;
@@ -99,6 +101,8 @@ export class OlmapComponent implements OnInit {
 
   ngAfterViewInit(): void {
     this.mapBackground = new MapBackground(this.mapService);
+    this.mapAdditionalBuilding = new MapAdditionalBuilding(this.additionalBuildingPopupDiv, this.additionalBuildingPopupText, this, this.mapService);
+    //this.mapAdditionalBuilding = new MapAdditionalBuilding(this.roomPopupDiv, this.roomPopupText, this, this.mapService);
     this.mapPois = new MapPois(this.mapService);
     this.mapRoom = new MapRoom(this.roomPopupDiv, this.roomPopupText, this, this.mapService);
     this.mapFloor = new MapFloor(this.mapService);
@@ -135,6 +139,7 @@ export class OlmapComponent implements OnInit {
           source: this.getTileSource()
         }),
         //this.mapBackground.getLayer(), //TODO
+        this.mapAdditionalBuilding.getLayer(),
         this.mapFloor.getLayer(),
         this.mapRoom.getLayer(),
         this.mapDoors.getLayer(),
@@ -142,7 +147,8 @@ export class OlmapComponent implements OnInit {
         this.mapPois.getLayer(),
         this.mapLivePosition.getLayer()
       ],
-      overlays: [this.mapRoom.getOverlay()],
+      overlays: [this.mapRoom.getOverlay(),
+      this.mapAdditionalBuilding.getOverlay()],
       target: 'map',
       view: this.mapView
     });
@@ -276,6 +282,7 @@ export class OlmapComponent implements OnInit {
     if (currentFloor && currentFloor.id >= 0) {
       this.lastMapUpdate = Date.now();
       this.currentLevel = currentFloor;
+      this.mapAdditionalBuilding.showAdditionalBuilding();
       this.mapFloor.showFloor(currentFloor.id);
       this.mapDoors.showFloor(currentFloor.id);
       this.mapRoom.showFloor(currentFloor.id);
@@ -371,7 +378,9 @@ export class OlmapComponent implements OnInit {
   closePopup() {
     //Logger.log("OlmapComponent::closePopup");
     this.mapRoom.closePopup();
+    this.mapAdditionalBuilding.closePopup();
   }
+
 
   zoomToGeomtry(extent: any) {
     let timerO = timer(250);
@@ -451,6 +460,10 @@ export class OlmapComponent implements OnInit {
     }
     this.setFocus();
   }
+  openAdditionalBuildingDialog()
+  {
+    console.log("Not implemented");
+  }
 
   roomDialogClosed(res: any) {
     Logger.log("OlmapComponent::openRoomDialogClosed: " + JSON.stringify(res));
@@ -464,7 +477,10 @@ export class OlmapComponent implements OnInit {
   private mapMouseMoved(evt): void {
     let pixel = this.map.getEventPixel(evt.originalEvent);
     let roomFeature = this.getRoomForPos(pixel);
+    
     this.mapRoom.setHighlightedRoom(roomFeature);
+    let buildingFeature = this.getBuildingForPos(pixel)
+    this.mapAdditionalBuilding.highlightAdditionalBuilding(buildingFeature);
   }
 
   private mapClicked(evt): void {
@@ -474,6 +490,7 @@ export class OlmapComponent implements OnInit {
     let roomFeature = this.getRoomForPos(pixel);
     if (roomFeature) {
       Logger.log("OlmapComponent::mapClicked: Room Clicked: " + roomFeature.getId());
+      this.mapAdditionalBuilding.closePopup();
     }
     this.mapRoom.setSelectedRoom(roomFeature);
 
@@ -483,8 +500,11 @@ export class OlmapComponent implements OnInit {
       Logger.log("OlmapComponent::mapClicked: Door Clicked: " + doorFeature.getId());
     }
 
-    //let view = this.map.getView();
-    //Logger.log("OlmapComponent::mapClicked: CurrentResolution: " + view.getResolution());
+    let additionalBuildingFeature = this.getBuildingForPos(pixel);
+    if (additionalBuildingFeature && ! roomFeature) {
+      this.mapAdditionalBuilding.markAdditionalBuilding(additionalBuildingFeature, evt.coordinate);
+      this.UrlToBuilding = this.mapAdditionalBuilding.getUrlToBuilding();
+    }
   }
 
   private getRoomForPos(posPixel: any) {
@@ -495,15 +515,24 @@ export class OlmapComponent implements OnInit {
       return feature;
     }, options);
 
-    //if (feature != null) {
-    //  Logger.log("Found room: " + feature.getId());
-    //}
-
+    return feature;
+  }
+  private getBuildingForPos(posPixel: any) {
+    let options = {
+      layerFilter: (layer => this.testLayerBuildings(layer))
+    }
+    let feature = this.map.forEachFeatureAtPixel(posPixel, function(feature) {
+      return feature;
+    }, options);
     return feature;
   }
 
   private testLayerRooms(layer: any) {
     return this.mapRoom.getLayer() === layer;
+  }
+
+  private testLayerBuildings(layer: any) {
+    return this.mapAdditionalBuilding.getLayer() === layer;
   }
 
   private getDoorForPos(posPixel: any) {

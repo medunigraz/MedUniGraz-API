@@ -1,7 +1,7 @@
 import { MapService } from '../mapservice/map.service';
 import { OpenlayersHelper } from './openlayershelper';
 import { MapLayerBase } from './mapLayerBase';
-import { PoiType } from '../base/poitype'
+import { PoiType } from '../base/poiType'
 import { Poi } from '../base/poi'
 
 import { Logger } from '../base/logger';

@@ -200,7 +200,7 @@ function sendDemoData()
 }
 
 var globalURLParamRoomID = undefined;
-
+var globalURLParamBuildingID = undefined;
 function GetUrlParameter( url ) {
   var obj = {};
   str = url.split('?');
@@ -211,6 +211,8 @@ function GetUrlParameter( url ) {
     });
     //return obj;
     globalURLParamRoomID = obj.raum;
+    globalURLParamBuildingID = obj.buildingid;
+    //console.log(JSON.stringify(obj));
   }
   //console.log("JS::RoomID = " + globalURLParamRoomID);
 }

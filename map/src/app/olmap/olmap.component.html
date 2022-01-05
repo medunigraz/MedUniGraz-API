@@ -8,6 +8,18 @@
   </div>
 
 
+  <div #additionalBuildingPopup id="additionalBuildingPopup" class="ol-popup">
+    <div class="popup-content"><span #additionalBuildingPopupText class="popup-content-span"></span></div>
+    <a href="{{UrlToBuilding}}" target="_blank"
+            title="Verwenden Sie diesen Link wenn Sie die Position des Gebäudes weiterschicken möchten.">Link teilen</a>
+    <button class="closePopupButton" (click)="closePopup()" mat-button>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+
+
+
     <div #levelPopups  class="level-ol-popups_parent">
       <div *ngFor="let levelOverlay of routeLevelOverlays">
         <div  class="level-ol-popup">

@@ -132,7 +132,6 @@ export class MapRoom extends MapLayerBase {
     if (room) {
 
       Logger.log("MapRoom::Mark room: " + room.id + " category: " + room.coCategory);
-
       this.currentMarkedRoom = room;
       this.currentOverlayText = room.getRoomMarkerText();
       this.roomContentSpan.nativeElement.innerHTML = this.currentOverlayText;

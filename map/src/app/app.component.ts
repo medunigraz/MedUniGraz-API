@@ -7,16 +7,17 @@ import { MainappService } from './mainappservice/mainapp.service';
 import { SidemenuComponent } from './sidemenu/sidemenu.component'
 import { PositionComponent } from './position/position.component'
 import { MapService } from './mapservice/map.service';
-
+import MultiPolygon from 'ol/geom/MultiPolygon';
 import { FloorList } from './base/floorlist';
 import { Room } from './base/room';
 import { RouteNodes } from './base/routeNodes';
-import { PoiType } from './base/poitype';
+import { PoiType } from './base/poiType';
 import { Position } from './base/position';
 
 import { Logger } from './base/logger';
 
 declare var globalURLParamRoomID: any;
+declare var globalURLParamBuildingID: any;
 
 @Component({
   selector: 'app-root',
@@ -56,10 +57,29 @@ export class AppComponent implements OnInit {
 
   ngAfterViewInit(): void {
     if (globalURLParamRoomID) {
-      Logger.log("AppComponent::ngOnInit init - " + globalURLParamRoomID);
+      Logger.log("AppComponent::ngOnInit init - Room" + globalURLParamRoomID);
       this.mapService.getRoomByID(globalURLParamRoomID).subscribe(
         rooms => this.roomRecieved(rooms),
         error => Logger.log("ERROR getRoomByID: " + <any>error));
+    }
+    if (globalURLParamBuildingID) {
+      Logger.log("AppComponent::ngOnInit init - Building" + globalURLParamBuildingID);
+      this.mapService.getAdditionalBuildingById(globalURLParamBuildingID).subscribe(
+        building => this.centerAdditionalBuilding(building),
+        error => Logger.log("ERROR getRoomByID: " + <any>error));
+    }
+  }
+
+  centerAdditionalBuilding(buildingFeatures)
+  {
+    if(buildingFeatures.features)
+    {
+      if(buildingFeatures.features.length > 0)
+      this.mapComponent.zoomToGeomtry((new MultiPolygon(buildingFeatures['features'][0]['geometry']['coordinates'])).getExtent())
+      /*for (let i = 1; i < buildingFeatures.features.length; i++) {
+        let centeredBuilding = (new MultiPolygon(buildingFeatures.features[i]['geometry']['coordinates']));
+        this.mapComponent.zoomToGeomtry(centeredBuilding.getExtent())*/
+      
     }
   }
 
