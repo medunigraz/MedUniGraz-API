@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { Floor } from '../base/floor';\nexport const FLOORS = [new Floor({\n  \"id\": 1,\n  \"name\": \"OG3\",\n  \"building\": 1\n}), new Floor({\n  \"id\": 2,\n  \"name\": \"EG\",\n  \"building\": 1\n})];","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}

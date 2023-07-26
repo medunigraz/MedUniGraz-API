@@ -1,0 +1,1 @@
+{"ast":null,"code":"/**\n * @module ol/format/FormatType\n */\n/**\n * @enum {string}\n */\nexport default {\n  ARRAY_BUFFER: 'arraybuffer',\n  JSON: 'json',\n  TEXT: 'text',\n  XML: 'xml'\n};\n//# sourceMappingURL=FormatType.js.map","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}

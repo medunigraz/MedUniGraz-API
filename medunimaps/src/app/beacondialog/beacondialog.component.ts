@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Subject ,  Observable ,  Subscription } from 'rxjs';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA} from '@angular/material/legacy-dialog';
 import { debounceTime } from 'rxjs/operators';
 import { Signal } from '../base/signal';
 
@@ -12,9 +12,9 @@ import { Signal } from '../base/signal';
 })
 export class BeacondialogComponent implements OnInit {
 
-  public macInputVal = new FormControl();
-  public nameInputVal = new FormControl();
-  public batteryOutputVal = new FormControl();
+  public macInputVal = new UntypedFormControl();
+  public nameInputVal = new UntypedFormControl();
+  public batteryOutputVal = new UntypedFormControl();
 
   constructor(public dialogRef: MatDialogRef<BeacondialogComponent>) { }
 

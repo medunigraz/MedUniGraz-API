@@ -1,0 +1,1 @@
+{"ast":null,"code":"export class Signal {\n  constructor(mac, value, name, battery, origSignal) {\n    this.mac = mac;\n    this.value = value;\n    this.name = name;\n    this.battery = battery;\n    this.origSignal = origSignal;\n  }\n}","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}

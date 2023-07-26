@@ -1,0 +1,1 @@
+{"ast":null,"code":"/**\n * @module ol/source/State\n */\n/**\n * @enum {string}\n * State of the source, one of 'undefined', 'loading', 'ready' or 'error'.\n */\nexport default {\n  UNDEFINED: 'undefined',\n  LOADING: 'loading',\n  READY: 'ready',\n  ERROR: 'error'\n};\n//# sourceMappingURL=State.js.map","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}

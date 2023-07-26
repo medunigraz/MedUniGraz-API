@@ -24,47 +24,46 @@ import { BeaconconnectorComponent } from './beaconconnector/beaconconnector.comp
 import { OAuthModule } from 'angular-oauth2-oidc';
 
 //import { MatButtonModule, MatCheckboxModule, MatButtonToggleModule, /*MatCoreModule,*/ MatDialogModule, MatIconModule, MatInputModule, MatSelectModule, MatSidenavModule, MatMenuModule } from '@angular/material';
-import {MatButtonModule} from '@angular/material/button';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatLegacyButtonModule as MatButtonModule} from '@angular/material/legacy-button';
+import {MatLegacyCheckboxModule as MatCheckboxModule} from '@angular/material/legacy-checkbox';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatDialogModule} from '@angular/material/dialog';
+import {MatLegacyDialogModule as MatDialogModule} from '@angular/material/legacy-dialog';
 import {MatIconModule} from '@angular/material/icon';
-import {MatInputModule} from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
-import {MatMenuModule} from '@angular/material/menu';
+import {MatLegacyInputModule as MatInputModule} from '@angular/material/legacy-input';
+import {MatLegacySelectModule as MatSelectModule} from '@angular/material/legacy-select';
+import {MatLegacyMenuModule as MatMenuModule} from '@angular/material/legacy-menu';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { BeaconinfoComponent } from './beaconinfo/beaconinfo.component';
 import { WeightselectComponent } from './weightselect/weightselect.component';
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    DialogContent,
-    FloorselectorComponent,
-    ModeselectorComponent,
-    EditablemapComponent,
-    PoiselectorComponent,
-    BeaconmodeselectorComponent,
-    BeacondialogComponent,
-    BeaconconnectorComponent,
-    BeaconinfoComponent,
-    WeightselectComponent
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    //HttpModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    //MaterialModule.forRoot(),
-    OAuthModule.forRoot(),
-    MatButtonModule, MatCheckboxModule, MatButtonToggleModule, /*MatCoreModule,*/ MatDialogModule, MatIconModule, MatInputModule, MatSelectModule, MatSidenavModule, MatMenuModule
-  ],
-  providers: [MapService, MapcontrollerserviceService, MapHttpService
-  ],
-  entryComponents: [DialogContent, BeacondialogComponent],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        DialogContent,
+        FloorselectorComponent,
+        ModeselectorComponent,
+        EditablemapComponent,
+        PoiselectorComponent,
+        BeaconmodeselectorComponent,
+        BeacondialogComponent,
+        BeaconconnectorComponent,
+        BeaconinfoComponent,
+        WeightselectComponent
+    ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        //HttpModule,
+        HttpClientModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        //MaterialModule.forRoot(),
+        OAuthModule.forRoot(),
+        MatButtonModule, MatCheckboxModule, MatButtonToggleModule, /*MatCoreModule,*/ MatDialogModule, MatIconModule, MatInputModule, MatSelectModule, MatSidenavModule, MatMenuModule
+    ],
+    providers: [MapService, MapcontrollerserviceService, MapHttpService
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

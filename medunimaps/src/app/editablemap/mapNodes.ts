@@ -72,7 +72,7 @@ export class MapNodes extends MapLayerBase {
 
   public extendMap(map: any): void {
     this.select = new ol_interaction_Select({
-      wrapX: false,
+      /* wrapX: false, */
       layers: (layer => this.testSelect(layer)),
       toggleCondition: eventnevercondition
     });

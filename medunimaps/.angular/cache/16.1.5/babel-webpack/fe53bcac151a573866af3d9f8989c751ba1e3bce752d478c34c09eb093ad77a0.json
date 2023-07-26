@@ -1,0 +1,1 @@
+{"ast":null,"code":"/**\n * @module ol/extent/Corner\n */\n/**\n * Extent corner.\n * @enum {string}\n */\nexport default {\n  BOTTOM_LEFT: 'bottom-left',\n  BOTTOM_RIGHT: 'bottom-right',\n  TOP_LEFT: 'top-left',\n  TOP_RIGHT: 'top-right'\n};\n//# sourceMappingURL=Corner.js.map","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}

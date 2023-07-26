@@ -1,0 +1,1 @@
+{"ast":null,"code":"export class Point {\n  constructor() {\n    this.x = 0;\n    this.y = 0;\n  }\n  createFromAr(ar) {\n    this.x = ar[0];\n    this.y = ar[1];\n  }\n  getAr() {\n    return [this.x, this.y];\n  }\n}","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}

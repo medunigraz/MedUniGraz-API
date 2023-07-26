@@ -1,0 +1,1 @@
+{"ast":null,"code":"/**\n * @module ol/render/canvas/BuilderType\n */\n/**\n * @enum {string}\n */\nexport default {\n  CIRCLE: 'Circle',\n  DEFAULT: 'Default',\n  IMAGE: 'Image',\n  LINE_STRING: 'LineString',\n  POLYGON: 'Polygon',\n  TEXT: 'Text'\n};\n//# sourceMappingURL=BuilderType.js.map","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}

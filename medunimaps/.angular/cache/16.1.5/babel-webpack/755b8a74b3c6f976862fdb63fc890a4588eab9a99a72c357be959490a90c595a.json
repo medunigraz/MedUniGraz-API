@@ -1,0 +1,1 @@
+{"ast":null,"code":"/**\n * @module ol/events/Key\n */\n\n/**\n * @enum {string}\n * @const\n */\nexport default {\n  LEFT: 'ArrowLeft',\n  UP: 'ArrowUp',\n  RIGHT: 'ArrowRight',\n  DOWN: 'ArrowDown'\n};","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}
